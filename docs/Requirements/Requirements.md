@@ -624,19 +624,23 @@ Separación:
 
 # 10. Requerimientos base de datos
 
+Esquema detallado: `docs/Database/Database.md`.
+
 # 10.1 Persistencia
 
 ## RDB-001
 
 Persistir:
 
-- usuarios,  
+- usuarios y roles,  
 
-- predicciones,  
+- predicciones e inputs clínicos,  
+
+- explicaciones SHAP,  
 
 - simulaciones,  
 
-- logs.  
+- logs (audit básico — opcional MVP).  
 
 
 ---
@@ -645,7 +649,7 @@ Persistir:
 
 ## RDB-010
 
-PostgreSQL recomendado.
+PostgreSQL. Base de datos: `medscope_ai`.
 
 ---
 
@@ -653,7 +657,7 @@ PostgreSQL recomendado.
 
 ## RDB-020
 
-SQLAlchemy.
+SQLAlchemy + Alembic para migraciones.
 
 ---
 
@@ -694,15 +698,17 @@ Uso .env.
 
 # 12. Requerimientos testing
 
+Estrategia detallada: `docs/Testing/Testing.md`.
+
 # 12.1 Backend
 
 ## RTS-001
 
-Tests endpoints.
+Tests endpoints: `/auth/login`, `/predict`, `/simulate`, `/history`, `/analytics`.
 
 ## RTS-002
 
-Tests validación.
+Tests validación de inputs (schemas Pydantic, UC-090).
 
 ---
 
@@ -710,7 +716,7 @@ Tests validación.
 
 ## RTS-010
 
-Validación métricas.
+Validación métricas (recall priorizado, accuracy > 75%) y pipeline SHAP.
 
 ---
 
@@ -718,7 +724,15 @@ Validación métricas.
 
 ## RTS-020
 
-Testing navegación básica.
+Testing navegación básica y formularios críticos (vitest).
+
+---
+
+# 12.4 E2E
+
+## RTS-030
+
+Flujo E2E MVP con Playwright: login → prediction → SHAP → simulation → history → analytics.
 
 ---
 

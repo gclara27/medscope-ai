@@ -10,6 +10,9 @@
 | `docs/Use Cases/Use Cases.md` | Flujos de usuario y casos de uso (UC-*) |
 | `docs/MedScope AI General Description.md` | Visión del producto y narrativa |
 | `docs/Design/README.md` | Design system, tokens, mockups |
+| `docs/Testing/Testing.md` | Testing strategy, RTS/UC coverage |
+| `docs/Database/Database.md` | PostgreSQL schema, MVP tables, migrations |
+| `docs/Task Tracker/TaskTracker.md` | Backlog ejecutable con checkboxes |
 | `AGENTS.md` | Convenciones técnicas y routing de skills |
 
 En conflicto de **alcance de producto**, prevalecen Requirements y Use Cases.  
@@ -297,18 +300,20 @@ Implement:
 
 # 1.4 Create Database Models
 
-FIRST implement ONLY:
+FIRST implement ONLY (see `docs/Database/Database.md` §2):
 
-- users
-    
-- roles (admin, clinician, analyst, nurse — RF-004)
+- roles + users (admin, clinician, analyst, nurse — RF-004)
     
 - predictions
     
 - patient_inputs
     
-- simulations (original vs simulated score — UC-044)
+- shap_explanations
     
+- simulations + simulation_inputs (UC-044)
+    
+
+NOT in MVP: `analytics_snapshots`, `user_sessions`, `system_settings`.
 
 NOT everything at once.
 
@@ -957,6 +962,8 @@ Optimize:
 
 # 7.4 Testing
 
+Follow `docs/Testing/Testing.md` for full strategy, folder structure, and examples.
+
 Test critical flows (Requirements §12, Use Cases §17):
 
 - auth (login, logout, roles — UC-001–003)
@@ -1219,6 +1226,8 @@ Your project idea is already strong enough to become an exceptional TFM if execu
 | Design system RUX-010–011 | `docs/Design/` | Covered |
 | Docker RDO-001–002 | Phase 0, 7.5 | Covered |
 | Thesis RAC-001–010 | Phase 8 | Covered |
+| Testing RTS-001–030 | Phase 7.4 | `docs/Testing/Testing.md` |
+| Database RDB-001–020 | Phase 1 | `docs/Database/Database.md` |
 
 ---
 

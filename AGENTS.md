@@ -65,18 +65,21 @@ Read the skill file in the **Skill file** column before working in that domain.
 |---|---|
 | FastAPI, REST API, JWT, bcrypt | `skills/backend/SKILL.md` |
 | PostgreSQL, SQLAlchemy, Alembic | `skills/database/SKILL.md` |
+| Database schema & persistence | `docs/Database/Database.md` |
 | React, TypeScript, pages, components | `skills/frontend/SKILL.md` |
 | Tailwind, layout, visual design | `skills/ui-ux/SKILL.md` + `docs/Design/` |
 | Design system, mockups, UI tokens | `docs/Design/design-system.light.md` |
 | SHAP, explainability, XAI | `skills/shap/SKILL.md` |
 | ML training, inference, preprocessing | `skills/ml/SKILL.md` |
 | pytest, vitest, playwright | `skills/testing/SKILL.md` |
+| Testing strategy & test plan | `docs/Testing/Testing.md` |
 | Clinical terminology, scope, tone | `skills/clinical-domain/SKILL.md` |
 | Thesis, diagrams, technical docs | `skills/documentation/SKILL.md` |
 | Product requirements | `docs/Requirements/Requirements.md` |
 | Use cases & user flows | `docs/Use Cases/Use Cases.md` |
 | Product vision & scope | `docs/MedScope AI General Description.md` |
 | Development phases & roadmap | `docs/Execution Plan/ExecutionPlan.md` |
+| Task progress & backlog | `docs/Task Tracker/TaskTracker.md` |
 
 ---
 
@@ -111,6 +114,9 @@ The AI agent must treat it as mandatory context — not optional reference.
 | Implementation order & phases | `docs/Execution Plan/ExecutionPlan.md` |
 | UI design, tokens, screen mockups | `docs/Design/README.md` |
 | Design scope & screen inventory | `docs/Design/project-brief.md` |
+| Writing or running tests | `docs/Testing/Testing.md` |
+| Database schema, migrations, ER | `docs/Database/Database.md` |
+| Tracking implementation progress | `docs/Task Tracker/TaskTracker.md` |
 
 ## Document index
 
@@ -125,6 +131,9 @@ The AI agent must treat it as mandatory context — not optional reference.
 | `docs/Design/design-system.light.md` | Default UI tokens, components, colors (MVP) |
 | `docs/Design/design-system.dark.md` | Dark theme tokens (optional, post-MVP) |
 | `docs/Design/screens/` | Screen mockups and HTML references |
+| `docs/Testing/Testing.md` | Testing stack, structure, RTS/UC traceability, E2E flows |
+| `docs/Database/Database.md` | PostgreSQL schema, MVP tables, migrations, persistence flows |
+| `docs/Task Tracker/TaskTracker.md` | Master backlog with checkboxes, US/UC/RF traceability |
 
 ## Rules
 
@@ -401,16 +410,20 @@ Target KPIs: accuracy > 75%, recall prioritized.
 
 # Testing Rules
 
+Full strategy: `docs/Testing/Testing.md`.
+
 Testing stack:
-- pytest
-- pytest-cov
-- vitest
-- playwright
+- pytest + pytest-cov + httpx (`backend/tests/`)
+- vitest + React Testing Library (`frontend/`)
+- playwright (`tests/e2e/`)
+- pytest (`ml/tests/`)
 
 Prioritize:
-- integration tests,
-- API tests,
-- E2E flows.
+- integration tests (API + DB + ML),
+- MVP E2E flow (login → prediction → SHAP → simulation → history → analytics),
+- backend coverage 60–75%.
+
+Target requirements: RTS-001, RTS-002, RTS-010, RTS-020.
 
 ---
 

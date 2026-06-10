@@ -19,6 +19,9 @@ Always align new docs with:
 - `docs/Use Cases/Use Cases.md` — use case catalog and flows
 - `docs/Execution Plan/ExecutionPlan.md` — phased roadmap and deliverables
 - `docs/Design/` — design system, project brief, and screen mockups for thesis screenshots
+- `docs/Testing/Testing.md` — testing strategy for thesis quality section
+- `docs/Database/Database.md` — ER diagram and persistence for thesis architecture
+- `docs/Task Tracker/TaskTracker.md` — progress tracking for thesis status chapter
 
 Do not contradict `docs/` on product scope. Extend `docs/` only when the user requests it.
 

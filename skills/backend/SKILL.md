@@ -16,6 +16,7 @@ Stack: FastAPI, SQLAlchemy, PostgreSQL, JWT, bcrypt, Alembic.
 ## Project documentation
 
 Consult before implementing:
+- `docs/Database/Database.md` — schema, persistence flows, repositories
 - `docs/Requirements/Requirements.md` — §5 (functional), §9 (backend), §6.4 (security)
 - `docs/Use Cases/Use Cases.md` — UC-001–003, UC-080–083, UC-090–091
 

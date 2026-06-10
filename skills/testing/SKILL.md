@@ -9,33 +9,36 @@ description: >-
 
 ## Purpose
 
-This skill governs testing across `backend/`, `frontend/`, and `ml/`.
+This skill governs testing across `backend/`, `frontend/`, `ml/`, and `tests/e2e/`.
 
 ## Project documentation
 
 Consult before implementing:
-- `docs/Requirements/Requirements.md` — §12 (testing), §17 (MVP)
-- `docs/Use Cases/Use Cases.md` — all UC flows for critical paths
+- `docs/Testing/Testing.md` — **primary** testing strategy, structure, examples
+- `docs/Requirements/Requirements.md` — §12 (RTS-*)
+- `docs/Use Cases/Use Cases.md` — UC flows for critical paths
+- `docs/Execution Plan/ExecutionPlan.md` — Phase 7.4
 
 ---
 
 # Stack
 
-| Layer | Tools |
-|---|---|
-| Backend | pytest, pytest-cov, httpx |
-| Frontend | vitest, react-testing-library |
-| E2E | playwright |
+| Layer | Tools | Location |
+|---|---|---|
+| Backend | pytest, pytest-cov, httpx | `backend/tests/` |
+| ML | pytest | `ml/tests/` |
+| Frontend | vitest, @testing-library/react | `frontend/src/**/*.test.tsx` |
+| E2E | playwright | `tests/e2e/` |
 
 ---
 
 # Priorities
 
-1. API endpoint tests (RTS-001)
-2. Input validation tests (RTS-002)
-3. Integration tests (full prediction pipeline)
-4. E2E critical user flows
-5. ML metric validation (RTS-010)
+1. API endpoint tests (RTS-001) — `/auth/login`, `/predict`, `/simulate`, `/history`, `/analytics`
+2. Input validation (RTS-002, UC-090)
+3. Integration tests (API + DB + ML)
+4. E2E MVP flow (UC-001 through UC-060)
+5. ML metrics + SHAP (RTS-010)
 6. Basic frontend navigation (RTS-020)
 
 Lower priority: pixel-perfect UI tests.
@@ -44,19 +47,21 @@ Lower priority: pixel-perfect UI tests.
 
 # Critical flows (must test)
 
-- login / logout (UC-001–002)
-- role authorization (UC-003)
-- prediction end-to-end (UC-020–023)
-- SHAP in response (UC-030)
-- simulation and comparison (UC-040–043)
+- login / logout / roles (UC-001–003)
+- prediction + SHAP in response (UC-020–030)
+- simulation comparison (UC-040–044)
 - history search and detail (UC-050–052)
 - analytics endpoint (UC-060)
 - invalid input handling (UC-090)
+
+E2E flow: `login → dashboard → prediction → SHAP → simulation → history → analytics`
 
 ---
 
 # Coverage
 
-Target: **60–75%** backend coverage.
+Target: **60–75%** backend coverage (`pytest --cov=backend`).
 
-Use pragmatic testing — focus on reliability of MVP flows, not exhaustive mocks.
+Use SQLite in-memory for fast unit tests; optional Docker PostgreSQL for integration.
+
+Pragmatic testing — focus on MVP reliability, not exhaustive mocks.

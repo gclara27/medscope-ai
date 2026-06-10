@@ -1,63 +1,59 @@
 # MedScope AI — Design Documentation
 
-Visual design source of truth for the frontend. Read this folder before implementing UI.
+Visual source of truth for frontend implementation.
 
-## Priority
+## Start here
+
+1. `project-brief.md` — scope, screens, audience
+2. `design-system.light.md` — **default** tokens and components (MVP)
+3. `screens/README.md` — mockup catalog per page
+4. `design-system.dark.md` — optional dark theme (post-MVP)
+
+## Theme priority
 
 | Theme | File | Status |
 |---|---|---|
-| **Light (default)** | `design-system.light.md` | **MVP** — aligns with Requirements RUX-010 (blanco, gris, azul médico) |
-| Dark (optional) | `design-system.dark.md` | Post-MVP — Requirements §18 |
+| Light | `design-system.light.md` | **MVP** (RUX-010) |
+| Dark | `design-system.dark.md` | Optional (§18) |
 
-When implementing UI, use **light theme tokens** unless the user explicitly requests dark mode.
+## Folder structure
 
-## Document index
+```
+docs/Design/
+├── README.md
+├── project-brief.md
+├── design-system.light.md
+├── design-system.dark.md
+└── screens/
+    ├── splash/          # light + dark variants
+    ├── login/
+    ├── dashboard/
+    ├── prediction-form/
+    ├── prediction-result/
+    ├── simulation/
+    ├── history/
+    ├── analytics/
+    ├── settings/        # optional
+    ├── support/         # optional
+    └── system-status/   # optional
+```
 
-| File / folder | Purpose |
-|---|---|
-| `design-system.light.md` | Colors, typography, spacing, components (default) |
-| `design-system.dark.md` | Dark variant tokens and rules (optional) |
-| `screens/splash/` | Splash screen mockups and HTML reference |
-| `screens/README.md` | Screen mockup catalog and mapping to RFW-* |
+Each screen folder (except splash) contains:
+- `mockup.png` — visual reference
+- `reference.html` — Tailwind/HTML implementation reference
 
-## Screen mockups
-
-| Screen | Requirement | Assets |
-|---|---|---|
-| Splash | RFW-010 | `screens/splash/light.png`, `screens/splash/dark.png` |
-| Splash (reference HTML) | RFW-010 | `screens/splash/dark-reference.html` |
-| Splash background | RFW-010 | `screens/splash/background-corridor.png` |
-
-Other screens (login, dashboard, prediction, etc.) will be added under `screens/` as they are designed.
-
-## Risk indicator colors (all themes)
-
-Per Requirements RUX-011 — use only for clinical risk, never decoratively:
-
-| Level | Color |
-|---|---|
-| Low | Green |
-| Medium | Amber |
-| High | Red |
-
-## Implementation mapping
-
-| Design | Code location |
-|---|---|
-| Color/spacing tokens | `frontend/` Tailwind config |
-| Components | `frontend/src/components/` (shadcn/ui + custom) |
-| Pages | `frontend/src/pages/` |
-
-## Related documentation
-
-- `docs/Requirements/Requirements.md` — §8.3, §13 (RFW-*, RUX-*)
-- `docs/Use Cases/Use Cases.md` — UC-100–103 (UX states)
-- `skills/ui-ux/SKILL.md` — UX rules for AI agent
-- `skills/frontend/SKILL.md` — React implementation rules
+Splash folder uses: `light.mockup.png`, `dark.mockup.png`, `*.reference.html`, `background-corridor.png`.
 
 ## Rules for AI agents
 
 1. Read `design-system.light.md` before any UI work.
-2. Map YAML tokens in the design file frontmatter to Tailwind — do not invent new colors.
-3. Consult `screens/` mockups when building a screen that has a reference asset.
-4. Dark theme is out of MVP scope unless explicitly requested.
+2. Open the matching `screens/<name>/` mockup before building a page.
+3. Use YAML tokens — do not invent colors.
+4. Dark mode is out of MVP unless explicitly requested.
+
+## Related documentation
+
+- `docs/Requirements/Requirements.md` — RFW-*, RUX-*
+- `docs/Use Cases/Use Cases.md` — UC-100–103
+- `skills/ui-ux/SKILL.md` — UX rules
+- `skills/frontend/SKILL.md` — React implementation

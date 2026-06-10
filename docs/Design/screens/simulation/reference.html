@@ -1,0 +1,458 @@
+<!DOCTYPE html><html class="h-full" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>MedScope AI - Clinical Simulation</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;family=JetBrains+Mono:wght@400&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-container": "#2976c7",
+                        "on-tertiary-fixed": "#001c39",
+                        "secondary": "#4f6073",
+                        "on-secondary-fixed-variant": "#38485a",
+                        "error-container": "#ffdad6",
+                        "tertiary": "#005da7",
+                        "surface": "#f8f9fa",
+                        "on-secondary-container": "#556679",
+                        "on-primary-fixed": "#001a41",
+                        "on-surface": "#191c1d",
+                        "secondary-fixed-dim": "#b7c8de",
+                        "outline-variant": "#c1c6d7",
+                        "background": "#f8f9fa",
+                        "inverse-surface": "#2e3132",
+                        "primary-fixed": "#d8e2ff",
+                        "surface-bright": "#f8f9fa",
+                        "on-background": "#191c1d",
+                        "secondary-container": "#d2e4fb",
+                        "on-tertiary-container": "#fdfcff",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed-dim": "#a4c9ff",
+                        "on-error-container": "#93000a",
+                        "on-surface-variant": "#414755",
+                        "tertiary-fixed": "#d4e3ff",
+                        "primary-fixed-dim": "#adc6ff",
+                        "error": "#ba1a1a",
+                        "surface-container": "#edeeef",
+                        "on-primary-container": "#fefcff",
+                        "on-tertiary-fixed-variant": "#004883",
+                        "on-primary-fixed-variant": "#004493",
+                        "secondary-fixed": "#d2e4fb",
+                        "surface-container-low": "#f3f4f5",
+                        "outline": "#717786",
+                        "on-error": "#ffffff",
+                        "inverse-on-surface": "#f0f1f2",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-primary": "#ffffff",
+                        "surface-variant": "#e1e3e4",
+                        "inverse-primary": "#adc6ff",
+                        "primary": "#0058bc",
+                        "primary-container": "#0070eb",
+                        "surface-tint": "#005bc1",
+                        "surface-dim": "#d9dadb",
+                        "surface-container-high": "#e7e8e9",
+                        "on-secondary-fixed": "#0b1d2d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xxl": "48px",
+                        "margin-mobile": "16px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "gutter": "24px",
+                        "unit": "4px",
+                        "sm": "8px",
+                        "margin-desktop": "40px",
+                        "xl": "32px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["Inter"],
+                        "headline-xl-mobile": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "mono-data": ["JetBrains Mono"],
+                        "label-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "headline-xl": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-xl-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "mono-data": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "headline-xl": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background h-full font-body-md text-body-md antialiased overflow-hidden flex flex-col">
+<!-- TopNavBar (Web) -->
+<header class="hidden md:flex bg-surface dark:bg-surface-container-lowest docked full-width top-0 shadow-sm border-b border-outline-variant dark:border-outline flex justify-between items-center px-margin-desktop w-full h-16 z-50">
+<div class="flex items-center gap-lg">
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed">MedScope AI</span>
+<div class="h-6 w-px bg-outline-variant"></div>
+<div class="flex items-center gap-sm bg-surface-container-low rounded-full px-4 py-2 border border-outline-variant">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">search</span>
+<input class="bg-transparent border-none focus:ring-0 p-0 font-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant w-64" placeholder="Search Patients or MRN..." type="text">
+</div>
+</div>
+<div class="flex items-center gap-md">
+<div class="flex items-center gap-sm text-on-surface-variant">
+<button class="p-2 hover:bg-surface-container-high rounded-full transition-colors duration-200 cursor-pointer active:opacity-80 group">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors duration-200">notifications</span>
+</button>
+<button class="p-2 hover:bg-surface-container-high rounded-full transition-colors duration-200 cursor-pointer active:opacity-80 group">
+<span class="material-symbols-outlined text-error group-hover:text-error transition-colors duration-200 filled">emergency</span>
+</button>
+<button class="p-2 hover:bg-surface-container-high rounded-full transition-colors duration-200 cursor-pointer active:opacity-80 group">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors duration-200">help</span>
+</button>
+</div>
+<div class="h-6 w-px bg-outline-variant mx-sm"></div>
+<div class="flex items-center gap-sm cursor-pointer active:opacity-80">
+<div class="flex flex-col items-end">
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">Chief Medical Officer</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant text-[10px]">Clinical Staff</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold">
+                    CM
+                </div>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar -->
+<nav class="hidden md:flex flex-col bg-surface-container-low dark:bg-surface-container-lowest docked left-0 h-full w-64 p-md border-r border-outline-variant flex-shrink-0 z-40">
+<div class="mb-lg px-md hidden">
+<div class="flex items-center gap-sm mb-xs">
+<div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary text-[20px] filled">medical_services</span>
+</div>
+<span class="font-headline-sm text-headline-sm font-black text-primary">MedScope AI</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant block">Clinical Decision Support</span>
+</div>
+<button class="w-full bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md py-sm rounded-lg mb-lg transition-colors flex justify-center items-center gap-sm shadow-sm">
+<span class="material-symbols-outlined text-[20px]">add</span>
+                New Simulation
+            </button>
+<div class="flex-1 flex flex-col gap-xs overflow-y-auto">
+<a class="flex items-center gap-md text-secondary px-md py-sm hover:bg-surface-container-high rounded-lg scale-95 active:scale-90 transition-transform font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+                    Dashboard
+                </a>
+<a class="flex items-center gap-md text-secondary px-md py-sm hover:bg-surface-container-high rounded-lg scale-95 active:scale-90 transition-transform font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined text-[20px]">clinical_notes</span>
+                    Risk Prediction
+                </a>
+<a class="flex items-center gap-md text-secondary px-md py-sm hover:bg-surface-container-high rounded-lg scale-95 active:scale-90 transition-transform font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined text-[20px]">psychology</span>
+                    AI Analysis
+                </a>
+<a class="flex items-center gap-md bg-secondary-container text-on-secondary-container rounded-lg px-md py-sm font-bold scale-95 active:scale-90 transition-transform font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined text-[20px] filled">biotech</span>
+                    Simulation
+                </a>
+<a class="flex items-center gap-md text-secondary px-md py-sm hover:bg-surface-container-high rounded-lg scale-95 active:scale-90 transition-transform font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined text-[20px]">history</span>
+                    History
+                </a>
+<a class="flex items-center gap-md text-secondary px-md py-sm hover:bg-surface-container-high rounded-lg scale-95 active:scale-90 transition-transform font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined text-[20px]">query_stats</span>
+                    Analytics
+                </a>
+</div>
+<div class="mt-auto flex flex-col gap-xs pt-md border-t border-outline-variant">
+<a class="flex items-center gap-md text-secondary px-md py-sm hover:bg-surface-container-high rounded-lg scale-95 active:scale-90 transition-transform font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+                    Settings
+                </a>
+<a class="flex items-center gap-md text-secondary px-md py-sm hover:bg-surface-container-high rounded-lg scale-95 active:scale-90 transition-transform font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined text-[20px]">support_agent</span>
+                    Support
+                </a>
+<a class="flex items-center gap-md text-secondary px-md py-sm hover:bg-surface-container-high rounded-lg scale-95 active:scale-90 transition-transform font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined text-[20px] text-green-600">check_circle</span>
+                    Status
+                </a>
+<a class="flex items-center gap-md text-secondary px-md py-sm hover:bg-surface-container-high rounded-lg scale-95 active:scale-90 transition-transform font-label-md text-label-md mt-sm" href="#">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+                    Log Out
+                </a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto bg-background p-md md:p-gutter flex flex-col gap-gutter">
+<!-- Patient Header -->
+<div class="bg-surface rounded-lg border border-outline-variant p-md shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-md">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center border border-outline-variant">
+<span class="material-symbols-outlined text-secondary text-[28px]">person</span>
+</div>
+<div>
+<h1 class="font-headline-sm text-headline-sm text-on-surface m-0">Arthur Chen</h1>
+<div class="flex items-center gap-sm mt-xs">
+<span class="font-mono-data text-mono-data text-on-surface-variant bg-surface-container px-2 py-0.5 rounded text-xs border border-outline-variant">MRN: 882-19-4A</span>
+<span class="w-1 h-1 rounded-full bg-outline"></span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">68 y/o Male</span>
+<span class="w-1 h-1 rounded-full bg-outline"></span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Admitted: 2 days ago</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-sm w-full md:w-auto">
+<button class="flex-1 md:flex-none flex items-center justify-center gap-xs px-4 py-2 border border-outline-variant rounded bg-surface hover:bg-surface-container text-secondary font-label-md text-label-md transition-colors">
+<span class="material-symbols-outlined text-[18px]">restart_alt</span>
+                        Reset Baseline
+                    </button>
+<button class="flex-1 md:flex-none flex items-center justify-center gap-xs px-4 py-2 border border-primary text-primary rounded bg-surface hover:bg-primary-fixed text-primary font-label-md text-label-md transition-colors">
+<span class="material-symbols-outlined text-[18px]">save</span>
+                        Save Sim
+                    </button>
+<button class="flex-1 md:flex-none flex items-center justify-center gap-xs px-4 py-2 bg-primary hover:bg-primary-container text-on-primary rounded font-label-md text-label-md shadow-sm transition-colors">
+<span class="material-symbols-outlined text-[18px]">ios_share</span>
+                        Export
+                    </button>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Left Column: Controls -->
+<div class="lg:col-span-4 flex flex-col gap-gutter">
+<!-- Control Panel Card -->
+<div class="bg-surface rounded-lg border border-outline-variant shadow-sm flex flex-col h-full">
+<div class="p-md border-b border-outline-variant flex items-center justify-between bg-surface-container-lowest rounded-t-lg">
+<h2 class="font-label-md text-label-md text-on-surface flex items-center gap-sm uppercase tracking-wider">
+<span class="material-symbols-outlined text-[18px] text-primary">tune</span>
+                                Clinical Variables
+                            </h2>
+</div>
+<div class="p-md flex-1 overflow-y-auto flex flex-col gap-md">
+<!-- Variable Group: Vitals -->
+<div class="space-y-4">
+<h3 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-sm border-b border-outline-variant pb-1">Vitals</h3>
+<!-- BP Control -->
+<div>
+<div class="flex justify-between items-center mb-1">
+<label class="font-body-sm text-body-sm text-on-surface font-medium">Systolic BP</label>
+<div class="flex items-center gap-1">
+<input class="w-16 h-7 px-1 text-right border border-outline-variant rounded bg-surface-container-lowest font-mono-data text-mono-data text-sm focus:border-primary focus:ring-1 focus:ring-primary" type="number" value="142">
+<span class="font-label-sm text-label-sm text-on-surface-variant">mmHg</span>
+</div>
+</div>
+<input class="w-full h-1 bg-surface-variant rounded-lg appearance-none cursor-pointer accent-primary" max="200" min="80" type="range" value="142">
+<div class="flex justify-between text-[10px] text-on-surface-variant mt-1 font-mono-data">
+<span>80</span>
+<span>Base: 155</span>
+<span>200</span>
+</div>
+</div>
+<!-- HR Control -->
+<div>
+<div class="flex justify-between items-center mb-1">
+<label class="font-body-sm text-body-sm text-on-surface font-medium">Heart Rate</label>
+<div class="flex items-center gap-1">
+<input class="w-16 h-7 px-1 text-right border border-outline-variant rounded bg-surface-container-lowest font-mono-data text-mono-data text-sm focus:border-primary focus:ring-1 focus:ring-primary" type="number" value="95">
+<span class="font-label-sm text-label-sm text-on-surface-variant">bpm</span>
+</div>
+</div>
+<input class="w-full h-1 bg-surface-variant rounded-lg appearance-none cursor-pointer accent-primary" max="160" min="40" type="range" value="95">
+</div>
+<!-- SpO2 Control -->
+<div>
+<div class="flex justify-between items-center mb-1">
+<label class="font-body-sm text-body-sm text-on-surface font-medium">SpO2</label>
+<div class="flex items-center gap-1">
+<input class="w-16 h-7 px-1 text-right border border-outline-variant rounded bg-surface-container-lowest font-mono-data text-mono-data text-sm focus:border-primary focus:ring-1 focus:ring-primary" type="number" value="96">
+<span class="font-label-sm text-label-sm text-on-surface-variant">%</span>
+</div>
+</div>
+<input class="w-full h-1 bg-surface-variant rounded-lg appearance-none cursor-pointer accent-primary" max="100" min="80" type="range" value="96">
+</div>
+</div>
+<!-- Variable Group: Labs -->
+<div class="space-y-4 pt-md">
+<h3 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-sm border-b border-outline-variant pb-1">Labs</h3>
+<!-- Glucose -->
+<div>
+<div class="flex justify-between items-center mb-1">
+<label class="font-body-sm text-body-sm text-on-surface font-medium">Blood Glucose</label>
+<div class="flex items-center gap-1">
+<input class="w-16 h-7 px-1 text-right border border-outline-variant rounded bg-surface-container-lowest font-mono-data text-mono-data text-sm focus:border-primary focus:ring-1 focus:ring-primary" type="number" value="180">
+<span class="font-label-sm text-label-sm text-on-surface-variant">mg/dL</span>
+</div>
+</div>
+<input class="w-full h-1 bg-surface-variant rounded-lg appearance-none cursor-pointer accent-primary" max="350" min="50" type="range" value="180">
+</div>
+</div>
+<!-- Variable Group: Medications -->
+<div class="space-y-4 pt-md">
+<h3 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-sm border-b border-outline-variant pb-1">Interventions</h3>
+<div class="flex items-center justify-between p-sm bg-surface-container-lowest border border-outline-variant rounded">
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm font-medium text-on-surface">Vasopressors</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Norepinephrine</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value="">
+<div class="w-9 h-5 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-outline-variant after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="flex items-center justify-between p-sm bg-surface-container-lowest border border-outline-variant rounded">
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm font-medium text-on-surface">Diuretics</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Furosemide 40mg IV</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox" value="">
+<div class="w-9 h-5 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-outline-variant after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Visualizations -->
+<div class="lg:col-span-8 flex flex-col gap-gutter">
+<!-- Risk Comparison Panels -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Baseline Risk -->
+<div class="bg-surface rounded-lg border border-outline-variant shadow-sm p-md relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-outline-variant"></div>
+<h2 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-md text-center">Baseline Risk Score</h2>
+<div class="flex flex-col items-center justify-center py-sm">
+<!-- Donut Chart Placeholder (CSS driven) -->
+<div class="relative w-32 h-32 rounded-full flex items-center justify-center mb-sm" style="background: conic-gradient(#ba1a1a 0% 78%, #f0f1f2 78% 100%);">
+<div class="absolute w-28 h-28 bg-surface rounded-full flex flex-col items-center justify-center shadow-inner">
+<span class="font-headline-xl text-headline-xl font-bold text-on-surface leading-none text-error">78</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">/100</span>
+</div>
+</div>
+<div class="inline-flex items-center gap-xs px-2 py-1 rounded bg-[#ffdad6] text-[#93000a] font-label-sm text-label-sm border border-[#ffdad6]">
+<span class="material-symbols-outlined text-[14px] filled">warning</span>
+                                    High Risk (Readmission)
+                                </div>
+</div>
+</div>
+<!-- Simulated Risk -->
+<div class="bg-surface rounded-lg border border-primary shadow-sm p-md relative overflow-hidden ring-1 ring-primary-fixed">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary"></div>
+<h2 class="font-label-md text-label-md text-primary uppercase tracking-wider mb-md text-center flex justify-center items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">biotech</span>
+                                Simulated Risk
+                            </h2>
+<div class="flex flex-col items-center justify-center py-sm">
+<!-- Donut Chart Placeholder (CSS driven) -->
+<div class="relative w-32 h-32 rounded-full flex items-center justify-center mb-sm transition-all duration-500 ease-in-out" style="background: conic-gradient(#d97706 0% 52%, #f0f1f2 52% 100%);">
+<div class="absolute w-28 h-28 bg-surface rounded-full flex flex-col items-center justify-center shadow-inner">
+<span class="font-headline-xl text-headline-xl font-bold text-on-surface leading-none text-amber-600">52</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">/100</span>
+</div>
+</div>
+<div class="inline-flex items-center gap-xs px-2 py-1 rounded bg-amber-50 text-amber-800 font-label-sm text-label-sm border border-amber-200">
+<span class="material-symbols-outlined text-[14px]">trending_down</span>
+                                    -26 Pts (Moderate Risk)
+                                </div>
+</div>
+</div>
+</div>
+<!-- Impact Visualization -->
+<div class="bg-surface rounded-lg border border-outline-variant shadow-sm flex-1 flex flex-col min-h-[300px]">
+<div class="p-md border-b border-outline-variant flex items-center justify-between bg-surface-container-lowest rounded-t-lg">
+<h2 class="font-label-md text-label-md text-on-surface flex items-center gap-sm uppercase tracking-wider">
+<span class="material-symbols-outlined text-[18px] text-tertiary">waterfall_chart</span>
+                                Driver Impact Analysis
+                            </h2>
+</div>
+<div class="p-md flex-1 flex flex-col justify-center relative">
+<!-- Abstract bar chart representing impact -->
+<div class="w-full h-full flex items-end justify-between px-lg gap-sm max-w-2xl mx-auto py-md">
+<!-- Bar 1 -->
+<div class="flex flex-col items-center gap-2 group w-full">
+<span class="font-mono-data text-mono-data text-xs text-green-600">-12</span>
+<div class="w-full bg-green-100 rounded-t border-t border-l border-r border-green-300 relative overflow-hidden" style="height: 120px;">
+<div class="absolute bottom-0 w-full bg-green-500/20 h-full"></div>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant text-center leading-tight">Systolic BP<br>Drop</span>
+</div>
+<!-- Bar 2 -->
+<div class="flex flex-col items-center gap-2 group w-full">
+<span class="font-mono-data text-mono-data text-xs text-green-600">-8</span>
+<div class="w-full bg-green-100 rounded-t border-t border-l border-r border-green-300 relative overflow-hidden" style="height: 80px;">
+<div class="absolute bottom-0 w-full bg-green-500/20 h-full"></div>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant text-center leading-tight">Vasopressor<br>Init</span>
+</div>
+<!-- Bar 3 -->
+<div class="flex flex-col items-center gap-2 group w-full">
+<span class="font-mono-data text-mono-data text-xs text-green-600">-6</span>
+<div class="w-full bg-green-100 rounded-t border-t border-l border-r border-green-300 relative overflow-hidden" style="height: 60px;">
+<div class="absolute bottom-0 w-full bg-green-500/20 h-full"></div>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant text-center leading-tight">HR<br>Stabilization</span>
+</div>
+<!-- Spacer / zero line -->
+<div class="h-full border-l border-dashed border-outline-variant mx-2 relative">
+<span class="absolute -bottom-6 -left-3 font-mono-data text-[10px] text-outline">0</span>
+</div>
+<!-- Bar 4 (Negative impact) -->
+<div class="flex flex-col items-center gap-2 group w-full justify-end" style="height: calc(100% + 40px); margin-top: -40px;">
+<span class="font-label-sm text-label-sm text-on-surface-variant text-center leading-tight order-last">Glucose<br>Elev</span>
+<div class="w-full bg-red-50 rounded-b border-b border-l border-r border-red-200 relative overflow-hidden order-2" style="height: 40px;">
+<div class="absolute top-0 w-full bg-red-500/10 h-full"></div>
+</div>
+<span class="font-mono-data text-mono-data text-xs text-error order-1">+4</span>
+</div>
+</div>
+<!-- Zero Line Base -->
+<div class="absolute bottom-[4.5rem] left-md right-md border-b border-outline z-0"></div>
+</div>
+</div>
+<!-- AI Clinical Insight -->
+<div class="bg-primary-fixed-dim/20 rounded-lg border border-primary-fixed p-md shadow-sm flex gap-md items-start">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center flex-shrink-0 mt-1 shadow-sm">
+<span class="material-symbols-outlined text-on-primary text-[20px]">auto_awesome</span>
+</div>
+<div>
+<h3 class="font-label-md text-label-md text-primary-fixed-variant mb-xs">AI Simulation Rationale</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+                                The simulated reduction in <strong class="text-on-surface">Systolic BP (155 → 142 mmHg)</strong> combined with the initiation of <strong class="text-on-surface">Vasopressors</strong> accounts for a 20-point drop in 30-day readmission risk. However, the slightly elevated <strong class="text-on-surface">Blood Glucose (180 mg/dL)</strong> introduces a minor countervailing risk factor (+4 pts) for infection.
+                            </p>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

@@ -1,0 +1,428 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>MedScope AI - Risk Prediction</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-container": "#0070eb",
+                      "on-secondary-fixed": "#0b1d2d",
+                      "inverse-primary": "#adc6ff",
+                      "surface": "#f8f9fa",
+                      "surface-container-highest": "#e1e3e4",
+                      "on-secondary-container": "#556679",
+                      "surface-variant": "#e1e3e4",
+                      "tertiary-container": "#2976c7",
+                      "surface-bright": "#f8f9fa",
+                      "surface-dim": "#d9dadb",
+                      "on-tertiary-fixed": "#001c39",
+                      "on-error": "#ffffff",
+                      "surface-container-lowest": "#ffffff",
+                      "inverse-on-surface": "#f0f1f2",
+                      "inverse-surface": "#2e3132",
+                      "background": "#f8f9fa",
+                      "secondary": "#4f6073",
+                      "on-primary-fixed": "#001a41",
+                      "primary": "#0058bc",
+                      "outline": "#717786",
+                      "on-primary": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "on-tertiary-fixed-variant": "#004883",
+                      "on-surface-variant": "#414755",
+                      "on-primary-fixed-variant": "#004493",
+                      "on-surface": "#191c1d",
+                      "surface-container-high": "#e7e8e9",
+                      "tertiary-fixed": "#d4e3ff",
+                      "surface-container": "#edeeef",
+                      "on-error-container": "#93000a",
+                      "on-background": "#191c1d",
+                      "tertiary": "#005da7",
+                      "surface-container-low": "#f3f4f5",
+                      "on-secondary": "#ffffff",
+                      "error": "#ba1a1a",
+                      "tertiary-fixed-dim": "#a4c9ff",
+                      "primary-fixed-dim": "#adc6ff",
+                      "secondary-fixed": "#d2e4fb",
+                      "surface-tint": "#005bc1",
+                      "on-tertiary": "#ffffff",
+                      "on-secondary-fixed-variant": "#38485a",
+                      "secondary-fixed-dim": "#b7c8de",
+                      "outline-variant": "#c1c6d7",
+                      "primary-fixed": "#d8e2ff",
+                      "on-primary-container": "#fefcff",
+                      "on-tertiary-container": "#fdfcff",
+                      "secondary-container": "#d2e4fb"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "24px",
+                      "xs": "4px",
+                      "margin-desktop": "40px",
+                      "md": "16px",
+                      "lg": "24px",
+                      "xxl": "48px",
+                      "unit": "4px",
+                      "xl": "32px",
+                      "sm": "8px",
+                      "margin-mobile": "16px"
+              },
+              "fontFamily": {
+                      "headline-xl": ["Inter"],
+                      "body-sm": ["Inter"],
+                      "label-sm": ["Inter"],
+                      "body-md": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "mono-data": ["JetBrains Mono"],
+                      "headline-sm": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "label-md": ["Inter"],
+                      "headline-xl-mobile": ["Inter"]
+              },
+              "fontSize": {
+                      "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "mono-data": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "label-md": ["14px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "headline-xl-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        /* Base card styles */
+        .clinical-card {
+            background-color: theme('colors.surface-container-lowest');
+            border: 1px solid theme('colors.outline-variant');
+            border-radius: theme('borderRadius.lg');
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.02);
+        }
+        /* Hide scrollbar for clean UI */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: theme('colors.surface-variant'); border-radius: 3px; }
+    </style>
+</head>
+<body class="bg-background text-on-surface h-screen flex overflow-hidden antialiased">
+<!-- SideNavBar (Shared Component) -->
+<nav class="hidden md:flex flex-col fixed left-0 top-0 h-full w-64 bg-surface-container-low border-r border-outline-variant p-md z-40">
+<!-- Header -->
+<div class="flex items-center gap-sm mb-xl px-sm pt-sm">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined" style="font-size: 18px;">analytics</span>
+</div>
+<div>
+<h1 class="font-headline-sm text-headline-sm font-black text-primary">MedScope AI</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Clinical Decision Support</p>
+</div>
+</div>
+<!-- Main Nav -->
+<div class="flex-1 space-y-sm">
+<a class="flex items-center gap-md text-secondary px-md py-sm hover:bg-surface-container-high rounded-lg transition-all scale-95 active:scale-90 font-label-md text-label-md" href="#">
+<span data-icon="dashboard"></span> Dashboard
+            </a>
+<!-- ACTIVE TAB -->
+<a class="flex items-center gap-md bg-secondary-container text-on-secondary-container rounded-lg px-md py-sm font-bold transition-all scale-95 active:scale-90 font-label-md text-label-md" href="#">
+<span data-icon="clinical_notes"></span> Risk Prediction
+            </a>
+<a class="flex items-center gap-md text-secondary px-md py-sm hover:bg-surface-container-high rounded-lg transition-all scale-95 active:scale-90 font-label-md text-label-md" href="#">
+<span data-icon="psychology"></span> AI Analysis
+            </a>
+<a class="flex items-center gap-md text-secondary px-md py-sm hover:bg-surface-container-high rounded-lg transition-all scale-95 active:scale-90 font-label-md text-label-md" href="#">
+<span data-icon="biotech"></span> Simulation
+            </a>
+<a class="flex items-center gap-md text-secondary px-md py-sm hover:bg-surface-container-high rounded-lg transition-all scale-95 active:scale-90 font-label-md text-label-md" href="#">
+<span data-icon="history"></span> History
+            </a>
+<a class="flex items-center gap-md text-secondary px-md py-sm hover:bg-surface-container-high rounded-lg transition-all scale-95 active:scale-90 font-label-md text-label-md" href="#">
+<span data-icon="query_stats"></span> Analytics
+            </a>
+<a class="flex items-center gap-md text-secondary px-md py-sm hover:bg-surface-container-high rounded-lg transition-all scale-95 active:scale-90 font-label-md text-label-md" href="#">
+<span data-icon="settings"></span> Settings
+            </a>
+</div>
+<!-- Footer Nav & CTA -->
+<div class="mt-auto pt-lg border-t border-outline-variant space-y-sm">
+<button class="w-full bg-primary text-on-primary py-sm rounded-DEFAULT font-label-md text-label-md mb-md hover:bg-on-primary-fixed-variant transition-colors shadow-sm">
+                New Simulation
+            </button>
+<a class="flex items-center gap-md text-secondary px-md py-sm hover:bg-surface-container-high rounded-lg transition-all font-label-md text-label-md" href="#">
+<span data-icon="support_agent"></span> Support
+            </a>
+<a class="flex items-center gap-md text-secondary px-md py-sm hover:bg-surface-container-high rounded-lg transition-all font-label-md text-label-md" href="#">
+<span data-icon="check_circle"></span> Status
+            </a>
+<a class="flex items-center gap-md text-secondary px-md py-sm hover:bg-surface-container-high rounded-lg transition-all font-label-md text-label-md mt-sm text-error hover:bg-error-container hover:text-on-error-container" href="#">
+<span data-icon="logout"></span> Log Out
+            </a>
+</div>
+</nav>
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col md:ml-64 relative w-full h-full">
+<!-- TopNavBar (Shared Component) -->
+<header class="bg-surface border-b border-outline-variant shadow-sm flex justify-between items-center px-margin-desktop w-full h-16 z-30 sticky top-0">
+<div class="flex items-center gap-lg">
+<!-- Mobile Menu Trigger (hidden on desktop) -->
+<button class="md:hidden text-on-surface-variant hover:text-primary transition-colors duration-200">
+<span data-icon="menu"></span>
+</button>
+<div class="font-headline-md text-headline-md font-bold text-primary hidden md:block">MedScope AI</div>
+</div>
+<!-- Search (on_left logic relative to actions) -->
+<div class="flex-1 max-w-md mx-lg hidden md:block">
+<div class="relative group">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search"></span>
+<input class="w-full bg-surface-container-low border border-outline-variant rounded-full py-1.5 pl-10 pr-4 text-body-sm font-body-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" placeholder="Search patient ID or condition..." type="text">
+</div>
+</div>
+<div class="flex items-center gap-md">
+<!-- Trailing Icon Actions -->
+<button class="text-on-surface-variant hover:text-primary transition-colors duration-200 cursor-pointer active:opacity-80 p-sm rounded-full hover:bg-surface-container">
+<span data-icon="notifications"></span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors duration-200 cursor-pointer active:opacity-80 p-sm rounded-full hover:bg-surface-container text-error hover:text-error hover:bg-error-container">
+<span data-icon="emergency"></span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors duration-200 cursor-pointer active:opacity-80 p-sm rounded-full hover:bg-surface-container hidden sm:block">
+<span data-icon="help"></span>
+</button>
+<div class="w-px h-6 bg-outline-variant mx-xs hidden sm:block"></div>
+<!-- Trailing Secondary Action & Profile -->
+<div class="flex items-center gap-sm cursor-pointer hover:opacity-80 transition-opacity">
+<div class="hidden sm:flex flex-col items-end">
+<span class="font-label-sm text-label-sm font-bold text-on-surface">Dr. A. Chen</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant" style="font-size: 10px;">Clinical Staff</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-label-md">
+                        AC
+                    </div>
+</div>
+</div>
+</header>
+<!-- Scrollable Content Canvas -->
+<main class="flex-1 overflow-y-auto p-margin-mobile md:p-margin-desktop bg-background">
+<div class="max-w-6xl mx-auto space-y-lg">
+<!-- Page Header & Patient Context -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-md mb-lg">
+<div>
+<div class="flex items-center gap-sm mb-xs">
+<span class="px-2 py-0.5 rounded bg-surface-container-highest text-on-surface-variant font-mono-data text-[11px] font-medium tracking-wider">MRN: 882-19-4A</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-highest text-on-surface-variant font-mono-data text-[11px] font-medium tracking-wider">DOB: 11/04/1962</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Prediction Result</h2>
+</div>
+<!-- Action Buttons -->
+<div class="flex items-center gap-sm w-full md:w-auto">
+<button class="flex-1 md:flex-none flex items-center justify-center gap-xs px-md py-2 border border-outline-variant text-on-surface-variant font-label-md text-label-md rounded-DEFAULT hover:bg-surface-container hover:text-on-surface transition-colors">
+<span data-icon="picture_as_pdf" style="font-size: 18px;"></span> Export
+                        </button>
+<button class="flex-1 md:flex-none flex items-center justify-center gap-xs px-md py-2 border border-error text-error font-label-md text-label-md rounded-DEFAULT hover:bg-error-container transition-colors">
+<span data-icon="flag" style="font-size: 18px;"></span> Flag
+                        </button>
+<button class="flex-1 md:flex-none flex items-center justify-center gap-xs px-md py-2 bg-primary text-on-primary font-label-md text-label-md rounded-DEFAULT hover:bg-on-primary-fixed-variant transition-colors shadow-sm">
+<span data-icon="save" style="font-size: 18px;"></span> Save Record
+                        </button>
+</div>
+</div>
+<!-- Top Row: Risk Score & Summary -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-lg">
+<!-- Primary Risk Score Card -->
+<div class="clinical-card p-lg flex flex-col justify-center items-center relative overflow-hidden">
+<!-- Subtle background pattern/gradient for visual interest without breaking clinical feel -->
+<div class="absolute top-0 right-0 w-32 h-32 bg-error opacity-5 rounded-bl-full pointer-events-none"></div>
+<h3 class="font-label-md text-label-md text-on-surface-variant self-start mb-md w-full border-b border-outline-variant pb-2">30-Day Readmission Risk</h3>
+<div class="relative w-40 h-40 flex items-center justify-center mt-sm">
+<!-- SVG Donut Chart (Simulated) -->
+<svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+<!-- Background Track -->
+<circle cx="50" cy="50" fill="transparent" r="40" stroke="theme('colors.surface-container-high')" stroke-width="8"></circle>
+<!-- Progress (78%) -->
+<circle cx="50" cy="50" fill="transparent" r="40" stroke="theme('colors.error')" stroke-dasharray="251.2" stroke-dashoffset="55.2" stroke-linecap="round" stroke-width="8"></circle>
+</svg>
+<div class="absolute flex flex-col items-center justify-center">
+<span class="font-headline-xl text-headline-xl text-error leading-none">78<span class="text-headline-md">%</span></span>
+<span class="font-label-sm text-label-sm text-error mt-1 bg-error-container px-2 py-0.5 rounded-full">HIGH RISK</span>
+</div>
+</div>
+<div class="mt-lg text-center w-full">
+<div class="bg-error-container/50 border border-error/20 p-sm rounded-DEFAULT text-left flex items-start gap-sm">
+<span class="text-error mt-0.5" data-icon="warning" data-weight="fill"></span>
+<div>
+<h4 class="font-label-md text-label-md text-on-surface">Recommendation</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Immediate Specialist Review Required. Consider adjusting diuretic dosage.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Clinical Summary -->
+<div class="clinical-card p-lg lg:col-span-2 flex flex-col">
+<div class="flex items-center justify-between border-b border-outline-variant pb-2 mb-md">
+<h3 class="font-label-md text-label-md text-on-surface-variant flex items-center gap-xs">
+<span class="text-primary" data-icon="auto_awesome" style="font-size: 16px;"></span> 
+                                AI Diagnostic Summary
+                            </h3>
+<span class="font-mono-data text-[12px] text-on-surface-variant">Model: Med-Llama-v2.1</span>
+</div>
+<div class="flex-1 font-body-md text-body-md text-on-surface space-y-md leading-relaxed">
+<p>Patient exhibits multiple concurrent risk factors indicating a high probability of decompensation within 30 days. The most significant drivers are <span class="font-medium text-error">recent erratic blood pressure fluctuations</span> and <span class="font-medium text-error">elevated BNP levels (850 pg/mL)</span>.</p>
+<p>While medication adherence appears stable based on pharmacy refill data, the physiological response suggests diminishing efficacy of the current ACE inhibitor regimen. Renal function markers (eGFR) remain marginally stable but warrant close monitoring given the proposed adjustments.</p>
+<div class="bg-surface-container-low p-md border-l-2 border-primary rounded-r-DEFAULT mt-md">
+<span class="block font-label-md text-label-md text-primary mb-1">Clinical Insight</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">The AI identifies a subtle pattern correlation between the patient's minor nocturnal SpO2 dips and morning hypertension, suggesting a potential sleep-disordered breathing component exacerbating the primary cardiac condition.</span>
+</div>
+</div>
+<div class="mt-md pt-sm flex justify-end">
+<button class="flex items-center gap-xs text-primary hover:text-on-primary-fixed-variant font-label-sm text-label-sm transition-colors">
+                                 View Full Reasoning Trace <span data-icon="arrow_forward" style="font-size: 16px;"></span>
+</button>
+</div>
+</div>
+</div>
+<!-- XAI Analysis (SHAP Style Feature Importance) -->
+<div class="clinical-card p-lg">
+<div class="flex items-center justify-between border-b border-outline-variant pb-2 mb-lg">
+<div>
+<h3 class="font-label-md text-label-md text-on-surface-variant">Explainable AI (XAI) Analysis</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Factors influencing the prediction model's output.</p>
+</div>
+<div class="flex gap-4">
+<div class="flex items-center gap-xs font-label-sm text-label-sm text-on-surface-variant">
+<div class="w-3 h-3 bg-error rounded-sm"></div> Increased Risk
+                            </div>
+<div class="flex items-center gap-xs font-label-sm text-label-sm text-on-surface-variant">
+<div class="w-3 h-3 bg-secondary rounded-sm"></div> Decreased Risk
+                            </div>
+</div>
+</div>
+<!-- SHAP Visualization Container -->
+<div class="relative w-full py-md">
+<!-- Center Axis Line -->
+<div class="absolute left-1/2 top-0 bottom-0 w-px bg-outline-variant hidden md:block"></div>
+<!-- List of features -->
+<div class="space-y-4">
+<!-- Feature 1 (Risk Up) -->
+<div class="flex flex-col md:flex-row items-start md:items-center w-full group">
+<div class="w-full md:w-[45%] md:pr-md flex justify-between md:justify-end items-center mb-1 md:mb-0">
+<span class="font-mono-data text-[13px] text-on-surface">Systolic BP Variability</span>
+<span class="font-label-sm text-label-sm text-error md:hidden">+15%</span>
+</div>
+<div class="w-full md:w-[10%] flex justify-center text-outline-variant font-mono-data text-[10px] hidden md:flex"></div>
+<div class="w-full md:w-[45%] flex items-center">
+<!-- Bar pointing right -->
+<div class="h-6 bg-error rounded-r-sm w-[60%] flex items-center justify-end pr-2 transition-all group-hover:brightness-110">
+<span class="font-label-sm text-label-sm text-on-error hidden md:inline-block">+15%</span>
+</div>
+</div>
+</div>
+<!-- Feature 2 (Risk Up) -->
+<div class="flex flex-col md:flex-row items-start md:items-center w-full group">
+<div class="w-full md:w-[45%] md:pr-md flex justify-between md:justify-end items-center mb-1 md:mb-0">
+<span class="font-mono-data text-[13px] text-on-surface">BNP Levels (&gt;800)</span>
+<span class="font-label-sm text-label-sm text-error md:hidden">+12%</span>
+</div>
+<div class="w-full md:w-[10%] hidden md:flex"></div>
+<div class="w-full md:w-[45%] flex items-center">
+<div class="h-6 bg-error rounded-r-sm w-[45%] flex items-center justify-end pr-2 transition-all group-hover:brightness-110">
+<span class="font-label-sm text-label-sm text-on-error hidden md:inline-block">+12%</span>
+</div>
+</div>
+</div>
+<!-- Feature 3 (Risk Down) -->
+<div class="flex flex-col md:flex-row items-start md:items-center w-full group">
+<div class="w-full md:w-[45%] md:pr-md flex justify-between md:justify-end items-center mb-1 md:mb-0 order-1 md:order-none">
+<span class="font-mono-data text-[13px] text-on-surface md:hidden">Medication Adherence</span>
+<!-- Bar pointing left (desktop) -->
+<div class="h-6 bg-secondary rounded-l-sm w-[35%] ml-auto flex items-center justify-start pl-2 transition-all group-hover:brightness-110 hidden md:flex">
+<span class="font-label-sm text-label-sm text-on-secondary">-8%</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary md:hidden">-8%</span>
+</div>
+<div class="w-full md:w-[10%] hidden md:flex"></div>
+<div class="w-full md:w-[45%] flex items-center order-2 md:order-none md:pl-md">
+<span class="font-mono-data text-[13px] text-on-surface hidden md:block">Medication Adherence (ACEi)</span>
+<!-- Mobile bar -->
+<div class="h-6 bg-secondary rounded-r-sm w-[35%] md:hidden"></div>
+</div>
+</div>
+<!-- Feature 4 (Risk Up) -->
+<div class="flex flex-col md:flex-row items-start md:items-center w-full group">
+<div class="w-full md:w-[45%] md:pr-md flex justify-between md:justify-end items-center mb-1 md:mb-0">
+<span class="font-mono-data text-[13px] text-on-surface">Age (62y)</span>
+<span class="font-label-sm text-label-sm text-error md:hidden">+5%</span>
+</div>
+<div class="w-full md:w-[10%] hidden md:flex"></div>
+<div class="w-full md:w-[45%] flex items-center">
+<div class="h-6 bg-error rounded-r-sm w-[20%] flex items-center justify-end pr-2 transition-all group-hover:brightness-110">
+<span class="font-label-sm text-label-sm text-on-error hidden md:inline-block">+5%</span>
+</div>
+</div>
+</div>
+<!-- Feature 5 (Risk Down) -->
+<div class="flex flex-col md:flex-row items-start md:items-center w-full group">
+<div class="w-full md:w-[45%] md:pr-md flex justify-between md:justify-end items-center mb-1 md:mb-0 order-1 md:order-none">
+<span class="font-mono-data text-[13px] text-on-surface md:hidden">Stable SpO2</span>
+<!-- Bar pointing left (desktop) -->
+<div class="h-6 bg-secondary rounded-l-sm w-[15%] ml-auto flex items-center justify-start pl-2 transition-all group-hover:brightness-110 hidden md:flex">
+<span class="font-label-sm text-label-sm text-on-secondary">-3%</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary md:hidden">-3%</span>
+</div>
+<div class="w-full md:w-[10%] hidden md:flex"></div>
+<div class="w-full md:w-[45%] flex items-center order-2 md:order-none md:pl-md">
+<span class="font-mono-data text-[13px] text-on-surface hidden md:block">Stable Daytime SpO2</span>
+<!-- Mobile bar -->
+<div class="h-6 bg-secondary rounded-r-sm w-[15%] md:hidden"></div>
+</div>
+</div>
+</div>
+<!-- Axis Labels -->
+<div class="flex justify-between md:justify-center mt-md pt-sm border-t border-outline-variant/50 text-outline-variant font-mono-data text-[11px]">
+<div class="w-1/2 text-right pr-md hidden md:block">← Decreases Risk</div>
+<div class="w-1/2 pl-md hidden md:block">Increases Risk →</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom padding for scroll -->
+<div class="h-xxl"></div>
+</main>
+</div>
+<!-- Script to inject Material Symbols -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('[data-icon]').forEach(el => {
+                const iconName = el.getAttribute('data-icon');
+                const weight = el.getAttribute('data-weight');
+                
+                const span = document.createElement('span');
+                span.className = 'material-symbols-outlined';
+                span.textContent = iconName;
+                
+                if (weight === 'fill') {
+                    span.style.fontVariationSettings = "'FILL' 1";
+                }
+                
+                el.appendChild(span);
+            });
+        });
+    </script>
+</body></html>

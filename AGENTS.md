@@ -110,6 +110,7 @@ The AI agent must treat it as mandatory context — not optional reference.
 | Thesis, diagrams, demo prep | `skills/documentation` + all `docs/` files |
 | Implementation order & phases | `docs/Execution Plan/ExecutionPlan.md` |
 | UI design, tokens, screen mockups | `docs/Design/README.md` |
+| Design scope & screen inventory | `docs/Design/project-brief.md` |
 
 ## Document index
 
@@ -120,6 +121,7 @@ The AI agent must treat it as mandatory context — not optional reference.
 | `docs/Use Cases/Use Cases.md` | Actors, use case catalog, user flows, acceptance criteria |
 | `docs/Execution Plan/ExecutionPlan.md` | Phased roadmap, deliverables, requirements traceability matrix |
 | `docs/Design/README.md` | Design documentation index and theme priority |
+| `docs/Design/project-brief.md` | Design scope, screen inventory, audience |
 | `docs/Design/design-system.light.md` | Default UI tokens, components, colors (MVP) |
 | `docs/Design/design-system.dark.md` | Dark theme tokens (optional, post-MVP) |
 | `docs/Design/screens/` | Screen mockups and HTML references |

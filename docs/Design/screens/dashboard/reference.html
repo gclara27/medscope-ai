@@ -1,0 +1,504 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>MedScope AI - Main Dashboard</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0058bc",
+                        "on-tertiary-container": "#fdfcff",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#38485a",
+                        "tertiary-fixed-dim": "#a4c9ff",
+                        "on-primary": "#ffffff",
+                        "primary-container": "#0070eb",
+                        "outline-variant": "#c1c6d7",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#004493",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed": "#0b1d2d",
+                        "secondary-fixed-dim": "#b7c8de",
+                        "on-surface-variant": "#414755",
+                        "on-tertiary-fixed-variant": "#004883",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#f3f4f5",
+                        "on-background": "#191c1d",
+                        "error": "#ba1a1a",
+                        "surface-container-high": "#e7e8e9",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-tertiary-fixed": "#001c39",
+                        "outline": "#717786",
+                        "inverse-surface": "#2e3132",
+                        "secondary": "#4f6073",
+                        "on-primary-container": "#fefcff",
+                        "on-secondary": "#ffffff",
+                        "tertiary-container": "#2976c7",
+                        "surface-dim": "#d9dadb",
+                        "surface-tint": "#005bc1",
+                        "tertiary-fixed": "#d4e3ff",
+                        "surface-container": "#edeeef",
+                        "on-surface": "#191c1d",
+                        "surface": "#f8f9fa",
+                        "primary-fixed-dim": "#adc6ff",
+                        "secondary-fixed": "#d2e4fb",
+                        "on-primary-fixed": "#001a41",
+                        "primary-fixed": "#d8e2ff",
+                        "on-secondary-container": "#556679",
+                        "secondary-container": "#d2e4fb",
+                        "inverse-on-surface": "#f0f1f2",
+                        "on-error": "#ffffff",
+                        "inverse-primary": "#adc6ff",
+                        "tertiary": "#005da7",
+                        "background": "#f8f9fa",
+                        "surface-bright": "#f8f9fa",
+                        "surface-variant": "#e1e3e4"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "margin-mobile": "16px",
+                        "xxl": "48px",
+                        "gutter": "24px",
+                        "xl": "32px",
+                        "margin-desktop": "40px",
+                        "lg": "24px",
+                        "unit": "4px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "md": "16px"
+                    },
+                    fontFamily: {
+                        "body-md": ["Inter"],
+                        "headline-xl-mobile": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-xl": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "label-md": ["Inter"],
+                        "mono-data": ["JetBrains Mono"]
+                    },
+                    fontSize: {
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-xl-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "headline-xl": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "label-md": ["14px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "mono-data": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        /* Ambient map pattern for empty states/backgrounds if needed */
+        .bg-medical-pattern {
+            background-image: radial-gradient(var(--tw-colors-outline-variant) 1px, transparent 1px);
+            background-size: 16px 16px;
+            opacity: 0.3;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md antialiased min-h-screen flex">
+<!-- SideNavBar Component -->
+<aside class="hidden md:flex fixed left-0 top-0 h-full w-64 flex-col p-md border-r border-outline-variant bg-surface-container-low z-40 transition-transform">
+<!-- Header -->
+<div class="flex items-center gap-sm mb-xl px-sm">
+<div aria-label="MedScope AI Logo" class="w-10 h-10 rounded-lg bg-primary text-on-primary flex items-center justify-center font-bold font-headline-sm text-headline-sm shadow-sm">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">medical_services</span>
+</div>
+<div>
+<h1 class="font-headline-sm text-headline-sm font-black text-primary">MedScope AI</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Clinical Decision Support</p>
+</div>
+</div>
+<!-- CTA -->
+<button class="w-full bg-primary text-on-primary font-label-md text-label-md rounded-lg py-sm px-md mb-lg shadow-sm hover:bg-primary-container transition-colors flex items-center justify-center gap-sm">
+<span class="material-symbols-outlined">add</span>
+            New Simulation
+        </button>
+<!-- Navigation Links -->
+<nav class="flex-1 flex flex-col gap-unit overflow-y-auto">
+<!-- Active Tab: Dashboard -->
+<a class="flex items-center gap-md bg-secondary-container text-on-secondary-container rounded-lg px-md py-sm font-bold scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-md text-secondary px-md py-sm hover:bg-surface-container-high rounded-lg hover:bg-surface-container-high transition-all scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">clinical_notes</span>
+                Risk Prediction
+            </a>
+<a class="flex items-center gap-md text-secondary px-md py-sm hover:bg-surface-container-high rounded-lg hover:bg-surface-container-high transition-all scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">psychology</span>
+                AI Analysis
+            </a>
+<a class="flex items-center gap-md text-secondary px-md py-sm hover:bg-surface-container-high rounded-lg hover:bg-surface-container-high transition-all scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">biotech</span>
+                Simulation
+            </a>
+<a class="flex items-center gap-md text-secondary px-md py-sm hover:bg-surface-container-high rounded-lg hover:bg-surface-container-high transition-all scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">history</span>
+                History
+            </a>
+<a class="flex items-center gap-md text-secondary px-md py-sm hover:bg-surface-container-high rounded-lg hover:bg-surface-container-high transition-all scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">query_stats</span>
+                Analytics
+            </a>
+<a class="flex items-center gap-md text-secondary px-md py-sm hover:bg-surface-container-high rounded-lg hover:bg-surface-container-high transition-all scale-95 active:scale-90 transition-transform mt-auto" href="#">
+<span class="material-symbols-outlined">settings</span>
+                Settings
+            </a>
+<a class="flex items-center gap-md text-secondary px-md py-sm hover:bg-surface-container-high rounded-lg hover:bg-surface-container-high transition-all scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">logout</span>
+                Log Out
+            </a>
+</nav>
+<!-- Footer Links -->
+<div class="mt-lg pt-md border-t border-outline-variant flex flex-col gap-unit">
+<a class="flex items-center gap-md text-secondary px-md py-sm hover:bg-surface-container-high rounded-lg transition-all font-label-sm text-label-sm" href="#">
+<span class="material-symbols-outlined text-[18px]">support_agent</span>
+                Support
+            </a>
+<div class="flex items-center gap-md text-secondary px-md py-sm rounded-lg font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[18px] text-primary">check_circle</span>
+                Status: Online
+            </div>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<div class="flex-1 md:ml-64 flex flex-col min-h-screen">
+<!-- TopNavBar Component -->
+<header class="flex justify-between items-center px-margin-desktop w-full h-16 z-50 bg-surface fixed top-0 border-b border-outline-variant shadow-sm text-primary font-body-md text-body-md md:w-[calc(100%-16rem)]">
+<!-- Search Bar (on_left) -->
+<div class="flex-1 flex items-center">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">search</span>
+<input class="w-full bg-surface-container-low border border-outline-variant rounded-full py-2 pl-10 pr-4 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-shadow font-body-sm text-body-sm" placeholder="Search patient ID, conditions, or AI notes..." type="text">
+</div>
+</div>
+<!-- Right Actions -->
+<div class="flex items-center gap-lg">
+<!-- Trailing Icon Actions -->
+<div class="flex items-center gap-xs">
+<button aria-label="Notifications" class="p-2 text-on-surface-variant hover:text-primary transition-colors duration-200 cursor-pointer active:opacity-80 rounded-full hover:bg-surface-container-high relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1 right-2 w-2 h-2 bg-error rounded-full border-2 border-surface"></span>
+</button>
+<button aria-label="Emergency Alerts" class="p-2 text-on-surface-variant hover:text-error transition-colors duration-200 cursor-pointer active:opacity-80 rounded-full hover:bg-error-container">
+<span class="material-symbols-outlined">emergency</span>
+</button>
+<button aria-label="Help" class="p-2 text-on-surface-variant hover:text-primary transition-colors duration-200 cursor-pointer active:opacity-80 rounded-full hover:bg-surface-container-high">
+<span class="material-symbols-outlined">help</span>
+</button>
+</div>
+<!-- Secondary Action -->
+<div class="hidden lg:block text-on-surface-variant font-medium font-body-sm text-body-sm border-l border-outline-variant pl-lg">
+                    Clinical Staff
+                </div>
+<!-- Profile Image -->
+<button aria-label="Chief Medical Officer Profile" class="w-9 h-9 rounded-full bg-tertiary-container text-on-tertiary-container flex items-center justify-center border border-outline-variant overflow-hidden cursor-pointer active:opacity-80 shadow-sm">
+<img alt="Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkvbdEPcwX6urH7qLorGDfJb0y7jeqhKofHtZG5CkbclxeZ6NsX6D_8Bxd9Y2otN7kF8DwaB6iHDJ0tu20lexKcCg_mbAm9RFVHn1dWSImh6DL7ddeubmUk4PAnV7GNJ9nNcvYyKFbjX6ZCb8a4VK-kizQ3hpYqFg1sgS5zDB7RoNV66yJBmvadwBs1g7YDYpPqP8lOQhCyeZ9zsIqfBF510pnDRW5r4-5GTAg6KzHPYZKQlxSZx7bDV0UZD9x1wB675pCWKCk4eyf">
+</button>
+</div>
+</header>
+<!-- Main Dashboard Canvas -->
+<main class="flex-1 p-margin-mobile md:p-gutter pt-24 md:pt-24 bg-surface-bright flex flex-col gap-gutter">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-md mb-sm">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-background">Patient Risk Overview</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Real-time aggregate clinical status across monitored wards.</p>
+</div>
+<div class="flex items-center gap-sm">
+<button class="px-md py-2 border border-outline-variant text-on-surface-variant rounded-lg font-label-md text-label-md hover:bg-surface-container-low transition-colors bg-surface-container-lowest shadow-sm">
+                        Export Report
+                    </button>
+<button class="px-md py-2 bg-primary text-on-primary rounded-lg font-label-md text-label-md shadow-sm hover:bg-primary-container transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">sync</span>
+                        Refresh Data
+                    </button>
+</div>
+</div>
+<!-- Top Grid: KPI Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-md">
+<!-- High Risk Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm flex flex-col justify-between relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-1 h-full bg-error"></div>
+<div class="flex justify-between items-start mb-lg">
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">High Risk Patients</h3>
+<div class="p-2 bg-error-container text-on-error-container rounded-md">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">warning</span>
+</div>
+</div>
+<div>
+<div class="font-headline-xl text-headline-xl text-on-surface mb-1">12</div>
+<div class="flex items-center gap-1 text-error font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+<span>+2 since last shift</span>
+</div>
+</div>
+</div>
+<!-- Stable Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm flex flex-col justify-between relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary"></div>
+<div class="flex justify-between items-start mb-lg">
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Stable Condition</h3>
+<div class="p-2 bg-primary-fixed text-on-primary-fixed rounded-md">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">health_and_safety</span>
+</div>
+</div>
+<div>
+<div class="font-headline-xl text-headline-xl text-on-surface mb-1">145</div>
+<div class="flex items-center gap-1 text-secondary font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[16px]">horizontal_rule</span>
+<span>No change</span>
+</div>
+</div>
+</div>
+<!-- New Admissions Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm flex flex-col justify-between relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-tertiary"></div>
+<div class="flex justify-between items-start mb-lg">
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">New Admissions (24h)</h3>
+<div class="p-2 bg-tertiary-fixed text-on-tertiary-fixed rounded-md">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">person_add</span>
+</div>
+</div>
+<div>
+<div class="font-headline-xl text-headline-xl text-on-surface mb-1">8</div>
+<div class="flex items-center gap-1 text-on-surface-variant font-body-sm text-body-sm">
+<span>Awaiting AI baseline</span>
+</div>
+</div>
+</div>
+<!-- Stats Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm flex flex-col justify-between relative overflow-hidden bg-gradient-to-br from-surface-container-lowest to-surface-container-low">
+<div class="absolute -right-4 -bottom-4 opacity-10">
+<span class="material-symbols-outlined text-[120px]" style="font-variation-settings: 'FILL' 1;">memory</span>
+</div>
+<div class="flex justify-between items-start mb-lg relative z-10">
+<h3 class="font-label-md text-label-md text-primary uppercase tracking-wider">AI Prediction Accuracy</h3>
+<div class="p-2 bg-primary text-on-primary rounded-md">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+</div>
+<div class="relative z-10">
+<div class="font-headline-xl text-headline-xl text-primary mb-1">94.2%</div>
+<div class="flex items-center gap-1 text-primary-fixed-dim font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[16px]">verified</span>
+<span>Validated via cross-reference</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Middle Grid: Chart & Alerts -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-md">
+<!-- Main Trend Chart Panel (Spans 2 columns) -->
+<div class="lg:col-span-2 bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm flex flex-col">
+<div class="p-md border-b border-outline-variant flex justify-between items-center">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Daily Risk Distributions (7 Days)</h3>
+<div class="flex items-center gap-sm bg-surface-container-low rounded-lg p-1">
+<button class="px-3 py-1 text-sm font-medium rounded bg-surface shadow-sm text-on-surface">Trend</button>
+<button class="px-3 py-1 text-sm font-medium rounded text-on-surface-variant hover:text-on-surface">Variance</button>
+</div>
+</div>
+<div class="p-md flex-1 relative min-h-[300px]">
+<!-- CSS Simulated Chart Canvas -->
+<div class="absolute inset-0 p-md flex flex-col justify-between">
+<!-- Y-axis grid lines -->
+<div class="w-full border-t border-dotted border-outline-variant opacity-50 relative"><span class="absolute -left-6 -top-2 text-xs text-outline font-mono-data">100</span></div>
+<div class="w-full border-t border-dotted border-outline-variant opacity-50 relative"><span class="absolute -left-6 -top-2 text-xs text-outline font-mono-data">75</span></div>
+<div class="w-full border-t border-dotted border-outline-variant opacity-50 relative"><span class="absolute -left-6 -top-2 text-xs text-outline font-mono-data">50</span></div>
+<div class="w-full border-t border-dotted border-outline-variant opacity-50 relative"><span class="absolute -left-6 -top-2 text-xs text-outline font-mono-data">25</span></div>
+<div class="w-full border-t border-outline relative"><span class="absolute -left-6 -top-2 text-xs text-outline font-mono-data">0</span></div>
+<!-- X-axis labels -->
+<div class="flex justify-between w-full px-4 mt-2 text-xs text-outline font-mono-data">
+<span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+</div>
+</div>
+<!-- Simulated Data Path (using an SVG for structural integrity, minimal styling inline) -->
+<svg class="absolute inset-0 w-full h-full p-md pointer-events-none" preserveAspectRatio="none" viewBox="0 0 100 100">
+<!-- Primary Line (Stable) -->
+<path class="opacity-80" d="M0,80 Q10,75 20,80 T40,70 T60,75 T80,60 T100,65" fill="none" stroke="var(--tw-colors-primary)" stroke-width="2"></path>
+<!-- Secondary Line (At Risk) -->
+<path d="M0,90 Q15,85 30,90 T50,80 T70,85 T90,75 T100,80" fill="none" stroke="var(--tw-colors-tertiary)" stroke-dasharray="2,2" stroke-width="2"></path>
+<!-- Error Line (High Risk) -->
+<path d="M0,95 L20,95 L40,92 L60,94 L80,88 L100,90" fill="none" stroke="var(--tw-colors-error)" stroke-width="2"></path>
+<!-- Data Point Indicator -->
+<circle cx="80" cy="60" fill="var(--tw-colors-primary-container)" r="1.5" stroke="white" stroke-width="0.5"></circle>
+<rect fill="var(--tw-colors-surface-container-highest)" height="10" opacity="0.9" rx="1" width="16" x="72" y="45"></rect>
+<text fill="var(--tw-colors-on-surface)" font-family="Inter" font-size="5" font-weight="600" text-anchor="middle" x="80" y="52">Stable</text>
+</svg>
+</div>
+</div>
+<!-- Alerts Panel -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm flex flex-col h-full">
+<div class="p-md border-b border-outline-variant flex justify-between items-center bg-error-container/10 rounded-t-xl">
+<h3 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">campaign</span>
+                            Critical Alerts
+                        </h3>
+<span class="bg-error text-on-error font-label-sm text-label-sm px-2 py-0.5 rounded-full">3 New</span>
+</div>
+<div class="p-sm flex-1 overflow-y-auto flex flex-col gap-sm">
+<!-- Alert Item 1 -->
+<div class="p-sm border border-error-container bg-error-container/20 rounded-lg flex gap-sm items-start">
+<span class="material-symbols-outlined text-error mt-0.5">monitor_heart</span>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-1">
+<span class="font-label-md text-label-md text-on-surface font-mono-data">PT-8992</span>
+<span class="text-xs text-error font-medium">Just now</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Sudden drop in SpO2. AI confidence level 98% for respiratory distress.</p>
+<button class="mt-2 text-primary font-label-sm text-label-sm hover:underline">Review Data →</button>
+</div>
+</div>
+<!-- Alert Item 2 -->
+<div class="p-sm border border-outline-variant bg-surface rounded-lg flex gap-sm items-start">
+<span class="material-symbols-outlined text-tertiary mt-0.5">medication</span>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-1">
+<span class="font-label-md text-label-md text-on-surface font-mono-data">PT-1044</span>
+<span class="text-xs text-on-surface-variant">15m ago</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Contraindication risk detected in proposed medication plan.</p>
+</div>
+</div>
+<!-- Alert Item 3 -->
+<div class="p-sm border border-outline-variant bg-surface rounded-lg flex gap-sm items-start">
+<span class="material-symbols-outlined text-primary mt-0.5">biotech</span>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-1">
+<span class="font-label-md text-label-md text-on-surface font-mono-data">Ward B</span>
+<span class="text-xs text-on-surface-variant">1h ago</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Simulation baseline recalibration complete.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Table: Recent Evaluations -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm overflow-hidden flex flex-col">
+<div class="p-md border-b border-outline-variant flex justify-between items-center">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Recent AI Evaluations</h3>
+<button class="text-primary font-label-md text-label-md flex items-center gap-1 hover:underline">
+                        View Full Log
+                        <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant">
+<th class="p-md font-label-md text-label-md text-on-surface-variant font-medium">Patient ID</th>
+<th class="p-md font-label-md text-label-md text-on-surface-variant font-medium">Evaluation Time</th>
+<th class="p-md font-label-md text-label-md text-on-surface-variant font-medium">AI Risk Score</th>
+<th class="p-md font-label-md text-label-md text-on-surface-variant font-medium">Clinical Status</th>
+<th class="p-md font-label-md text-label-md text-on-surface-variant font-medium text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="p-md font-mono-data text-mono-data text-on-surface font-medium">PT-8992</td>
+<td class="p-md font-mono-data text-mono-data text-on-surface-variant">10:42 AM, Today</td>
+<td class="p-md">
+<div class="flex items-center gap-2">
+<div class="w-16 h-2 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-error w-[92%]"></div>
+</div>
+<span class="font-mono-data text-mono-data text-error font-medium">92</span>
+</div>
+</td>
+<td class="p-md">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-error-container text-on-error-container font-label-sm text-label-sm border border-error/20">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+                                        Critical Review
+                                    </span>
+</td>
+<td class="p-md text-right">
+<button aria-label="View Details" class="p-1.5 text-on-surface-variant hover:text-primary rounded hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="p-md font-mono-data text-mono-data text-on-surface font-medium">PT-4410</td>
+<td class="p-md font-mono-data text-mono-data text-on-surface-variant">09:15 AM, Today</td>
+<td class="p-md">
+<div class="flex items-center gap-2">
+<div class="w-16 h-2 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-tertiary w-[45%]"></div>
+</div>
+<span class="font-mono-data text-mono-data text-tertiary font-medium">45</span>
+</div>
+</td>
+<td class="p-md">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm border border-tertiary/20">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+                                        Monitor
+                                    </span>
+</td>
+<td class="p-md text-right">
+<button aria-label="View Details" class="p-1.5 text-on-surface-variant hover:text-primary rounded hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="p-md font-mono-data text-mono-data text-on-surface font-medium">PT-2103</td>
+<td class="p-md font-mono-data text-mono-data text-on-surface-variant">08:00 AM, Today</td>
+<td class="p-md">
+<div class="flex items-center gap-2">
+<div class="w-16 h-2 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[12%]"></div>
+</div>
+<span class="font-mono-data text-mono-data text-primary font-medium">12</span>
+</div>
+</td>
+<td class="p-md">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm border border-primary/20">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                        Stable
+                                    </span>
+</td>
+<td class="p-md text-right">
+<button aria-label="View Details" class="p-1.5 text-on-surface-variant hover:text-primary rounded hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</main>
+</div>
+</body></html>

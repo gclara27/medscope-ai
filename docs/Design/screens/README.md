@@ -1,24 +1,31 @@
-# Screen Mockups
+# Screen Mockups Catalog
 
-Visual references for frontend pages. Each folder maps to a Requirements screen ID (RFW-*).
+Each folder maps to a frontend page in `frontend/src/pages/`.
 
-## Catalog
+## MVP screens
 
-| Folder | Screen | RFW | Status |
+| Folder | RFW | UC | Assets |
 |---|---|---|---|
-| `splash/` | Splash / welcome | RFW-010 | Mockups available |
+| `splash/` | RFW-010 | UC-012 | `light.mockup.png`, `dark.mockup.png`, `*.reference.html` |
+| `login/` | RFW-011 | UC-001 | `mockup.png`, `reference.html` |
+| `dashboard/` | RFW-012 | UC-010 | `mockup.png`, `reference.html` |
+| `prediction-form/` | RFW-013 | UC-020 | `mockup.png`, `reference.html` |
+| `prediction-result/` | RFW-014, RFW-015 | UC-023, UC-030–032 | `mockup.png`, `reference.html` |
+| `simulation/` | RFW-016 | UC-040–044 | `mockup.png`, `reference.html` |
+| `history/` | RFW-018 | UC-050–052 | `mockup.png`, `reference.html` |
+| `analytics/` | RFW-017 | UC-060–062 | `mockup.png`, `reference.html` |
 
-## Planned screens (not yet designed)
+## Optional screens
 
-| Screen | RFW |
+| Folder | Notes |
 |---|---|
-| Login | RFW-011 |
-| Dashboard | RFW-012 |
-| Prediction form | RFW-013 |
-| Prediction result | RFW-014 |
-| Explainability | RFW-015 |
-| Simulation | RFW-016 |
-| Analytics | RFW-017 |
-| History | RFW-018 |
+| `settings/` | Admin config — post-MVP (RF-070) |
+| `support/` | Help center — not in Requirements |
+| `system-status/` | Ops dashboard — not in Requirements |
 
-Add new mockups as `screens/<screen-name>/` with `mockup.png` and optional `reference.html`.
+## Implementation notes
+
+- `reference.html` files are **design references**, not production code.
+- Port layouts to React components; map colors to `design-system.light.md` tokens.
+- Gauge charts (RFW-021) appear in `prediction-result/`.
+- SHAP bars (RFW-023) appear in `prediction-result/`.

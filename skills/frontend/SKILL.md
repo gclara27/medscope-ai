@@ -14,8 +14,10 @@ This skill governs React frontend implementation in `frontend/`.
 ## Project documentation
 
 Consult before implementing:
+- `docs/Design/project-brief.md` — which screens exist and their folder names
 - `docs/Design/design-system.light.md` — color/spacing tokens (map to Tailwind)
-- `docs/Design/screens/` — screen mockups when available
+- `docs/Design/screens/<screen>/mockup.png` — visual reference for the page being built
+- `docs/Design/screens/<screen>/reference.html` — layout/HTML reference (port to React)
 - `docs/Requirements/Requirements.md` — §8 (frontend), §13 (UX/UI)
 - `docs/Use Cases/Use Cases.md` — UC-010–012, UC-020–023, UC-100–103
 

@@ -1,0 +1,342 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>MedScope AI - Clinical Support Center</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-container": "#fefcff",
+                        "tertiary": "#005da7",
+                        "secondary-fixed-dim": "#b7c8de",
+                        "outline-variant": "#c1c6d7",
+                        "primary-container": "#0070eb",
+                        "primary-fixed": "#d8e2ff",
+                        "on-secondary-fixed": "#0b1d2d",
+                        "on-error": "#ffffff",
+                        "surface-container": "#edeeef",
+                        "on-primary-fixed": "#001a41",
+                        "surface-dim": "#d9dadb",
+                        "outline": "#717786",
+                        "on-tertiary-container": "#fdfcff",
+                        "on-error-container": "#93000a",
+                        "surface-variant": "#e1e3e4",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-bright": "#f8f9fa",
+                        "primary": "#0058bc",
+                        "background": "#f8f9fa",
+                        "primary-fixed-dim": "#adc6ff",
+                        "on-tertiary-fixed-variant": "#004883",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-tertiary-fixed": "#001c39",
+                        "on-primary": "#ffffff",
+                        "on-background": "#191c1d",
+                        "inverse-primary": "#adc6ff",
+                        "on-secondary-container": "#556679",
+                        "inverse-on-surface": "#f0f1f2",
+                        "surface-tint": "#005bc1",
+                        "on-tertiary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed-dim": "#a4c9ff",
+                        "surface": "#f8f9fa",
+                        "secondary-container": "#d2e4fb",
+                        "surface-container-low": "#f3f4f5",
+                        "secondary-fixed": "#d2e4fb",
+                        "inverse-surface": "#2e3132",
+                        "tertiary-fixed": "#d4e3ff",
+                        "tertiary-container": "#2976c7",
+                        "on-surface": "#191c1d",
+                        "on-secondary-fixed-variant": "#38485a",
+                        "on-secondary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "surface-container-high": "#e7e8e9",
+                        "secondary": "#4f6073",
+                        "on-surface-variant": "#414755",
+                        "on-primary-fixed-variant": "#004493"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "40px",
+                        "xl": "32px",
+                        "sm": "8px",
+                        "margin-mobile": "16px",
+                        "xxl": "48px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "gutter": "24px",
+                        "xs": "4px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "mono-data": ["JetBrains Mono"],
+                        "headline-sm": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "headline-xl-mobile": ["Inter"],
+                        "headline-xl": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "mono-data": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-xl-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "label-md": ["14px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface text-body-md h-screen w-screen overflow-hidden flex antialiased font-display">
+<!-- SideNavBar Component -->
+<nav class="hidden md:flex flex-col flex-shrink-0 bg-surface-container-low dark:bg-surface-container-lowest docked left-0 h-full w-64 fixed left-0 top-0 p-md border-r border-outline-variant z-40">
+<!-- Header -->
+<div class="flex items-center gap-md mb-xl px-sm">
+<div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center text-on-primary-container shrink-0">
+<span class="material-symbols-outlined icon-fill">biotech</span>
+</div>
+<div>
+<h1 class="text-headline-sm font-black text-primary font-display">MedScope AI</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Clinical Decision Support</p>
+</div>
+</div>
+<!-- CTA -->
+<button class="w-full bg-primary text-on-primary rounded-lg py-md px-md flex items-center justify-center gap-sm text-label-md mb-xl scale-95 active:scale-90 transition-transform hover:bg-primary-fixed hover:text-on-primary-fixed font-display">
+<span class="material-symbols-outlined">add</span>
+            New Simulation
+        </button>
+<!-- Main Tabs (Inactive) -->
+<div class="flex flex-col gap-xs flex-1 overflow-y-auto">
+<a class="flex items-center gap-md text-secondary px-md py-sm hover:bg-surface-container-high rounded-lg text-label-md dark:hover:bg-surface-container transition-all scale-95 active:scale-90 transition-transform font-display" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-md text-secondary px-md py-sm hover:bg-surface-container-high rounded-lg text-label-md dark:hover:bg-surface-container transition-all scale-95 active:scale-90 transition-transform font-display" href="#">
+<span class="material-symbols-outlined">clinical_notes</span>
+                Risk Prediction
+            </a>
+<a class="flex items-center gap-md text-secondary px-md py-sm hover:bg-surface-container-high rounded-lg text-label-md dark:hover:bg-surface-container transition-all scale-95 active:scale-90 transition-transform font-display" href="#">
+<span class="material-symbols-outlined">psychology</span>
+                AI Analysis
+            </a>
+<a class="flex items-center gap-md text-secondary px-md py-sm hover:bg-surface-container-high rounded-lg text-label-md dark:hover:bg-surface-container transition-all scale-95 active:scale-90 transition-transform font-display" href="#">
+<span class="material-symbols-outlined">biotech</span>
+                Simulation
+            </a>
+<a class="flex items-center gap-md text-secondary px-md py-sm hover:bg-surface-container-high rounded-lg text-label-md dark:hover:bg-surface-container transition-all scale-95 active:scale-90 transition-transform font-display" href="#">
+<span class="material-symbols-outlined">history</span>
+                History
+            </a>
+<a class="flex items-center gap-md text-secondary px-md py-sm hover:bg-surface-container-high rounded-lg text-label-md dark:hover:bg-surface-container transition-all scale-95 active:scale-90 transition-transform font-display" href="#">
+<span class="material-symbols-outlined">query_stats</span>
+                Analytics
+            </a>
+<a class="flex items-center gap-md text-secondary px-md py-sm hover:bg-surface-container-high rounded-lg text-label-md dark:hover:bg-surface-container transition-all scale-95 active:scale-90 transition-transform font-display" href="#">
+<span class="material-symbols-outlined">settings</span>
+                Settings
+            </a>
+</div>
+<!-- Footer Tabs -->
+<div class="flex flex-col gap-xs mt-auto pt-md border-t border-outline-variant">
+<!-- Active Tab: Support -->
+<a class="flex items-center gap-md bg-secondary-container text-on-secondary-container rounded-lg px-md py-sm font-bold scale-95 active:scale-90 transition-transform font-display" href="#">
+<span class="material-symbols-outlined icon-fill">support_agent</span>
+                Support
+            </a>
+<a class="flex items-center gap-md text-secondary px-md py-sm hover:bg-surface-container-high rounded-lg text-label-md dark:hover:bg-surface-container transition-all scale-95 active:scale-90 transition-transform font-display" href="#">
+<span class="material-symbols-outlined">check_circle</span>
+                Status
+            </a>
+<a class="flex items-center gap-md text-secondary px-md py-sm hover:bg-surface-container-high rounded-lg text-label-md dark:hover:bg-surface-container transition-all scale-95 active:scale-90 transition-transform mt-md font-display" href="#">
+<span class="material-symbols-outlined">logout</span>
+                Log Out
+            </a>
+</div>
+</nav>
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col md:ml-64 min-w-0 h-full">
+<!-- TopNavBar Component -->
+<header class="bg-surface dark:bg-surface-container-lowest flex justify-between items-center px-margin-desktop w-full h-16 z-50 border-b border-outline-variant dark:border-outline shadow-sm flex-shrink-0">
+<!-- Left Area (Search Bar) -->
+<div class="flex items-center flex-1 max-w-md">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">search</span>
+<input class="w-full bg-surface-bright border border-outline-variant rounded-full py-sm pl-10 pr-4 text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-shadow text-on-surface placeholder-on-surface-variant font-display" placeholder="Search clinical knowledge base..." type="text">
+</div>
+</div>
+<!-- Right Area (Actions & Profile) -->
+<div class="flex items-center gap-lg ml-auto">
+<div class="flex items-center gap-sm">
+<button class="p-sm text-on-surface-variant hover:text-primary transition-colors duration-200 cursor-pointer active:opacity-80 rounded-full hover:bg-surface-container-low font-display">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-sm text-on-surface-variant hover:text-primary transition-colors duration-200 cursor-pointer active:opacity-80 rounded-full hover:bg-surface-container-low font-display">
+<span class="material-symbols-outlined">emergency</span>
+</button>
+<button class="p-sm text-primary transition-colors duration-200 cursor-pointer active:opacity-80 rounded-full bg-primary-fixed text-on-primary-fixed font-display">
+<span class="material-symbols-outlined icon-fill">help</span>
+</button>
+</div>
+<div class="h-6 w-px bg-outline-variant hidden md:block"></div>
+<div class="flex items-center gap-md cursor-pointer hover:opacity-80 transition-opacity">
+<div class="hidden md:flex flex-col items-end">
+<span class="font-label-md text-label-md text-on-surface">Clinical Staff</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Chief Medical Officer</span>
+</div>
+<img alt="Chief Medical Officer Profile" class="w-10 h-10 rounded-full object-cover border border-outline-variant" data-alt="A professional headshot of a female doctor in a crisp white coat against a light clinical background, emitting an aura of authority and trust, soft neutral lighting, high resolution." src="https://lh3.googleusercontent.com/aida-public/AB6AXuACZbtlhU51oYFmLIiIaEftd0jdPoxqHVMj8rTsv4Kf-gDJ5DyWbjK3VzvaYs5NCx2tEcTWNbGl8mHQL0hybyCqcdpVunf-ieYFLzBcV9uyCjxwpU5rZXwCF5EdDL2WHy19FCG3rf4A34z23Rn6C4_7sKfyjvsNLYss3vCOGBb9dfDdhRPuPcwmnAGiY0AyKK5ievqyY3q2HMOnNMZGyF7MNOVDk2PTDkJj5o42awqOXldGPPZhAxWdt4yI9t-PzPZxc6ogjvLyRlES">
+</div>
+</div>
+</header>
+<!-- Canvas (Page Content) -->
+<main class="flex-1 overflow-y-auto bg-background p-margin-mobile md:p-margin-desktop scroll-smooth">
+<div class="max-w-7xl mx-auto space-y-xl">
+<!-- Hero Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-md mb-xxl">
+<div>
+<h2 class="text-headline-xl text-on-surface mb-sm font-display">Clinical Support Center</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Access documentation, troubleshoot AI model behaviors, or contact the bioinformatics team for specialized technical assistance.</p>
+</div>
+</div>
+<!-- Main Grid Layout -->
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-xl">
+<!-- Left Column: Knowledge Base Categories (Spans 2 cols on large screens) -->
+<div class="xl:col-span-2 space-y-lg">
+<h3 class="text-headline-md text-on-surface flex items-center gap-sm font-display">
+<span class="material-symbols-outlined text-primary">menu_book</span>
+                            Knowledge Base Topics
+                        </h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<!-- Category Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm hover:border-primary transition-colors cursor-pointer group">
+<div class="w-12 h-12 rounded-lg bg-surface-container-low flex items-center justify-center text-primary mb-md group-hover:bg-primary-fixed transition-colors">
+<span class="material-symbols-outlined icon-fill">rocket_launch</span>
+</div>
+<h4 class="text-headline-sm text-on-surface mb-xs font-display">Getting Started</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Initial setup, user roles, and navigating the MedScope AI dashboard effectively.</p>
+</div>
+<!-- Category Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm hover:border-primary transition-colors cursor-pointer group">
+<div class="w-12 h-12 rounded-lg bg-surface-container-low flex items-center justify-center text-primary mb-md group-hover:bg-primary-fixed transition-colors">
+<span class="material-symbols-outlined icon-fill">tune</span>
+</div>
+<h4 class="text-headline-sm text-on-surface mb-xs font-display">AI Model Calibration</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Adjusting sensitivity thresholds, understanding confidence scores, and localized tuning.</p>
+</div>
+<!-- Category Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm hover:border-primary transition-colors cursor-pointer group">
+<div class="w-12 h-12 rounded-lg bg-surface-container-low flex items-center justify-center text-primary mb-md group-hover:bg-primary-fixed transition-colors">
+<span class="material-symbols-outlined icon-fill">cable</span>
+</div>
+<h4 class="text-headline-sm text-on-surface mb-xs font-display">Data Integration</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">EHR syncing, HL7 protocols, and troubleshooting patient record mismatches.</p>
+</div>
+<!-- Category Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm hover:border-primary transition-colors cursor-pointer group">
+<div class="w-12 h-12 rounded-lg bg-surface-container-low flex items-center justify-center text-primary mb-md group-hover:bg-primary-fixed transition-colors">
+<span class="material-symbols-outlined icon-fill">health_and_safety</span>
+</div>
+<h4 class="text-headline-sm text-on-surface mb-xs font-display">Compliance &amp; Security</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">HIPAA guidelines, audit logs, and managing data anonymization settings.</p>
+</div>
+</div>
+</div>
+<!-- Right Column: Actions -->
+<div class="space-y-xl">
+<!-- Submit Ticket Form -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm">
+<h3 class="text-headline-sm text-on-surface mb-md border-b border-outline-variant pb-sm font-display">Submit a Ticket</h3>
+<form class="space-y-md">
+<div>
+<label class="block font-label-md text-label-md text-on-surface mb-xs">Issue Category</label>
+<select class="w-full bg-surface-bright border border-outline-variant rounded-md py-sm px-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none text-on-surface font-display">
+<option>Technical Error / Bug</option>
+<option>AI Diagnostic Query</option>
+<option>Account Access</option>
+<option>EHR Integration</option>
+</select>
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface mb-xs">Priority Level</label>
+<div class="flex gap-sm">
+<label class="flex-1 cursor-pointer">
+<input checked="" class="peer sr-only font-display" name="priority" type="radio">
+<div class="text-center py-xs px-sm rounded border border-outline-variant text-label-sm font-label-sm text-on-surface-variant peer-checked:bg-primary-container peer-checked:text-on-primary-container peer-checked:border-primary-container transition-colors">Standard</div>
+</label>
+<label class="flex-1 cursor-pointer">
+<input class="peer sr-only font-display" name="priority" type="radio">
+<div class="text-center py-xs px-sm rounded border border-outline-variant text-label-sm font-label-sm text-on-surface-variant peer-checked:bg-error-container peer-checked:text-on-error-container peer-checked:border-error-container transition-colors">Urgent (Clinical)</div>
+</label>
+</div>
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface mb-xs">Description</label>
+<textarea class="w-full bg-surface-bright border border-outline-variant rounded-md py-sm px-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none text-on-surface placeholder-on-surface-variant resize-none font-display" placeholder="Describe the issue in detail..." rows="4"></textarea>
+</div>
+<button class="w-full bg-primary text-on-primary rounded-lg py-md px-md flex items-center justify-center gap-sm text-label-md hover:bg-tertiary transition-colors font-display" type="button">
+<span class="material-symbols-outlined">send</span>
+                                    Submit to IT Support
+                                </button>
+</form>
+</div>
+<!-- Direct Contact Card -->
+<div class="bg-surface-container-low border border-outline-variant rounded-xl p-lg flex flex-col gap-md">
+<div class="flex items-start gap-md">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container shrink-0">
+<span class="material-symbols-outlined">badge</span>
+</div>
+<div>
+<h4 class="text-headline-sm text-on-surface font-display">Institutional IT Team</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">For immediate, critical system outages.</p>
+</div>
+</div>
+<div class="space-y-sm mt-sm">
+<div class="flex items-center gap-md text-on-surface font-body-md text-body-md">
+<span class="material-symbols-outlined text-secondary">call</span>
+<span>Ext. 4450 (Internal)</span>
+</div>
+<div class="flex items-center gap-md text-on-surface font-body-md text-body-md">
+<span class="material-symbols-outlined text-secondary">mail</span>
+<span>bioinformatics@institution.edu</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+
+</body></html>

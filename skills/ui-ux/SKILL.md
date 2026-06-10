@@ -15,9 +15,11 @@ This skill governs visual consistency and healthcare UX.
 
 Consult before implementing:
 - `docs/Design/README.md` — design index and theme priority
+- `docs/Design/project-brief.md` — screen inventory and design scope
 - `docs/Design/design-system.light.md` — **default** tokens and components (MVP)
 - `docs/Design/design-system.dark.md` — dark theme (optional, post-MVP)
-- `docs/Design/screens/` — screen mockups and references
+- `docs/Design/screens/README.md` — mockup catalog (RFW-* mapping)
+- `docs/Design/screens/<screen>/` — mockup.png + reference.html per page
 - `docs/Requirements/Requirements.md` — §6.5, §13 (RUX-*, RFW-*)
 - `docs/MedScope AI General Description.md` — product tone and value
 

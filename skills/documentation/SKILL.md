@@ -18,7 +18,7 @@ Always align new docs with:
 - `docs/Requirements/Requirements.md` — requirements traceability
 - `docs/Use Cases/Use Cases.md` — use case catalog and flows
 - `docs/Execution Plan/ExecutionPlan.md` — phased roadmap and deliverables
-- `docs/Design/` — design system and screen mockups for thesis screenshots
+- `docs/Design/` — design system, project brief, and screen mockups for thesis screenshots
 
 Do not contradict `docs/` on product scope. Extend `docs/` only when the user requests it.
 

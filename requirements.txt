@@ -1,0 +1,3 @@
+# Root-level dependencies (notebooks, scripts).
+# Backend deps: backend/requirements.txt
+# ML deps: ml/requirements.txt

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MedScope AI - Welcome</title>
+<!-- Google Fonts: Inter & Material Symbols -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;family=JetBrains+Mono:wght@400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Design System Configuration -->
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "outline": "#8b90a0",
+                "inverse-primary": "#005bc1",
+                "secondary": "#7bd0ff",
+                "on-secondary-fixed-variant": "#004c69",
+                "on-error": "#690005",
+                "on-tertiary-fixed-variant": "#005236",
+                "error-container": "#93000a",
+                "on-primary-fixed": "#001a41",
+                "on-tertiary-fixed": "#002113",
+                "secondary-fixed": "#c4e7ff",
+                "inverse-on-surface": "#283044",
+                "surface-variant": "#2d3449",
+                "surface-dim": "#0b1326",
+                "on-background": "#dae2fd",
+                "tertiary": "#4edea3",
+                "surface-bright": "#31394d",
+                "secondary-fixed-dim": "#7bd0ff",
+                "on-tertiary": "#003824",
+                "primary-fixed": "#d8e2ff",
+                "on-primary": "#002e69",
+                "inverse-surface": "#dae2fd",
+                "surface-container": "#171f33",
+                "surface-tint": "#adc6ff",
+                "surface-container-highest": "#2d3449",
+                "on-secondary-container": "#00374d",
+                "background": "#0b1326",
+                "primary": "#adc6ff",
+                "on-tertiary-container": "#00311f",
+                "on-secondary": "#00354a",
+                "surface-container-high": "#222a3d",
+                "surface-container-low": "#131b2e",
+                "tertiary-container": "#00a572",
+                "surface-container-lowest": "#060e20",
+                "on-primary-fixed-variant": "#004493",
+                "tertiary-fixed": "#6ffbbe",
+                "on-error-container": "#ffdad6",
+                "on-secondary-fixed": "#001e2c",
+                "error": "#ffb4ab",
+                "primary-container": "#4b8eff",
+                "secondary-container": "#00a6e0",
+                "outline-variant": "#414755",
+                "surface": "#0b1326",
+                "primary-fixed-dim": "#adc6ff",
+                "tertiary-fixed-dim": "#4edea3",
+                "on-surface-variant": "#c1c6d7",
+                "on-primary-container": "#00285c",
+                "on-surface": "#dae2fd"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+        },
+        "spacing": {
+                "unit": "4px",
+                "margin-desktop": "32px",
+                "container-max": "1440px",
+                "margin-mobile": "16px",
+                "gutter": "16px"
+        },
+        "fontFamily": {
+                "label-md": [
+                        "Inter"
+                ],
+                "headline-md": [
+                        "Inter"
+                ],
+                "body-md": [
+                        "Inter"
+                ],
+                "body-lg": [
+                        "Inter"
+                ],
+                "headline-lg": [
+                        "Inter"
+                ],
+                "code-sm": [
+                        "Inter"
+                ],
+                "headline-lg-mobile": [
+                        "Inter"
+                ]
+        },
+        "fontSize": {
+                "label-md": [
+                        "12px",
+                        {
+                                "lineHeight": "16px",
+                                "letterSpacing": "0.05em",
+                                "fontWeight": "500"
+                        }
+                ],
+                "headline-md": [
+                        "20px",
+                        {
+                                "lineHeight": "28px",
+                                "fontWeight": "600"
+                        }
+                ],
+                "body-md": [
+                        "14px",
+                        {
+                                "lineHeight": "20px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "body-lg": [
+                        "16px",
+                        {
+                                "lineHeight": "24px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "headline-lg": [
+                        "32px",
+                        {
+                                "lineHeight": "40px",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "code-sm": [
+                        "13px",
+                        {
+                                "lineHeight": "18px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "headline-lg-mobile": [
+                        "24px",
+                        {
+                                "lineHeight": "32px",
+                                "letterSpacing": "-0.01em",
+                                "fontWeight": "600"
+                        }
+                ]
+        }
+},
+    },
+  }
+</script>
+</head>
+<body class="bg-background text-on-background antialiased h-screen w-full flex items-center justify-center overflow-hidden font-display">
+<!-- Background Layer -->
+<div class="absolute inset-0 z-0">
+<div class="w-full h-full bg-cover bg-center transform scale-105 transition-transform duration-1000 ease-out" data-alt="A high-fidelity, cinematic dark-mode version of a modern hospital corridor." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD4Dd6bGvEWblSxLG3Iv5HYreuGZqpiGYjGe8EQX8wXjTSLtOWfruWimQdisZZDBC_s9w5GzNIU35gdxjwZEnko2kCtE_UurG0oljU6NnCJp84FBCpdumcgCWf-Mw3AbzVw0a512Und6TX-WNRGxZEr5-C81Z8qj8cJQZAAzlMFME4hdCkFX8XTshyY7CfFKpJv76hIqkjKrBEcK-ggDDTZZD6JMBB8nHza9puO0u2-Pnc8UxTlHbhz0DSrPW_TbuqtEsLULQav4Mz8');">
+</div>
+<!-- Clinical Overlay: Tonal Layering for readability and functional calm -->
+<div class="absolute inset-0 bg-surface/80 backdrop-blur-md"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent"></div>
+</div>
+<!-- Main Content Container -->
+<main class="relative z-10 flex flex-col items-center justify-center text-center px-margin-mobile md:px-margin-desktop w-full max-w-3xl">
+<!-- Brand Icon / Anchor -->
+<div class="mb-6 w-20 h-20 md:w-24 md:h-24 flex items-center justify-center bg-surface-container-lowest rounded-2xl shadow-sm border border-outline-variant animate-fade-in-up">
+<span class="material-symbols-outlined text-primary text-[40px] md:text-[48px]" style="font-variation-settings: 'FILL' 1, 'wght' 300;">biotech</span>
+</div>
+<!-- Typography Stack -->
+<div class="flex flex-col gap-2 mb-12 animate-fade-in-up delay-100">
+<h1 class="text-headline-lg-mobile md:text-headline-lg text-primary m-0">
+                MedScope AI
+            </h1>
+<p class="text-body-lg text-on-surface-variant max-w-lg mx-auto m-0">
+                Precision AI for Clinical Decision Support
+            </p>
+</div>
+<!-- Call to Action -->
+<div class="animate-fade-in-up delay-200">
+<button class="group flex items-center justify-center gap-2 bg-primary hover:bg-primary-container text-on-primary text-label-md px-8 py-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 ease-in-out active:scale-95 outline-none focus-visible:ring-2 focus-visible:ring-primary-container focus-visible:ring-offset-2 focus-visible:ring-offset-surface">
+<span class="">Get Started</span>
+<span class="material-symbols-outlined text-[20px] transition-transform duration-200 group-hover:translate-x-1">arrow_forward</span>
+</button>
+</div>
+</main>
+<!-- Simple inline script for entrance animation setup if needed, though handled by CSS mostly -->
+<style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+        .delay-100 { animation-delay: 150ms; }
+        .delay-200 { animation-delay: 300ms; }
+    </style>
+</body></html>

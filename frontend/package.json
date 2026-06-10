@@ -1,0 +1,6 @@
+{
+  "name": "medscope-ai-frontend",
+  "private": true,
+  "version": "0.1.0",
+  "description": "MedScope AI — React clinical dashboard"
+}

@@ -1,3 +1,25 @@
-# Root-level dependencies (notebooks, scripts).
-# Backend deps: backend/requirements.txt
-# ML deps: ml/requirements.txt
+# MedScope AI — local development (full Python stack)
+#
+# Install from repo root after creating/activating a virtual environment:
+#   pip install -r requirements.txt
+#
+# Domain-specific runtime deps (also included below via -r):
+#   backend/requirements.txt  — FastAPI, SQLAlchemy, JWT, PostgreSQL
+#   ml/requirements.txt       — scikit-learn, SHAP, pandas, joblib
+#
+# Docker backend image uses only backend/requirements.txt (see backend/Dockerfile).
+
+-r backend/requirements.txt
+-r ml/requirements.txt
+
+# Testing (backend/tests/, ml/tests/) — RTS-001, RTS-002
+pytest>=8.3.0
+pytest-cov>=5.0.0
+pytest-asyncio>=0.24.0
+
+# Notebooks & scripts (notebooks/, scripts/)
+jupyter>=1.1.0
+ipykernel>=6.29.0
+
+# Local .env loading for scripts and non-Docker runs
+python-dotenv>=1.0.0

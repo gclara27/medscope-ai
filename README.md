@@ -1,2 +1,214 @@
-# medscope-ai
-Intelligent Clinical Risk Prediction &amp; Decision Support Platform
+# MedScope AI
+
+Intelligent Clinical Risk Prediction & Decision Support Platform (TFM).
+
+Stack: **FastAPI** · **PostgreSQL** · **React/TypeScript** · **Scikit-learn** · **SHAP** · **Docker**
+
+Product and architecture docs live in [`docs/`](docs/) and [`AGENTS.md`](AGENTS.md).
+
+---
+
+## Prerequisites
+
+| Tool | Version | Used for |
+|------|---------|----------|
+| [Python](https://www.python.org/downloads/) | 3.12+ | Backend, ML, notebooks |
+| [Node.js](https://nodejs.org/) | 20 LTS+ | Frontend (React) |
+| [Docker Desktop](https://www.docker.com/products/docker-desktop/) | latest | PostgreSQL + backend in containers |
+| Git | latest | Version control |
+
+**Windows (winget):**
+
+```powershell
+winget install Python.Python.3.12
+winget install OpenJS.NodeJS.LTS
+winget install Docker.DockerDesktop
+```
+
+After installing Docker Desktop, start it and wait until the engine is running (whale icon in the system tray).
+
+**Verify:**
+
+```bash
+python --version    # 3.12.x
+node --version      # v20.x or v22.x
+npm --version
+docker --version
+docker compose version
+```
+
+---
+
+## Quick start (Docker — recommended)
+
+Runs PostgreSQL and the FastAPI backend. Frontend is not dockerized yet (see [EP-0.4](docs/Execution%20Plan/ExecutionPlan.md#04-create-docker-base)).
+
+### 1. Clone and configure environment
+
+```bash
+git clone <repository-url>
+cd medscope-ai
+cp .env.example .env
+```
+
+Edit `.env` if you need non-default ports or credentials. Defaults work for local development.
+
+### 2. Start services
+
+```bash
+docker compose up --build
+```
+
+Detached mode:
+
+```bash
+docker compose up --build -d
+```
+
+### 3. Verify
+
+| Service | URL / endpoint |
+|---------|----------------|
+| Backend API | http://localhost:8000 |
+| Health check | http://localhost:8000/health → `{"status":"ok"}` |
+| API docs (Swagger) | http://localhost:8000/docs |
+| PostgreSQL | `localhost:5432` — DB `medscope_ai`, user `medscope` |
+
+```bash
+docker compose ps
+curl http://localhost:8000/health
+```
+
+### 4. Stop
+
+```bash
+docker compose down          # stop containers
+docker compose down -v       # stop and remove database volume
+```
+
+---
+
+## Local development (without Docker)
+
+Use this when you want to run the backend or ML code directly on the host.
+
+### Python virtual environment
+
+```bash
+# From repo root
+python -m venv .venv
+
+# Windows (PowerShell)
+.\.venv\Scripts\Activate.ps1
+
+# macOS / Linux
+source .venv/bin/activate
+```
+
+### Backend
+
+```bash
+pip install -r backend/requirements.txt
+cd backend
+uvicorn main:app --reload --port 8000
+```
+
+You still need PostgreSQL running. Either:
+
+- start only the database: `docker compose up postgres -d`, or  
+- use a local PostgreSQL instance and set `DATABASE_URL` in `.env`.
+
+### Install Python dependencies
+
+**Option A — full local stack** (backend + ML + tests + notebooks):
+
+```bash
+pip install -r requirements.txt
+```
+
+**Option B — install only what you need:**
+
+```bash
+pip install -r backend/requirements.txt   # API only
+pip install -r ml/requirements.txt        # training / evaluation only
+```
+
+| File | Scope |
+|------|-------|
+| `requirements.txt` | Dev environment: includes backend + ML + pytest + Jupyter |
+| `backend/requirements.txt` | Runtime API deps (used by `backend/Dockerfile`) |
+| `ml/requirements.txt` | Training, preprocessing, SHAP, model artifacts |
+
+### Frontend
+
+The React app lives in `frontend/`. Once the scaffold is in place (Vite + React + TypeScript):
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Default dev server: http://localhost:5173 (allowed in `CORS_ORIGINS`).
+
+---
+
+## Environment variables
+
+Copy [`.env.example`](.env.example) to `.env`:
+
+| Variable | Description |
+|----------|-------------|
+| `POSTGRES_USER` / `POSTGRES_PASSWORD` / `POSTGRES_DB` | Database credentials |
+| `POSTGRES_PORT` | Host port for PostgreSQL (default `5432`) |
+| `DATABASE_URL` | SQLAlchemy connection string |
+| `BACKEND_PORT` | Host port for API (default `8000`) |
+| `JWT_SECRET` | Signing key for JWT (change in production) |
+| `JWT_ALGORITHM` | Default `HS256` |
+| `JWT_EXPIRE_MINUTES` | Token lifetime |
+| `CORS_ORIGINS` | Comma-separated frontend origins |
+
+Never commit `.env` — it is listed in `.gitignore`.
+
+---
+
+## Repository layout
+
+```text
+medscope-ai/
+├── AGENTS.md           # AI agent operating system
+├── backend/            # FastAPI application
+├── frontend/           # React dashboard
+├── ml/                 # Training, preprocessing, evaluation
+├── datasets/           # Clinical datasets (large files not committed)
+├── docs/               # Requirements, use cases, database, testing, design
+├── skills/             # Domain skills for AI-assisted development
+├── docker-compose.yml  # postgres + backend
+└── tests/              # Cross-cutting tests (e2e)
+```
+
+---
+
+## Documentation
+
+| Document | Purpose |
+|----------|---------|
+| [AGENTS.md](AGENTS.md) | Agent rules and skill routing |
+| [Requirements](docs/Requirements/Requirements.md) | Functional and technical requirements |
+| [Execution Plan](docs/Execution%20Plan/ExecutionPlan.md) | Phased delivery plan |
+| [Database](docs/Database/Database.md) | Schema and persistence |
+| [Task Tracker](docs/Task%20Tracker/TaskTracker.md) | MVP task checklist |
+
+---
+
+## Troubleshooting
+
+**`docker` not found** — Restart the terminal after installing Docker Desktop, or add Docker to `PATH`:
+
+`C:\Program Files\Docker\Docker\resources\bin`
+
+**Port already in use** — Change `BACKEND_PORT` or `POSTGRES_PORT` in `.env` and restart compose.
+
+**Backend cannot connect to DB** — With Docker, use host `postgres` inside containers and `localhost` on the host. Check `docker compose ps` shows postgres as `healthy`.
+
+**WSL2 (Windows)** — Docker Desktop requires WSL2. Run `wsl --status` and ensure a distribution (e.g. Ubuntu) is installed.

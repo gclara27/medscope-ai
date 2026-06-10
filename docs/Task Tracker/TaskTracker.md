@@ -150,8 +150,8 @@ Documento vivo para seguir el progreso del TFM.
 | T-012 | [x] | `docker-compose.yml` | [RDO-001](../Requirements/Requirements.md#11-requerimientos-devops) · [EP-0.4](../Execution%20Plan/ExecutionPlan.md#04-create-docker-base) | `Crea docker-compose.yml con postgres y backend según EP-0.4 y RDO-001. Lee AGENTS.md.` |
 | T-013 | [x] | `Dockerfile` backend | [RDO-001](../Requirements/Requirements.md#rdo-001) | `Crea Dockerfile para FastAPI en backend/. Multi-stage si aplica.` |
 | T-014 | [x] | `.env.example` | [RDO-020](../Requirements/Requirements.md#rdo-020) | `Genera .env.example con DATABASE_URL, JWT_SECRET, etc.` |
-| T-015 | [ ] | Rama `develop` | [EP-0.5](../Execution%20Plan/ExecutionPlan.md#05-create-branch-strategy) | — |
-| T-016 | [ ] | README setup local | [EP-0](../Execution%20Plan/ExecutionPlan.md#phase-0--project-initialization) | `Amplía README con pasos install Python, Node, Docker y arranque local.` |
+| T-015 | [x] | Rama `develop` | [EP-0.5](../Execution%20Plan/ExecutionPlan.md#05-create-branch-strategy) | — |
+| T-016 | [x] | README setup local | [EP-0](../Execution%20Plan/ExecutionPlan.md#phase-0--project-initialization) | `Amplía README con pasos install Python, Node, Docker y arranque local.` |
 
 ---
 

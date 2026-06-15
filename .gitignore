@@ -103,6 +103,7 @@ desktop.ini
 
 # --- IDEs & editors ---
 .idea/
+.vs/
 .vscode/
 *.sublime-project
 *.sublime-workspace

@@ -12,7 +12,7 @@
 | `docs/Design/README.md` | Design system, tokens, mockups |
 | `docs/Testing/Testing.md` | Testing strategy, RTS/UC coverage |
 | `docs/Database/Database.md` | PostgreSQL schema, MVP tables, migrations |
-| `docs/Task Tracker/TaskTracker.md` | Backlog ejecutable con checkboxes |
+| `docs/TaskTracker.md` | Backlog ejecutable con checkboxes |
 | `AGENTS.md` | Convenciones técnicas y routing de skills |
 
 En conflicto de **alcance de producto**, prevalecen Requirements y Use Cases.  

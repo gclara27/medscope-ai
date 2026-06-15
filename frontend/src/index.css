@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-surface font-sans text-on-surface antialiased;
+  }
+}
+
+@layer components {
+  .clinical-input {
+    @apply w-full rounded border border-outline-variant bg-surface px-4 py-2 text-on-surface outline-none transition;
+  }
+
+  .clinical-input:focus {
+    @apply border-primary shadow-focus-glow;
+  }
+}

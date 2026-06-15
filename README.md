@@ -39,6 +39,55 @@ docker compose version
 
 ---
 
+## One-command dev start (Windows)
+
+Scripts in [`scripts/`](scripts/) automate PostgreSQL, migrations, backend, and frontend.
+
+### First time only
+
+```powershell
+.\scripts\setup-dev.ps1
+```
+
+Creates `.env`, Python `.venv`, and installs backend + frontend dependencies.
+
+### Every day — start everything
+
+From the repo root in Cursor (or any PowerShell terminal):
+
+```powershell
+.\scripts\start-dev.ps1
+```
+
+Or:
+
+```powershell
+.\dev.ps1
+# or
+dev.bat
+```
+
+This script:
+
+1. Starts PostgreSQL in Docker (detached)
+2. Runs `alembic upgrade head`
+3. Opens a **new terminal** for the backend (`uvicorn` on port 8000)
+4. Opens a **new terminal** for the frontend (`npm run dev` on port 5173)
+
+Then open http://localhost:5173/login
+
+### Stop everything
+
+```powershell
+.\scripts\stop-dev.ps1
+```
+
+Stops processes on ports 8000 and 5173, and runs `docker compose down`.
+
+**Requires Docker Desktop running** before `start-dev.ps1`.
+
+---
+
 ## Quick start (Docker — recommended)
 
 Runs PostgreSQL and the FastAPI backend. Frontend is not dockerized yet (see [EP-0.4](docs/Execution%20Plan/ExecutionPlan.md#04-create-docker-base)).
@@ -153,6 +202,39 @@ Default dev server: http://localhost:5173 (allowed in `CORS_ORIGINS`).
 
 ---
 
+## Environments (dev / test / prod)
+
+MedScope AI uses a **local PostgreSQL database for development and testing** before deploying to production. Same engine everywhere; only configuration changes (RDO-010).
+
+| Environment | Database | How |
+|-------------|----------|-----|
+| **dev** | PostgreSQL (`medscope_ai`) | `docker compose up` — daily development, Alembic migrations |
+| **test** | SQLite in memory | Fast unit tests (`pytest` in `backend/tests/`) |
+| **test** (integration) | PostgreSQL in Docker | Optional — real SQL, migrations, API + DB flows |
+| **prod** | Managed PostgreSQL | Cloud / VPS — separate `.env`, never dev credentials |
+
+### Connection strings
+
+| Context | `DATABASE_URL` host |
+|---------|---------------------|
+| Backend **inside** Docker | `postgres` |
+| Backend **on host** (uvicorn) | `localhost` |
+| SQL client (DBeaver, psql) | `localhost:5432` |
+
+### Typical workflow
+
+```text
+Develop  →  local PostgreSQL (Docker) + .env from .env.example
+Test     →  SQLite (unit) + optional PostgreSQL Docker (integration)
+Deploy   →  production PostgreSQL; change DATABASE_URL and JWT_SECRET only
+```
+
+`docker-compose.yml` is for **development only**. Production uses a separate deployment with its own environment variables.
+
+Full detail: [Database doc — §1.1 Environments](docs/Database/Database.md#11-entornos-dev--test--prod) · [Testing strategy](docs/Testing/Testing.md).
+
+---
+
 ## Environment variables
 
 Copy [`.env.example`](.env.example) to `.env`:
@@ -197,7 +279,7 @@ medscope-ai/
 | [Requirements](docs/Requirements/Requirements.md) | Functional and technical requirements |
 | [Execution Plan](docs/Execution%20Plan/ExecutionPlan.md) | Phased delivery plan |
 | [Database](docs/Database/Database.md) | Schema and persistence |
-| [Task Tracker](docs/Task%20Tracker/TaskTracker.md) | MVP task checklist |
+| [Task Tracker](docs/TaskTracker.md) | MVP task checklist |
 
 ---
 

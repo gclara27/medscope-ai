@@ -27,6 +27,47 @@
 
 Base de datos: `medscope_ai`. Docker: servicio `postgres` en `docker-compose.yml`.
 
+## 1.1 Entornos (dev / test / prod)
+
+Separación obligatoria **dev / prod** (RDO-010). El motor es siempre **PostgreSQL** en dev y prod; en tests unitarios se usa **SQLite en memoria** por velocidad.
+
+| Entorno | Motor | Dónde | Propósito |
+|---|---|---|---|
+| **dev** | PostgreSQL 16 | `docker compose` → servicio `postgres` | Desarrollo diario, migraciones Alembic, datos de prueba locales |
+| **test** | SQLite en memoria | `backend/tests/conftest.py` | Tests unitarios rápidos (pytest) sin levantar Postgres |
+| **test** (integración) | PostgreSQL en Docker | Mismo compose o BD dedicada `medscope_ai_test` | Validar SQL real, migraciones y flujos API + BD (opcional) |
+| **prod** | PostgreSQL gestionado | Cloud / VPS (fuera del repo) | Despliegue MVP; credenciales y URL solo en `.env` del servidor |
+
+### Conexión según contexto
+
+| Quién se conecta | Host en `DATABASE_URL` | Ejemplo |
+|---|---|---|
+| Backend dentro de Docker | `postgres` | `postgresql://medscope:medscope_dev@postgres:5432/medscope_ai` |
+| Backend en host (uvicorn local) | `localhost` | `postgresql://medscope:medscope_dev@localhost:5432/medscope_ai` |
+| Cliente SQL / DBeaver en host | `localhost` | puerto `5432`, BD `medscope_ai` |
+
+### Variables por entorno
+
+Copiar [`.env.example`](../../.env.example) → `.env` en **dev**. Nunca commitear `.env` (RDO-020).
+
+| Variable | dev | prod |
+|---|---|---|
+| `DATABASE_URL` | Usuario/contraseña de desarrollo | URL del proveedor (RDS, Supabase, etc.) |
+| `JWT_SECRET` | Valor de ejemplo | Secreto fuerte, único por entorno |
+| `POSTGRES_*` | Defaults del compose | Gestionado por el hosting |
+
+### Flujo recomendado
+
+```text
+1. Desarrollar  → PostgreSQL local (Docker) + .env de dev
+2. Testear      → SQLite (unit) + opcional Postgres Docker (integración)
+3. Desplegar    → PostgreSQL de producción; solo cambia configuración, no el código
+```
+
+`docker-compose.yml` es **solo para desarrollo**. Producción usará otro despliegue (contenedor, PaaS o VM) con su propio `.env`.
+
+Detalle de testing: §13 y `docs/Testing/Testing.md`.
+
 ---
 
 # 2. Alcance MVP vs opcional
@@ -343,12 +384,22 @@ Esquema en **3NF**. Sin duplicar inputs clínicos fuera de `patient_inputs`. SHA
 
 # 13. Testing de BD
 
-| Tipo | Motor |
-|---|---|
-| Unit tests backend | SQLite en memoria (`backend/tests/conftest.py`) |
-| Integración | PostgreSQL en Docker (opcional) |
+Relacionado con entornos (§1.1).
 
-Ver `docs/Testing/Testing.md`.
+| Tipo | Motor | Cuándo |
+|---|---|---|
+| Unit tests backend | SQLite en memoria (`backend/tests/conftest.py`) | Cada `pytest` en CI y local — sin Docker |
+| Integración | PostgreSQL en Docker | Migraciones, queries Postgres-specific, flujo API + BD |
+| E2E | PostgreSQL de dev o test | Playwright contra stack levantado (`tests/e2e/`) |
+
+**No** usar la BD de producción en tests. Para integración local:
+
+```bash
+docker compose up postgres -d
+# opcional: BD separada medscope_ai_test en el mismo contenedor
+```
+
+Ver `docs/Testing/Testing.md` §6.5.
 
 ---
 

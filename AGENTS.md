@@ -79,7 +79,7 @@ Read the skill file in the **Skill file** column before working in that domain.
 | Use cases & user flows | `docs/Use Cases/Use Cases.md` |
 | Product vision & scope | `docs/MedScope AI General Description.md` |
 | Development phases & roadmap | `docs/Execution Plan/ExecutionPlan.md` |
-| Task progress & backlog | `docs/Task Tracker/TaskTracker.md` |
+| Task progress & backlog | `docs/TaskTracker.md` |
 
 ---
 
@@ -116,7 +116,7 @@ The AI agent must treat it as mandatory context — not optional reference.
 | Design scope & screen inventory | `docs/Design/project-brief.md` |
 | Writing or running tests | `docs/Testing/Testing.md` |
 | Database schema, migrations, ER | `docs/Database/Database.md` |
-| Tracking implementation progress | `docs/Task Tracker/TaskTracker.md` |
+| Tracking implementation progress | `docs/TaskTracker.md` |
 
 ## Document index
 
@@ -133,7 +133,7 @@ The AI agent must treat it as mandatory context — not optional reference.
 | `docs/Design/screens/` | Screen mockups and HTML references |
 | `docs/Testing/Testing.md` | Testing stack, structure, RTS/UC traceability, E2E flows |
 | `docs/Database/Database.md` | PostgreSQL schema, MVP tables, migrations, persistence flows |
-| `docs/Task Tracker/TaskTracker.md` | Master backlog with checkboxes, US/UC/RF traceability |
+| `docs/TaskTracker.md` | Master backlog with checkboxes, US/UC/RF traceability |
 
 ## Rules
 

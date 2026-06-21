@@ -118,15 +118,15 @@ Documento vivo para seguir el progreso del TFM.
 |---|---|---|---|
 | Fase 0 — Inicialización | 16 | 16 | 100% |
 | Fase 1 — Backend + DB | 22 | 22 | 100% |
-| Fase 2 — ML | 0 | 14 | 0% |
-| Fase 3 — ML + Backend | 0 | 14 | 0% |
+| Fase 2 — ML | 14 | 14 | 100% |
+| Fase 3 — ML + Backend | 6 | 14 | 43% |
 | Fase 4 — Frontend base | 9 | 14 | 64% |
 | Fase 5 — Features clínicas | 0 | 16 | 0% |
 | Fase 6 — Analytics + History | 0 | 10 | 0% |
 | Fase 7 — Polish + Testing | 0 | 12 | 0% |
 | Fase 8 — TFM + Documentación | 2 | 10 | 20% |
 | Fase 9 — Demo | 0 | 6 | 0% |
-| **TOTAL MVP** | **52** | **134** | **39%** |
+| **TOTAL MVP** | **75** | **134** | **56%** |
 
 ---
 
@@ -161,7 +161,7 @@ Documento vivo para seguir el progreso del TFM.
 
 **Progreso:** 22 / 22 (100%) — 1.1 ✓ · 1.2 ✓ · 1.3 ✓
 
-[Execution Plan — Fase 1](Execution%20Plan/ExecutionPlan.md#phase-1--database--backend-foundation) · [Database.md](Database/Database.md) · [skill backend](../skills/backend/SKILL.md)
+[Execution Plan — Fase 1](Execution%20Plan/ExecutionPlan.md#phase-1--database--backend-foundation) · [Database.md](Database/Database.md) · [skill backend](../skills/backend/SKILL.md) · [Tests manuales Fase 1](Testing/Manual/Phase-01-Backend-Database.md)
 
 ## 1.1 Setup FastAPI
 
@@ -224,60 +224,59 @@ Documento vivo para seguir el progreso del TFM.
 
 # FASE 2 — Machine Learning
 
-**Progreso:** 0 / 14 (0%)
+**Progreso:** 14 / 14 (100%)
 
-[Execution Plan — Fase 2](Execution%20Plan/ExecutionPlan.md#phase-2--machine-learning-pipeline) · [skill ml](../skills/ml/SKILL.md) · [skill shap](../skills/shap/SKILL.md)
+[Execution Plan — Fase 2](Execution%20Plan/ExecutionPlan.md#phase-2--machine-learning-pipeline) · [skill ml](../skills/ml/SKILL.md) · [skill shap](../skills/shap/SKILL.md) · [Tests manuales Fase 2](Testing/Manual/Phase-02-ML-Pipeline.md)
 
 | ID | ✓ | Tarea | Docs | Pedir a la IA |
 |---|---|---|---|---|
-| T-201 | [ ] | Dataset Diabetes 130-US | [RIA-001](Requirements/Requirements.md#ria-001) | `Descarga y documenta Diabetes 130-US hospitals en datasets/.` |
-| T-202 | [ ] | Notebook EDA | [UC-110](Use%20Cases/Use%20Cases.md#uc-110--train-model-offline) | `Crea notebook EDA en notebooks/ con distribuciones y missing values.` |
-| T-203 | [ ] | Preprocessing | [RIA-010](Requirements/Requirements.md#ria-010) | `Implementa ml/preprocessing/ reproducible train/inference.` |
-| T-204 | [ ] | Feature engineering | [EP-2.5](Execution%20Plan/ExecutionPlan.md#25-feature-engineering) | `Features: age, admissions, meds, glucose, stay duration.` |
-| T-205 | [ ] | Logistic Regression | [RIA-011](Requirements/Requirements.md#ria-011) | `Entrena baseline Logistic Regression.` |
-| T-206 | [ ] | Random Forest | [EP-2.6](Execution%20Plan/ExecutionPlan.md#26-train-baseline-models) | `Entrena Random Forest y compara con baseline.` |
-| T-207 | [ ] | Métricas | [RIA-012](Requirements/Requirements.md#ria-012) · [UC-111](Use%20Cases/Use%20Cases.md#uc-111--evaluate-model-metrics) | `Evalúa Recall, F1, ROC-AUC. Accuracy > 75%. Prioriza Recall.` |
-| T-208 | [ ] | Modelo final | [EP-2.8](Execution%20Plan/ExecutionPlan.md#28-select-final-model) | `Selecciona mejor modelo y documenta por qué.` |
-| T-209 | [ ] | Serializar model.pkl | [RIA-020](Requirements/Requirements.md#ria-020) | `Guarda model.pkl y preprocessor.pkl en models/ con joblib.` |
-| T-210 | [ ] | SHAP TreeExplainer | [RIA-030](Requirements/Requirements.md#ria-030) · [UC-030](Use%20Cases/Use%20Cases.md#uc-030--generate-shap-explanation) | `Implementa SHAP TreeExplainer. Skill: shap.` |
-| T-211 | [ ] | Tests ML | [RTS-010](Requirements/Requirements.md#rts-010) · [Testing §8](Testing/Testing.md#8-ml-tests-rts-010) | `Tests en ml/tests/: load, range, SHAP output.` |
-| T-212 | [ ] | Doc pipeline TFM | [RAC-010](Requirements/Requirements.md#rac-010) | `Documenta pipeline ML para memoria.` |
-| T-213 | [ ] | (Opc.) XGBoost | [EP-2.6](Execution%20Plan/ExecutionPlan.md#26-train-baseline-models) | `Opcional: evalúa XGBoost si hay tiempo.` |
-| T-214 | [ ] | Gráficos EDA defensa | [RAC-001](Requirements/Requirements.md#rac-001) | `Exporta gráficos EDA para TFM.` |
+| T-201 | [x] | Dataset Diabetes 130-US | [RIA-001](Requirements/Requirements.md#ria-001) | `Descarga y documenta Diabetes 130-US hospitals en datasets/.` |
+| T-202 | [x] | Notebook EDA | [UC-110](Use%20Cases/Use%20Cases.md#uc-110--train-model-offline) | `Crea notebook EDA en notebooks/ con distribuciones y missing values.` |
+| T-203 | [x] | Preprocessing | [RIA-010](Requirements/Requirements.md#ria-010) | `Implementa ml/preprocessing/ reproducible train/inference.` |
+| T-204 | [x] | Feature engineering | [EP-2.5](Execution%20Plan/ExecutionPlan.md#25-feature-engineering) | `Features: age, admissions, meds, glucose, stay duration.` |
+| T-205 | [x] | Logistic Regression | [RIA-011](Requirements/Requirements.md#ria-011) | `Entrena baseline Logistic Regression.` |
+| T-206 | [x] | Random Forest | [EP-2.6](Execution%20Plan/ExecutionPlan.md#26-train-baseline-models) | `Entrena Random Forest y compara con baseline.` |
+| T-207 | [x] | Métricas | [RIA-012](Requirements/Requirements.md#ria-012) · [UC-111](Use%20Cases/Use%20Cases.md#uc-111--evaluate-model-metrics) | `Evalúa Recall, F1, ROC-AUC. Accuracy > 75%. Prioriza Recall.` |
+| T-208 | [x] | Modelo final | [EP-2.8](Execution%20Plan/ExecutionPlan.md#28-select-final-model) | `Selecciona mejor modelo y documenta por qué.` |
+| T-209 | [x] | Serializar model.pkl | [RIA-020](Requirements/Requirements.md#ria-020) | `Guarda model.pkl y preprocessor.pkl en models/ con joblib.` |
+| T-210 | [x] | SHAP explainability | [RIA-030](Requirements/Requirements.md#ria-030) · [UC-030](Use%20Cases/Use%20Cases.md#uc-030--generate-shap-explanation) | `Implementa SHAP (LinearExplainer producción LR; TreeExplainer RF/XGB). Skill: shap.` |
+| T-211 | [x] | Tests ML | [RTS-010](Requirements/Requirements.md#rts-010) · [Testing §8](Testing/Testing.md#8-ml-tests-rts-010) | `Tests en ml/tests/: load, range, SHAP output.` |
+| T-212 | [x] | Doc pipeline TFM | [RAC-010](Requirements/Requirements.md#rac-010) | `Documenta pipeline ML para memoria.` |
+| T-213 | [x] | (Opc.) XGBoost | [EP-2.6](Execution%20Plan/ExecutionPlan.md#26-train-baseline-models) | `Opcional: evalúa XGBoost si hay tiempo.` |
+| T-214 | [x] | Gráficos EDA defensa | [RAC-001](Requirements/Requirements.md#rac-001) | `Exporta gráficos EDA para TFM.` |
 
 | US | ✓ | Historia | UC | RIA |
 |---|---|---|---|---|
-| US-010 | [ ] | Predecir readmisión | [UC-022](Use%20Cases/Use%20Cases.md#uc-022--generate-ai-prediction) | [RIA-021](Requirements/Requirements.md#ria-021) |
-| US-011 | [ ] | Explicar predicción | [UC-030](Use%20Cases/Use%20Cases.md#uc-030--generate-shap-explanation) | [RIA-030](Requirements/Requirements.md#ria-030) |
-
 ---
 
 # FASE 3 — Integración ML + Backend
 
-**Progreso:** 0 / 14 (0%)
+**Progreso:** 6 / 14 (43%)
 
-[Execution Plan — Fase 3](Execution%20Plan/ExecutionPlan.md#phase-3--ml--backend-integration)
+[Execution Plan — Fase 3](Execution%20Plan/ExecutionPlan.md#phase-3--ml--backend-integration) · [Tests manuales Fase 3](Testing/Manual/Phase-03-ML-Backend-Integration.md)
 
 | ID | ✓ | Tarea | Docs | Pedir a la IA |
 |---|---|---|---|---|
-| T-301 | [ ] | Load model startup | [UC-082](Use%20Cases/Use%20Cases.md#uc-082--load-ml-model) | `Carga model.pkl al startup FastAPI con lifespan event.` |
-| T-302 | [ ] | prediction_service | [UC-083](Use%20Cases/Use%20Cases.md#uc-083--execute-prediction-pipeline) | `Crea prediction_service: preprocess → predict → SHAP.` |
+| T-301 | [x] | Load model startup | [UC-082](Use%20Cases/Use%20Cases.md#uc-082--load-ml-model) | `Carga model.pkl al startup FastAPI con lifespan event.` |
+| T-302 | [x] | prediction_service | [UC-083](Use%20Cases/Use%20Cases.md#uc-083--execute-prediction-pipeline) | `Crea prediction_service: preprocess → predict → SHAP.` |
 | T-303 | [ ] | simulation_service | [EP-3.5](Execution%20Plan/ExecutionPlan.md#35-create-simulate-endpoint) | `Crea simulation_service con comparación original/simulado.` |
-| T-304 | [ ] | `POST /predict` | [RBE-010](Requirements/Requirements.md#rbe-010) · [UC-022–023](Use%20Cases/Use%20Cases.md#6-clinical-prediction) | `POST /predict: validar, inferir, SHAP, persistir, responder JSON.` |
+| T-304 | [x] | `POST /predict` | [RBE-010](Requirements/Requirements.md#rbe-010) · [UC-022–023](Use%20Cases/Use%20Cases.md#6-clinical-prediction) | `POST /predict: validar, inferir, SHAP, persistir, responder JSON.` |
 | T-305 | [ ] | `POST /simulate` | [RBE-011](Requirements/Requirements.md#rbe-011) · [UC-040–044](Use%20Cases/Use%20Cases.md#8-clinical-simulation) | `POST /simulate según RF-040–042 y UC-040–044.` |
 | T-306 | [ ] | `GET /history` | [RBE-012](Requirements/Requirements.md#rbe-012) · [RF-051](Requirements/Requirements.md#rf-051--búsqueda) | `GET /history con filtros fecha, riesgo, usuario.` |
 | T-307 | [ ] | `GET /analytics` | [RBE-014](Requirements/Requirements.md#rbe-014) · [UC-060](Use%20Cases/Use%20Cases.md#uc-060--view-analytics-dashboard) | `GET /analytics: agregaciones sobre predictions.` |
-| T-308 | [ ] | Persist transacción predict | [UC-023](Use%20Cases/Use%20Cases.md#uc-023--store-prediction) · [DB §6](Database/Database.md#6-flujos-de-persistencia) | `Persistir prediction + patient_inputs + shap en una transacción.` |
+| T-308 | [x] | Persist transacción predict | [UC-023](Use%20Cases/Use%20Cases.md#uc-023--store-prediction) · [DB §6](Database/Database.md#6-flujos-de-persistencia) | `Persistir prediction + patient_inputs + shap en una transacción.` |
 | T-309 | [ ] | Persist simulación | [UC-044](Use%20Cases/Use%20Cases.md#uc-044--save-simulation) | `Persistir simulation + simulation_inputs.` |
-| T-310 | [ ] | Schemas Pydantic | [RF-021](Requirements/Requirements.md#rf-021--validación) · [UC-090](Use%20Cases/Use%20Cases.md#uc-090--handle-invalid-input) | `Schemas Pydantic para inputs clínicos con validación.` |
+| T-310 | [x] | Schemas Pydantic | [RF-021](Requirements/Requirements.md#rf-021--validación) · [UC-090](Use%20Cases/Use%20Cases.md#uc-090--handle-invalid-input) | `Schemas Pydantic para inputs clínicos con validación.` |
 | T-311 | [ ] | Exception handlers | [UC-091](Use%20Cases/Use%20Cases.md#uc-091--handle-backend-failure) | `Handlers globales: JSON error, sin stack trace.` |
-| T-312 | [ ] | Latencia < 1s | [RNF-001](Requirements/Requirements.md#rnf-001) | `Optimiza predict para < 1s. Log prediction_time_ms.` |
-| T-313 | [ ] | Tests APIs predict/simulate | [RTS-001](Requirements/Requirements.md#rts-001) · [Testing §6.2–6.3](Testing/Testing.md#62-prediction-api-uc-020023-uc-030) | `Tras T-304–305: tests predict (payload válido, SHAP, 422), simulate (original vs simulado).` |
+| T-312 | [x] | Latencia < 1s | [RNF-001](Requirements/Requirements.md#rnf-001) | `Optimiza predict para < 1s. Log prediction_time_ms.` |
+| T-313 | [~] | Tests APIs predict/simulate | [RTS-001](Requirements/Requirements.md#rts-001) · [Testing §6.2–6.3](Testing/Testing.md#62-prediction-api-uc-020023-uc-030) | `Predict: `backend/tests/test_predictions.py` (6 tests). Simulate: pendiente T-305.` |
 | T-314 | [ ] | Tests history/analytics | [RTS-001](Requirements/Requirements.md#rts-001) · [Testing §6.4](Testing/Testing.md#64-history--analytics-uc-050052-uc-060062) | `Tras T-306–307: tests GET /history filtros y GET /analytics agregados.` |
 
-| US | ✓ | Historia | UC | RF |
+| US | ✓ | Historia | UC | RIA / RF |
 |---|---|---|---|---|
-| US-020 | [ ] | Enviar datos → score | [UC-020–023](Use%20Cases/Use%20Cases.md#6-clinical-prediction) | [RF-022](Requirements/Requirements.md#rf-022--evaluación-ia) |
+| US-010 | [x] | Predecir readmisión (API) | [UC-022](Use%20Cases/Use%20Cases.md#uc-022--generate-ai-prediction) | [RIA-021](Requirements/Requirements.md#ria-021) |
+| US-011 | [x] | Explicar predicción (API) | [UC-030](Use%20Cases/Use%20Cases.md#uc-030--generate-shap-explanation) | [RIA-030](Requirements/Requirements.md#ria-030) |
+| US-020 | [ ] | Enviar datos → score (UI) | [UC-020–023](Use%20Cases/Use%20Cases.md#6-clinical-prediction) | [RF-022](Requirements/Requirements.md#rf-022--evaluación-ia) |
 | US-021 | [ ] | Simular variables | [UC-040–043](Use%20Cases/Use%20Cases.md#8-clinical-simulation) | [RF-040](Requirements/Requirements.md#rf-040--simulación-interactiva) |
 | US-022 | [ ] | Ver historial (nurse) | [UC-050](Use%20Cases/Use%20Cases.md#uc-050--view-prediction-history) | [RF-050](Requirements/Requirements.md#rf-050--historial-evaluaciones) |
 | US-023 | [ ] | Analytics población | [UC-060](Use%20Cases/Use%20Cases.md#uc-060--view-analytics-dashboard) | [RF-060](Requirements/Requirements.md#rf-060--dashboard-analítico) |
@@ -501,3 +500,19 @@ Documento vivo para seguir el progreso del TFM.
 | 2026-06-11 | US-001: frontend login → dashboard (T-401, T-403–405, T-408–411). MVP 49/134 (37%) |
 | 2026-06-11 | US-002: logout seguro frontend (UC-002, RF-002). MVP 50/134 (37%) |
 | 2026-06-11 | US-003: RoleRoute + navegación por rol (UC-003, RF-004). MVP 52/134 (39%) |
+| 2026-06-11 | T-201: dataset Diabetes 130-US documentado + script descarga. MVP 53/134 (40%) |
+| 2026-06-11 | T-202: notebook EDA `notebooks/diabetes130_eda.ipynb`. MVP 54/134 (40%) |
+| 2026-06-11 | T-203: `ml/preprocessing/` pipeline reproducible train/inference + tests. MVP 55/134 (41%) |
+| 2026-06-11 | T-204: feature engineering (`features.py`) — 4 derivadas + set MVP 19 features. MVP 56/134 (42%) |
+| 2026-06-11 | T-205: baseline Logistic Regression + métricas test split + script entrenamiento. MVP 57/134 (43%) |
+| 2026-06-11 | T-206: Random Forest + comparación baselines (`baseline_comparison.json`). MVP 58/134 (43%) |
+| 2026-06-11 | T-207: evaluación formal métricas + threshold recall + `evaluation_report.json`. MVP 59/134 (44%) |
+| 2026-06-11 | T-208: selección modelo final LR + `final_model_selection.json` + `models/final/`. MVP 60/134 (45%) |
+| 2026-06-11 | T-209: serialización producción `models/model.pkl`, `preprocessor.pkl`, `model_manifest.json`. MVP 61/134 (46%) |
+| 2026-06-11 | T-210: SHAP LinearExplainer + resumen clínico en `ml/explainability/`. MVP 62/134 (46%) |
+| 2026-06-11 | T-211: suite RTS-010 en `ml/tests/` (load, inference, métricas, SHAP). MVP 63/134 (47%) |
+| 2026-06-11 | T-212: `docs/ML/ML-Pipeline.md` — metodología, dataset, modelos, resultados, conclusiones (RAC-010). MVP 64/134 (48%) |
+| 2026-06-11 | T-213: XGBoost opcional + `models/xgboost_evaluation.json`; LR sigue modelo producción. MVP 65/134 (49%) |
+| 2026-06-11 | T-214: gráficos EDA exportados en `docs/figures/eda/` + script reproducible. Fase 2 completa. MVP 67/134 (50%) |
+| 2026-06-11 | US-010/US-011: `POST /predict` con ML real + SHAP + persistencia (T-301–304, T-308, T-310, T-312). Fase 3 6/14. MVP 75/134 (56%) |
+| 2026-06-21 | Revisión Fase 2 + predict: tests manuales Phase-02/03, `shap_background.npy`, docs ML/Testing/README actualizados |

@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 
 from core.database import get_db
 from core.jwt import decode_access_token, is_token_error
+from core.ml_registry import MLRegistry, ml_registry
 from models.user import User
 from repositories.user_repository import UserRepository
 
@@ -53,3 +54,8 @@ def require_roles(*allowed_roles: str) -> Callable[..., User]:
         return current_user
 
     return _require_role
+
+
+def get_ml_registry() -> MLRegistry:
+    """Return the application-wide ML registry (loaded at startup)."""
+    return ml_registry

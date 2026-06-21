@@ -32,6 +32,7 @@ class ShapExplanation(Base):
     feature_name: Mapped[str] = mapped_column(String(100), nullable=False)
     feature_value: Mapped[str | None] = mapped_column(String(255), nullable=True)
     shap_value: Mapped[Decimal] = mapped_column(Numeric(10, 5), nullable=False)
+    direction: Mapped[str | None] = mapped_column(String(30), nullable=True)
     impact_direction: Mapped[str | None] = mapped_column(String(20), nullable=True)
     importance_rank: Mapped[int | None] = mapped_column(Integer, nullable=True)
 

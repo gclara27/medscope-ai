@@ -70,19 +70,27 @@ dev.bat
 This script:
 
 1. Starts PostgreSQL in Docker (detached)
-2. Runs `alembic upgrade head`
-3. Opens a **new terminal** for the backend (`uvicorn` on port 8000)
-4. Opens a **new terminal** for the frontend (`npm run dev` on port 5173)
+2. Stops the Docker **backend** container if running (frees port 8000 for local uvicorn)
+3. Runs `alembic upgrade head`
+4. Opens a **new terminal** for the backend (`uvicorn` on port 8000, with full ML stack)
+5. Opens a **new terminal** for the frontend (`npm run dev` on port 5173)
 
 Then open http://localhost:5173/login
 
 ### Stop everything
 
 ```powershell
-.\scripts\stop-dev.ps1
+.\stop.bat
 ```
 
-Stops processes on ports 8000 and 5173, and runs `docker compose down`.
+Or:
+
+```powershell
+.\stop.ps1
+# same as .\scripts\stop-dev.ps1
+```
+
+Stops processes on ports **8000** (backend) and **5173** (frontend), closes **MedScope AI** dev terminal windows if still open, and runs `docker compose down` (PostgreSQL data is kept in the Docker volume).
 
 **Requires Docker Desktop running** before `start-dev.ps1`.
 
@@ -119,8 +127,9 @@ docker compose up --build -d
 | Service | URL / endpoint |
 |---------|----------------|
 | Backend API | http://localhost:8000 |
-| Health check | http://localhost:8000/health → `{"status":"ok"}` |
+| Health check | http://localhost:8000/health → `{"status":"ok","ml_ready":true}` |
 | API docs (Swagger) | http://localhost:8000/docs |
+| Predict (JWT) | `POST /auth/login` then `POST /predict` — see [Manual Phase 03](docs/Testing/Manual/Phase-03-ML-Backend-Integration.md) |
 | PostgreSQL | `localhost:5432` — DB `medscope_ai`, user `medscope` |
 
 ```bash

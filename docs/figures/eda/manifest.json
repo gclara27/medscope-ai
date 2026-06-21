@@ -1,0 +1,49 @@
+{
+  "task": "T-214",
+  "dataset": "diabetes130-us-hospitals",
+  "source_notebook": "notebooks/diabetes130_eda.ipynb",
+  "exported_at": "2026-06-21T08:45:10.741293+00:00",
+  "rows": 101766,
+  "figures": [
+    {
+      "file": "01_missing_values.png",
+      "stem": "01_missing_values",
+      "caption": "Top columns with missing or placeholder values"
+    },
+    {
+      "file": "02_target_distribution.png",
+      "stem": "02_target_distribution",
+      "caption": "Hospital readmission target distribution"
+    },
+    {
+      "file": "03_binary_target.png",
+      "stem": "03_binary_target",
+      "caption": "Binary MVP target readmit_30d"
+    },
+    {
+      "file": "04_numeric_distributions.png",
+      "stem": "04_numeric_distributions",
+      "caption": "Key numeric feature distributions"
+    },
+    {
+      "file": "05_categorical_distributions.png",
+      "stem": "05_categorical_distributions",
+      "caption": "Key categorical feature distributions"
+    },
+    {
+      "file": "06_correlation_heatmap.png",
+      "stem": "06_correlation_heatmap",
+      "caption": "Pearson correlation on numeric MVP features"
+    },
+    {
+      "file": "07_readmission_rate_by_age.png",
+      "stem": "07_readmission_rate_by_age",
+      "caption": "30-day readmission rate by age bin"
+    },
+    {
+      "file": "08_encounters_per_patient.png",
+      "stem": "08_encounters_per_patient",
+      "caption": "Duplicate encounters per patient"
+    }
+  ]
+}

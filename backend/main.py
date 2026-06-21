@@ -1,15 +1,28 @@
 """MedScope AI — FastAPI application entry point."""
 
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from core.config import settings
+from core.ml_registry import ml_registry
 from routers import analytics, auth, history, predictions, simulations
+
+
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    """Load ML artifacts once at startup (T-301, UC-082)."""
+    ml_registry.load()
+    yield
+    ml_registry.unload()
+
 
 app = FastAPI(
     title="MedScope AI",
     description="Clinical Decision Support System API",
     version="0.1.0",
+    lifespan=lifespan,
 )
 
 app.add_middleware(
@@ -28,6 +41,13 @@ app.include_router(analytics.router, tags=["analytics"])
 
 
 @app.get("/health", tags=["system"])
-def health_check() -> dict[str, str]:
+def health_check() -> dict[str, str | bool]:
     """Health check for Docker, load balancers, and monitoring."""
-    return {"status": "ok", "service": "medscope-api"}
+    payload: dict[str, str | bool] = {
+        "status": "ok",
+        "service": "medscope-api",
+        "ml_ready": ml_registry.is_ready,
+    }
+    if not ml_registry.is_ready and ml_registry.load_error:
+        payload["ml_error"] = ml_registry.load_error
+    return payload

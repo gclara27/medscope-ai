@@ -64,6 +64,8 @@ coverage.xml
 # --- ML artifacts (keep folder structure, ignore large files) ---
 datasets/*
 !datasets/.gitkeep
+!datasets/README.md
+!datasets/manifest.json
 models/*
 *.pkl
 *.pickle

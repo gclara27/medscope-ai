@@ -113,10 +113,13 @@ Rutas protegidas: validar JWT y roles `admin`, `clinician`, `analyst`, `nurse` (
 
 ## 6.2 Prediction API (UC-020–023, UC-030)
 
+**Implementado:** `backend/tests/test_predictions.py` (6 tests).
+
 - payload válido → 200 + `risk_score` + categoría
 - respuesta incluye SHAP / feature contributions
 - input inválido → 422 (UC-090, RTS-002)
 - predicción persistida en DB (UC-023)
+- rol analyst → 403 en `/predict`
 
 ## 6.3 Simulation API (UC-040–044)
 
@@ -170,7 +173,19 @@ Ubicación: `ml/tests/`
 | `test_prediction_range` | score entre 0 y 1 |
 | `test_preprocessing_consistency` | mismas features train/inference |
 | `test_shap_output` | SHAP no nulo, top features (UC-030) |
-| `test_metrics_threshold` | recall priorizado; accuracy > 75% (§15 KPIs) |
+| `test_metrics_threshold` | recall priorizado; accuracy > 75% (§15 KPIs) — **xfail documentado** |
+
+**Última ejecución de referencia (repo local):** 138 passed, 1 xfailed (`ml/tests` + `backend/tests`); 17 passed (`frontend` vitest).
+
+### Tests manuales por fase
+
+Complementan pytest/vitest para defensa TFM y entorno real:
+
+| Fase | Documento |
+|---|---|
+| 1 | [Manual/Phase-01-Backend-Database.md](Manual/Phase-01-Backend-Database.md) |
+| 2 | [Manual/Phase-02-ML-Pipeline.md](Manual/Phase-02-ML-Pipeline.md) |
+| 3 (parcial) | [Manual/Phase-03-ML-Backend-Integration.md](Manual/Phase-03-ML-Backend-Integration.md) |
 
 ---
 
@@ -312,6 +327,22 @@ ML:       pytest + métricas scikit-learn
 ```
 
 Volumen recomendado TFM: **15–20 backend tests** + **3–5 E2E** + **tests ML básicos** + **algunos frontend**.
+
+---
+
+# 18. Tests manuales por fase
+
+Checklists ejecutables por una persona **sin experiencia previa** en la aplicación. Documentación en español; la UI y la API permanecen en inglés.
+
+| Recurso | Ubicación |
+|---|---|
+| Índice y convenciones | [`Manual/README.md`](Manual/README.md) |
+| Fase 1 — Backend + BD | [`Manual/Phase-01-Backend-Database.md`](Manual/Phase-01-Backend-Database.md) |
+| Fase 2+ | *(pendiente)* — ver índice en README |
+
+Cada caso incluye: precondiciones, pasos detallados, resultado esperado, criterios de aceptación y tabla para marcar ejecución (`[ ]` → `[x]`).
+
+Complementan (no sustituyen) `pytest` / Playwright: validan entorno real (Docker, PostgreSQL, Swagger) antes de demos y defensa del TFM.
 
 ---
 

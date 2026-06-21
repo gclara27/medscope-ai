@@ -105,6 +105,14 @@ if (-not (Wait-PostgresReady)) {
 }
 Write-Host "  PostgreSQL is ready."
 
+# --- Free port 8000 for local uvicorn (avoid stale Docker backend) ---
+Write-Step "Stopping Docker backend if running (local uvicorn uses port 8000)"
+$prevErrorAction = $ErrorActionPreference
+$ErrorActionPreference = "Continue"
+docker compose stop backend *>$null
+$ErrorActionPreference = $prevErrorAction
+Write-Host "  Docker backend stopped if it was running (PostgreSQL stays up)."
+
 # --- Migrations ---
 Write-Step "Applying database migrations"
 Push-Location $BackendDir
@@ -144,5 +152,5 @@ Write-Host ""
 Write-Host "  Two new PowerShell windows were opened (backend + frontend)."
 Write-Host "  PostgreSQL runs in Docker (detached)."
 Write-Host ""
-Write-Host "  Stop everything: .\scripts\stop-dev.ps1"
+Write-Host "  Stop everything: .\stop.bat"
 Write-Host ""

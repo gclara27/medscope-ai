@@ -23,8 +23,8 @@ Complementar los tests automáticos (`pytest`, `vitest`, Playwright) con un chec
 | 0 | [Phase-00-Initialization.md](Phase-00-Initialization.md) | *(pendiente)* — repo, Docker, scripts de arranque |
 | 1 | [Phase-01-Backend-Database.md](Phase-01-Backend-Database.md) | Backend FastAPI, PostgreSQL, auth API |
 | 2 | [Phase-02-ML-Pipeline.md](Phase-02-ML-Pipeline.md) | Dataset, EDA, preprocessing, entrenamiento, serialización, SHAP offline |
-| 3 | [Phase-03-ML-Backend-Integration.md](Phase-03-ML-Backend-Integration.md) | `POST /predict`, ML startup, persistencia (parcial — simulate/history pendiente) |
-| 4 | [Phase-04-Frontend-Foundation.md](Phase-04-Frontend-Foundation.md) | *(pendiente)* — login UI, rutas, roles en React |
+| 3 | [Phase-03-ML-Backend-Integration.md](Phase-03-ML-Backend-Integration.md) | `POST /predict`, `POST /simulate`, `GET /history`, `GET /analytics`, ML startup, persistencia |
+| 4 | [Phase-04-Frontend-Foundation.md](Phase-04-Frontend-Foundation.md) | Splash, login UI, rutas protegidas, roles, layout responsive, dashboard demo |
 
 ---
 

@@ -59,9 +59,7 @@ class SimulationService:
 
         started = time.perf_counter()
         features = request_to_feature_frame(simulated_request)
-        simulated_risk_score, simulated_risk_level = self.registry.explainer_service.predict_risk(
-            features
-        )
+        simulated_risk_score, simulated_risk_level = self.registry.explainer_service.predict_risk(features)
         elapsed_ms = int((time.perf_counter() - started) * 1000)
 
         simulated_risk_percent = round(simulated_risk_score * 100, 2)

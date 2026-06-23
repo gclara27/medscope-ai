@@ -50,8 +50,7 @@ def main() -> int:
 
     if not DEFAULT_RAW_DATA_PATH.exists():
         print(
-            f"Dataset not found at {DEFAULT_RAW_DATA_PATH}. "
-            "Run: python ml/scripts/download_dataset.py",
+            f"Dataset not found at {DEFAULT_RAW_DATA_PATH}. Run: python ml/scripts/download_dataset.py",
             file=sys.stderr,
         )
         return 1

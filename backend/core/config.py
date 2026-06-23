@@ -18,9 +18,7 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
-    database_url: str = (
-        "postgresql://medscope:medscope_dev@localhost:5432/medscope_ai"
-    )
+    database_url: str = "postgresql://medscope:medscope_dev@localhost:5432/medscope_ai"
     jwt_secret: str = "change-me-in-production"
     jwt_algorithm: str = "HS256"
     jwt_expire_minutes: int = 60

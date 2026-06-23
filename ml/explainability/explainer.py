@@ -2,9 +2,8 @@
 
 from __future__ import annotations
 
-from typing import Any
-
 from pathlib import Path
+from typing import Any
 
 import numpy as np
 import pandas as pd
@@ -155,9 +154,7 @@ class ShapExplainerService:
     ) -> None:
         self.manifest = manifest or load_production_manifest()
         self.model, self.preprocessor = (
-            (model, preprocessor)
-            if model is not None and preprocessor is not None
-            else load_production_model()
+            (model, preprocessor) if model is not None and preprocessor is not None else load_production_model()
         )
         if not self.preprocessor.is_fitted_:
             raise RuntimeError("Preprocessor must be fitted before SHAP explanation.")

@@ -23,10 +23,7 @@ def _print_threshold_block(label: str, block: dict) -> None:
     print(f"    precision: {metrics['precision']:.4f}")
     print(f"    f1       : {metrics['f1']:.4f}")
     print(f"    roc_auc  : {metrics['roc_auc']:.4f}")
-    print(
-        f"    accuracy target (>={TARGET_ACCURACY:.0%}): "
-        f"{'PASS' if block['meets_accuracy_target'] else 'FAIL'}"
-    )
+    print(f"    accuracy target (>={TARGET_ACCURACY:.0%}): {'PASS' if block['meets_accuracy_target'] else 'FAIL'}")
 
 
 def main() -> int:
@@ -43,8 +40,7 @@ def main() -> int:
 
     if not DEFAULT_RAW_DATA_PATH.exists():
         print(
-            f"Dataset not found at {DEFAULT_RAW_DATA_PATH}. "
-            "Run: python ml/scripts/download_dataset.py",
+            f"Dataset not found at {DEFAULT_RAW_DATA_PATH}. Run: python ml/scripts/download_dataset.py",
             file=sys.stderr,
         )
         return 1

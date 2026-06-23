@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -54,8 +54,7 @@ class ProductionModelManifest:
 def load_final_model_selection(path: Path = FINAL_MODEL_SELECTION_PATH) -> dict[str, Any]:
     if not path.exists():
         raise FileNotFoundError(
-            f"Final model selection not found at {path}. "
-            "Run: python ml/scripts/select_final_model.py"
+            f"Final model selection not found at {path}. Run: python ml/scripts/select_final_model.py"
         )
     return json.loads(path.read_text(encoding="utf-8"))
 
@@ -70,7 +69,7 @@ def build_production_manifest(selection: dict[str, Any]) -> ProductionModelManif
         model_path=MODEL_FILENAME,
         preprocessor_path=PREPROCESSOR_FILENAME,
         source_directory=str(FINAL_MODEL_DIR),
-        serialized_at=datetime.now(timezone.utc).isoformat(),
+        serialized_at=datetime.now(UTC).isoformat(),
     )
 
 
@@ -89,10 +88,7 @@ def serialize_production_model(
     source_model = source_dir / MODEL_FILENAME
     source_preprocessor = source_dir / PREPROCESSOR_FILENAME
     if not source_model.exists() or not source_preprocessor.exists():
-        raise FileNotFoundError(
-            f"Missing artifacts in {source_dir}. "
-            "Run: python ml/scripts/select_final_model.py"
-        )
+        raise FileNotFoundError(f"Missing artifacts in {source_dir}. Run: python ml/scripts/select_final_model.py")
 
     model_path.parent.mkdir(parents=True, exist_ok=True)
     joblib.dump(joblib.load(source_model), model_path)
@@ -113,9 +109,7 @@ def load_production_model(
     preprocessor_path: Path = PRODUCTION_PREPROCESSOR_PATH,
 ) -> tuple[Any, Diabetes130Preprocessor]:
     if not model_path.exists() or not preprocessor_path.exists():
-        raise FileNotFoundError(
-            f"Production artifacts not found. Run: python ml/scripts/serialize_model.py"
-        )
+        raise FileNotFoundError("Production artifacts not found. Run: python ml/scripts/serialize_model.py")
     model = joblib.load(model_path)
     preprocessor = joblib.load(preprocessor_path)
     return model, preprocessor
@@ -123,10 +117,7 @@ def load_production_model(
 
 def load_production_manifest(path: Path = MODEL_MANIFEST_PATH) -> dict[str, Any]:
     if not path.exists():
-        raise FileNotFoundError(
-            f"Model manifest not found at {path}. "
-            "Run: python ml/scripts/serialize_model.py"
-        )
+        raise FileNotFoundError(f"Model manifest not found at {path}. Run: python ml/scripts/serialize_model.py")
     return json.loads(path.read_text(encoding="utf-8"))
 
 

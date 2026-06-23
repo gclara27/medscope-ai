@@ -29,6 +29,7 @@ Consult before implementing:
 | ML | pytest | `ml/tests/` |
 | Frontend | vitest, @testing-library/react | `frontend/src/**/*.test.tsx` |
 | E2E | playwright | `tests/e2e/` |
+| Lint | Ruff (Python), ESLint (TS/React) | `pyproject.toml`, `frontend/eslint.config.js`, `scripts/lint.ps1` |
 
 ---
 
@@ -65,3 +66,20 @@ Target: **60–75%** backend coverage (`pytest --cov=backend`).
 Use SQLite in-memory for fast unit tests; optional Docker PostgreSQL for integration.
 
 Pragmatic testing — focus on MVP reliability, not exhaustive mocks.
+
+---
+
+# Lint
+
+Run from repo root before commit or demo:
+
+```powershell
+.\scripts\lint.ps1
+```
+
+| Tool | Scope | Config |
+|---|---|---|
+| Ruff | `backend/`, `ml/` | `pyproject.toml` (line length 120) |
+| ESLint | `frontend/` | `frontend/eslint.config.js` |
+
+Fix Python formatting: `ruff format backend ml`. Fix frontend: `cd frontend && npm run lint:fix`.

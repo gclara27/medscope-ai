@@ -7,6 +7,7 @@ from pathlib import Path
 
 import joblib
 import pytest
+
 from ml.preprocessing.constants import FEATURE_COLUMNS
 from ml.preprocessing.pipeline import Diabetes130Preprocessor
 from ml.training.constants import (
@@ -14,7 +15,6 @@ from ml.training.constants import (
     LOGISTIC_REGRESSION_MODEL_PATH,
     MODEL_FILENAME,
     PREPROCESSOR_FILENAME,
-    PRODUCTION_SHAP_BACKGROUND_PATH,
 )
 from ml.training.serialize import (
     build_production_manifest,

@@ -38,6 +38,7 @@ No se requiere un sistema enterprise enorme. Se requiere cobertura de **flujos c
 | ML validation | pytest | `ml/tests/` |
 | Frontend unit | vitest, React Testing Library | `frontend/` (co-located `*.test.tsx`) |
 | E2E | Playwright | `tests/e2e/` |
+| Lint / format | Ruff (Python), ESLint (TypeScript) | `pyproject.toml`, `frontend/eslint.config.js` |
 | Mocking | unittest.mock | backend / ml |
 | Test DB (unit) | SQLite en memoria | `backend/tests/conftest.py` |
 
@@ -64,20 +65,19 @@ medscope-ai/
 ├── backend/
 │   └── tests/
 │       ├── conftest.py
-│       ├── test_auth.py
-│       ├── test_predictions.py
-│       ├── test_simulations.py
-│       ├── test_history.py
-│       └── test_analytics.py
+│       ├── test_auth*.py, test_security.py
+│       ├── test_predictions.py, test_ml_registry.py
+│       ├── test_simulations.py, test_simulation_service.py, test_simulation_mapper.py
+│       ├── test_history.py, test_analytics.py, test_risk_format.py
+│       ├── test_exception_handlers.py
+│       └── test_models_*.py, test_openapi.py
 ├── ml/
-│   └── tests/
-│       ├── test_model_load.py
-│       ├── test_preprocessing.py
-│       ├── test_inference.py
-│       └── test_shap.py
+│   └── tests/          # preprocessing, training, SHAP, métricas, serialización
 ├── frontend/
 │   └── src/
-│       └── **/*.test.tsx
+│       └── **/*.{test.ts,test.tsx}
+├── pyproject.toml      # Ruff (backend + ml)
+├── scripts/lint.ps1    # Ruff + ESLint desde la raíz
 └── tests/
     └── e2e/
         ├── auth.spec.ts
@@ -124,7 +124,7 @@ Rutas protegidas: validar JWT y roles `admin`, `clinician`, `analyst`, `nurse` (
 
 ## 6.3 Simulation API (UC-040–044)
 
-**Implementado:** `backend/tests/test_simulations.py` (6 tests).
+**Implementado:** `backend/tests/test_simulations.py` (6 tests), `test_simulation_service.py` (5), `test_simulation_mapper.py` (4).
 
 - modificar variables → nuevo score (original vs simulado)
 - simulación persistida (`simulations` + `simulation_inputs`)
@@ -136,18 +136,19 @@ Rutas protegidas: validar JWT y roles `admin`, `clinician`, `analyst`, `nurse` (
 
 **Implementado:** `backend/tests/test_history.py` (6 tests), `backend/tests/test_analytics.py` (6 tests).
 
-- GET `/history` devuelve predicciones tras `POST /predict`
+- GET `/history` devuelve predicciones tras `POST /predict`; `risk_score` / `risk_percent` alineados con `/predict`
 - filtros por `risk_level`, `user_id`, rango de fechas inválido → 422
 - GET `/analytics` devuelve KPIs, distribución de riesgo y tendencia diaria
 - filtros `date_from` / `date_to`; nurse → 403, admin/analyst permitidos
 
 ## 6.4.1 Exception handlers (UC-091)
 
-**Implementado:** `backend/tests/test_exception_handlers.py` (3 tests).
+**Implementado:** `backend/tests/test_exception_handlers.py` (4 tests).
 
 - validación Pydantic → 422 JSON sin stack trace
 - `HTTPException` → JSON `{ "detail": ... }`
 - excepción no controlada → 500 mensaje genérico, log en servidor
+- catch-all delega `RequestValidationError` si llega a `ServerErrorMiddleware`
 
 ## 6.5 Database
 
@@ -191,7 +192,7 @@ Ubicación: `ml/tests/`
 | `test_shap_output` | SHAP no nulo, top features (UC-030) |
 | `test_metrics_threshold` | recall priorizado; accuracy > 75% (§15 KPIs) — **xfail documentado** |
 
-**Última ejecución de referencia (repo local):** 138 passed, 1 xfailed (`ml/tests` + `backend/tests`); 17 passed (`frontend` vitest).
+**Última ejecución de referencia (repo local, jun 2026):** **93** passed (`backend/tests`), **80** passed + **1** xfailed (`ml/tests`), **22** passed (`frontend` vitest) — **195** automatizados en total.
 
 ### Tests manuales por fase
 
@@ -201,7 +202,8 @@ Complementan pytest/vitest para defensa TFM y entorno real:
 |---|---|
 | 1 | [Manual/Phase-01-Backend-Database.md](Manual/Phase-01-Backend-Database.md) |
 | 2 | [Manual/Phase-02-ML-Pipeline.md](Manual/Phase-02-ML-Pipeline.md) |
-| 3 (parcial) | [Manual/Phase-03-ML-Backend-Integration.md](Manual/Phase-03-ML-Backend-Integration.md) |
+| 3 | [Manual/Phase-03-ML-Backend-Integration.md](Manual/Phase-03-ML-Backend-Integration.md) |
+| 4 | [Manual/Phase-04-Frontend-Foundation.md](Manual/Phase-04-Frontend-Foundation.md) |
 
 ---
 
@@ -217,9 +219,12 @@ Prioridad baja-media. No pixel-perfect testing.
 | Sidebar | navegación RF-012 |
 | Charts | render básico Recharts |
 
+**Implementado (Fase 4):** login, logout toast, `RoleRoute`, `AppLayout` (desktop + mobile), `SplashPage`, `Spinner`/`Alert`, chart demo en dashboard — ver `frontend/src/**/*.test.{ts,tsx}` (8 archivos, 22 tests).
+
 ```bash
 cd frontend
 npm run test
+npm run lint
 ```
 
 ---
@@ -272,8 +277,8 @@ pytest --cov=backend --cov-report=html
 |---|---|---|
 | Setup + backend | 1 | ❌ mínimo — arquitectura inestable |
 | ML pipeline | 2 | ✅ tests ML básicos |
-| ML + backend integration | 3 | ✅ API tests (`/predict`, `/simulate`) |
-| Frontend foundation | 4 | ❌ UI aún cambia |
+| ML + backend integration | 3 | ✅ API tests (`/predict`, `/simulate`, `/history`, `/analytics`) |
+| Frontend foundation | 4 | ✅ vitest básico (login, roles, layout, splash) |
 | Core clinical features | 5–6 | ✅ integration tests + frontend básico |
 | Polish + hardening | 7 | ✅ E2E Playwright + coverage report |
 
@@ -336,13 +341,29 @@ Enfoque: **feature first → estabilizar → automatizar tests** (no TDD estrict
 # 17. Stack resumen
 
 ```text
-Backend:  pytest + pytest-cov + httpx
-Frontend: vitest + @testing-library/react
+Backend:  pytest + pytest-cov + httpx + ruff
+Frontend: vitest + @testing-library/react + eslint
 E2E:      playwright
-ML:       pytest + métricas scikit-learn
+ML:       pytest + métricas scikit-learn + ruff
 ```
 
-Volumen recomendado TFM: **15–20 backend tests** + **3–5 E2E** + **tests ML básicos** + **algunos frontend**.
+Volumen recomendado TFM: **~90+ backend tests** (MVP APIs cubiertas) + **3–5 E2E** + **tests ML básicos** + **vitest frontend** (~20 tests).
+
+### Lint (calidad estática)
+
+Ejecutar antes de commit o demo:
+
+```powershell
+# Desde la raíz (Windows)
+.\scripts\lint.ps1
+
+# O por capa
+ruff check backend ml
+ruff format --check backend ml
+cd frontend && npm run lint
+```
+
+Configuración: `pyproject.toml` (Ruff, línea 120), `frontend/eslint.config.js` (ESLint 9 flat config).
 
 ---
 
@@ -354,7 +375,9 @@ Checklists ejecutables por una persona **sin experiencia previa** en la aplicaci
 |---|---|
 | Índice y convenciones | [`Manual/README.md`](Manual/README.md) |
 | Fase 1 — Backend + BD | [`Manual/Phase-01-Backend-Database.md`](Manual/Phase-01-Backend-Database.md) |
-| Fase 2+ | *(pendiente)* — ver índice en README |
+| Fase 2 — Pipeline ML | [`Manual/Phase-02-ML-Pipeline.md`](Manual/Phase-02-ML-Pipeline.md) |
+| Fase 3 — ML + Backend | [`Manual/Phase-03-ML-Backend-Integration.md`](Manual/Phase-03-ML-Backend-Integration.md) |
+| Fase 4 — Frontend base | [`Manual/Phase-04-Frontend-Foundation.md`](Manual/Phase-04-Frontend-Foundation.md) |
 
 Cada caso incluye: precondiciones, pasos detallados, resultado esperado, criterios de aceptación y tabla para marcar ejecución (`[ ]` → `[x]`).
 
@@ -373,5 +396,5 @@ Complementan (no sustituyen) `pytest` / Playwright: validan entorno real (Docker
 | UC-050–052 | backend + E2E | `test_history.py` |
 | UC-060–062 | backend + E2E | `test_analytics.py` |
 | UC-090 | backend | validación en todos los endpoints |
-| UC-091 | backend | exception handlers |
-| UC-101–103 | frontend + E2E | loading/error states |
+| UC-091 | backend | `test_exception_handlers.py` |
+| UC-101–103 | frontend + E2E | `ux-feedback.test.tsx`, `LoginPage.logout.test.tsx` |

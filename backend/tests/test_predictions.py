@@ -115,16 +115,12 @@ def test_predict_persisted_in_database(
     assert prediction.prediction_time_ms is not None
     assert prediction.prediction_time_ms < 1000
 
-    patient_input = db_session.scalar(
-        select(PatientInput).where(PatientInput.prediction_id == prediction.id)
-    )
+    patient_input = db_session.scalar(select(PatientInput).where(PatientInput.prediction_id == prediction.id))
     assert patient_input is not None
     assert patient_input.age == VALID_PAYLOAD["age"]
 
     shap_count = db_session.scalar(
-        select(func.count())
-        .select_from(ShapExplanation)
-        .where(ShapExplanation.prediction_id == prediction.id)
+        select(func.count()).select_from(ShapExplanation).where(ShapExplanation.prediction_id == prediction.id)
     )
     assert shap_count == len(response.json()["shap_explanations"])
 

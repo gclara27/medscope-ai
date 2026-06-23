@@ -16,7 +16,7 @@ from schemas.prediction import (
     RiskLevel,
 )
 
-_SIMULATION_FIELD_NAMES = (
+SIMULATION_FIELD_NAMES = (
     "age",
     "gender",
     "hospital_stay_days",
@@ -68,7 +68,7 @@ class SimulateModifications(BaseModel):
 
     @model_validator(mode="after")
     def require_at_least_one_change(self) -> SimulateModifications:
-        if not any(getattr(self, name) is not None for name in _SIMULATION_FIELD_NAMES):
+        if not any(getattr(self, name) is not None for name in SIMULATION_FIELD_NAMES):
             raise ValueError("Provide at least one modified clinical variable.")
         return self
 

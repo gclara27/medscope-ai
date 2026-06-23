@@ -244,6 +244,32 @@ Full detail: [Database doc — §1.1 Environments](docs/Database/Database.md#11-
 
 ---
 
+## Lint and tests
+
+Static analysis and automated tests (reference counts, jun 2026):
+
+```powershell
+# Lint (Python + frontend)
+.\scripts\lint.ps1
+
+# Backend (93 tests)
+cd backend
+pytest
+
+# ML (80 passed + 1 xfail esperado)
+cd ..\ml
+pytest
+
+# Frontend (22 tests)
+cd ..\frontend
+npm run test
+npm run lint
+```
+
+See [Testing strategy](docs/Testing/Testing.md) for manual checklists per phase (`docs/Testing/Manual/`).
+
+---
+
 ## Environment variables
 
 Copy [`.env.example`](.env.example) to `.env`:
@@ -288,6 +314,7 @@ medscope-ai/
 | [Requirements](docs/Requirements/Requirements.md) | Functional and technical requirements |
 | [Execution Plan](docs/Execution%20Plan/ExecutionPlan.md) | Phased delivery plan |
 | [Database](docs/Database/Database.md) | Schema and persistence |
+| [Testing](docs/Testing/Testing.md) | Automated tests, lint, manual checklists |
 | [Task Tracker](docs/TaskTracker.md) | MVP task checklist |
 
 ---

@@ -19,9 +19,7 @@ from ml.training.serialize import serialize_production_model, validate_productio
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(
-        description="Serialize production ML artifacts to models/ (T-209, RIA-020)."
-    )
+    parser = argparse.ArgumentParser(description="Serialize production ML artifacts to models/ (T-209, RIA-020).")
     parser.add_argument(
         "--skip-validation",
         action="store_true",

@@ -2,11 +2,12 @@
 
 from dataclasses import dataclass
 
+from sqlalchemy.orm import Session
+
 from core.jwt import create_access_token_for_user
 from core.security import hash_password, verify_password
 from models.user import User
 from repositories.user_repository import UserRepository
-from sqlalchemy.orm import Session
 
 
 @dataclass

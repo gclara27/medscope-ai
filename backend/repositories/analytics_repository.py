@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import date, datetime, time, timezone
+from datetime import UTC, date, datetime, time
 
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
@@ -12,11 +12,11 @@ from models.prediction import Prediction
 
 
 def _start_of_day(value: date) -> datetime:
-    return datetime.combine(value, time.min, tzinfo=timezone.utc)
+    return datetime.combine(value, time.min, tzinfo=UTC)
 
 
 def _end_of_day(value: date) -> datetime:
-    return datetime.combine(value, time.max, tzinfo=timezone.utc)
+    return datetime.combine(value, time.max, tzinfo=UTC)
 
 
 @dataclass(frozen=True)

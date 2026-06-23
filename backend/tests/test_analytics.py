@@ -59,9 +59,7 @@ def test_analytics_returns_kpis_and_distribution(
         "medium",
         "high",
     }
-    assert sum(item["count"] for item in data["risk_distribution"]) == data["summary"][
-        "total_predictions"
-    ]
+    assert sum(item["count"] for item in data["risk_distribution"]) == data["summary"]["total_predictions"]
     assert len(data["trend"]) >= 1
     assert data["trend"][-1]["count"] >= 1
 

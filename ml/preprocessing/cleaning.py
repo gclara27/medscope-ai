@@ -24,9 +24,7 @@ def load_raw_dataset(path: Path | str | None = None) -> pd.DataFrame:
     """Load the raw UCI CSV."""
     data_path = Path(path) if path is not None else DEFAULT_RAW_DATA_PATH
     if not data_path.exists():
-        raise FileNotFoundError(
-            f"Dataset not found at {data_path}. Run: python ml/scripts/download_dataset.py"
-        )
+        raise FileNotFoundError(f"Dataset not found at {data_path}. Run: python ml/scripts/download_dataset.py")
     return pd.read_csv(data_path, low_memory=False)
 
 

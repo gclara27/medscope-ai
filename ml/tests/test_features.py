@@ -7,10 +7,10 @@ import pytest
 
 from ml.preprocessing.cleaning import prepare_model_dataframe, split_features_target
 from ml.preprocessing.constants import (
+    DEFAULT_RAW_DATA_PATH,
     DERIVED_NUMERIC_FEATURES,
     EXCLUDED_FROM_MVP,
     FEATURE_COLUMNS,
-    DEFAULT_RAW_DATA_PATH,
 )
 from ml.preprocessing.features import (
     add_diabetes_medication_features,

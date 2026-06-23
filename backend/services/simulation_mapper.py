@@ -6,31 +6,8 @@ from decimal import Decimal
 
 from models.patient_input import PatientInput
 from schemas.prediction import GenderValue, PredictRequest
-from schemas.simulation import SimulateModifications, SimulationChangeItem
+from schemas.simulation import SIMULATION_FIELD_NAMES, SimulateModifications, SimulationChangeItem
 from services.prediction_mapper import normalize_gender
-
-SIMULATION_FIELD_NAMES = (
-    "age",
-    "gender",
-    "hospital_stay_days",
-    "medications_count",
-    "previous_admissions",
-    "glucose",
-    "glucose_level",
-    "blood_pressure",
-    "bmi",
-    "number_outpatient",
-    "number_emergency",
-    "num_lab_procedures",
-    "num_procedures",
-    "number_diagnoses",
-    "active_diabetes_meds_count",
-    "has_insulin",
-    "race",
-    "a1c_result",
-    "medication_change",
-    "diabetes_medication",
-)
 
 
 def _to_gender_value(gender: str | None) -> GenderValue:

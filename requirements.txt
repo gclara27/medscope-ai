@@ -17,6 +17,9 @@ pytest>=8.3.0
 pytest-cov>=5.0.0
 pytest-asyncio>=0.24.0
 
+# Lint & format (backend/, ml/) — run: ruff check . && ruff format --check .
+ruff>=0.9.0
+
 # Notebooks & scripts (notebooks/, scripts/)
 jupyter>=1.1.0
 ipykernel>=6.29.0

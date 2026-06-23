@@ -2,11 +2,12 @@
 
 from __future__ import annotations
 
-from typing import Any, Callable
+from collections.abc import Callable
+from typing import Any
 
 import pandas as pd
 
-from ml.evaluation.metrics import ClassificationMetrics, compute_classification_metrics
+from ml.evaluation.metrics import compute_classification_metrics
 from ml.preprocessing.pipeline import Diabetes130Preprocessor, train_test_split_data
 from ml.training.artifacts import TrainingArtifacts
 

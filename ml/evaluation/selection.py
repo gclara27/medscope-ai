@@ -66,10 +66,7 @@ def _rejection_reason(
             f"({rejected_metrics.recall:.4f} vs {winner_metrics.recall:.4f}). "
             "Healthcare priority favors catching readmissions (EP-2.7)."
         )
-    return (
-        f"Lower recall at production threshold "
-        f"({rejected_metrics.recall:.4f} vs {winner_metrics.recall:.4f})."
-    )
+    return f"Lower recall at production threshold ({rejected_metrics.recall:.4f} vs {winner_metrics.recall:.4f})."
 
 
 def select_final_model(report: EvaluationReport) -> FinalModelSelection:
@@ -96,8 +93,14 @@ def select_final_model(report: EvaluationReport) -> FinalModelSelection:
     }
 
     rationale = (
-        "Selection uses the production decision threshold 0.5; recall-optimized thresholds were not adopted because they collapse accuracy below clinical usability.",
-        f"Primary metric is recall (Requirements EP-2.7, RIA-012). {winner_id} achieves the best recall on the held-out test split at threshold 0.5.",
+        (
+            "Selection uses the production decision threshold 0.5; recall-optimized thresholds "
+            "were not adopted because they collapse accuracy below clinical usability."
+        ),
+        (
+            f"Primary metric is recall (Requirements EP-2.7, RIA-012). {winner_id} achieves "
+            "the best recall on the held-out test split at threshold 0.5."
+        ),
         (
             f"Accuracy target (>={TARGET_ACCURACY:.0%}) is "
             f"{'met' if winner_block.meets_accuracy_target else 'not met'} by the selected model; "
@@ -131,8 +134,7 @@ def promote_final_model_artifacts(selection: FinalModelSelection) -> None:
 
     if not model_source.exists() or not preprocessor_source.exists():
         raise FileNotFoundError(
-            f"Missing trained artifacts for {selection.model_id} in {source_dir}. "
-            "Run the training scripts first."
+            f"Missing trained artifacts for {selection.model_id} in {source_dir}. Run the training scripts first."
         )
 
     FINAL_MODEL_DIR.mkdir(parents=True, exist_ok=True)

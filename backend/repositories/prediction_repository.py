@@ -20,9 +20,7 @@ class PredictionRepository:
     def get_with_patient_input(self, prediction_id: UUID) -> Prediction | None:
         """Load a prediction with its patient_inputs row (UC-040)."""
         return self.db.scalar(
-            select(Prediction)
-            .options(joinedload(Prediction.patient_input))
-            .where(Prediction.id == prediction_id)
+            select(Prediction).options(joinedload(Prediction.patient_input)).where(Prediction.id == prediction_id)
         )
 
     def create_with_details(

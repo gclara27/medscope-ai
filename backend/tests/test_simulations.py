@@ -120,9 +120,7 @@ def test_simulate_persisted_in_database(
     assert float(simulation.delta_risk) == response.json()["delta_risk_percent"]
     assert simulation.simulation_summary == response.json()["simulation_summary"]
 
-    inputs = db_session.scalars(
-        select(SimulationInput).where(SimulationInput.simulation_id == simulation_id)
-    ).all()
+    inputs = db_session.scalars(select(SimulationInput).where(SimulationInput.simulation_id == simulation_id)).all()
     assert len(inputs) == len(response.json()["changes"])
     for stored, item in zip(inputs, response.json()["changes"], strict=True):
         assert stored.feature_name == item["feature_name"]

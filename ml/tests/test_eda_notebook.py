@@ -16,9 +16,7 @@ def test_eda_notebook_has_expected_sections() -> None:
 
     notebook = json.loads(EDA_NOTEBOOK.read_text(encoding="utf-8"))
     source = "\n".join(
-        "".join(cell.get("source", []))
-        for cell in notebook["cells"]
-        if cell.get("cell_type") == "markdown"
+        "".join(cell.get("source", [])) for cell in notebook["cells"] if cell.get("cell_type") == "markdown"
     )
 
     assert "Exploratory Data Analysis" in source

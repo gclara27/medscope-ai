@@ -93,8 +93,9 @@ def test_simulate_returns_original_vs_simulated_comparison(db_session) -> None:
     assert result.changes[0].simulated_value == "0"
     assert result.simulation_time_ms >= 0
 
-    from models.simulation import Simulation, SimulationInput
     from sqlalchemy import func, select
+
+    from models.simulation import Simulation, SimulationInput
 
     stored = db_session.get(Simulation, result.id)
     assert stored is not None
@@ -104,9 +105,7 @@ def test_simulate_returns_original_vs_simulated_comparison(db_session) -> None:
     assert float(stored.delta_risk) == result.delta_risk_percent
 
     input_count = db_session.scalar(
-        select(func.count())
-        .select_from(SimulationInput)
-        .where(SimulationInput.simulation_id == result.id)
+        select(func.count()).select_from(SimulationInput).where(SimulationInput.simulation_id == result.id)
     )
     assert input_count == len(result.changes)
 

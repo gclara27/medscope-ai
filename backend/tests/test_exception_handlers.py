@@ -5,6 +5,7 @@ from __future__ import annotations
 import uuid
 
 import pytest
+from fastapi.exceptions import RequestValidationError
 from fastapi.testclient import TestClient
 
 from core.ml_registry import ml_registry
@@ -115,3 +116,40 @@ def test_unhandled_exception_returns_safe_500(
     assert "secret database password" not in response.text
     assert "Traceback" not in response.text
     assert "RuntimeError" not in response.text
+
+
+@pytest.mark.asyncio
+async def test_unhandled_handler_delegates_validation_errors() -> None:
+    """Catch-all must not mask 422 if a validation error reaches ServerErrorMiddleware."""
+    from starlette.requests import Request
+
+    from core.exception_handlers import (
+        _INTERNAL_ERROR_MESSAGE,
+        unhandled_exception_handler,
+    )
+
+    scope = {
+        "type": "http",
+        "method": "POST",
+        "path": "/predict",
+        "headers": [],
+        "query_string": b"",
+    }
+    request = Request(scope)
+    exc = RequestValidationError(
+        [
+            {
+                "type": "greater_than_equal",
+                "loc": ("body", "age"),
+                "msg": "Input should be greater than or equal to 0",
+                "input": -1,
+            }
+        ]
+    )
+
+    response = await unhandled_exception_handler(request, exc)
+
+    assert response.status_code == 422
+    assert response.body is not None
+    assert b'"detail"' in response.body
+    assert _INTERNAL_ERROR_MESSAGE.encode() not in response.body

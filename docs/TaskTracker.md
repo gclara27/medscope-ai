@@ -269,8 +269,8 @@ Documento vivo para seguir el progreso del TFM.
 | T-310 | [x] | Schemas Pydantic | [RF-021](Requirements/Requirements.md#rf-021--validación) · [UC-090](Use%20Cases/Use%20Cases.md#uc-090--handle-invalid-input) | `Schemas Pydantic para inputs clínicos con validación.` |
 | T-311 | [x] | Exception handlers | [UC-091](Use%20Cases/Use%20Cases.md#uc-091--handle-backend-failure) | `Handlers globales: JSON error, sin stack trace.` |
 | T-312 | [x] | Latencia < 1s | [RNF-001](Requirements/Requirements.md#rnf-001) | `Optimiza predict para < 1s. Log prediction_time_ms.` |
-| T-313 | [x] | Tests APIs predict/simulate | [RTS-001](Requirements/Requirements.md#rts-001) · [Testing §6.2–6.3](Testing/Testing.md#62-prediction-api-uc-020023-uc-030) | `Predict: `test_predictions.py` (7). Simulate: `test_simulations.py` (6).` |
-| T-314 | [x] | Tests history/analytics | [RTS-001](Requirements/Requirements.md#rts-001) · [Testing §6.4](Testing/Testing.md#64-history--analytics-uc-050052-uc-060062) | `History: `test_history.py` (6). Analytics: `test_analytics.py` (6).` |
+| T-313 | [x] | Tests APIs predict/simulate | [RTS-001](Requirements/Requirements.md#rts-001) · [Testing §6.2–6.3](Testing/Testing.md#62-prediction-api-uc-020023-uc-030) | `Predict: test_predictions.py (7). Simulate API: test_simulations.py (6) + test_simulation_service.py (5) + test_simulation_mapper.py (4).` |
+| T-314 | [x] | Tests history/analytics | [RTS-001](Requirements/Requirements.md#rts-001) · [Testing §6.4](Testing/Testing.md#64-history--analytics-uc-050052-uc-060062) | `History: test_history.py (6). Analytics: test_analytics.py (6). risk_format: test_risk_format.py (1). Exception handlers: test_exception_handlers.py (4).` |
 
 | US | ✓ | Historia | UC | RIA / RF |
 |---|---|---|---|---|
@@ -517,3 +517,4 @@ Documento vivo para seguir el progreso del TFM.
 | 2026-06-11 | US-010/US-011: `POST /predict` con ML real + SHAP + persistencia (T-301–304, T-308, T-310, T-312). Fase 3 6/14. MVP 75/134 (56%) |
 | 2026-06-11 | Fase 4 completa (T-401–414): shadcn/ui, splash, UX spinner/alert, layout responsive, Recharts en dashboard. MVP 80/134 (60%) |
 | 2026-06-21 | Revisión Fase 2 + predict: tests manuales Phase-02/03, `shap_background.npy`, docs ML/Testing/README actualizados |
+| 2026-06-23 | Fase 3 API completa: `/simulate`, `/history`, `/analytics`, exception handlers (T-305–311). Lint Ruff+ESLint. Docs Testing/Manual/Database/README sincronizados |

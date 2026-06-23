@@ -4,7 +4,7 @@ from decimal import Decimal
 
 from models.patient_input import PatientInput
 from schemas.prediction import PredictRequest
-from schemas.simulation import SimulateModifications
+from schemas.simulation import SIMULATION_FIELD_NAMES, SimulateModifications
 from services.simulation_mapper import (
     apply_simulation_modifications,
     detect_simulation_changes,
@@ -67,3 +67,8 @@ def test_detect_simulation_changes_lists_only_modified_fields() -> None:
 
     assert len(changes) == 2
     assert {change.feature_name for change in changes} == {"previous_admissions", "glucose"}
+
+
+def test_simulation_field_names_match_modifications_model() -> None:
+    """Guard against validator and mapper using divergent field lists."""
+    assert set(SIMULATION_FIELD_NAMES) == set(SimulateModifications.model_fields)

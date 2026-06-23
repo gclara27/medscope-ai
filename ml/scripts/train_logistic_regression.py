@@ -15,9 +15,7 @@ from ml.training.logistic_regression import train_logistic_regression
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(
-        description="Train MedScope AI Logistic Regression baseline (T-205)."
-    )
+    parser = argparse.ArgumentParser(description="Train MedScope AI Logistic Regression baseline (T-205).")
     parser.add_argument(
         "--no-save",
         action="store_true",
@@ -27,8 +25,7 @@ def main() -> int:
 
     if not DEFAULT_RAW_DATA_PATH.exists():
         print(
-            f"Dataset not found at {DEFAULT_RAW_DATA_PATH}. "
-            "Run: python ml/scripts/download_dataset.py",
+            f"Dataset not found at {DEFAULT_RAW_DATA_PATH}. Run: python ml/scripts/download_dataset.py",
             file=sys.stderr,
         )
         return 1

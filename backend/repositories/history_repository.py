@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import date, datetime, time, timezone
+from datetime import UTC, date, datetime, time
 from uuid import UUID
 
 from sqlalchemy import func, select
@@ -13,11 +13,11 @@ from models.user import User
 
 
 def _start_of_day(value: date) -> datetime:
-    return datetime.combine(value, time.min, tzinfo=timezone.utc)
+    return datetime.combine(value, time.min, tzinfo=UTC)
 
 
 def _end_of_day(value: date) -> datetime:
-    return datetime.combine(value, time.max, tzinfo=timezone.utc)
+    return datetime.combine(value, time.max, tzinfo=UTC)
 
 
 class HistoryRepository:
@@ -77,11 +77,7 @@ class HistoryRepository:
         total = int(self.db.scalar(count_stmt) or 0)
 
         rows = (
-            self.db.scalars(
-                list_stmt.order_by(Prediction.created_at.desc()).limit(limit).offset(offset)
-            )
-            .unique()
-            .all()
+            self.db.scalars(list_stmt.order_by(Prediction.created_at.desc()).limit(limit).offset(offset)).unique().all()
         )
 
         return list(rows), total

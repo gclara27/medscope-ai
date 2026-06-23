@@ -47,9 +47,7 @@ def test_simulation_create_with_fks(db_session) -> None:
     db_session.add(simulation)
     db_session.commit()
 
-    found = db_session.scalar(
-        select(Simulation).where(Simulation.prediction_id == prediction.id)
-    )
+    found = db_session.scalar(select(Simulation).where(Simulation.prediction_id == prediction.id))
     assert found is not None
     assert found.delta_risk == Decimal("-14.50")
     assert found.simulated_risk == Decimal("58.00")

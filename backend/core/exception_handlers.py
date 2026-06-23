@@ -21,9 +21,7 @@ async def http_exception_handler(_request: Request, exc: HTTPException) -> JSONR
     return JSONResponse(status_code=exc.status_code, content={"detail": exc.detail})
 
 
-async def validation_exception_handler(
-    _request: Request, exc: RequestValidationError
-) -> JSONResponse:
+async def validation_exception_handler(_request: Request, exc: RequestValidationError) -> JSONResponse:
     return JSONResponse(
         status_code=422,
         content={"detail": jsonable_encoder(exc.errors())},
@@ -31,12 +29,25 @@ async def validation_exception_handler(
 
 
 async def unhandled_exception_handler(request: Request, exc: Exception) -> JSONResponse:
+    """Last-resort handler (ServerErrorMiddleware). Delegate known types, never leak traces."""
+    if isinstance(exc, RequestValidationError):
+        return await validation_exception_handler(request, exc)
+    if isinstance(exc, HTTPException):
+        return await http_exception_handler(request, exc)
+    if isinstance(exc, StarletteHTTPException):
+        return await http_exception_handler(request, exc)
+
     logger.exception("Unhandled exception on %s %s", request.method, request.url.path)
     return JSONResponse(status_code=500, content={"detail": _INTERNAL_ERROR_MESSAGE})
 
 
 def register_exception_handlers(app: FastAPI) -> None:
-    """Register centralized handlers so clients never receive stack traces (UC-091)."""
+    """Register centralized handlers so clients never receive stack traces (UC-091).
+
+    Starlette stores handlers in a type-keyed map and resolves via exception MRO, not
+    registration order. The ``Exception`` handler is wired into ``ServerErrorMiddleware``
+    for uncaught errors; specific types below are handled in ``ExceptionMiddleware``.
+    """
     app.add_exception_handler(HTTPException, http_exception_handler)
     app.add_exception_handler(StarletteHTTPException, http_exception_handler)
     app.add_exception_handler(RequestValidationError, validation_exception_handler)

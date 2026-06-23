@@ -14,17 +14,9 @@ class UserRepository:
 
     def get_by_id(self, user_id: uuid.UUID) -> User | None:
         """Return a user by primary key with role loaded."""
-        return self.db.scalar(
-            select(User)
-            .options(joinedload(User.role))
-            .where(User.id == user_id)
-        )
+        return self.db.scalar(select(User).options(joinedload(User.role)).where(User.id == user_id))
 
     def get_by_email(self, email: str) -> User | None:
         """Return an active-directory user by email (case-insensitive)."""
         normalized = email.strip().lower()
-        return self.db.scalar(
-            select(User)
-            .options(joinedload(User.role))
-            .where(User.email == normalized)
-        )
+        return self.db.scalar(select(User).options(joinedload(User.role)).where(User.email == normalized))

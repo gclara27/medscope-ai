@@ -246,6 +246,11 @@ Modern healthcare dashboard feeling.
 - Docker Compose
 - `.env` for environment variables
 
+## Code quality
+- **Ruff** — lint and format for `backend/` and `ml/` (`pyproject.toml`)
+- **ESLint** — TypeScript/React in `frontend/` (`eslint.config.js`)
+- `scripts/lint.ps1` — run both from repo root (Windows)
+
 ## Frontend choice
 
 Primary UI: **React + TypeScript** (not Streamlit).
@@ -417,6 +422,7 @@ Testing stack:
 - vitest + React Testing Library (`frontend/`)
 - playwright (`tests/e2e/`)
 - pytest (`ml/tests/`)
+- **Ruff** + **ESLint** — static analysis before commit (`scripts/lint.ps1`, see `docs/Testing/Testing.md` §17)
 
 Prioritize:
 - integration tests (API + DB + ML),
@@ -435,6 +441,15 @@ All code should:
 - remain modular,
 - avoid giant functions,
 - avoid duplicated logic.
+
+Run lint before commits and demos:
+
+```powershell
+.\scripts\lint.ps1
+```
+
+Python: `ruff check` + `ruff format --check` on `backend/` and `ml/`.  
+Frontend: `npm run lint` in `frontend/`.
 
 ---
 

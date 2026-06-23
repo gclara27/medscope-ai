@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 import matplotlib
@@ -22,12 +22,11 @@ from ml.eda.constants import (
     DEFAULT_EXPORT_DIR,
     EXPORT_SPECS,
     MANIFEST_FILENAME,
-    MVP_CATEGORICAL_COLUMNS,
     MVP_NUMERIC_COLUMNS,
     READMITTED_COLORS,
 )
 from ml.preprocessing.cleaning import add_binary_target, load_raw_dataset
-from ml.preprocessing.constants import DEFAULT_RAW_DATA_PATH, PLACEHOLDER_VALUES
+from ml.preprocessing.constants import PLACEHOLDER_VALUES
 
 
 def _apply_style() -> None:
@@ -227,7 +226,7 @@ def export_all_eda_figures(
         "task": "T-214",
         "dataset": "diabetes130-us-hospitals",
         "source_notebook": "notebooks/diabetes130_eda.ipynb",
-        "exported_at": datetime.now(timezone.utc).isoformat(),
+        "exported_at": datetime.now(UTC).isoformat(),
         "rows": len(frame),
         "figures": [
             {

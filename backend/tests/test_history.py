@@ -44,6 +44,7 @@ def test_history_returns_predictions_after_predict(
 
     predict = client.post("/predict", json=VALID_PREDICT_PAYLOAD, headers=headers)
     assert predict.status_code == 200
+    predict_data = predict.json()
 
     response = client.get("/history", headers=headers)
     assert response.status_code == 200
@@ -51,7 +52,9 @@ def test_history_returns_predictions_after_predict(
     assert data["total"] >= 1
     assert len(data["items"]) >= 1
     item = data["items"][0]
-    assert item["id"] == predict.json()["id"]
+    assert item["id"] == predict_data["id"]
+    assert item["risk_score"] == pytest.approx(predict_data["risk_score"], rel=1e-4)
+    assert item["risk_percent"] == pytest.approx(predict_data["risk_percent"], rel=1e-4)
     assert item["user"]["id"] == str(user.id)
     assert item["user"]["email"] == user.email
     assert item["patient_input"]["age"] == VALID_PREDICT_PAYLOAD["age"]

@@ -17,6 +17,7 @@ from schemas.history import (
     HistoryUserSummary,
 )
 from schemas.prediction import RiskLevel
+from services.risk_format import api_risk_from_stored_percent
 
 
 class HistoryService:
@@ -57,10 +58,8 @@ class HistoryService:
         )
 
     def _to_list_item(self, prediction: Prediction) -> HistoryListItem:
-        risk_percent = float(prediction.risk_score)
-        confidence = (
-            float(prediction.confidence_score) if prediction.confidence_score is not None else None
-        )
+        risk_score, risk_percent = api_risk_from_stored_percent(prediction.risk_score)
+        confidence = float(prediction.confidence_score) if prediction.confidence_score is not None else None
         patient = prediction.patient_input
         patient_summary = (
             HistoryPatientSummary(
@@ -75,7 +74,7 @@ class HistoryService:
 
         return HistoryListItem(
             id=prediction.id,
-            risk_score=round(risk_percent / 100, 4),
+            risk_score=risk_score,
             risk_percent=risk_percent,
             risk_level=prediction.risk_level,  # type: ignore[arg-type]
             confidence_score=confidence,

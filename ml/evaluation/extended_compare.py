@@ -35,9 +35,7 @@ def select_best_recall_model(
     if primary_metric not in _METRIC_PRIORITY:
         raise ValueError(f"Unsupported primary metric: {primary_metric}")
 
-    ordered_metrics = (primary_metric,) + tuple(
-        metric for metric in _METRIC_PRIORITY if metric != primary_metric
-    )
+    ordered_metrics = (primary_metric,) + tuple(metric for metric in _METRIC_PRIORITY if metric != primary_metric)
     ranked = sorted(
         metrics_by_model.items(),
         key=lambda item: tuple(_metric_value(item[1], name) for name in ordered_metrics),
@@ -100,7 +98,7 @@ def build_xgboost_evaluation_report(
     )
 
     rationale: list[str] = [
-        f"XGBoost evaluated on the same stratified hold-out split as T-205/T-206 baselines.",
+        "XGBoost evaluated on the same stratified hold-out split as T-205/T-206 baselines.",
         f"Recall winner: {recall_winner}. Current LR vs RF winner remains {lr_vs_rf}.",
     ]
     if changes_production:

@@ -1,8 +1,8 @@
 
 
-# Fase 3 — Tests manuales: Integración ML + Backend (parcial)
+# Fase 3 — Tests manuales: Integración ML + Backend
 
-**Alcance actual:** `POST /predict`, carga ML al arranque, persistencia en PostgreSQL. **Pendiente:** `/simulate`, `/history`, `/analytics`.
+**Alcance:** `POST /predict`, `POST /simulate`, `GET /history`, `GET /analytics`, carga ML al arranque, persistencia en PostgreSQL, exception handlers JSON (UC-091).
 
 **Referencia:** [Task Tracker — Fase 3](../../TaskTracker.md#fase-3--integración-ml--backend) · [ML-Pipeline §8.2](../../ML/ML-Pipeline.md#82-diagrama-de-inferencia-integración-backend)
 
@@ -13,9 +13,9 @@
 
 | Prioridad | Total  | Ejecutados | Pendientes |
 | --------- | ------ | ---------- | ---------- |
-| P0        | 8      | 0          | 8          |
+| P0        | 12     | 0          | 12         |
 | P1        | 3      | 0          | 3          |
-| **Total** | **11** | **0**      | **11**     |
+| **Total** | **15** | **0**      | **15**     |
 
 
 ---
@@ -246,6 +246,100 @@ WHERE p.id = '<uuid>';
 **Criterios de aceptación**
 
 - [x] `POST /predict` sin Authorization → 401.
+
+---
+
+### MT-P03-SIM-001 — Simulate what-if
+
+
+| Campo          | Valor                   |
+| -------------- | ----------------------- |
+| **Prioridad**  | P0                      |
+| **Requisitos** | UC-040–044, T-305, T-309 |
+
+
+**Pasos**
+
+1. Tras un `POST /predict` exitoso, copiar `id` de la predicción.
+2. `POST /simulate` con body:
+
+```json
+{
+  "prediction_id": "<uuid-del-predict>",
+  "modifications": { "glucose": 200 }
+}
+```
+
+**Criterios de aceptación**
+
+- [ ] HTTP 200 con `original_risk_percent`, `simulated_risk_percent`, `delta_risk_percent`, `changes`.
+- [ ] `simulated_risk_level` coherente con el score.
+- [ ] Analyst → 403.
+
+---
+
+### MT-P03-HIST-001 — History listado
+
+
+| Campo          | Valor         |
+| -------------- | ------------- |
+| **Prioridad**  | P0            |
+| **Requisitos** | UC-050, T-306 |
+
+
+**Pasos**
+
+1. `GET /history` con token clinician o nurse.
+2. Verificar que aparece la predicción del paso anterior.
+3. `GET /history?risk_level=high` (o el nivel devuelto por predict).
+
+**Criterios de aceptación**
+
+- [ ] Lista paginada con `items`, `total`, `limit`, `offset`.
+- [ ] `risk_score` entre 0 y 1; `risk_percent` entre 0 y 100; ambos coherentes con `/predict`.
+- [ ] Filtro por `risk_level` devuelve solo ese bucket.
+
+---
+
+### MT-P03-ANAL-001 — Analytics agregados
+
+
+| Campo          | Valor          |
+| -------------- | -------------- |
+| **Prioridad**  | P0             |
+| **Requisitos** | UC-060, T-307  |
+
+
+**Pasos**
+
+1. `GET /analytics` con token `analyst@medscope.ai`.
+2. Revisar `summary`, `risk_distribution`, `trend`.
+
+**Criterios de aceptación**
+
+- [ ] `total_predictions` ≥ 1 tras predicts de la sesión.
+- [ ] `risk_distribution` con buckets low/medium/high y porcentajes.
+- [ ] Nurse/clinician → 403; admin/analyst → 200.
+
+---
+
+### MT-P03-ERR-001 — Validación 422 sin stack trace
+
+
+| Campo          | Valor   |
+| -------------- | ------- |
+| **Prioridad**  | P0      |
+| **Requisitos** | UC-090, UC-091, T-311 |
+
+
+**Pasos**
+
+1. `POST /predict` con `"age": -1` (payload inválido).
+
+**Criterios de aceptación**
+
+- [ ] HTTP 422, body JSON con `detail` (lista de errores).
+- [ ] Respuesta **sin** traceback ni mensaje interno del servidor.
 
 ---
 

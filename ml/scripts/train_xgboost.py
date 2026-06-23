@@ -10,7 +10,10 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from ml.evaluation.extended_compare import build_xgboost_evaluation_report, save_xgboost_evaluation_report
+from ml.evaluation.extended_compare import (
+    build_xgboost_evaluation_report,
+    save_xgboost_evaluation_report,
+)
 from ml.evaluation.metrics import ClassificationMetrics
 from ml.preprocessing.constants import DEFAULT_RAW_DATA_PATH
 from ml.training.artifacts import load_metrics_from_file
@@ -50,9 +53,7 @@ def _load_or_train_random_forest(*, retrain: bool, no_save: bool) -> Classificat
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(
-        description="Train optional XGBoost baseline and compare with LR/RF (T-213)."
-    )
+    parser = argparse.ArgumentParser(description="Train optional XGBoost baseline and compare with LR/RF (T-213).")
     parser.add_argument(
         "--no-save",
         action="store_true",
@@ -67,8 +68,7 @@ def main() -> int:
 
     if not DEFAULT_RAW_DATA_PATH.exists():
         print(
-            f"Dataset not found at {DEFAULT_RAW_DATA_PATH}. "
-            "Run: python ml/scripts/download_dataset.py",
+            f"Dataset not found at {DEFAULT_RAW_DATA_PATH}. Run: python ml/scripts/download_dataset.py",
             file=sys.stderr,
         )
         return 1

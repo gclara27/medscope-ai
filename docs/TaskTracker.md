@@ -120,13 +120,13 @@ Documento vivo para seguir el progreso del TFM.
 | Fase 1 — Backend + DB | 22 | 22 | 100% |
 | Fase 2 — ML | 14 | 14 | 100% |
 | Fase 3 — ML + Backend | 14 | 14 | 100% |
-| Fase 4 — Frontend base | 9 | 14 | 64% |
+| Fase 4 — Frontend base | 14 | 14 | 100% |
 | Fase 5 — Features clínicas | 0 | 16 | 0% |
 | Fase 6 — Analytics + History | 0 | 10 | 0% |
 | Fase 7 — Polish + Testing | 0 | 12 | 0% |
 | Fase 8 — TFM + Documentación | 2 | 10 | 20% |
 | Fase 9 — Demo | 0 | 6 | 0% |
-| **TOTAL MVP** | **75** | **134** | **56%** |
+| **TOTAL MVP** | **80** | **134** | **60%** |
 
 ---
 
@@ -285,26 +285,26 @@ Documento vivo para seguir el progreso del TFM.
 
 # FASE 4 — Frontend foundation
 
-**Progreso:** 9 / 14 (64%)
+**Progreso:** 14 / 14 (100%)
 
 [Execution Plan — Fase 4](Execution%20Plan/ExecutionPlan.md#phase-4--frontend-foundation) · [skill frontend](../skills/frontend/SKILL.md)
 
 | ID | ✓ | Tarea | Docs | Pedir a la IA |
 |---|---|---|---|---|
 | T-401 | [x] | Vite + React + TS | [RFW-001](Requirements/Requirements.md#rfw-001) | `Inicializa frontend con Vite React TypeScript.` |
-| T-402 | [ ] | Tailwind + shadcn | [Design light](Design/design-system.light.md) | `Instala Tailwind y shadcn/ui. Mapea tokens del design system.` |
+| T-402 | [x] | Tailwind + shadcn | [Design light](Design/design-system.light.md) | `Instala Tailwind y shadcn/ui. Mapea tokens del design system.` |
 | T-403 | [x] | Tokens Tailwind | [RUX-010](Requirements/Requirements.md#rux-010) | `Configura tailwind.config con colores de design-system.light.md.` |
 | T-404 | [x] | Router + Axios | [EP-4.2](Execution%20Plan/ExecutionPlan.md#42-install-ui-stack) | `React Router + Axios con base URL configurable.` |
 | T-405 | [x] | Layout sidebar | [RF-012](Requirements/Requirements.md#rf-012--navegación-lateral) · [dashboard mockup](Design/screens/dashboard/reference.html) | `Layout: sidebar + topbar según mockup dashboard.` |
 | T-406 | [x] | Nav links MVP | [RF-012](Requirements/Requirements.md#rf-012--navegación-lateral) | `Sidebar: dashboard, evaluación, simulación, historial, analytics, settings.` |
-| T-407 | [ ] | Splash | [RFW-010](Requirements/Requirements.md#rfw-010) · [splash](Design/screens/splash/light.reference.html) | `Página Splash según mockup light.mockup.png.` |
+| T-407 | [x] | Splash | [RFW-010](Requirements/Requirements.md#rfw-010) · [splash](Design/screens/splash/light.reference.html) | `Página Splash según mockup light.mockup.png.` |
 | T-408 | [x] | Login | [RFW-011](Requirements/Requirements.md#rfw-011) · [login](Design/screens/login/reference.html) | `Página Login + integración POST /auth/login.` |
 | T-409 | [x] | `services/auth.ts` | [UC-001](Use%20Cases/Use%20Cases.md#uc-001--user-login) | `Servicio Axios para login y almacenamiento JWT.` |
 | T-410 | [x] | JWT cliente | [RF-003](Requirements/Requirements.md#rf-003--persistencia-de-sesión) | `Context o hook para JWT en requests.` |
 | T-411 | [x] | Rutas protegidas | [UC-003](Use%20Cases/Use%20Cases.md#uc-003--role-authorization) | `PrivateRoute que redirige a login si no hay token.` |
-| T-412 | [ ] | Loading/error/success | [UC-101–103](Use%20Cases/Use%20Cases.md#14-uxui-cases) | `Componentes toast/spinner para estados UX.` |
-| T-413 | [ ] | Responsive | [RNF-041](Requirements/Requirements.md#rnf-041) · [UC-100](Use%20Cases/Use%20Cases.md#uc-100--responsive-navigation) | `Layout responsive mobile/desktop.` |
-| T-414 | [ ] | Recharts | [RFW-020](Requirements/Requirements.md#rfw-020) | `Instala y configura Recharts.` |
+| T-412 | [x] | Loading/error/success | [UC-101–103](Use%20Cases/Use%20Cases.md#14-uxui-cases) | `Componentes toast/spinner para estados UX.` |
+| T-413 | [x] | Responsive | [RNF-041](Requirements/Requirements.md#rnf-041) · [UC-100](Use%20Cases/Use%20Cases.md#uc-100--responsive-navigation) | `Layout responsive mobile/desktop.` |
+| T-414 | [x] | Recharts | [RFW-020](Requirements/Requirements.md#rfw-020) | `Instala y configura Recharts.` |
 
 ---
 
@@ -515,4 +515,5 @@ Documento vivo para seguir el progreso del TFM.
 | 2026-06-11 | T-213: XGBoost opcional + `models/xgboost_evaluation.json`; LR sigue modelo producción. MVP 65/134 (49%) |
 | 2026-06-11 | T-214: gráficos EDA exportados en `docs/figures/eda/` + script reproducible. Fase 2 completa. MVP 67/134 (50%) |
 | 2026-06-11 | US-010/US-011: `POST /predict` con ML real + SHAP + persistencia (T-301–304, T-308, T-310, T-312). Fase 3 6/14. MVP 75/134 (56%) |
+| 2026-06-11 | Fase 4 completa (T-401–414): shadcn/ui, splash, UX spinner/alert, layout responsive, Recharts en dashboard. MVP 80/134 (60%) |
 | 2026-06-21 | Revisión Fase 2 + predict: tests manuales Phase-02/03, `shap_background.npy`, docs ML/Testing/README actualizados |

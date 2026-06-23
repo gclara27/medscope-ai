@@ -7,6 +7,7 @@ import { AppLayout } from "@/layouts/AppLayout";
 import { DashboardPage } from "@/pages/DashboardPage";
 import { LoginPage } from "@/pages/LoginPage";
 import { PlaceholderPage } from "@/pages/PlaceholderPage";
+import { SplashPage } from "@/pages/SplashPage";
 import { UnauthorizedPage } from "@/pages/UnauthorizedPage";
 
 export default function App() {
@@ -14,6 +15,7 @@ export default function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<SplashPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route element={<PrivateRoute />}>
             <Route element={<AppLayout />}>
@@ -21,12 +23,7 @@ export default function App() {
                 path="/dashboard"
                 element={
                   <RoleRoute
-                    allowedRoles={[
-                      "admin",
-                      "clinician",
-                      "analyst",
-                      "nurse",
-                    ]}
+                    allowedRoles={["admin", "clinician", "analyst", "nurse"]}
                   >
                     <DashboardPage />
                   </RoleRoute>
@@ -90,8 +87,7 @@ export default function App() {
               <Route path="/unauthorized" element={<UnauthorizedPage />} />
             </Route>
           </Route>
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
-          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

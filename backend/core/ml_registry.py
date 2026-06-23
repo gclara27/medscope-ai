@@ -43,9 +43,7 @@ class MLRegistry:
         manifest_path = MODELS_DIR / "model_manifest.json"
 
         if not model_path.exists() or not preprocessor_path.exists() or not manifest_path.exists():
-            self._mark_unavailable(
-                "Production ML artifacts missing. Run: python ml/scripts/serialize_model.py"
-            )
+            self._mark_unavailable("Production ML artifacts missing. Run: python ml/scripts/serialize_model.py")
             logger.warning(self.load_error)
             return
 
@@ -64,8 +62,7 @@ class MLRegistry:
             background_path = MODELS_DIR / "shap_background.npy"
             if not background_path.exists():
                 raise FileNotFoundError(
-                    "SHAP background missing at models/shap_background.npy. "
-                    "Run: python ml/scripts/serialize_model.py"
+                    "SHAP background missing at models/shap_background.npy. Run: python ml/scripts/serialize_model.py"
                 )
             background = np.load(background_path)
 

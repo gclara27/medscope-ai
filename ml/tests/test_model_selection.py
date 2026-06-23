@@ -15,7 +15,6 @@ from ml.evaluation.selection import (
     select_final_model,
 )
 from ml.training.constants import (
-    FINAL_MODEL_DIR,
     LOGISTIC_REGRESSION_MODEL_ID,
     LOGISTIC_REGRESSION_MODEL_PATH,
     RANDOM_FOREST_MODEL_ID,
@@ -93,9 +92,7 @@ def test_select_final_model_prefers_logistic_regression_for_recall() -> None:
 
 
 def test_select_final_model_can_pick_random_forest_when_recall_higher() -> None:
-    selection = select_final_model(
-        _sample_report(logistic_recall=0.30, random_forest_recall=0.65)
-    )
+    selection = select_final_model(_sample_report(logistic_recall=0.30, random_forest_recall=0.65))
     assert selection.model_id == RANDOM_FOREST_MODEL_ID
     assert selection.shap_explainer == "tree"
 

@@ -16,18 +16,13 @@ MANIFEST_PATH = DATASETS_DIR / "manifest.json"
 DEFAULT_OUTPUT = DATASETS_DIR / "diabetes130" / "raw" / "data.csv"
 
 UCI_DATA_URL = "https://archive.ics.uci.edu/static/public/296/data.csv"
-UCI_DATASET_PAGE = (
-    "https://archive.ics.uci.edu/dataset/296/"
-    "diabetes+130-us+hospitals+for+years+1999+2008"
-)
+UCI_DATASET_PAGE = "https://archive.ics.uci.edu/dataset/296/diabetes+130-us+hospitals+for+years+1999+2008"
 USER_AGENT = "MedScope-AI/1.0 (TFM; dataset bootstrap)"
 
 
 def load_manifest() -> dict:
     if not MANIFEST_PATH.exists():
-        raise FileNotFoundError(
-            f"Missing manifest at {MANIFEST_PATH}. Run from a complete repo checkout."
-        )
+        raise FileNotFoundError(f"Missing manifest at {MANIFEST_PATH}. Run from a complete repo checkout.")
     return json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
 
 
@@ -52,9 +47,7 @@ def download_file(url: str, destination: Path) -> None:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(
-        description="Download Diabetes 130-US hospitals CSV into datasets/."
-    )
+    parser = argparse.ArgumentParser(description="Download Diabetes 130-US hospitals CSV into datasets/.")
     parser.add_argument(
         "--output",
         type=Path,

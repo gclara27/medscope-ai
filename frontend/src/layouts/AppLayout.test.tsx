@@ -46,6 +46,12 @@ describe("AppLayout role navigation", () => {
     expect(screen.queryByRole("link", { name: /settings/i })).not.toBeInTheDocument();
   });
 
+  it("shows mobile navigation toggle on small screens", () => {
+    renderLayout();
+
+    expect(screen.getByRole("button", { name: /open navigation menu/i })).toBeInTheDocument();
+  });
+
   it("logs out and navigates to login", async () => {
     logoutMock.mockResolvedValue(undefined);
     const user = userEvent.setup();

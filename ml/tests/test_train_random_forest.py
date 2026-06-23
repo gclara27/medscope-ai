@@ -8,7 +8,11 @@ from pathlib import Path
 import pandas as pd
 import pytest
 
-from ml.evaluation.compare import compare_baselines, save_baseline_comparison, select_baseline_winner
+from ml.evaluation.compare import (
+    compare_baselines,
+    save_baseline_comparison,
+    select_baseline_winner,
+)
 from ml.evaluation.metrics import ClassificationMetrics
 from ml.preprocessing.constants import DEFAULT_RAW_DATA_PATH, FEATURE_COLUMNS
 from ml.preprocessing.pipeline import Diabetes130Preprocessor

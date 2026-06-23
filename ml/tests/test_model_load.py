@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import joblib
-
 import pytest
 
 from ml.preprocessing.constants import FEATURE_COLUMNS

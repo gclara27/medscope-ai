@@ -6,6 +6,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from core.config import settings
+from core.exception_handlers import register_exception_handlers
 from core.ml_registry import ml_registry
 from routers import analytics, auth, history, predictions, simulations
 
@@ -24,6 +25,8 @@ app = FastAPI(
     version="0.1.0",
     lifespan=lifespan,
 )
+
+register_exception_handlers(app)
 
 app.add_middleware(
     CORSMiddleware,

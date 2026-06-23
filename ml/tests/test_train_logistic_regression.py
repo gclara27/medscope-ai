@@ -12,9 +12,15 @@ import pytest
 from ml.evaluation.metrics import compute_classification_metrics
 from ml.preprocessing.constants import DEFAULT_RAW_DATA_PATH, FEATURE_COLUMNS
 from ml.preprocessing.pipeline import Diabetes130Preprocessor
-from ml.training.artifacts import load_logistic_regression_artifacts, save_logistic_regression_artifacts
+from ml.training.artifacts import (
+    load_logistic_regression_artifacts,
+    save_logistic_regression_artifacts,
+)
 from ml.training.constants import LOGISTIC_REGRESSION_MODEL_ID
-from ml.training.logistic_regression import build_logistic_regression_model, train_logistic_regression
+from ml.training.logistic_regression import (
+    build_logistic_regression_model,
+    train_logistic_regression,
+)
 
 
 def test_build_logistic_regression_model_uses_balanced_class_weight() -> None:

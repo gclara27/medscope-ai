@@ -41,9 +41,7 @@ def add_diabetes_medication_features(frame: pd.DataFrame) -> pd.DataFrame:
     result["active_diabetes_meds_count"] = is_active.sum(axis=1).astype(int)
 
     if INSULIN_COLUMN in result.columns:
-        insulin_active = result[INSULIN_COLUMN].ne(_NO_MEDICATION_VALUE) & result[
-            INSULIN_COLUMN
-        ].notna()
+        insulin_active = result[INSULIN_COLUMN].ne(_NO_MEDICATION_VALUE) & result[INSULIN_COLUMN].notna()
         result["has_insulin"] = insulin_active.astype(int)
     else:
         result["has_insulin"] = 0

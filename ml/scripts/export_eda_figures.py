@@ -16,9 +16,7 @@ from ml.preprocessing.constants import DEFAULT_RAW_DATA_PATH
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(
-        description="Export Diabetes 130-US EDA figures for thesis defense (T-214)."
-    )
+    parser = argparse.ArgumentParser(description="Export Diabetes 130-US EDA figures for thesis defense (T-214).")
     parser.add_argument(
         "--output-dir",
         type=Path,
@@ -30,8 +28,7 @@ def main() -> int:
 
     if not DEFAULT_RAW_DATA_PATH.exists():
         print(
-            f"Dataset not found at {DEFAULT_RAW_DATA_PATH}. "
-            "Run: python ml/scripts/download_dataset.py",
+            f"Dataset not found at {DEFAULT_RAW_DATA_PATH}. Run: python ml/scripts/download_dataset.py",
             file=sys.stderr,
         )
         return 1

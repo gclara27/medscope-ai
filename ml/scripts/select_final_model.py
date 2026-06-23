@@ -10,17 +10,15 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
+from ml.evaluation.constants import EVALUATION_REPORT_PATH
 from ml.evaluation.report import build_evaluation_report, save_evaluation_report
 from ml.evaluation.selection import run_final_model_selection
-from ml.evaluation.constants import EVALUATION_REPORT_PATH
 from ml.preprocessing.constants import DEFAULT_RAW_DATA_PATH
 from ml.training.constants import FINAL_MODEL_SELECTION_PATH
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(
-        description="Select final ML model for MedScope AI MVP (T-208, EP-2.8)."
-    )
+    parser = argparse.ArgumentParser(description="Select final ML model for MedScope AI MVP (T-208, EP-2.8).")
     parser.add_argument(
         "--no-promote",
         action="store_true",
@@ -35,8 +33,7 @@ def main() -> int:
 
     if not DEFAULT_RAW_DATA_PATH.exists():
         print(
-            f"Dataset not found at {DEFAULT_RAW_DATA_PATH}. "
-            "Run: python ml/scripts/download_dataset.py",
+            f"Dataset not found at {DEFAULT_RAW_DATA_PATH}. Run: python ml/scripts/download_dataset.py",
             file=sys.stderr,
         )
         return 1

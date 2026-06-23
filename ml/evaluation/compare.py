@@ -48,9 +48,7 @@ def select_baseline_winner(
     if primary_metric not in _METRIC_PRIORITY:
         raise ValueError(f"Unsupported primary metric: {primary_metric}")
 
-    ordered_metrics = (primary_metric,) + tuple(
-        metric for metric in _METRIC_PRIORITY if metric != primary_metric
-    )
+    ordered_metrics = (primary_metric,) + tuple(metric for metric in _METRIC_PRIORITY if metric != primary_metric)
 
     lr_scores = tuple(_metric_value(logistic_metrics, name) for name in ordered_metrics)
     rf_scores = tuple(_metric_value(random_forest_metrics, name) for name in ordered_metrics)

@@ -2,6 +2,11 @@ import react from "@vitejs/plugin-react";
 import path from "node:path";
 import { defineConfig } from "vitest/config";
 
+const apiProxy = {
+  target: "http://localhost:8000",
+  changeOrigin: true,
+};
+
 export default defineConfig({
   plugins: [react()],
   resolve: {
@@ -12,8 +17,12 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
-      "/auth": "http://localhost:8000",
-      "/health": "http://localhost:8000",
+      "/auth": apiProxy,
+      "/health": apiProxy,
+      "/predict": apiProxy,
+      "/simulate": apiProxy,
+      "/history": apiProxy,
+      "/analytics": apiProxy,
     },
   },
   test: {

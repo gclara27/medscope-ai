@@ -5,8 +5,11 @@ import { RoleRoute } from "@/components/RoleRoute";
 import { AuthProvider } from "@/context/AuthContext";
 import { AppLayout } from "@/layouts/AppLayout";
 import { DashboardPage } from "@/pages/DashboardPage";
+import { EvaluationPage } from "@/pages/EvaluationPage";
 import { LoginPage } from "@/pages/LoginPage";
 import { PlaceholderPage } from "@/pages/PlaceholderPage";
+import { PredictionResultPage } from "@/pages/PredictionResultPage";
+import { SplashPage } from "@/pages/SplashPage";
 import { UnauthorizedPage } from "@/pages/UnauthorizedPage";
 
 export default function App() {
@@ -14,6 +17,7 @@ export default function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<SplashPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route element={<PrivateRoute />}>
             <Route element={<AppLayout />}>
@@ -21,12 +25,7 @@ export default function App() {
                 path="/dashboard"
                 element={
                   <RoleRoute
-                    allowedRoles={[
-                      "admin",
-                      "clinician",
-                      "analyst",
-                      "nurse",
-                    ]}
+                    allowedRoles={["admin", "clinician", "analyst", "nurse"]}
                   >
                     <DashboardPage />
                   </RoleRoute>
@@ -36,10 +35,15 @@ export default function App() {
                 path="/evaluation"
                 element={
                   <RoleRoute allowedRoles={["admin", "clinician"]}>
-                    <PlaceholderPage
-                      title="Clinical Evaluation"
-                      description="Enter patient data and generate AI readmission risk predictions."
-                    />
+                    <EvaluationPage />
+                  </RoleRoute>
+                }
+              />
+              <Route
+                path="/evaluation/result"
+                element={
+                  <RoleRoute allowedRoles={["admin", "clinician"]}>
+                    <PredictionResultPage />
                   </RoleRoute>
                 }
               />
@@ -90,8 +94,7 @@ export default function App() {
               <Route path="/unauthorized" element={<UnauthorizedPage />} />
             </Route>
           </Route>
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
-          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

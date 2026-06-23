@@ -2,9 +2,8 @@
 
 from __future__ import annotations
 
-from typing import Any
-
 from pathlib import Path
+from typing import Any
 
 import numpy as np
 import pandas as pd
@@ -155,9 +154,7 @@ class ShapExplainerService:
     ) -> None:
         self.manifest = manifest or load_production_manifest()
         self.model, self.preprocessor = (
-            (model, preprocessor)
-            if model is not None and preprocessor is not None
-            else load_production_model()
+            (model, preprocessor) if model is not None and preprocessor is not None else load_production_model()
         )
         if not self.preprocessor.is_fitted_:
             raise RuntimeError("Preprocessor must be fitted before SHAP explanation.")
@@ -204,6 +201,17 @@ class ShapExplainerService:
             contributions=contributions,
             summary=summary,
         )
+
+    def predict_risk(self, features: pd.DataFrame) -> tuple[float, str]:
+        """Fast inference without SHAP (UC-042, simulation)."""
+        if len(features) != 1:
+            raise ValueError("Risk prediction currently supports exactly one patient row.")
+
+        transformed = self.preprocessor.transform(features)
+        probabilities = self.model.predict_proba(transformed)
+        risk_score = float(probabilities[0, 1])
+        threshold = float(self.manifest["production_threshold"])
+        return risk_score, classify_risk_level(risk_score, threshold=threshold)
 
 
 def explain_patient(features: pd.DataFrame, *, top_n: int = DEFAULT_TOP_FEATURES) -> ShapExplanationResult:

@@ -35,15 +35,12 @@ def request_to_feature_frame(request: PredictRequest) -> pd.DataFrame:
     """Build a single-row feature dataframe aligned with FEATURE_COLUMNS."""
     ensure_repo_root_on_path()
     import pandas as pd
+
     from ml.preprocessing.constants import FEATURE_COLUMNS
 
     glucose_category = request.glucose_level or categorize_glucose_mg_dl(request.glucose)
     gender = normalize_gender(request.gender)
-    total_prior_visits = (
-        request.previous_admissions
-        + request.number_outpatient
-        + request.number_emergency
-    )
+    total_prior_visits = request.previous_admissions + request.number_outpatient + request.number_emergency
     stay_days = max(request.hospital_stay_days, 1)
     meds_per_day = round(request.medications_count / stay_days, 2)
 

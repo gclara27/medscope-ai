@@ -8,7 +8,6 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-
 GlucoseLevel = Literal["Norm", ">200", ">300", "None"]
 GenderValue = Literal["Male", "Female", "Unknown", "male", "female", "M", "F"]
 A1cResult = Literal["None", "Norm", ">7", ">8"]

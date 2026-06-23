@@ -113,6 +113,32 @@ docker compose stop backend *>$null
 $ErrorActionPreference = $prevErrorAction
 Write-Host "  Docker backend stopped if it was running (PostgreSQL stays up)."
 
+function Stop-ProcessOnPort {
+    param([int]$Port)
+
+    $connections = @(Get-NetTCPConnection -LocalPort $Port -State Listen -ErrorAction SilentlyContinue)
+    if ($connections.Count -eq 0) {
+        return
+    }
+
+    $stopped = @()
+    foreach ($conn in $connections) {
+        $procId = $conn.OwningProcess
+        if (-not $procId -or $procId -eq 0 -or $stopped -contains $procId) {
+            continue
+        }
+        $proc = Get-Process -Id $procId -ErrorAction SilentlyContinue
+        if ($proc) {
+            Write-Host "  Stopping stale $($proc.ProcessName) (PID $procId) on port $Port"
+            Stop-Process -Id $procId -Force -ErrorAction SilentlyContinue
+            $stopped += $procId
+        }
+    }
+}
+
+Write-Step "Freeing port 8000 (stale local uvicorn instances)"
+Stop-ProcessOnPort -Port 8000
+
 # --- Migrations ---
 Write-Step "Applying database migrations"
 Push-Location $BackendDir

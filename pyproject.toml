@@ -1,0 +1,33 @@
+[tool.ruff]
+target-version = "py312"
+line-length = 120
+src = ["backend", "ml"]
+exclude = [".venv", "**/__pycache__", "backend/alembic/versions"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = [
+    "B008",  # FastAPI Depends() in parameter defaults
+    "B905",  # zip(strict=) — not required for existing ML plotting code
+]
+
+[tool.ruff.lint.per-file-ignores]
+"backend/tests/**/*.py" = ["E402"]
+"ml/scripts/**/*.py" = ["E402"]
+"ml/tests/**/*.py" = ["E402"]
+
+[tool.ruff.lint.isort]
+known-first-party = [
+    "core",
+    "models",
+    "repositories",
+    "routers",
+    "schemas",
+    "services",
+    "ml",
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"

@@ -51,9 +51,7 @@ def test_patient_input_create_one_to_one(db_session) -> None:
     db_session.add(patient_input)
     db_session.commit()
 
-    found = db_session.scalar(
-        select(PatientInput).where(PatientInput.prediction_id == prediction.id)
-    )
+    found = db_session.scalar(select(PatientInput).where(PatientInput.prediction_id == prediction.id))
     assert found is not None
     assert found.age == 65
     assert found.glucose == Decimal("140.50")

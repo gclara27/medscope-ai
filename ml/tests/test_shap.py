@@ -14,7 +14,7 @@ from ml.explainability.explainer import (
     classify_risk_level,
 )
 from ml.explainability.summary import build_clinical_summary, display_feature_name
-from ml.preprocessing.constants import DEFAULT_RAW_DATA_PATH, FEATURE_COLUMNS
+from ml.preprocessing.constants import DEFAULT_RAW_DATA_PATH
 from ml.training.constants import MODEL_MANIFEST_PATH, PRODUCTION_MODEL_PATH
 
 

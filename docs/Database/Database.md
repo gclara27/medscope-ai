@@ -148,7 +148,7 @@ Nunca almacenar contraseñas en texto plano (RNF-030, bcrypt).
 |---|---|---|
 | id | UUID | PK |
 | user_id | UUID | FK → users.id |
-| risk_score | NUMERIC(5,2) | NOT NULL |
+| risk_score | NUMERIC(5,2) | NOT NULL — **riesgo en escala 0–100 (porcentaje)** persistido por `PredictionRepository` (`risk_score_percent`). La API expone `risk_score` 0–1 y `risk_percent` 0–100; ver `services/risk_format.py` |
 | risk_level | VARCHAR(20) | NOT NULL — low / medium / high |
 | confidence_score | NUMERIC(5,2) | NULL |
 | summary | TEXT | NULL — resumen clínico RF-032 |
@@ -261,8 +261,10 @@ POST /predict
   → inferencia ML + SHAP
   → insertar shap_explanations
   → commit
-  → respuesta JSON
+  → respuesta JSON (risk_score 0–1, risk_percent 0–100)
 ```
+
+**Nota:** `predictions.risk_score` en BD guarda el **porcentaje 0–100** (`PredictionRepository`). La capa API normaliza con `services/risk_format.py` para historial y clientes.
 
 ## Simulación (UC-040–044)
 
@@ -296,7 +298,8 @@ No requiere `analytics_snapshots` hasta optimización post-MVP.
 backend/
 ├── core/
 │   ├── config.py
-│   └── database.py      # engine, SessionLocal, get_db
+│   ├── database.py      # engine, SessionLocal, get_db
+│   └── exception_handlers.py
 ├── models/
 │   ├── role.py
 │   ├── user.py
@@ -307,7 +310,9 @@ backend/
 ├── repositories/
 │   ├── user_repository.py
 │   ├── prediction_repository.py
-│   └── simulation_repository.py
+│   ├── simulation_repository.py
+│   ├── history_repository.py
+│   └── analytics_repository.py
 ├── alembic/
 │   └── versions/
 └── tests/

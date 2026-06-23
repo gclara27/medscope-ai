@@ -119,14 +119,14 @@ Documento vivo para seguir el progreso del TFM.
 | Fase 0 — Inicialización | 16 | 16 | 100% |
 | Fase 1 — Backend + DB | 22 | 22 | 100% |
 | Fase 2 — ML | 14 | 14 | 100% |
-| Fase 3 — ML + Backend | 6 | 14 | 43% |
-| Fase 4 — Frontend base | 9 | 14 | 64% |
-| Fase 5 — Features clínicas | 0 | 16 | 0% |
+| Fase 3 — ML + Backend | 14 | 14 | 100% |
+| Fase 4 — Frontend base | 14 | 14 | 100% |
+| Fase 5 — Features clínicas | 7 | 16 | 44% |
 | Fase 6 — Analytics + History | 0 | 10 | 0% |
 | Fase 7 — Polish + Testing | 0 | 12 | 0% |
 | Fase 8 — TFM + Documentación | 2 | 10 | 20% |
 | Fase 9 — Demo | 0 | 6 | 0% |
-| **TOTAL MVP** | **75** | **134** | **56%** |
+| **TOTAL MVP** | **87** | **134** | **65%** |
 
 ---
 
@@ -251,7 +251,7 @@ Documento vivo para seguir el progreso del TFM.
 
 # FASE 3 — Integración ML + Backend
 
-**Progreso:** 6 / 14 (43%)
+**Progreso:** 14 / 14 (100%)
 
 [Execution Plan — Fase 3](Execution%20Plan/ExecutionPlan.md#phase-3--ml--backend-integration) · [Tests manuales Fase 3](Testing/Manual/Phase-03-ML-Backend-Integration.md)
 
@@ -259,24 +259,24 @@ Documento vivo para seguir el progreso del TFM.
 |---|---|---|---|---|
 | T-301 | [x] | Load model startup | [UC-082](Use%20Cases/Use%20Cases.md#uc-082--load-ml-model) | `Carga model.pkl al startup FastAPI con lifespan event.` |
 | T-302 | [x] | prediction_service | [UC-083](Use%20Cases/Use%20Cases.md#uc-083--execute-prediction-pipeline) | `Crea prediction_service: preprocess → predict → SHAP.` |
-| T-303 | [ ] | simulation_service | [EP-3.5](Execution%20Plan/ExecutionPlan.md#35-create-simulate-endpoint) | `Crea simulation_service con comparación original/simulado.` |
+| T-303 | [x] | simulation_service | [EP-3.5](Execution%20Plan/ExecutionPlan.md#35-create-simulate-endpoint) | `Crea simulation_service con comparación original/simulado.` |
 | T-304 | [x] | `POST /predict` | [RBE-010](Requirements/Requirements.md#rbe-010) · [UC-022–023](Use%20Cases/Use%20Cases.md#6-clinical-prediction) | `POST /predict: validar, inferir, SHAP, persistir, responder JSON.` |
-| T-305 | [ ] | `POST /simulate` | [RBE-011](Requirements/Requirements.md#rbe-011) · [UC-040–044](Use%20Cases/Use%20Cases.md#8-clinical-simulation) | `POST /simulate según RF-040–042 y UC-040–044.` |
-| T-306 | [ ] | `GET /history` | [RBE-012](Requirements/Requirements.md#rbe-012) · [RF-051](Requirements/Requirements.md#rf-051--búsqueda) | `GET /history con filtros fecha, riesgo, usuario.` |
-| T-307 | [ ] | `GET /analytics` | [RBE-014](Requirements/Requirements.md#rbe-014) · [UC-060](Use%20Cases/Use%20Cases.md#uc-060--view-analytics-dashboard) | `GET /analytics: agregaciones sobre predictions.` |
+| T-305 | [x] | `POST /simulate` | [RBE-011](Requirements/Requirements.md#rbe-011) · [UC-040–044](Use%20Cases/Use%20Cases.md#8-clinical-simulation) | `POST /simulate según RF-040–042 y UC-040–044.` |
+| T-306 | [x] | `GET /history` | [RBE-012](Requirements/Requirements.md#rbe-012) · [RF-051](Requirements/Requirements.md#rf-051--búsqueda) | `GET /history con filtros fecha, riesgo, usuario.` |
+| T-307 | [x] | `GET /analytics` | [RBE-014](Requirements/Requirements.md#rbe-014) · [UC-060](Use%20Cases/Use%20Cases.md#uc-060--view-analytics-dashboard) | `GET /analytics: agregaciones sobre predictions.` |
 | T-308 | [x] | Persist transacción predict | [UC-023](Use%20Cases/Use%20Cases.md#uc-023--store-prediction) · [DB §6](Database/Database.md#6-flujos-de-persistencia) | `Persistir prediction + patient_inputs + shap en una transacción.` |
-| T-309 | [ ] | Persist simulación | [UC-044](Use%20Cases/Use%20Cases.md#uc-044--save-simulation) | `Persistir simulation + simulation_inputs.` |
+| T-309 | [x] | Persist simulación | [UC-044](Use%20Cases/Use%20Cases.md#uc-044--save-simulation) | `Persistir simulation + simulation_inputs.` |
 | T-310 | [x] | Schemas Pydantic | [RF-021](Requirements/Requirements.md#rf-021--validación) · [UC-090](Use%20Cases/Use%20Cases.md#uc-090--handle-invalid-input) | `Schemas Pydantic para inputs clínicos con validación.` |
-| T-311 | [ ] | Exception handlers | [UC-091](Use%20Cases/Use%20Cases.md#uc-091--handle-backend-failure) | `Handlers globales: JSON error, sin stack trace.` |
+| T-311 | [x] | Exception handlers | [UC-091](Use%20Cases/Use%20Cases.md#uc-091--handle-backend-failure) | `Handlers globales: JSON error, sin stack trace.` |
 | T-312 | [x] | Latencia < 1s | [RNF-001](Requirements/Requirements.md#rnf-001) | `Optimiza predict para < 1s. Log prediction_time_ms.` |
-| T-313 | [~] | Tests APIs predict/simulate | [RTS-001](Requirements/Requirements.md#rts-001) · [Testing §6.2–6.3](Testing/Testing.md#62-prediction-api-uc-020023-uc-030) | `Predict: `backend/tests/test_predictions.py` (6 tests). Simulate: pendiente T-305.` |
-| T-314 | [ ] | Tests history/analytics | [RTS-001](Requirements/Requirements.md#rts-001) · [Testing §6.4](Testing/Testing.md#64-history--analytics-uc-050052-uc-060062) | `Tras T-306–307: tests GET /history filtros y GET /analytics agregados.` |
+| T-313 | [x] | Tests APIs predict/simulate | [RTS-001](Requirements/Requirements.md#rts-001) · [Testing §6.2–6.3](Testing/Testing.md#62-prediction-api-uc-020023-uc-030) | `Predict: test_predictions.py (7). Simulate API: test_simulations.py (6) + test_simulation_service.py (5) + test_simulation_mapper.py (4).` |
+| T-314 | [x] | Tests history/analytics | [RTS-001](Requirements/Requirements.md#rts-001) · [Testing §6.4](Testing/Testing.md#64-history--analytics-uc-050052-uc-060062) | `History: test_history.py (6). Analytics: test_analytics.py (6). risk_format: test_risk_format.py (1). Exception handlers: test_exception_handlers.py (4).` |
 
 | US | ✓ | Historia | UC | RIA / RF |
 |---|---|---|---|---|
 | US-010 | [x] | Predecir readmisión (API) | [UC-022](Use%20Cases/Use%20Cases.md#uc-022--generate-ai-prediction) | [RIA-021](Requirements/Requirements.md#ria-021) |
 | US-011 | [x] | Explicar predicción (API) | [UC-030](Use%20Cases/Use%20Cases.md#uc-030--generate-shap-explanation) | [RIA-030](Requirements/Requirements.md#ria-030) |
-| US-020 | [ ] | Enviar datos → score (UI) | [UC-020–023](Use%20Cases/Use%20Cases.md#6-clinical-prediction) | [RF-022](Requirements/Requirements.md#rf-022--evaluación-ia) |
+| US-020 | [x] | Enviar datos → score (UI) | [UC-020–023](Use%20Cases/Use%20Cases.md#6-clinical-prediction) | [RF-022](Requirements/Requirements.md#rf-022--evaluación-ia) |
 | US-021 | [ ] | Simular variables | [UC-040–043](Use%20Cases/Use%20Cases.md#8-clinical-simulation) | [RF-040](Requirements/Requirements.md#rf-040--simulación-interactiva) |
 | US-022 | [ ] | Ver historial (nurse) | [UC-050](Use%20Cases/Use%20Cases.md#uc-050--view-prediction-history) | [RF-050](Requirements/Requirements.md#rf-050--historial-evaluaciones) |
 | US-023 | [ ] | Analytics población | [UC-060](Use%20Cases/Use%20Cases.md#uc-060--view-analytics-dashboard) | [RF-060](Requirements/Requirements.md#rf-060--dashboard-analítico) |
@@ -285,32 +285,32 @@ Documento vivo para seguir el progreso del TFM.
 
 # FASE 4 — Frontend foundation
 
-**Progreso:** 9 / 14 (64%)
+**Progreso:** 14 / 14 (100%)
 
 [Execution Plan — Fase 4](Execution%20Plan/ExecutionPlan.md#phase-4--frontend-foundation) · [skill frontend](../skills/frontend/SKILL.md)
 
 | ID | ✓ | Tarea | Docs | Pedir a la IA |
 |---|---|---|---|---|
 | T-401 | [x] | Vite + React + TS | [RFW-001](Requirements/Requirements.md#rfw-001) | `Inicializa frontend con Vite React TypeScript.` |
-| T-402 | [ ] | Tailwind + shadcn | [Design light](Design/design-system.light.md) | `Instala Tailwind y shadcn/ui. Mapea tokens del design system.` |
+| T-402 | [x] | Tailwind + shadcn | [Design light](Design/design-system.light.md) | `Instala Tailwind y shadcn/ui. Mapea tokens del design system.` |
 | T-403 | [x] | Tokens Tailwind | [RUX-010](Requirements/Requirements.md#rux-010) | `Configura tailwind.config con colores de design-system.light.md.` |
 | T-404 | [x] | Router + Axios | [EP-4.2](Execution%20Plan/ExecutionPlan.md#42-install-ui-stack) | `React Router + Axios con base URL configurable.` |
 | T-405 | [x] | Layout sidebar | [RF-012](Requirements/Requirements.md#rf-012--navegación-lateral) · [dashboard mockup](Design/screens/dashboard/reference.html) | `Layout: sidebar + topbar según mockup dashboard.` |
 | T-406 | [x] | Nav links MVP | [RF-012](Requirements/Requirements.md#rf-012--navegación-lateral) | `Sidebar: dashboard, evaluación, simulación, historial, analytics, settings.` |
-| T-407 | [ ] | Splash | [RFW-010](Requirements/Requirements.md#rfw-010) · [splash](Design/screens/splash/light.reference.html) | `Página Splash según mockup light.mockup.png.` |
+| T-407 | [x] | Splash | [RFW-010](Requirements/Requirements.md#rfw-010) · [splash](Design/screens/splash/light.reference.html) | `Página Splash según mockup light.mockup.png.` |
 | T-408 | [x] | Login | [RFW-011](Requirements/Requirements.md#rfw-011) · [login](Design/screens/login/reference.html) | `Página Login + integración POST /auth/login.` |
 | T-409 | [x] | `services/auth.ts` | [UC-001](Use%20Cases/Use%20Cases.md#uc-001--user-login) | `Servicio Axios para login y almacenamiento JWT.` |
 | T-410 | [x] | JWT cliente | [RF-003](Requirements/Requirements.md#rf-003--persistencia-de-sesión) | `Context o hook para JWT en requests.` |
 | T-411 | [x] | Rutas protegidas | [UC-003](Use%20Cases/Use%20Cases.md#uc-003--role-authorization) | `PrivateRoute que redirige a login si no hay token.` |
-| T-412 | [ ] | Loading/error/success | [UC-101–103](Use%20Cases/Use%20Cases.md#14-uxui-cases) | `Componentes toast/spinner para estados UX.` |
-| T-413 | [ ] | Responsive | [RNF-041](Requirements/Requirements.md#rnf-041) · [UC-100](Use%20Cases/Use%20Cases.md#uc-100--responsive-navigation) | `Layout responsive mobile/desktop.` |
-| T-414 | [ ] | Recharts | [RFW-020](Requirements/Requirements.md#rfw-020) | `Instala y configura Recharts.` |
+| T-412 | [x] | Loading/error/success | [UC-101–103](Use%20Cases/Use%20Cases.md#14-uxui-cases) | `Componentes toast/spinner para estados UX.` |
+| T-413 | [x] | Responsive | [RNF-041](Requirements/Requirements.md#rnf-041) · [UC-100](Use%20Cases/Use%20Cases.md#uc-100--responsive-navigation) | `Layout responsive mobile/desktop.` |
+| T-414 | [x] | Recharts | [RFW-020](Requirements/Requirements.md#rfw-020) | `Instala y configura Recharts.` |
 
 ---
 
 # FASE 5 — Features clínicas
 
-**Progreso:** 0 / 16 (0%)
+**Progreso:** 7 / 16 (44%)
 
 [Execution Plan — Fase 5](Execution%20Plan/ExecutionPlan.md#phase-5--core-clinical-features)
 
@@ -327,13 +327,13 @@ Documento vivo para seguir el progreso del TFM.
 
 | ID | ✓ | Tarea | Docs | Pedir a la IA |
 |---|---|---|---|---|
-| T-510 | [ ] | Formulario clínico | [RF-020](Requirements/Requirements.md#rf-020--formulario-clínico) · [prediction-form](Design/screens/prediction-form/reference.html) | `Formulario evaluación según RF-020 y mockup.` |
-| T-511 | [ ] | Validación form | [RF-021](Requirements/Requirements.md#rf-021--validación) · [UC-021](Use%20Cases/Use%20Cases.md#uc-021--validate-clinical-inputs) | `Validación cliente: rangos y campos obligatorios.` |
-| T-512 | [ ] | Integrar /predict | [UC-022](Use%20Cases/Use%20Cases.md#uc-022--generate-ai-prediction) | `Submit form → POST /predict → navegar a resultado.` |
-| T-513 | [ ] | Gauge + score | [RF-023](Requirements/Requirements.md#rf-023--mostrar-score) · [RFW-021](Requirements/Requirements.md#rfw-021) | `Pantalla resultado: gauge riesgo + categoría.` |
-| T-514 | [ ] | SHAP bars | [RF-030](Requirements/Requirements.md#rf-030--shap-explanations) · [RFW-023](Requirements/Requirements.md#rfw-023) | `Barras horizontales SHAP según mockup prediction-result.` |
-| T-515 | [ ] | Resumen XAI | [RF-032](Requirements/Requirements.md#rf-032--explicación-textual) · [UC-032](Use%20Cases/Use%20Cases.md#uc-032--read-ai-clinical-summary) | `Mostrar summary textual del backend. Tono clínico neutral.` |
-| T-516 | [ ] | Colores riesgo | [RUX-011](Requirements/Requirements.md#rux-011) | `Verde/ámbar/rojo para low/medium/high risk.` |
+| T-510 | [x] | Formulario clínico | [RF-020](Requirements/Requirements.md#rf-020--formulario-clínico) · [prediction-form](Design/screens/prediction-form/reference.html) | `Formulario evaluación según RF-020 y mockup.` |
+| T-511 | [x] | Validación form | [RF-021](Requirements/Requirements.md#rf-021--validación) · [UC-021](Use%20Cases/Use%20Cases.md#uc-021--validate-clinical-inputs) | `Validación cliente: rangos y campos obligatorios.` |
+| T-512 | [x] | Integrar /predict | [UC-022](Use%20Cases/Use%20Cases.md#uc-022--generate-ai-prediction) | `Submit form → POST /predict → navegar a resultado.` |
+| T-513 | [x] | Gauge + score | [RF-023](Requirements/Requirements.md#rf-023--mostrar-score) · [RFW-021](Requirements/Requirements.md#rfw-021) | `Pantalla resultado: gauge riesgo + categoría.` |
+| T-514 | [x] | SHAP bars | [RF-030](Requirements/Requirements.md#rf-030--shap-explanations) · [RFW-023](Requirements/Requirements.md#rfw-023) | `Barras horizontales SHAP según mockup prediction-result.` |
+| T-515 | [x] | Resumen XAI | [RF-032](Requirements/Requirements.md#rf-032--explicación-textual) · [UC-032](Use%20Cases/Use%20Cases.md#uc-032--read-ai-clinical-summary) | `Mostrar summary textual del backend. Tono clínico neutral.` |
+| T-516 | [x] | Colores riesgo | [RUX-011](Requirements/Requirements.md#rux-011) | `Verde/ámbar/rojo para low/medium/high risk.` |
 
 ## Simulación
 
@@ -515,4 +515,6 @@ Documento vivo para seguir el progreso del TFM.
 | 2026-06-11 | T-213: XGBoost opcional + `models/xgboost_evaluation.json`; LR sigue modelo producción. MVP 65/134 (49%) |
 | 2026-06-11 | T-214: gráficos EDA exportados en `docs/figures/eda/` + script reproducible. Fase 2 completa. MVP 67/134 (50%) |
 | 2026-06-11 | US-010/US-011: `POST /predict` con ML real + SHAP + persistencia (T-301–304, T-308, T-310, T-312). Fase 3 6/14. MVP 75/134 (56%) |
+| 2026-06-11 | Fase 4 completa (T-401–414): shadcn/ui, splash, UX spinner/alert, layout responsive, Recharts en dashboard. MVP 80/134 (60%) |
 | 2026-06-21 | Revisión Fase 2 + predict: tests manuales Phase-02/03, `shap_background.npy`, docs ML/Testing/README actualizados |
+| 2026-06-23 | Fase 3 API completa: `/simulate`, `/history`, `/analytics`, exception handlers (T-305–311). Lint Ruff+ESLint. Docs Testing/Manual/Database/README sincronizados |

@@ -121,12 +121,12 @@ Documento vivo para seguir el progreso del TFM.
 | Fase 2 — ML | 14 | 14 | 100% |
 | Fase 3 — ML + Backend | 14 | 14 | 100% |
 | Fase 4 — Frontend base | 14 | 14 | 100% |
-| Fase 5 — Features clínicas | 0 | 16 | 0% |
+| Fase 5 — Features clínicas | 7 | 16 | 44% |
 | Fase 6 — Analytics + History | 0 | 10 | 0% |
 | Fase 7 — Polish + Testing | 0 | 12 | 0% |
 | Fase 8 — TFM + Documentación | 2 | 10 | 20% |
 | Fase 9 — Demo | 0 | 6 | 0% |
-| **TOTAL MVP** | **80** | **134** | **60%** |
+| **TOTAL MVP** | **87** | **134** | **65%** |
 
 ---
 
@@ -276,7 +276,7 @@ Documento vivo para seguir el progreso del TFM.
 |---|---|---|---|---|
 | US-010 | [x] | Predecir readmisión (API) | [UC-022](Use%20Cases/Use%20Cases.md#uc-022--generate-ai-prediction) | [RIA-021](Requirements/Requirements.md#ria-021) |
 | US-011 | [x] | Explicar predicción (API) | [UC-030](Use%20Cases/Use%20Cases.md#uc-030--generate-shap-explanation) | [RIA-030](Requirements/Requirements.md#ria-030) |
-| US-020 | [ ] | Enviar datos → score (UI) | [UC-020–023](Use%20Cases/Use%20Cases.md#6-clinical-prediction) | [RF-022](Requirements/Requirements.md#rf-022--evaluación-ia) |
+| US-020 | [x] | Enviar datos → score (UI) | [UC-020–023](Use%20Cases/Use%20Cases.md#6-clinical-prediction) | [RF-022](Requirements/Requirements.md#rf-022--evaluación-ia) |
 | US-021 | [ ] | Simular variables | [UC-040–043](Use%20Cases/Use%20Cases.md#8-clinical-simulation) | [RF-040](Requirements/Requirements.md#rf-040--simulación-interactiva) |
 | US-022 | [ ] | Ver historial (nurse) | [UC-050](Use%20Cases/Use%20Cases.md#uc-050--view-prediction-history) | [RF-050](Requirements/Requirements.md#rf-050--historial-evaluaciones) |
 | US-023 | [ ] | Analytics población | [UC-060](Use%20Cases/Use%20Cases.md#uc-060--view-analytics-dashboard) | [RF-060](Requirements/Requirements.md#rf-060--dashboard-analítico) |
@@ -310,7 +310,7 @@ Documento vivo para seguir el progreso del TFM.
 
 # FASE 5 — Features clínicas
 
-**Progreso:** 0 / 16 (0%)
+**Progreso:** 7 / 16 (44%)
 
 [Execution Plan — Fase 5](Execution%20Plan/ExecutionPlan.md#phase-5--core-clinical-features)
 
@@ -327,13 +327,13 @@ Documento vivo para seguir el progreso del TFM.
 
 | ID | ✓ | Tarea | Docs | Pedir a la IA |
 |---|---|---|---|---|
-| T-510 | [ ] | Formulario clínico | [RF-020](Requirements/Requirements.md#rf-020--formulario-clínico) · [prediction-form](Design/screens/prediction-form/reference.html) | `Formulario evaluación según RF-020 y mockup.` |
-| T-511 | [ ] | Validación form | [RF-021](Requirements/Requirements.md#rf-021--validación) · [UC-021](Use%20Cases/Use%20Cases.md#uc-021--validate-clinical-inputs) | `Validación cliente: rangos y campos obligatorios.` |
-| T-512 | [ ] | Integrar /predict | [UC-022](Use%20Cases/Use%20Cases.md#uc-022--generate-ai-prediction) | `Submit form → POST /predict → navegar a resultado.` |
-| T-513 | [ ] | Gauge + score | [RF-023](Requirements/Requirements.md#rf-023--mostrar-score) · [RFW-021](Requirements/Requirements.md#rfw-021) | `Pantalla resultado: gauge riesgo + categoría.` |
-| T-514 | [ ] | SHAP bars | [RF-030](Requirements/Requirements.md#rf-030--shap-explanations) · [RFW-023](Requirements/Requirements.md#rfw-023) | `Barras horizontales SHAP según mockup prediction-result.` |
-| T-515 | [ ] | Resumen XAI | [RF-032](Requirements/Requirements.md#rf-032--explicación-textual) · [UC-032](Use%20Cases/Use%20Cases.md#uc-032--read-ai-clinical-summary) | `Mostrar summary textual del backend. Tono clínico neutral.` |
-| T-516 | [ ] | Colores riesgo | [RUX-011](Requirements/Requirements.md#rux-011) | `Verde/ámbar/rojo para low/medium/high risk.` |
+| T-510 | [x] | Formulario clínico | [RF-020](Requirements/Requirements.md#rf-020--formulario-clínico) · [prediction-form](Design/screens/prediction-form/reference.html) | `Formulario evaluación según RF-020 y mockup.` |
+| T-511 | [x] | Validación form | [RF-021](Requirements/Requirements.md#rf-021--validación) · [UC-021](Use%20Cases/Use%20Cases.md#uc-021--validate-clinical-inputs) | `Validación cliente: rangos y campos obligatorios.` |
+| T-512 | [x] | Integrar /predict | [UC-022](Use%20Cases/Use%20Cases.md#uc-022--generate-ai-prediction) | `Submit form → POST /predict → navegar a resultado.` |
+| T-513 | [x] | Gauge + score | [RF-023](Requirements/Requirements.md#rf-023--mostrar-score) · [RFW-021](Requirements/Requirements.md#rfw-021) | `Pantalla resultado: gauge riesgo + categoría.` |
+| T-514 | [x] | SHAP bars | [RF-030](Requirements/Requirements.md#rf-030--shap-explanations) · [RFW-023](Requirements/Requirements.md#rfw-023) | `Barras horizontales SHAP según mockup prediction-result.` |
+| T-515 | [x] | Resumen XAI | [RF-032](Requirements/Requirements.md#rf-032--explicación-textual) · [UC-032](Use%20Cases/Use%20Cases.md#uc-032--read-ai-clinical-summary) | `Mostrar summary textual del backend. Tono clínico neutral.` |
+| T-516 | [x] | Colores riesgo | [RUX-011](Requirements/Requirements.md#rux-011) | `Verde/ámbar/rojo para low/medium/high risk.` |
 
 ## Simulación
 

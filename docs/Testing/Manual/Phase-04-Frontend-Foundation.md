@@ -1,6 +1,6 @@
 # Fase 4 — Tests manuales: Frontend base
 
-**Alcance:** Splash, login UI, JWT en cliente, rutas protegidas, navegación por rol, layout responsive (sidebar + móvil), dashboard con gráfico demo Recharts. Las pantallas clínicas (`/evaluation`, `/simulation`, etc.) son **placeholders** hasta Fase 5.
+**Alcance:** Splash, login UI, JWT en cliente, rutas protegidas, navegación por rol, layout responsive (sidebar + móvil), dashboard con gráfico demo Recharts. `/evaluation` pasó a flujo real en Fase 5; `/simulation` sigue como placeholder hasta T-520+.
 
 **Referencia:** [Task Tracker — Fase 4](../../TaskTracker.md#fase-4--frontend-base) · [Design — splash](../../Design/screens/splash/light.reference.html) · [Design — login](../../Design/screens/login/reference.html)
 
@@ -300,11 +300,12 @@ En incógnito, navega directamente a http://localhost:5173/dashboard.
 
 - [ ] Redirección a `/login` (o splash → login).
 
-### MT-P04-REG-002 — Placeholders Fase 5
+### MT-P04-REG-002 — Rutas clínicas (actualizado Fase 5)
 
-Como clinician, abre `/evaluation` y `/simulation`.
+Como clinician, abre `/evaluation`.
 
-- [ ] Página placeholder con título y descripción; sin error de aplicación.
+- [x] Formulario clínico funcional (ya no placeholder). Ver [Phase 05 — MT-P05-EVAL-001](Phase-05-Clinical-Prediction-UI.md#mt-p05-eval-001--formulario-clínico-visible).
+- [ ] `/simulation` sigue siendo placeholder hasta T-520+.
 
 ### MT-P04-REG-003 — Tests automáticos frontend
 
@@ -314,7 +315,7 @@ npm run test
 npm run lint
 ```
 
-- [ ] Vitest: 22 tests passed (8 archivos).
+- [ ] Vitest: **62** tests passed (**19** archivos).
 - [ ] ESLint sin errores.
 
 ---

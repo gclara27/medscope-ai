@@ -204,6 +204,7 @@ Complementan pytest/vitest para defensa TFM y entorno real:
 | 2 | [Manual/Phase-02-ML-Pipeline.md](Manual/Phase-02-ML-Pipeline.md) |
 | 3 | [Manual/Phase-03-ML-Backend-Integration.md](Manual/Phase-03-ML-Backend-Integration.md) |
 | 4 | [Manual/Phase-04-Frontend-Foundation.md](Manual/Phase-04-Frontend-Foundation.md) |
+| 5 | [Manual/Phase-05-Clinical-Prediction-UI.md](Manual/Phase-05-Clinical-Prediction-UI.md) |
 
 ---
 
@@ -219,12 +220,15 @@ Prioridad baja-media. No pixel-perfect testing.
 | Sidebar | navegación RF-012 |
 | Charts | render básico Recharts |
 
-**Implementado (Fase 4):** login, logout toast, `RoleRoute`, `AppLayout` (desktop + mobile), `SplashPage`, `Spinner`/`Alert`, chart demo en dashboard — ver `frontend/src/**/*.test.{ts,tsx}` (8 archivos, 22 tests).
+**Implementado (Fase 4):** login, logout toast, `RoleRoute`, `AppLayout`, `SplashPage`, `Spinner`/`Alert`, chart demo en dashboard.
+
+**Implementado (Fase 5 — predicción UI, T-510–516):** formulario clínico, validación cliente, `POST /predict`, gauge + `RiskIndicator`, resumen XAI, barras SHAP, tokens RUX-011 — ver `frontend/src/**/*.test.{ts,tsx}` (**19 archivos, 62 tests**).
 
 ```bash
 cd frontend
 npm run test
 npm run lint
+npm run build
 ```
 
 ---
@@ -279,7 +283,7 @@ pytest --cov=backend --cov-report=html
 | ML pipeline | 2 | ✅ tests ML básicos |
 | ML + backend integration | 3 | ✅ API tests (`/predict`, `/simulate`, `/history`, `/analytics`) |
 | Frontend foundation | 4 | ✅ vitest básico (login, roles, layout, splash) |
-| Core clinical features | 5–6 | ✅ integration tests + frontend básico |
+| Core clinical features | 5–6 | ✅ integration tests + frontend predicción (vitest) + [Manual Phase 05](Manual/Phase-05-Clinical-Prediction-UI.md) |
 | Polish + hardening | 7 | ✅ E2E Playwright + coverage report |
 
 Enfoque: **feature first → estabilizar → automatizar tests** (no TDD estricto en UI/ML experimental).

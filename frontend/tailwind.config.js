@@ -1,5 +1,7 @@
 import tailwindcssAnimate from "tailwindcss-animate";
 
+import { RISK_COLORS } from "./riskColors.js";
+
 /** @type {import('tailwindcss').Config} */
 export default {
   darkMode: ["class"],
@@ -67,9 +69,9 @@ export default {
         "on-error-container": "#93000a",
         "secondary-container": "#d2e4fb",
         "on-secondary-container": "#556679",
-        "risk-low": "#16a34a",
-        "risk-medium": "#f59e0b",
-        "risk-high": "#dc2626",
+        "risk-low": RISK_COLORS.low,
+        "risk-medium": RISK_COLORS.medium,
+        "risk-high": RISK_COLORS.high,
       },
       borderRadius: {
         lg: "var(--radius)",

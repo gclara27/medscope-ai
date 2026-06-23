@@ -260,10 +260,11 @@ pytest
 cd ..\ml
 pytest
 
-# Frontend (22 tests)
+# Frontend (62 tests, 19 archivos)
 cd ..\frontend
 npm run test
 npm run lint
+npm run build
 ```
 
 See [Testing strategy](docs/Testing/Testing.md) for manual checklists per phase (`docs/Testing/Manual/`).

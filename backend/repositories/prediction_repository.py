@@ -5,7 +5,8 @@ from __future__ import annotations
 from decimal import Decimal
 from uuid import UUID
 
-from sqlalchemy.orm import Session
+from sqlalchemy import select
+from sqlalchemy.orm import Session, joinedload
 
 from models.patient_input import PatientInput
 from models.prediction import Prediction
@@ -15,6 +16,14 @@ from models.shap_explanation import ShapExplanation
 class PredictionRepository:
     def __init__(self, db: Session) -> None:
         self.db = db
+
+    def get_with_patient_input(self, prediction_id: UUID) -> Prediction | None:
+        """Load a prediction with its patient_inputs row (UC-040)."""
+        return self.db.scalar(
+            select(Prediction)
+            .options(joinedload(Prediction.patient_input))
+            .where(Prediction.id == prediction_id)
+        )
 
     def create_with_details(
         self,

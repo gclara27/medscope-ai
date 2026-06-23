@@ -56,7 +56,7 @@ def test_predict_valid_payload_returns_score_and_shap(
     assert data["risk_level"] in {"low", "medium", "high"}
     assert data["summary"]
     assert data["model_version"]
-    assert data["prediction_time_ms"] >= 0
+    assert 0 <= data["prediction_time_ms"] < 1000
     assert len(data["shap_explanations"]) >= 1
     assert data["shap_explanations"][0]["feature_name"]
     assert data["shap_explanations"][0]["importance_rank"] == 1
@@ -111,6 +111,9 @@ def test_predict_persisted_in_database(
     assert prediction is not None
     assert prediction.user_id == user.id
     assert prediction.risk_level == response.json()["risk_level"]
+    assert prediction.prediction_time_ms == response.json()["prediction_time_ms"]
+    assert prediction.prediction_time_ms is not None
+    assert prediction.prediction_time_ms < 1000
 
     patient_input = db_session.scalar(
         select(PatientInput).where(PatientInput.prediction_id == prediction.id)

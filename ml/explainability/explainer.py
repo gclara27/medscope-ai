@@ -205,6 +205,17 @@ class ShapExplainerService:
             summary=summary,
         )
 
+    def predict_risk(self, features: pd.DataFrame) -> tuple[float, str]:
+        """Fast inference without SHAP (UC-042, simulation)."""
+        if len(features) != 1:
+            raise ValueError("Risk prediction currently supports exactly one patient row.")
+
+        transformed = self.preprocessor.transform(features)
+        probabilities = self.model.predict_proba(transformed)
+        risk_score = float(probabilities[0, 1])
+        threshold = float(self.manifest["production_threshold"])
+        return risk_score, classify_risk_level(risk_score, threshold=threshold)
+
 
 def explain_patient(features: pd.DataFrame, *, top_n: int = DEFAULT_TOP_FEATURES) -> ShapExplanationResult:
     """Convenience wrapper for one-off SHAP explanations."""

@@ -113,25 +113,41 @@ Rutas protegidas: validar JWT y roles `admin`, `clinician`, `analyst`, `nurse` (
 
 ## 6.2 Prediction API (UC-020–023, UC-030)
 
-**Implementado:** `backend/tests/test_predictions.py` (6 tests).
+**Implementado:** `backend/tests/test_predictions.py` (7 tests).
 
-- payload válido → 200 + `risk_score` + categoría
+- payload válido → 200 + `risk_score` + categoría + `prediction_time_ms` < 1000 (RNF-001)
 - respuesta incluye SHAP / feature contributions
 - input inválido → 422 (UC-090, RTS-002)
-- predicción persistida en DB (UC-023)
+- predicción persistida en DB (UC-023), incl. `prediction_time_ms`
+- ML no disponible → 503 sin reintentar `registry.load()`
 - rol analyst → 403 en `/predict`
 
 ## 6.3 Simulation API (UC-040–044)
 
-- modificar variables → nuevo score
-- respuesta incluye original vs simulado
-- simulación persistida
+**Implementado:** `backend/tests/test_simulations.py` (6 tests).
+
+- modificar variables → nuevo score (original vs simulado)
+- simulación persistida (`simulations` + `simulation_inputs`)
+- modificaciones vacías → 422
+- predicción inexistente → 404
+- rol analyst → 403 en `/simulate`
 
 ## 6.4 History & Analytics (UC-050–052, UC-060–062)
 
-- GET `/history` devuelve predicciones
-- filtros por fecha / riesgo
-- GET `/analytics` devuelve agregados
+**Implementado:** `backend/tests/test_history.py` (6 tests), `backend/tests/test_analytics.py` (6 tests).
+
+- GET `/history` devuelve predicciones tras `POST /predict`
+- filtros por `risk_level`, `user_id`, rango de fechas inválido → 422
+- GET `/analytics` devuelve KPIs, distribución de riesgo y tendencia diaria
+- filtros `date_from` / `date_to`; nurse → 403, admin/analyst permitidos
+
+## 6.4.1 Exception handlers (UC-091)
+
+**Implementado:** `backend/tests/test_exception_handlers.py` (3 tests).
+
+- validación Pydantic → 422 JSON sin stack trace
+- `HTTPException` → JSON `{ "detail": ... }`
+- excepción no controlada → 500 mensaje genérico, log en servidor
 
 ## 6.5 Database
 

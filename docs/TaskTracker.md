@@ -119,7 +119,7 @@ Documento vivo para seguir el progreso del TFM.
 | Fase 0 — Inicialización | 16 | 16 | 100% |
 | Fase 1 — Backend + DB | 22 | 22 | 100% |
 | Fase 2 — ML | 14 | 14 | 100% |
-| Fase 3 — ML + Backend | 6 | 14 | 43% |
+| Fase 3 — ML + Backend | 14 | 14 | 100% |
 | Fase 4 — Frontend base | 9 | 14 | 64% |
 | Fase 5 — Features clínicas | 0 | 16 | 0% |
 | Fase 6 — Analytics + History | 0 | 10 | 0% |
@@ -251,7 +251,7 @@ Documento vivo para seguir el progreso del TFM.
 
 # FASE 3 — Integración ML + Backend
 
-**Progreso:** 6 / 14 (43%)
+**Progreso:** 14 / 14 (100%)
 
 [Execution Plan — Fase 3](Execution%20Plan/ExecutionPlan.md#phase-3--ml--backend-integration) · [Tests manuales Fase 3](Testing/Manual/Phase-03-ML-Backend-Integration.md)
 
@@ -259,18 +259,18 @@ Documento vivo para seguir el progreso del TFM.
 |---|---|---|---|---|
 | T-301 | [x] | Load model startup | [UC-082](Use%20Cases/Use%20Cases.md#uc-082--load-ml-model) | `Carga model.pkl al startup FastAPI con lifespan event.` |
 | T-302 | [x] | prediction_service | [UC-083](Use%20Cases/Use%20Cases.md#uc-083--execute-prediction-pipeline) | `Crea prediction_service: preprocess → predict → SHAP.` |
-| T-303 | [ ] | simulation_service | [EP-3.5](Execution%20Plan/ExecutionPlan.md#35-create-simulate-endpoint) | `Crea simulation_service con comparación original/simulado.` |
+| T-303 | [x] | simulation_service | [EP-3.5](Execution%20Plan/ExecutionPlan.md#35-create-simulate-endpoint) | `Crea simulation_service con comparación original/simulado.` |
 | T-304 | [x] | `POST /predict` | [RBE-010](Requirements/Requirements.md#rbe-010) · [UC-022–023](Use%20Cases/Use%20Cases.md#6-clinical-prediction) | `POST /predict: validar, inferir, SHAP, persistir, responder JSON.` |
-| T-305 | [ ] | `POST /simulate` | [RBE-011](Requirements/Requirements.md#rbe-011) · [UC-040–044](Use%20Cases/Use%20Cases.md#8-clinical-simulation) | `POST /simulate según RF-040–042 y UC-040–044.` |
-| T-306 | [ ] | `GET /history` | [RBE-012](Requirements/Requirements.md#rbe-012) · [RF-051](Requirements/Requirements.md#rf-051--búsqueda) | `GET /history con filtros fecha, riesgo, usuario.` |
-| T-307 | [ ] | `GET /analytics` | [RBE-014](Requirements/Requirements.md#rbe-014) · [UC-060](Use%20Cases/Use%20Cases.md#uc-060--view-analytics-dashboard) | `GET /analytics: agregaciones sobre predictions.` |
+| T-305 | [x] | `POST /simulate` | [RBE-011](Requirements/Requirements.md#rbe-011) · [UC-040–044](Use%20Cases/Use%20Cases.md#8-clinical-simulation) | `POST /simulate según RF-040–042 y UC-040–044.` |
+| T-306 | [x] | `GET /history` | [RBE-012](Requirements/Requirements.md#rbe-012) · [RF-051](Requirements/Requirements.md#rf-051--búsqueda) | `GET /history con filtros fecha, riesgo, usuario.` |
+| T-307 | [x] | `GET /analytics` | [RBE-014](Requirements/Requirements.md#rbe-014) · [UC-060](Use%20Cases/Use%20Cases.md#uc-060--view-analytics-dashboard) | `GET /analytics: agregaciones sobre predictions.` |
 | T-308 | [x] | Persist transacción predict | [UC-023](Use%20Cases/Use%20Cases.md#uc-023--store-prediction) · [DB §6](Database/Database.md#6-flujos-de-persistencia) | `Persistir prediction + patient_inputs + shap en una transacción.` |
-| T-309 | [ ] | Persist simulación | [UC-044](Use%20Cases/Use%20Cases.md#uc-044--save-simulation) | `Persistir simulation + simulation_inputs.` |
+| T-309 | [x] | Persist simulación | [UC-044](Use%20Cases/Use%20Cases.md#uc-044--save-simulation) | `Persistir simulation + simulation_inputs.` |
 | T-310 | [x] | Schemas Pydantic | [RF-021](Requirements/Requirements.md#rf-021--validación) · [UC-090](Use%20Cases/Use%20Cases.md#uc-090--handle-invalid-input) | `Schemas Pydantic para inputs clínicos con validación.` |
-| T-311 | [ ] | Exception handlers | [UC-091](Use%20Cases/Use%20Cases.md#uc-091--handle-backend-failure) | `Handlers globales: JSON error, sin stack trace.` |
+| T-311 | [x] | Exception handlers | [UC-091](Use%20Cases/Use%20Cases.md#uc-091--handle-backend-failure) | `Handlers globales: JSON error, sin stack trace.` |
 | T-312 | [x] | Latencia < 1s | [RNF-001](Requirements/Requirements.md#rnf-001) | `Optimiza predict para < 1s. Log prediction_time_ms.` |
-| T-313 | [~] | Tests APIs predict/simulate | [RTS-001](Requirements/Requirements.md#rts-001) · [Testing §6.2–6.3](Testing/Testing.md#62-prediction-api-uc-020023-uc-030) | `Predict: `backend/tests/test_predictions.py` (6 tests). Simulate: pendiente T-305.` |
-| T-314 | [ ] | Tests history/analytics | [RTS-001](Requirements/Requirements.md#rts-001) · [Testing §6.4](Testing/Testing.md#64-history--analytics-uc-050052-uc-060062) | `Tras T-306–307: tests GET /history filtros y GET /analytics agregados.` |
+| T-313 | [x] | Tests APIs predict/simulate | [RTS-001](Requirements/Requirements.md#rts-001) · [Testing §6.2–6.3](Testing/Testing.md#62-prediction-api-uc-020023-uc-030) | `Predict: `test_predictions.py` (7). Simulate: `test_simulations.py` (6).` |
+| T-314 | [x] | Tests history/analytics | [RTS-001](Requirements/Requirements.md#rts-001) · [Testing §6.4](Testing/Testing.md#64-history--analytics-uc-050052-uc-060062) | `History: `test_history.py` (6). Analytics: `test_analytics.py` (6).` |
 
 | US | ✓ | Historia | UC | RIA / RF |
 |---|---|---|---|---|

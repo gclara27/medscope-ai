@@ -8,6 +8,7 @@ import { EvaluationPage } from "@/pages/EvaluationPage";
 import { PredictionResultPage } from "@/pages/PredictionResultPage";
 import { createPrediction } from "@/services/predictions";
 import type { PredictResponse } from "@/types/prediction";
+import { demoBaselineRequest } from "@/test/fixtures/prediction";
 
 vi.mock("@/services/predictions", () => ({
   createPrediction: vi.fn(),
@@ -117,7 +118,10 @@ describe("PredictionResultPage", () => {
     render(
       <MemoryRouter
         initialEntries={[
-          { pathname: "/evaluation/result", state: { result: demoResponse } },
+          {
+            pathname: "/evaluation/result",
+            state: { result: demoResponse, baselineRequest: demoBaselineRequest },
+          },
         ]}
       >
         <PredictionResultPage />
@@ -129,5 +133,35 @@ describe("PredictionResultPage", () => {
     expect(screen.getByText(/moderate readmission risk based on clinical profile/i)).toBeInTheDocument();
     expect(screen.getByRole("region", { name: /ai clinical summary/i })).toBeInTheDocument();
     expect(screen.getByText(/explainable ai \(xai\) analysis/i)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /run simulation/i })).toBeInTheDocument();
+  });
+
+  it("scrolls to the SHAP section from View full SHAP analysis", async () => {
+    const user = userEvent.setup();
+    const scrollIntoViewMock = vi.fn();
+
+    render(
+      <MemoryRouter
+        initialEntries={[
+          {
+            pathname: "/evaluation/result",
+            state: { result: demoResponse, baselineRequest: demoBaselineRequest },
+          },
+        ]}
+      >
+        <PredictionResultPage />
+      </MemoryRouter>,
+    );
+
+    const shapSection = document.getElementById("xai-analysis");
+    expect(shapSection).not.toBeNull();
+    shapSection!.scrollIntoView = scrollIntoViewMock;
+
+    await user.click(screen.getByRole("link", { name: /view full shap analysis/i }));
+
+    expect(scrollIntoViewMock).toHaveBeenCalledWith({
+      behavior: "smooth",
+      block: "start",
+    });
   });
 });

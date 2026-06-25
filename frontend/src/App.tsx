@@ -8,6 +8,7 @@ import { DashboardPage } from "@/pages/DashboardPage";
 import { EvaluationPage } from "@/pages/EvaluationPage";
 import { LoginPage } from "@/pages/LoginPage";
 import { PlaceholderPage } from "@/pages/PlaceholderPage";
+import { SimulationPage } from "@/pages/SimulationPage";
 import { PredictionResultPage } from "@/pages/PredictionResultPage";
 import { SplashPage } from "@/pages/SplashPage";
 import { UnauthorizedPage } from "@/pages/UnauthorizedPage";
@@ -51,10 +52,7 @@ export default function App() {
                 path="/simulation"
                 element={
                   <RoleRoute allowedRoles={["admin", "clinician"]}>
-                    <PlaceholderPage
-                      title="Clinical Simulation"
-                      description="Run what-if scenarios and compare risk outcomes."
-                    />
+                    <SimulationPage />
                   </RoleRoute>
                 }
               />

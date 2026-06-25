@@ -192,7 +192,7 @@ Ubicación: `ml/tests/`
 | `test_shap_output` | SHAP no nulo, top features (UC-030) |
 | `test_metrics_threshold` | recall priorizado; accuracy > 75% (§15 KPIs) — **xfail documentado** |
 
-**Última ejecución de referencia (repo local, jun 2026):** **93** passed (`backend/tests`), **80** passed + **1** xfailed (`ml/tests`), **22** passed (`frontend` vitest) — **195** automatizados en total.
+**Última ejecución de referencia (repo local, jun 2026):** **93** passed (`backend/tests`), **80** passed + **1** xfailed (`ml/tests`), **92** passed (`frontend` vitest, 25 archivos) — **225** automatizados en total.
 
 ### Tests manuales por fase
 
@@ -204,7 +204,7 @@ Complementan pytest/vitest para defensa TFM y entorno real:
 | 2 | [Manual/Phase-02-ML-Pipeline.md](Manual/Phase-02-ML-Pipeline.md) |
 | 3 | [Manual/Phase-03-ML-Backend-Integration.md](Manual/Phase-03-ML-Backend-Integration.md) |
 | 4 | [Manual/Phase-04-Frontend-Foundation.md](Manual/Phase-04-Frontend-Foundation.md) |
-| 5 | [Manual/Phase-05-Clinical-Prediction-UI.md](Manual/Phase-05-Clinical-Prediction-UI.md) |
+| 5 | [Manual/Phase-05-Clinical-Prediction-UI.md](Manual/Phase-05-Clinical-Prediction-UI.md) · [Manual/Phase-05-Clinical-Simulation-UI.md](Manual/Phase-05-Clinical-Simulation-UI.md) |
 
 ---
 
@@ -222,7 +222,11 @@ Prioridad baja-media. No pixel-perfect testing.
 
 **Implementado (Fase 4):** login, logout toast, `RoleRoute`, `AppLayout`, `SplashPage`, `Spinner`/`Alert`, chart demo en dashboard.
 
-**Implementado (Fase 5 — predicción UI, T-510–516):** formulario clínico, validación cliente, `POST /predict`, gauge + `RiskIndicator`, resumen XAI, barras SHAP, tokens RUX-011 — ver `frontend/src/**/*.test.{ts,tsx}` (**19 archivos, 62 tests**).
+**Implementado (Fase 5 — predicción UI, T-510–516):** formulario clínico, validación cliente, `POST /predict`, gauge + `RiskIndicator`, resumen XAI, barras SHAP, tokens RUX-011.
+
+**Implementado (Fase 5 — simulación UI, T-520–523, US-021):** `SimulationPage`, panel sliders, recálculo debounced `POST /simulate`, `SimulationComparisonPanel`, persistencia `sessionStorage` (`simulationSession.ts`, `markSimulationForceReset` / `consumeSimulationForceReset` para F5 vs Run simulation) — archivos clave: `SimulationPage.test.tsx`, `SimulationComparisonPanel.test.tsx`, `simulationSession.test.ts`, `simulations.test.ts`, `simulationForm.test.ts`, `simulationDisplay.test.ts`.
+
+Ver `frontend/src/**/*.test.{ts,tsx}` (**25 archivos, 92 tests**).
 
 ```bash
 cd frontend
@@ -283,7 +287,7 @@ pytest --cov=backend --cov-report=html
 | ML pipeline | 2 | ✅ tests ML básicos |
 | ML + backend integration | 3 | ✅ API tests (`/predict`, `/simulate`, `/history`, `/analytics`) |
 | Frontend foundation | 4 | ✅ vitest básico (login, roles, layout, splash) |
-| Core clinical features | 5–6 | ✅ integration tests + frontend predicción (vitest) + [Manual Phase 05](Manual/Phase-05-Clinical-Prediction-UI.md) |
+| Core clinical features | 5–6 | ✅ integration tests + frontend predicción/simulación (vitest) + [Manual Phase 05 predicción](Manual/Phase-05-Clinical-Prediction-UI.md) + [Manual Phase 05 simulación](Manual/Phase-05-Clinical-Simulation-UI.md) |
 | Polish + hardening | 7 | ✅ E2E Playwright + coverage report |
 
 Enfoque: **feature first → estabilizar → automatizar tests** (no TDD estricto en UI/ML experimental).
@@ -396,7 +400,7 @@ Complementan (no sustituyen) `pytest` / Playwright: validan entorno real (Docker
 | UC-001–003 | backend + E2E | `test_auth.py`, `auth.spec.ts` |
 | UC-020–023 | backend + E2E | `test_predictions.py` |
 | UC-030–032 | backend + ML | `test_shap.py`, `test_predictions.py` |
-| UC-040–044 | backend + E2E | `test_simulations.py` |
+| UC-040–044 | backend + frontend vitest + manual | `test_simulations.py`, `SimulationPage.test.tsx` |
 | UC-050–052 | backend + E2E | `test_history.py` |
 | UC-060–062 | backend + E2E | `test_analytics.py` |
 | UC-090 | backend | validación en todos los endpoints |

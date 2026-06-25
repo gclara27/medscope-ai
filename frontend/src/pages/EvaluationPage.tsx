@@ -6,6 +6,7 @@ import { ClinicalEvaluationForm } from "@/components/clinical/ClinicalEvaluation
 import { createPrediction } from "@/services/predictions";
 import type { PredictRequest } from "@/types/prediction";
 import { getPredictionErrorMessage } from "@/utils/predictionErrors";
+import { buildSimulationLocationState, saveSimulationContext } from "@/utils/simulationSession";
 
 export function EvaluationPage() {
   const navigate = useNavigate();
@@ -17,7 +18,8 @@ export function EvaluationPage() {
     setIsSubmitting(true);
     try {
       const result = await createPrediction(payload);
-      navigate("/evaluation/result", { state: { result } });
+      saveSimulationContext(buildSimulationLocationState(result, payload));
+      navigate("/evaluation/result", { state: { result, baselineRequest: payload } });
     } catch (error) {
       setSubmitError(getPredictionErrorMessage(error));
     } finally {

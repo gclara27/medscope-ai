@@ -1,6 +1,6 @@
 import axios from "axios";
 
-function formatValidationDetail(detail: unknown): string | null {
+export function formatValidationDetail(detail: unknown): string | null {
   if (!Array.isArray(detail)) {
     return null;
   }

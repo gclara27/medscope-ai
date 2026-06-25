@@ -7,7 +7,7 @@ import { AppLayout } from "@/layouts/AppLayout";
 
 const logoutMock = vi.fn();
 
-vi.mock("@/context/AuthContext", () => ({
+vi.mock("@/context/useAuth", () => ({
   useAuth: () => ({
     user: {
       id: "1",

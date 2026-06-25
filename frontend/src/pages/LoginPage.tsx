@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useCallback, useEffect, useState } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 
 import { Alert } from "@/components/Alert";
@@ -8,8 +8,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAuth } from "@/context/AuthContext";
+import { useAuth } from "@/context/useAuth";
 import { getAuthErrorMessage } from "@/utils/authErrors";
+
+const LOGIN_ERROR_DISMISS_MS = 5000;
 
 export function LoginPage() {
   const { login, isAuthenticated, isLoading } = useAuth();
@@ -36,6 +38,19 @@ export function LoginPage() {
     setLogoutToastOpen(true);
     navigate("/login", { replace: true, state: {} });
   }, [location.state, navigate]);
+
+  const dismissError = useCallback(() => {
+    setError(null);
+  }, []);
+
+  useEffect(() => {
+    if (!error) {
+      return;
+    }
+
+    const timer = window.setTimeout(dismissError, LOGIN_ERROR_DISMISS_MS);
+    return () => window.clearTimeout(timer);
+  }, [error, dismissError]);
 
   if (isAuthenticated) {
     return <Navigate to={redirectPath} replace />;
@@ -87,6 +102,7 @@ export function LoginPage() {
                   placeholder="your.email@hospital.org"
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
+                  onFocus={dismissError}
                 />
               </div>
 
@@ -101,6 +117,7 @@ export function LoginPage() {
                   placeholder="Enter your password"
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}
+                  onFocus={dismissError}
                 />
               </div>
 

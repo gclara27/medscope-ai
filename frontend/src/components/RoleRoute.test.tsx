@@ -6,7 +6,7 @@ import { RoleRoute } from "@/components/RoleRoute";
 
 const useAuthMock = vi.fn();
 
-vi.mock("@/context/AuthContext", () => ({
+vi.mock("@/context/useAuth", () => ({
   useAuth: () => useAuthMock(),
 }));
 

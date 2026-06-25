@@ -7,6 +7,7 @@ import { AppLayout } from "@/layouts/AppLayout";
 import { DashboardPage } from "@/pages/DashboardPage";
 import { EvaluationPage } from "@/pages/EvaluationPage";
 import { LoginPage } from "@/pages/LoginPage";
+import { HistoryPage } from "@/pages/HistoryPage";
 import { PlaceholderPage } from "@/pages/PlaceholderPage";
 import { SimulationPage } from "@/pages/SimulationPage";
 import { PredictionResultPage } from "@/pages/PredictionResultPage";
@@ -60,10 +61,7 @@ export default function App() {
                 path="/history"
                 element={
                   <RoleRoute allowedRoles={["admin", "clinician", "nurse"]}>
-                    <PlaceholderPage
-                      title="Prediction History"
-                      description="Review past evaluations and risk assessments."
-                    />
+                    <HistoryPage />
                   </RoleRoute>
                 }
               />

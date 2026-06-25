@@ -122,11 +122,11 @@ Documento vivo para seguir el progreso del TFM.
 | Fase 3 — ML + Backend | 14 | 14 | 100% |
 | Fase 4 — Frontend base | 14 | 14 | 100% |
 | Fase 5 — Features clínicas | 11 | 16 | 69% |
-| Fase 6 — Analytics + History | 2 | 10 | 20% |
+| Fase 6 — Analytics + History | 7 | 10 | 70% |
 | Fase 7 — Polish + Testing | 0 | 12 | 0% |
 | Fase 8 — TFM + Documentación | 2 | 10 | 20% |
 | Fase 9 — Demo | 0 | 6 | 0% |
-| **TOTAL MVP** | **93** | **134** | **69%** |
+| **TOTAL MVP** | **98** | **134** | **73%** |
 
 ---
 
@@ -279,7 +279,7 @@ Documento vivo para seguir el progreso del TFM.
 | US-020 | [x] | Enviar datos → score (UI) | [UC-020–023](Use%20Cases/Use%20Cases.md#6-clinical-prediction) | [RF-022](Requirements/Requirements.md#rf-022--evaluación-ia) |
 | US-021 | [x] | Simular variables | [UC-040–043](Use%20Cases/Use%20Cases.md#8-clinical-simulation) | [RF-040](Requirements/Requirements.md#rf-040--simulación-interactiva) |
 | US-022 | [x] | Ver historial (nurse) | [UC-050](Use%20Cases/Use%20Cases.md#uc-050--view-prediction-history) | [RF-050](Requirements/Requirements.md#rf-050--historial-evaluaciones) |
-| US-023 | [ ] | Analytics población | [UC-060](Use%20Cases/Use%20Cases.md#uc-060--view-analytics-dashboard) | [RF-060](Requirements/Requirements.md#rf-060--dashboard-analítico) |
+| US-023 | [x] | Analytics población | [UC-060](Use%20Cases/Use%20Cases.md#uc-060--view-analytics-dashboard) | [RF-060](Requirements/Requirements.md#rf-060--dashboard-analítico) |
 
 ---
 
@@ -357,7 +357,7 @@ Documento vivo para seguir el progreso del TFM.
 
 # FASE 6 — Historial + Analytics
 
-**Progreso:** 2 / 10 (20%)
+**Progreso:** 7 / 10 (70%)
 
 | ID | ✓ | Tarea | Docs | Pedir a la IA |
 |---|---|---|---|---|
@@ -365,11 +365,11 @@ Documento vivo para seguir el progreso del TFM.
 | T-602 | [ ] | Filtros | [RF-051](Requirements/Requirements.md#rf-051--búsqueda) · [UC-051](Use%20Cases/Use%20Cases.md#uc-051--search-predictions) | `Filtros fecha, riesgo, usuario en GET /history.` |
 | T-603 | [ ] | Detalle histórico | [RF-052](Requirements/Requirements.md#rf-052--detalle-evaluación) · [UC-052](Use%20Cases/Use%20Cases.md#uc-052--open-historical-prediction) | `Vista detalle con inputs + SHAP histórico.` |
 | T-604 | [x] | API history | [RBE-012](Requirements/Requirements.md#rbe-012) | `Integrar GET /history en frontend.` |
-| T-605 | [ ] | Analytics page | [RF-060](Requirements/Requirements.md#rf-060--dashboard-analítico) · [analytics](Design/screens/analytics/reference.html) | `Dashboard analytics según mockup.` |
-| T-606 | [ ] | Categorías riesgo | [UC-062](Use%20Cases/Use%20Cases.md#uc-062--analyze-risk-categories) | `Chart distribución categorías.` |
-| T-607 | [ ] | Filtros tiempo | [RF-061](Requirements/Requirements.md#rf-061--filtros) | `Selector rango temporal.` |
-| T-608 | [ ] | KPIs ejecutivos | [RF-062](Requirements/Requirements.md#rf-062--kpis-ejecutivos) | `Cards métricas agregadas.` |
-| T-609 | [ ] | API analytics | [RBE-014](Requirements/Requirements.md#rbe-014) | `Integrar GET /analytics.` |
+| T-605 | [x] | Analytics page | [RF-060](Requirements/Requirements.md#rf-060--dashboard-analítico) · [analytics](Design/screens/analytics/reference.html) | `Dashboard analytics según mockup.` |
+| T-606 | [x] | Categorías riesgo | [UC-062](Use%20Cases/Use%20Cases.md#uc-062--analyze-risk-categories) | `Chart distribución categorías.` |
+| T-607 | [x] | Filtros tiempo | [RF-061](Requirements/Requirements.md#rf-061--filtros) | `Selector rango temporal.` |
+| T-608 | [x] | KPIs ejecutivos | [RF-062](Requirements/Requirements.md#rf-062--kpis-ejecutivos) | `Cards métricas agregadas.` |
+| T-609 | [x] | API analytics | [RBE-014](Requirements/Requirements.md#rbe-014) | `Integrar GET /analytics.` |
 | T-610 | [ ] | Settings placeholder | [RF-012](Requirements/Requirements.md#rf-012--navegación-lateral) | `Link settings con página placeholder.` |
 
 ---
@@ -481,6 +481,7 @@ Documento vivo para seguir el progreso del TFM.
 2. Copia el texto de **Pedir a la IA** en Cursor (ajusta si hace falta).
 3. Carga el **skill** indicado en la cabecera de fase.
 4. Marca `[x]` al terminar y actualiza **Resumen de progreso**.
+5. Si cierras una **user story (US-xxx)**, genera tests manuales en `docs/Testing/Manual/` (ver `AGENTS.md` → Testing Rules → Cierre de user story).
 
 ---
 
@@ -521,4 +522,4 @@ Documento vivo para seguir el progreso del TFM.
 | 2026-06-23 | Fase 3 API completa: `/simulate`, `/history`, `/analytics`, exception handlers (T-305–311). Lint Ruff+ESLint. Docs Testing/Manual/Database/README sincronizados |
 | 2026-06-11 | **US-021** simulación UI (T-520–523): panel, recálculo API, comparación, sesión persistente. Manual Phase-05-Simulation. MVP 91/134 (68%). T-524 pendiente (US-033 / RF-043) |
 | 2026-06-11 | Fixes simulación UI: spinner stuck (`useMemo` contexto + contador in-flight), F5 restaura borrador (`markSimulationForceReset`). Vitest frontend **92** tests. Manuales Phase-04/05 simulación sincronizados |
-| 2026-06-11 | **US-022** historial UI (T-601, T-604): `HistoryPage`, `listHistory`, tabla paginada, nurse RBAC. Manual Phase-06-History. Vitest **102** (+ backend history 6). MVP 93/134 (69%). T-602–603 pendientes |
+| 2026-06-11 | **US-023** analytics UI (T-605–609): `AnalyticsPage`, KPIs, trend + risk charts, filtros fecha, `getAnalytics`. Manual Phase-06-Analytics. Vitest **126**. MVP 98/134 (73%). T-602–603, T-610 pendientes |

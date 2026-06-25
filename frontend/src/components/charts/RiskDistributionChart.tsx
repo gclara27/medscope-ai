@@ -15,6 +15,7 @@ export interface RiskDistributionDatum {
   level: string;
   count: number;
   fill: string;
+  percentage?: number;
 }
 
 interface RiskDistributionChartProps {
@@ -50,6 +51,14 @@ export function RiskDistributionChart({
               borderRadius: "8px",
               border: "1px solid #c1c6d7",
               fontSize: "13px",
+            }}
+            formatter={(value, _name, item) => {
+              const numericValue = typeof value === "number" ? value : Number(value ?? 0);
+              const percentage = item.payload?.percentage;
+              if (typeof percentage === "number") {
+                return [`${numericValue} (${percentage.toFixed(1)}%)`, "Evaluations"];
+              }
+              return [numericValue, "Evaluations"];
             }}
           />
           <Bar dataKey="count" radius={[4, 4, 0, 0]}>

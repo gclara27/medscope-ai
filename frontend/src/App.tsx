@@ -8,6 +8,7 @@ import { DashboardPage } from "@/pages/DashboardPage";
 import { EvaluationPage } from "@/pages/EvaluationPage";
 import { LoginPage } from "@/pages/LoginPage";
 import { HistoryPage } from "@/pages/HistoryPage";
+import { AnalyticsPage } from "@/pages/AnalyticsPage";
 import { PlaceholderPage } from "@/pages/PlaceholderPage";
 import { SimulationPage } from "@/pages/SimulationPage";
 import { PredictionResultPage } from "@/pages/PredictionResultPage";
@@ -69,10 +70,7 @@ export default function App() {
                 path="/analytics"
                 element={
                   <RoleRoute allowedRoles={["admin", "analyst"]}>
-                    <PlaceholderPage
-                      title="Population Analytics"
-                      description="Explore aggregated metrics, trends, and cohort insights."
-                    />
+                    <AnalyticsPage />
                   </RoleRoute>
                 }
               />

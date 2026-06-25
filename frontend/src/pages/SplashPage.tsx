@@ -2,6 +2,7 @@ import { ArrowRight } from "lucide-react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { MedScopeAppIcon } from "@/components/brand/MedScopeAppIcon";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/useAuth";
 
@@ -24,14 +25,17 @@ export function SplashPage() {
 
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-surface">
-      <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-surface/90 to-surface backdrop-blur-sm" />
+      <div
+        className="absolute inset-0 scale-105 bg-cover bg-center opacity-[0.17] blur-[1px] brightness-[2] saturate-[0.35] contrast-[0.85]"
+        style={{ backgroundImage: "url('/splash-corridor.png')" }}
+        aria-hidden
+      />
+      <div className="absolute inset-0 bg-surface/94 backdrop-blur-md" aria-hidden />
+      <div className="absolute inset-0 bg-gradient-to-t from-primary/5 via-surface/30 to-transparent" aria-hidden />
 
       <main className="relative z-10 flex max-w-3xl flex-col items-center px-4 text-center md:px-10">
-        <div
-          className="mb-6 flex h-20 w-20 animate-fade-in-up items-center justify-center rounded-2xl border border-outline-variant bg-surface-container-lowest shadow-level-1 md:h-24 md:w-24"
-          style={{ animationDelay: "0ms" }}
-        >
-          <span className="text-3xl font-bold text-primary md:text-4xl">M</span>
+        <div className="mb-6 animate-fade-in-up" style={{ animationDelay: "0ms" }}>
+          <MedScopeAppIcon size="xl" className="shadow-level-1" />
         </div>
 
         <div
@@ -42,7 +46,7 @@ export function SplashPage() {
             MedScope AI
           </h1>
           <p className="mx-auto mt-3 max-w-lg text-lg text-on-surface-variant">
-            Precision AI for Clinical Decision Support
+            Clinical Decision Support
           </p>
         </div>
 

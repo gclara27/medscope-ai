@@ -122,11 +122,11 @@ Documento vivo para seguir el progreso del TFM.
 | Fase 3 — ML + Backend | 14 | 14 | 100% |
 | Fase 4 — Frontend base | 14 | 14 | 100% |
 | Fase 5 — Features clínicas | 11 | 16 | 69% |
-| Fase 6 — Analytics + History | 0 | 10 | 0% |
+| Fase 6 — Analytics + History | 2 | 10 | 20% |
 | Fase 7 — Polish + Testing | 0 | 12 | 0% |
 | Fase 8 — TFM + Documentación | 2 | 10 | 20% |
 | Fase 9 — Demo | 0 | 6 | 0% |
-| **TOTAL MVP** | **91** | **134** | **68%** |
+| **TOTAL MVP** | **93** | **134** | **69%** |
 
 ---
 
@@ -278,7 +278,7 @@ Documento vivo para seguir el progreso del TFM.
 | US-011 | [x] | Explicar predicción (API) | [UC-030](Use%20Cases/Use%20Cases.md#uc-030--generate-shap-explanation) | [RIA-030](Requirements/Requirements.md#ria-030) |
 | US-020 | [x] | Enviar datos → score (UI) | [UC-020–023](Use%20Cases/Use%20Cases.md#6-clinical-prediction) | [RF-022](Requirements/Requirements.md#rf-022--evaluación-ia) |
 | US-021 | [x] | Simular variables | [UC-040–043](Use%20Cases/Use%20Cases.md#8-clinical-simulation) | [RF-040](Requirements/Requirements.md#rf-040--simulación-interactiva) |
-| US-022 | [ ] | Ver historial (nurse) | [UC-050](Use%20Cases/Use%20Cases.md#uc-050--view-prediction-history) | [RF-050](Requirements/Requirements.md#rf-050--historial-evaluaciones) |
+| US-022 | [x] | Ver historial (nurse) | [UC-050](Use%20Cases/Use%20Cases.md#uc-050--view-prediction-history) | [RF-050](Requirements/Requirements.md#rf-050--historial-evaluaciones) |
 | US-023 | [ ] | Analytics población | [UC-060](Use%20Cases/Use%20Cases.md#uc-060--view-analytics-dashboard) | [RF-060](Requirements/Requirements.md#rf-060--dashboard-analítico) |
 
 ---
@@ -357,14 +357,14 @@ Documento vivo para seguir el progreso del TFM.
 
 # FASE 6 — Historial + Analytics
 
-**Progreso:** 0 / 10 (0%)
+**Progreso:** 2 / 10 (20%)
 
 | ID | ✓ | Tarea | Docs | Pedir a la IA |
 |---|---|---|---|---|
-| T-601 | [ ] | Página historial | [RF-050](Requirements/Requirements.md#rf-050--historial-evaluaciones) · [history](Design/screens/history/reference.html) | `Lista evaluaciones según mockup history.` |
+| T-601 | [x] | Página historial | [RF-050](Requirements/Requirements.md#rf-050--historial-evaluaciones) · [history](Design/screens/history/reference.html) | `Lista evaluaciones según mockup history.` |
 | T-602 | [ ] | Filtros | [RF-051](Requirements/Requirements.md#rf-051--búsqueda) · [UC-051](Use%20Cases/Use%20Cases.md#uc-051--search-predictions) | `Filtros fecha, riesgo, usuario en GET /history.` |
 | T-603 | [ ] | Detalle histórico | [RF-052](Requirements/Requirements.md#rf-052--detalle-evaluación) · [UC-052](Use%20Cases/Use%20Cases.md#uc-052--open-historical-prediction) | `Vista detalle con inputs + SHAP histórico.` |
-| T-604 | [ ] | API history | [RBE-012](Requirements/Requirements.md#rbe-012) | `Integrar GET /history en frontend.` |
+| T-604 | [x] | API history | [RBE-012](Requirements/Requirements.md#rbe-012) | `Integrar GET /history en frontend.` |
 | T-605 | [ ] | Analytics page | [RF-060](Requirements/Requirements.md#rf-060--dashboard-analítico) · [analytics](Design/screens/analytics/reference.html) | `Dashboard analytics según mockup.` |
 | T-606 | [ ] | Categorías riesgo | [UC-062](Use%20Cases/Use%20Cases.md#uc-062--analyze-risk-categories) | `Chart distribución categorías.` |
 | T-607 | [ ] | Filtros tiempo | [RF-061](Requirements/Requirements.md#rf-061--filtros) | `Selector rango temporal.` |
@@ -521,3 +521,4 @@ Documento vivo para seguir el progreso del TFM.
 | 2026-06-23 | Fase 3 API completa: `/simulate`, `/history`, `/analytics`, exception handlers (T-305–311). Lint Ruff+ESLint. Docs Testing/Manual/Database/README sincronizados |
 | 2026-06-11 | **US-021** simulación UI (T-520–523): panel, recálculo API, comparación, sesión persistente. Manual Phase-05-Simulation. MVP 91/134 (68%). T-524 pendiente (US-033 / RF-043) |
 | 2026-06-11 | Fixes simulación UI: spinner stuck (`useMemo` contexto + contador in-flight), F5 restaura borrador (`markSimulationForceReset`). Vitest frontend **92** tests. Manuales Phase-04/05 simulación sincronizados |
+| 2026-06-11 | **US-022** historial UI (T-601, T-604): `HistoryPage`, `listHistory`, tabla paginada, nurse RBAC. Manual Phase-06-History. Vitest **102** (+ backend history 6). MVP 93/134 (69%). T-602–603 pendientes |

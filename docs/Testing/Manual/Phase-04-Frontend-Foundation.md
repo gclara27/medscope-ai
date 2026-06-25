@@ -312,6 +312,7 @@ Como clinician, abre `/evaluation`.
 
 - [x] Formulario clínico funcional (ya no placeholder). Ver [Phase 05 — MT-P05-EVAL-001](Phase-05-Clinical-Prediction-UI.md#mt-p05-eval-001--formulario-clínico-visible).
 - [x] `/simulation` con flujo real (T-520–523). Ver [Phase 05 — Simulación UI](Phase-05-Clinical-Simulation-UI.md).
+- [x] `/history` con lista real (T-601–604). Ver [Phase 06 — Historial UI](Phase-06-History-UI.md).
 
 ### MT-P04-REG-003 — Tests automáticos frontend
 

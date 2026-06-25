@@ -25,6 +25,8 @@ Complementar los tests automáticos (`pytest`, `vitest`, Playwright) con un chec
 | 2 | [Phase-02-ML-Pipeline.md](Phase-02-ML-Pipeline.md) | Dataset, EDA, preprocessing, entrenamiento, serialización, SHAP offline |
 | 3 | [Phase-03-ML-Backend-Integration.md](Phase-03-ML-Backend-Integration.md) | `POST /predict`, `POST /simulate`, `GET /history`, `GET /analytics`, ML startup, persistencia |
 | 4 | [Phase-04-Frontend-Foundation.md](Phase-04-Frontend-Foundation.md) | Splash, login UI, rutas protegidas, roles, layout responsive, dashboard demo |
+| 5 | [Phase-05-Clinical-Prediction-UI.md](Phase-05-Clinical-Prediction-UI.md) · [Phase-05-Clinical-Simulation-UI.md](Phase-05-Clinical-Simulation-UI.md) | Predicción + simulación UI (Fase 5) |
+| 6 | [Phase-06-History-UI.md](Phase-06-History-UI.md) | Historial UI, nurse RBAC (US-022, T-601–604) |
 
 ---
 

@@ -1,6 +1,7 @@
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { MedScopeAppIcon } from "@/components/brand/MedScopeAppIcon";
 import { getNavItemsForRole } from "@/config/navigation";
 import { useAuth } from "@/context/useAuth";
 import { cn } from "@/lib/utils";
@@ -25,12 +26,10 @@ export function AppLayout() {
     <>
       <div className="border-b border-surface-container-highest p-6">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary font-bold text-on-primary">
-            M
-          </div>
+          <MedScopeAppIcon size="md" className="shadow-level-1" />
           <div>
             <p className="text-sm font-bold text-primary">MedScope AI</p>
-            <p className="text-xs text-on-surface-variant">Clinical CDSS</p>
+            <p className="text-xs text-on-surface-variant">Clinical Decision Support</p>
           </div>
         </div>
       </div>
@@ -118,7 +117,10 @@ export function AppLayout() {
           >
             <Menu className="h-5 w-5" />
           </button>
-          <p className="text-sm font-bold text-primary">MedScope AI</p>
+          <div className="flex items-center gap-2">
+            <MedScopeAppIcon size="sm" />
+            <p className="text-sm font-bold text-primary">MedScope AI</p>
+          </div>
           <div className="w-9" aria-hidden />
         </header>
 

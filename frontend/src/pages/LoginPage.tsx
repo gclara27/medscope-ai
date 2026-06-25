@@ -2,6 +2,7 @@ import { FormEvent, useCallback, useEffect, useState } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 
 import { Alert } from "@/components/Alert";
+import { MedScopeAppIcon } from "@/components/brand/MedScopeAppIcon";
 import { Spinner } from "@/components/Spinner";
 import { Toast } from "@/components/Toast";
 import { Button } from "@/components/ui/button";
@@ -80,9 +81,7 @@ export function LoginPage() {
       <div className="flex min-h-screen items-center justify-center p-4 md:p-10">
         <Card className="w-full max-w-[440px] overflow-hidden">
           <div className="flex flex-col items-center border-b border-surface-container-highest p-8 text-center">
-            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary text-2xl font-bold text-on-primary">
-              M
-            </div>
+            <MedScopeAppIcon size="lg" className="mb-4 shadow-level-1" />
             <h1 className="text-2xl font-semibold text-on-surface">MedScope AI</h1>
             <p className="mt-1 text-sm text-on-surface-variant">Secure Clinical Login</p>
           </div>

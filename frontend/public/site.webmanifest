@@ -1,0 +1,17 @@
+{
+  "name": "MedScope AI",
+  "short_name": "MedScope",
+  "description": "Clinical decision support with explainable AI",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8f9fa",
+  "theme_color": "#0058bc",
+  "icons": [
+    {
+      "src": "/app-icon.png",
+      "sizes": "991x1065",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

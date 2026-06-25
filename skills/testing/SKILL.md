@@ -83,3 +83,16 @@ Run from repo root before commit or demo:
 | ESLint | `frontend/` | `frontend/eslint.config.js` |
 
 Fix Python formatting: `ruff format backend ml`. Fix frontend: `cd frontend && npm run lint:fix`.
+
+---
+
+# Manual tests on user story closure
+
+When a **user story (US-xxx)** is marked done in `docs/TaskTracker.md`, follow **AGENTS.md → Testing Rules → Cierre de user story**:
+
+1. Read UC acceptance criteria in `docs/Use Cases/Use Cases.md`.
+2. Add or update cases in `docs/Testing/Manual/` (Spanish docs, English UI).
+3. Minimum **P0**: INF + happy path + RBAC (if roles matter); **P1**: empty/error states.
+4. Update `docs/Testing/Manual/README.md`, `docs/Testing/Testing.md`, and Task Tracker history.
+
+Reference templates: `docs/Testing/Manual/Phase-06-History-UI.md`, `Phase-06-Analytics-UI.md`.

@@ -431,6 +431,30 @@ Prioritize:
 
 Target requirements: RTS-001, RTS-002, RTS-010, RTS-020.
 
+## Cierre de user story (US-xxx)
+
+Al marcar una user story como **cerrada** (`US-xxx` → `[x]` en `docs/TaskTracker.md`) o cuando el usuario pida cerrarla, **no des por terminado el cierre** hasta crear o actualizar los **tests manuales** en `docs/Testing/Manual/`.
+
+**Cuándo aplica:** cierre de US; no aplica a tareas sueltas (T-xxx) sin US, salvo petición explícita.
+
+**Antes de escribir:** lee la US en Task Tracker, UC/RF enlazados, criterios en `docs/Use Cases/Use Cases.md`, y convenciones en `docs/Testing/Manual/README.md` (referencia: `Phase-06-Analytics-UI.md`).
+
+**Mínimo por US:**
+
+| Prioridad | Casos |
+|---|---|
+| P0 | INF — `.\dev.bat`, health, login; flujo feliz principal; RBAC si hay roles |
+| P1 | Estado vacío; error API; regresión relacionada |
+| P2 | Solo si aporta (responsive, edge cases no cubiertos por vitest) |
+
+IDs: `MT-P{FASE}-{ÁREA}-{NNN}`. Cada caso: Prioridad, Requisitos, Pasos, Criterios (`[ ]`), tabla Ejecución manual, trazabilidad vitest/pytest. Docs en **español**; UI en **inglés**.
+
+**Dónde guardar:** ampliar `Phase-{NN}-*.md` existente o crear `Phase-{NN}-{Nombre}.md` si el alcance es nuevo.
+
+**Sincronizar:** `docs/Testing/Manual/README.md`, `docs/Testing/Testing.md`, historial en `docs/TaskTracker.md`.
+
+No sustituyas tests automáticos. Si la US es solo UI, enlaza prerrequisitos API (p. ej. Phase-03) en lugar de duplicar.
+
 ---
 
 # Code Quality Rules

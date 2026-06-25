@@ -30,7 +30,7 @@ describe("SplashPage", () => {
 
     expect(screen.getByRole("heading", { name: /medscope ai/i })).toBeInTheDocument();
     expect(
-      screen.getByText(/precision ai for clinical decision support/i),
+      screen.getByText(/clinical decision support/i),
     ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /get started/i })).toBeInTheDocument();
   });

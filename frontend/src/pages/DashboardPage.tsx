@@ -6,7 +6,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { RiskDistributionChart } from "@/components/charts/RiskDistributionChart";
-import { useAuth } from "@/context/AuthContext";
+import { useAuth } from "@/context/useAuth";
 import { DEFAULT_RISK_DISTRIBUTION } from "@/lib/recharts";
 
 export function DashboardPage() {

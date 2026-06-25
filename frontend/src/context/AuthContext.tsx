@@ -1,13 +1,12 @@
 import {
-  createContext,
   useCallback,
-  useContext,
   useEffect,
   useMemo,
   useState,
   type ReactNode,
 } from "react";
 
+import { AuthContext, type AuthContextValue } from "@/context/auth-context";
 import {
   loadStoredSession,
   login as loginRequest,
@@ -15,17 +14,7 @@ import {
   type LoginCredentials,
 } from "@/services/auth";
 import { setAuthToken, setOnSessionExpired } from "@/services/api";
-import type { AuthSession, User } from "@/types/auth";
-
-interface AuthContextValue {
-  user: User | null;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-  login: (credentials: LoginCredentials) => Promise<void>;
-  logout: () => Promise<void>;
-}
-
-const AuthContext = createContext<AuthContextValue | undefined>(undefined);
+import type { AuthSession } from "@/types/auth";
 
 function readInitialSession(): AuthSession | null {
   const session = loadStoredSession();
@@ -78,12 +67,4 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-}
-
-export function useAuth(): AuthContextValue {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used within AuthProvider");
-  }
-  return context;
 }

@@ -1,4 +1,5 @@
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, FlaskConical } from "lucide-react";
+import { useEffect, useMemo } from "react";
 import { Link, Navigate, useLocation } from "react-router-dom";
 
 import { RiskGaugeChart } from "@/components/charts/RiskGaugeChart";
@@ -7,17 +8,46 @@ import { RiskIndicator } from "@/components/clinical/RiskIndicator";
 import { XaiClinicalSummary } from "@/components/clinical/XaiClinicalSummary";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import type { PredictResponse } from "@/types/prediction";
+import type { PredictRequest, PredictResponse } from "@/types/prediction";
+import {
+  buildSimulationLocationState,
+  markSimulationForceReset,
+  saveSimulationContext,
+} from "@/utils/simulationSession";
+import { scrollToPageSection } from "@/utils/scrollToSection";
 
 interface PredictionResultLocationState {
   result: PredictResponse;
+  baselineRequest: PredictRequest;
 }
 
 export function PredictionResultPage() {
   const location = useLocation();
-  const result = (location.state as PredictionResultLocationState | null)?.result;
+  const state = location.state as PredictionResultLocationState | null;
+  const result = state?.result;
+  const baselineRequest = state?.baselineRequest;
 
-  if (!result) {
+  const simulationState = useMemo(
+    () =>
+      result && baselineRequest
+        ? buildSimulationLocationState(result, baselineRequest)
+        : null,
+    [result, baselineRequest],
+  );
+
+  useEffect(() => {
+    if (simulationState) {
+      saveSimulationContext(simulationState);
+    }
+  }, [simulationState]);
+
+  useEffect(() => {
+    if (location.hash === "#xai-analysis") {
+      scrollToPageSection("xai-analysis");
+    }
+  }, [location.hash]);
+
+  if (!result || !baselineRequest || !simulationState) {
     return <Navigate to="/evaluation" replace />;
   }
 
@@ -36,12 +66,24 @@ export function PredictionResultPage() {
             RF-030, UC-023–030).
           </p>
         </div>
-        <Button asChild variant="outline" className="shrink-0 gap-2">
-          <Link to="/evaluation">
-            <ArrowLeft className="h-4 w-4" aria-hidden />
-            New evaluation
-          </Link>
-        </Button>
+        <div className="flex flex-col gap-2 sm:flex-row sm:shrink-0">
+          <Button asChild className="gap-2">
+            <Link
+              to="/simulation"
+              state={{ ...simulationState, resetDraft: true }}
+              onClick={() => markSimulationForceReset()}
+            >
+              <FlaskConical className="h-4 w-4" aria-hidden />
+              Run simulation
+            </Link>
+          </Button>
+          <Button asChild variant="outline" className="gap-2">
+            <Link to="/evaluation">
+              <ArrowLeft className="h-4 w-4" aria-hidden />
+              New evaluation
+            </Link>
+          </Button>
+        </div>
       </header>
 
       <div className="grid gap-6 lg:grid-cols-12">
@@ -100,7 +142,7 @@ export function PredictionResultPage() {
         </Card>
       </div>
 
-      <Card id="xai-analysis">
+      <Card id="xai-analysis" tabIndex={-1} className="scroll-mt-6">
         <CardContent className="p-8">
           <ShapExplanationChart explanations={result.shap_explanations} />
         </CardContent>

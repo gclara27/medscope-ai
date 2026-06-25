@@ -121,12 +121,12 @@ Documento vivo para seguir el progreso del TFM.
 | Fase 2 — ML | 14 | 14 | 100% |
 | Fase 3 — ML + Backend | 14 | 14 | 100% |
 | Fase 4 — Frontend base | 14 | 14 | 100% |
-| Fase 5 — Features clínicas | 7 | 16 | 44% |
+| Fase 5 — Features clínicas | 11 | 16 | 69% |
 | Fase 6 — Analytics + History | 0 | 10 | 0% |
 | Fase 7 — Polish + Testing | 0 | 12 | 0% |
 | Fase 8 — TFM + Documentación | 2 | 10 | 20% |
 | Fase 9 — Demo | 0 | 6 | 0% |
-| **TOTAL MVP** | **87** | **134** | **65%** |
+| **TOTAL MVP** | **91** | **134** | **68%** |
 
 ---
 
@@ -277,7 +277,7 @@ Documento vivo para seguir el progreso del TFM.
 | US-010 | [x] | Predecir readmisión (API) | [UC-022](Use%20Cases/Use%20Cases.md#uc-022--generate-ai-prediction) | [RIA-021](Requirements/Requirements.md#ria-021) |
 | US-011 | [x] | Explicar predicción (API) | [UC-030](Use%20Cases/Use%20Cases.md#uc-030--generate-shap-explanation) | [RIA-030](Requirements/Requirements.md#ria-030) |
 | US-020 | [x] | Enviar datos → score (UI) | [UC-020–023](Use%20Cases/Use%20Cases.md#6-clinical-prediction) | [RF-022](Requirements/Requirements.md#rf-022--evaluación-ia) |
-| US-021 | [ ] | Simular variables | [UC-040–043](Use%20Cases/Use%20Cases.md#8-clinical-simulation) | [RF-040](Requirements/Requirements.md#rf-040--simulación-interactiva) |
+| US-021 | [x] | Simular variables | [UC-040–043](Use%20Cases/Use%20Cases.md#8-clinical-simulation) | [RF-040](Requirements/Requirements.md#rf-040--simulación-interactiva) |
 | US-022 | [ ] | Ver historial (nurse) | [UC-050](Use%20Cases/Use%20Cases.md#uc-050--view-prediction-history) | [RF-050](Requirements/Requirements.md#rf-050--historial-evaluaciones) |
 | US-023 | [ ] | Analytics población | [UC-060](Use%20Cases/Use%20Cases.md#uc-060--view-analytics-dashboard) | [RF-060](Requirements/Requirements.md#rf-060--dashboard-analítico) |
 
@@ -310,7 +310,7 @@ Documento vivo para seguir el progreso del TFM.
 
 # FASE 5 — Features clínicas
 
-**Progreso:** 7 / 16 (44%)
+**Progreso:** 11 / 16 (69%)
 
 [Execution Plan — Fase 5](Execution%20Plan/ExecutionPlan.md#phase-5--core-clinical-features)
 
@@ -339,10 +339,10 @@ Documento vivo para seguir el progreso del TFM.
 
 | ID | ✓ | Tarea | Docs | Pedir a la IA |
 |---|---|---|---|---|
-| T-520 | [ ] | Panel simulación | [RF-040](Requirements/Requirements.md#rf-040--simulación-interactiva) · [simulation](Design/screens/simulation/reference.html) | `Panel sliders según mockup simulation.` |
-| T-521 | [ ] | Recalcular | [RF-041](Requirements/Requirements.md#rf-041--recalcular-riesgo) · [UC-042](Use%20Cases/Use%20Cases.md#uc-042--recalculate-simulated-risk) | `POST /simulate al cambiar variables.` |
-| T-522 | [ ] | Comparación | [RF-042](Requirements/Requirements.md#rf-042--comparación) · [UC-043](Use%20Cases/Use%20Cases.md#uc-043--compare-original-vs-simulation) | `UI lado a lado: score original vs simulado.` |
-| T-523 | [ ] | Wire simulate API | [US-021](#us-021) | `Conectar simulación completa end-to-end.` |
+| T-520 | [x] | Panel simulación | [RF-040](Requirements/Requirements.md#rf-040--simulación-interactiva) · [simulation](Design/screens/simulation/reference.html) | `Panel sliders según mockup simulation.` |
+| T-521 | [x] | Recalcular | [RF-041](Requirements/Requirements.md#rf-041--recalcular-riesgo) · [UC-042](Use%20Cases/Use%20Cases.md#uc-042--recalculate-simulated-risk) | `POST /simulate al cambiar variables.` |
+| T-522 | [x] | Comparación | [RF-042](Requirements/Requirements.md#rf-042--comparación) · [UC-043](Use%20Cases/Use%20Cases.md#uc-043--compare-original-vs-simulation) | `UI lado a lado: score original vs simulado.` |
+| T-523 | [x] | Wire simulate API | [US-021](#us-021) | `Conectar simulación completa end-to-end.` |
 | T-524 | [ ] | Visual impacto | [RF-043](Requirements/Requirements.md#rf-043--visualización-impacto) | `Highlight cambios que más afectan el riesgo.` |
 
 | US | ✓ | Historia | UC | RF |
@@ -350,7 +350,8 @@ Documento vivo para seguir el progreso del TFM.
 | US-030 | [ ] | Dashboard KPIs | [UC-010](Use%20Cases/Use%20Cases.md#uc-010--view-clinical-dashboard) | [RF-010](Requirements/Requirements.md#rf-010--dashboard-overview) |
 | US-031 | [ ] | Evaluar paciente | [UC-020–023](Use%20Cases/Use%20Cases.md#6-clinical-prediction) | [RF-020–023](Requirements/Requirements.md#53-evaluación-clínica) |
 | US-032 | [ ] | Ver factores SHAP | [UC-030–032](Use%20Cases/Use%20Cases.md#7-explainable-ai) | [RF-030–032](Requirements/Requirements.md#54-explicabilidad-ia) |
-| US-033 | [ ] | Simular escenarios | [UC-040–044](Use%20Cases/Use%20Cases.md#8-clinical-simulation) | [RF-040–043](Requirements/Requirements.md#55-simulación-clínica) |
+| US-021 | [x] | Simular variables | [UC-040–043](Use%20Cases/Use%20Cases.md#8-clinical-simulation) | [RF-040](Requirements/Requirements.md#rf-040--simulación-interactiva) |
+| US-033 | [ ] | Simular escenarios (+ impacto visual) | [UC-040–044](Use%20Cases/Use%20Cases.md#8-clinical-simulation) | [RF-040–043](Requirements/Requirements.md#55-simulación-clínica) |
 
 ---
 
@@ -518,3 +519,5 @@ Documento vivo para seguir el progreso del TFM.
 | 2026-06-11 | Fase 4 completa (T-401–414): shadcn/ui, splash, UX spinner/alert, layout responsive, Recharts en dashboard. MVP 80/134 (60%) |
 | 2026-06-21 | Revisión Fase 2 + predict: tests manuales Phase-02/03, `shap_background.npy`, docs ML/Testing/README actualizados |
 | 2026-06-23 | Fase 3 API completa: `/simulate`, `/history`, `/analytics`, exception handlers (T-305–311). Lint Ruff+ESLint. Docs Testing/Manual/Database/README sincronizados |
+| 2026-06-11 | **US-021** simulación UI (T-520–523): panel, recálculo API, comparación, sesión persistente. Manual Phase-05-Simulation. MVP 91/134 (68%). T-524 pendiente (US-033 / RF-043) |
+| 2026-06-11 | Fixes simulación UI: spinner stuck (`useMemo` contexto + contador in-flight), F5 restaura borrador (`markSimulationForceReset`). Vitest frontend **92** tests. Manuales Phase-04/05 simulación sincronizados |

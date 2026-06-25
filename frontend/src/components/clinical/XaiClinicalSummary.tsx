@@ -1,7 +1,9 @@
 import { ArrowDown, Sparkles } from "lucide-react";
+import type { MouseEvent } from "react";
 
 import { parseClinicalSummary } from "@/lib/xaiSummaryDisplay";
 import { cn } from "@/lib/utils";
+import { scrollToPageSection } from "@/utils/scrollToSection";
 
 interface XaiClinicalSummaryProps {
   summary: string;
@@ -37,6 +39,12 @@ export function XaiClinicalSummary({
   className,
 }: XaiClinicalSummaryProps) {
   const parsed = parseClinicalSummary(summary);
+
+  function handleShapLinkClick(event: MouseEvent<HTMLAnchorElement>) {
+    event.preventDefault();
+    scrollToPageSection(shapSectionId);
+    window.history.replaceState(null, "", `#${shapSectionId}`);
+  }
 
   if (parsed.paragraphs.length === 0 && !summary.trim()) {
     return (
@@ -94,6 +102,7 @@ export function XaiClinicalSummary({
       <div className="mt-4 flex justify-end pt-2">
         <a
           href={`#${shapSectionId}`}
+          onClick={handleShapLinkClick}
           className="inline-flex items-center gap-1 text-sm font-medium text-primary transition-colors hover:text-primary/80"
         >
           View full SHAP analysis

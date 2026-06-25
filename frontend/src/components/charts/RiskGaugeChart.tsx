@@ -8,6 +8,7 @@ import {
   clampRiskPercent,
 } from "@/lib/riskDisplay";
 import type { RiskLevel } from "@/types/prediction";
+import type { ReactNode } from "react";
 
 const GAUGE_RADIUS = 40;
 const GAUGE_CIRCUMFERENCE = 2 * Math.PI * GAUGE_RADIUS;
@@ -15,7 +16,8 @@ const GAUGE_CIRCUMFERENCE = 2 * Math.PI * GAUGE_RADIUS;
 interface RiskGaugeChartProps {
   riskPercent: number;
   riskLevel: RiskLevel;
-  title?: string;
+  title?: ReactNode;
+  titleClassName?: string;
   className?: string;
 }
 
@@ -24,6 +26,7 @@ export function RiskGaugeChart({
   riskPercent,
   riskLevel,
   title = "30-Day Readmission Risk",
+  titleClassName,
   className,
 }: RiskGaugeChartProps) {
   const percent = clampRiskPercent(riskPercent);
@@ -33,7 +36,12 @@ export function RiskGaugeChart({
 
   return (
     <div className={cn("flex flex-col items-center", className)}>
-      <h3 className="mb-4 w-full border-b border-outline-variant pb-2 text-sm font-semibold uppercase tracking-wide text-on-surface-variant">
+      <h3
+        className={cn(
+          "mb-4 w-full border-b border-outline-variant pb-2 text-center text-sm font-semibold uppercase tracking-wide text-on-surface-variant",
+          titleClassName,
+        )}
+      >
         {title}
       </h3>
 

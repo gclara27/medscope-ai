@@ -1,5 +1,3 @@
-
-
 # Fase 3 — Tests manuales: Integración ML + Backend
 
 **Alcance:** `POST /predict`, `POST /simulate`, `GET /history`, `GET /analytics`, carga ML al arranque, persistencia en PostgreSQL, exception handlers JSON (UC-091).
@@ -13,9 +11,9 @@
 
 | Prioridad | Total  | Ejecutados | Pendientes |
 | --------- | ------ | ---------- | ---------- |
-| P0        | 12     | 0          | 12         |
-| P1        | 3      | 0          | 3          |
-| **Total** | **15** | **0**      | **15**     |
+| P0        | 12     | 12         | 0          |
+| P1        | 3      | 3          | 0          |
+| **Total** | **15** | **15**     | **0**      |
 
 
 ---
@@ -252,9 +250,9 @@ WHERE p.id = '<uuid>';
 ### MT-P03-SIM-001 — Simulate what-if
 
 
-| Campo          | Valor                   |
-| -------------- | ----------------------- |
-| **Prioridad**  | P0                      |
+| Campo          | Valor                    |
+| -------------- | ------------------------ |
+| **Prioridad**  | P0                       |
 | **Requisitos** | UC-040–044, T-305, T-309 |
 
 
@@ -272,9 +270,9 @@ WHERE p.id = '<uuid>';
 
 **Criterios de aceptación**
 
-- [ ] HTTP 200 con `original_risk_percent`, `simulated_risk_percent`, `delta_risk_percent`, `changes`.
-- [ ] `simulated_risk_level` coherente con el score.
-- [ ] Analyst → 403.
+- [x] HTTP 200 con `original_risk_percent`, `simulated_risk_percent`, `delta_risk_percent`, `changes`.
+- [x] `simulated_risk_level` coherente con el score.
+- [x] Analyst → 403.
 
 ---
 
@@ -295,19 +293,19 @@ WHERE p.id = '<uuid>';
 
 **Criterios de aceptación**
 
-- [ ] Lista paginada con `items`, `total`, `limit`, `offset`.
-- [ ] `risk_score` entre 0 y 1; `risk_percent` entre 0 y 100; ambos coherentes con `/predict`.
-- [ ] Filtro por `risk_level` devuelve solo ese bucket.
+- [x] Lista paginada con `items`, `total`, `limit`, `offset`.
+- [x] `risk_score` entre 0 y 1; `risk_percent` entre 0 y 100; ambos coherentes con `/predict`.
+- [x] Filtro por `risk_level` devuelve solo ese bucket.
 
 ---
 
 ### MT-P03-ANAL-001 — Analytics agregados
 
 
-| Campo          | Valor          |
-| -------------- | -------------- |
-| **Prioridad**  | P0             |
-| **Requisitos** | UC-060, T-307  |
+| Campo          | Valor         |
+| -------------- | ------------- |
+| **Prioridad**  | P0            |
+| **Requisitos** | UC-060, T-307 |
 
 
 **Pasos**
@@ -317,18 +315,18 @@ WHERE p.id = '<uuid>';
 
 **Criterios de aceptación**
 
-- [ ] `total_predictions` ≥ 1 tras predicts de la sesión.
-- [ ] `risk_distribution` con buckets low/medium/high y porcentajes.
-- [ ] Nurse/clinician → 403; admin/analyst → 200.
+- [x] `total_predictions` ≥ 1 tras predicts de la sesión.
+- [x] `risk_distribution` con buckets low/medium/high y porcentajes.
+- [x] Nurse/clinician → 403; admin/analyst → 200.
 
 ---
 
 ### MT-P03-ERR-001 — Validación 422 sin stack trace
 
 
-| Campo          | Valor   |
-| -------------- | ------- |
-| **Prioridad**  | P0      |
+| Campo          | Valor                 |
+| -------------- | --------------------- |
+| **Prioridad**  | P0                    |
 | **Requisitos** | UC-090, UC-091, T-311 |
 
 
@@ -338,8 +336,8 @@ WHERE p.id = '<uuid>';
 
 **Criterios de aceptación**
 
-- [ ] HTTP 422, body JSON con `detail` (lista de errores).
-- [ ] Respuesta **sin** traceback ni mensaje interno del servidor.
+- [x] HTTP 422, body JSON con `detail` (lista de errores).
+- [x] Respuesta **sin** traceback ni mensaje interno del servidor.
 
 ---
 
@@ -369,5 +367,6 @@ Solo si usas `docker compose up backend`:
 | Fecha      | Ejecutado por | Commit / rama | P0  | P1  | Comentarios |
 | ---------- | ------------- | ------------- | --- | --- | ----------- |
 | 21/06/2026 | GC            |               |     |     |             |
+| 25/06/2026 | GC            |               |     |     |             |
 
 

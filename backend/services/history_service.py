@@ -6,6 +6,8 @@ from datetime import date
 from uuid import UUID
 
 from fastapi import HTTPException, status
+
+from core.api_errors import DATE_RANGE_INVALID, PREDICTION_INPUTS_NOT_FOUND, PREDICTION_NOT_FOUND
 from sqlalchemy.orm import Session
 
 from models.prediction import Prediction
@@ -44,7 +46,7 @@ class HistoryService:
         if date_from and date_to and date_from > date_to:
             raise HTTPException(
                 status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
-                detail="date_from must be on or before date_to",
+                detail=DATE_RANGE_INVALID,
             )
 
         predictions, total = self.repository.list_predictions(
@@ -69,14 +71,14 @@ class HistoryService:
         if prediction is None:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail="Prediction not found",
+                detail=PREDICTION_NOT_FOUND,
             )
 
         patient = prediction.patient_input
         if patient is None:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail="Prediction clinical inputs not found",
+                detail=PREDICTION_INPUTS_NOT_FOUND,
             )
 
         risk_score, risk_percent = api_risk_from_stored_percent(prediction.risk_score)

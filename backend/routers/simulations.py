@@ -4,15 +4,13 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from core.database import get_db
-from core.deps import get_ml_registry, require_roles
+from core.deps import get_ml_registry, require_permission
 from core.ml_registry import MLRegistry
 from models.user import User
 from schemas.simulation import SimulateRequest, SimulateResponse
 from services.simulation_service import SimulationService
 
 router = APIRouter()
-
-_SIMULATE_ROLES = ("admin", "clinician", "nurse")
 
 
 @router.post(
@@ -23,7 +21,7 @@ _SIMULATE_ROLES = ("admin", "clinician", "nurse")
 def simulate(
     body: SimulateRequest,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_roles(*_SIMULATE_ROLES)),
+    current_user: User = Depends(require_permission("simulation")),
     registry: MLRegistry = Depends(get_ml_registry),
 ) -> SimulateResponse:
     """Apply clinical overrides, recalculate risk, persist, and compare (UC-040–044)."""

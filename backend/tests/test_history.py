@@ -39,8 +39,8 @@ def test_history_returns_predictions_after_predict(
     auth_header,
     seed_user,
 ) -> None:
-    user = seed_user(email="nurse-history@medscope.ai", role_name="nurse")
-    headers = auth_header("nurse-history@medscope.ai")
+    user = seed_user(email="clinician-history@medscope.ai", role_name="clinician")
+    headers = auth_header("clinician-history@medscope.ai")
 
     predict = client.post("/predict", json=VALID_PREDICT_PAYLOAD, headers=headers)
     assert predict.status_code == 200
@@ -89,8 +89,8 @@ def test_history_filter_by_user_id(
     clinician_headers = auth_header("hist-clinician@medscope.ai")
     client.post("/predict", json=VALID_PREDICT_PAYLOAD, headers=clinician_headers)
 
-    seed_user(email="analyst-history@medscope.ai", role_name="analyst")
-    analyst_headers = auth_header("analyst-history@medscope.ai")
+    seed_user(email="admin-history-filter@medscope.ai", role_name="admin")
+    admin_headers = auth_header("admin-history-filter@medscope.ai")
 
     from models.user import User
     from services.auth_service import AuthService
@@ -109,7 +109,7 @@ def test_history_filter_by_user_id(
     other_headers = auth_header("other-clinician@medscope.ai")
     client.post("/predict", json=VALID_PREDICT_PAYLOAD, headers=other_headers)
 
-    response = client.get(f"/history?user_id={clinician.id}", headers=analyst_headers)
+    response = client.get(f"/history?user_id={clinician.id}", headers=admin_headers)
     assert response.status_code == 200
     data = response.json()
     assert data["total"] >= 1
@@ -134,7 +134,7 @@ def test_history_invalid_date_range_returns_422(
     assert response.status_code == 422
 
 
-def test_history_analyst_role_allowed(client: TestClient, db_session) -> None:
+def test_history_analyst_role_denied_without_permission(client: TestClient, db_session) -> None:
     from models.role import Role
     from models.user import User
     from services.auth_service import AuthService
@@ -161,7 +161,7 @@ def test_history_analyst_role_allowed(client: TestClient, db_session) -> None:
     )
     token = login.json()["access_token"]
     response = client.get("/history", headers={"Authorization": f"Bearer {token}"})
-    assert response.status_code == 200
+    assert response.status_code == 403
 
 
 def test_history_detail_requires_authentication(client: TestClient) -> None:
@@ -174,8 +174,8 @@ def test_history_detail_returns_prediction_with_shap(
     auth_header,
     seed_user,
 ) -> None:
-    seed_user(email="nurse-detail@medscope.ai", role_name="nurse")
-    headers = auth_header("nurse-detail@medscope.ai")
+    seed_user(email="clinician-detail@medscope.ai", role_name="clinician")
+    headers = auth_header("clinician-detail@medscope.ai")
 
     predict = client.post("/predict", json=VALID_PREDICT_PAYLOAD, headers=headers)
     assert predict.status_code == 200

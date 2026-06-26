@@ -7,12 +7,16 @@ from decimal import Decimal
 from uuid import UUID
 
 from fastapi import HTTPException, status
+
+from core.api_errors import ML_SERVICE_UNAVAILABLE
 from sqlalchemy.orm import Session
 
 from core.ml_registry import MLRegistry
 from repositories.prediction_repository import PredictionRepository
 from schemas.prediction import PredictRequest, PredictResponse, ShapExplanationItem
 from services.prediction_mapper import request_to_feature_frame, request_to_patient_input_fields
+from services.risk_classification import classify_risk_level
+from services.system_settings_service import SystemSettingsService
 
 _SHAP_DIRECTION_TO_IMPACT = {
     "increases_risk": "positive",
@@ -28,7 +32,7 @@ class PredictionService:
 
     def predict(self, user_id: UUID, request: PredictRequest) -> PredictResponse:
         if not self.registry.is_ready or self.registry.explainer_service is None:
-            detail = self.registry.load_error or "ML prediction service is unavailable"
+            detail = self.registry.load_error or ML_SERVICE_UNAVAILABLE
             raise HTTPException(
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
                 detail=detail,
@@ -37,6 +41,12 @@ class PredictionService:
         started = time.perf_counter()
         features = request_to_feature_frame(request)
         result = self.registry.explainer_service.explain(features, top_n=10)
+        high_threshold, medium_threshold = SystemSettingsService(self.db).get_risk_thresholds()
+        risk_level = classify_risk_level(
+            result.risk_score,
+            high_threshold=high_threshold,
+            medium_threshold=medium_threshold,
+        )
         elapsed_ms = int((time.perf_counter() - started) * 1000)
 
         risk_percent = Decimal(str(round(result.risk_score * 100, 2)))
@@ -70,7 +80,7 @@ class PredictionService:
         prediction = self.repository.create_with_details(
             user_id=user_id,
             risk_score_percent=risk_percent,
-            risk_level=result.risk_level,
+            risk_level=risk_level,
             confidence_score=confidence,
             summary=result.summary,
             model_version=result.model_version,
@@ -83,7 +93,7 @@ class PredictionService:
             id=prediction.id,
             risk_score=result.risk_score,
             risk_percent=float(risk_percent),
-            risk_level=result.risk_level,  # type: ignore[arg-type]
+            risk_level=risk_level,  # type: ignore[arg-type]
             confidence_score=float(confidence),
             summary=result.summary,
             model_version=result.model_version,

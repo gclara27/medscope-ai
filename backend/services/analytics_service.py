@@ -5,6 +5,8 @@ from __future__ import annotations
 from datetime import date
 
 from fastapi import HTTPException, status
+
+from core.api_errors import DATE_RANGE_INVALID
 from sqlalchemy.orm import Session
 
 from repositories.analytics_repository import AnalyticsRepository
@@ -30,7 +32,7 @@ class AnalyticsService:
         if date_from and date_to and date_from > date_to:
             raise HTTPException(
                 status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
-                detail="date_from must be on or before date_to",
+                detail=DATE_RANGE_INVALID,
             )
 
         total, avg_risk, avg_time_ms, buckets = self.repository.fetch_summary(

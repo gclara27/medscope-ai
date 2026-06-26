@@ -10,7 +10,7 @@ from collections.abc import Generator
 
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, select
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy.pool import StaticPool
 
@@ -76,9 +76,11 @@ def seed_user(db_session):
         from models.user import User
         from services.auth_service import AuthService
 
-        role = Role(name=role_name)
-        db_session.add(role)
-        db_session.flush()
+        role = db_session.scalar(select(Role).where(Role.name == role_name))
+        if role is None:
+            role = Role(name=role_name)
+            db_session.add(role)
+            db_session.flush()
         auth = AuthService(db_session)
         user = User(
             role_id=role.id,

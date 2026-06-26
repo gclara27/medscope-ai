@@ -17,7 +17,7 @@ describe("DashboardRiskDistributionChart", () => {
     );
 
     expect(screen.getByRole("heading", { name: /risk distribution/i })).toBeInTheDocument();
-    expect(screen.getByText(/uc-011/i)).toBeInTheDocument();
+    expect(screen.getByText(/population readmission risk across low, medium, and high categories/i)).toBeInTheDocument();
     expect(screen.getByText(/15 evaluations in scope/i)).toBeInTheDocument();
     expect(container.querySelector(".recharts-responsive-container")).toBeInTheDocument();
   });

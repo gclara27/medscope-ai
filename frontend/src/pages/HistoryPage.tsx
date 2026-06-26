@@ -4,6 +4,9 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Alert } from "@/components/Alert";
 import { HistoryEvaluationsTable } from "@/components/clinical/HistoryEvaluationsTable";
 import { HistoryFiltersPanel } from "@/components/clinical/HistoryFiltersPanel";
+import { PageHeader } from "@/components/layout/PageHeader";
+import { PageShell } from "@/components/layout/PageShell";
+import { getRouteIcon } from "@/config/navigation";
 import { Spinner } from "@/components/Spinner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -105,22 +108,14 @@ export function HistoryPage() {
   }
 
   return (
-    <div className="space-y-8 p-4 md:p-8">
-      <header>
-        <p className="text-sm font-medium uppercase tracking-wide text-primary">
-          Clinical audit trail
-        </p>
-        <h1 className="mt-1 text-2xl font-semibold text-on-surface md:text-3xl">
-          Prediction History
-        </h1>
-        <p className="mt-2 max-w-2xl text-on-surface-variant">
-          Review stored readmission risk evaluations and filter by date, risk level, or evaluator
-          (UC-050–051, RF-050–051).
-        </p>
-        <p className="mt-2 text-sm text-on-surface-variant">
-          Active filters: {getHistoryFiltersSummary(filters, evaluatorOptions)}
-        </p>
-      </header>
+    <PageShell>
+      <PageHeader
+        icon={getRouteIcon("/history")}
+        eyebrow="Clinical audit trail"
+        title="Prediction History"
+        description="Review stored readmission risk evaluations and filter by date, risk level, or evaluator."
+        meta={<>Active filters: {getHistoryFiltersSummary(filters, evaluatorOptions)}</>}
+      />
 
       <HistoryFiltersPanel
         value={filters}
@@ -182,6 +177,6 @@ export function HistoryPage() {
           </div>
         ) : null}
       </Card>
-    </div>
+    </PageShell>
   );
 }

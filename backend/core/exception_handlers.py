@@ -10,15 +10,31 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
+from core.api_errors import INTERNAL_SERVER_ERROR
+
 logger = logging.getLogger(__name__)
 
-_INTERNAL_ERROR_MESSAGE = "An unexpected error occurred. Please try again later."
+
+def _serialize_detail(detail: object) -> object:
+    """Ensure HTTPException detail is JSON-safe (UC-091)."""
+    return jsonable_encoder(detail)
 
 
-async def http_exception_handler(_request: Request, exc: HTTPException) -> JSONResponse:
+async def http_exception_handler(request: Request, exc: HTTPException) -> JSONResponse:
     if exc.status_code >= 500:
-        logger.error("HTTP %s on %s %s", exc.status_code, _request.method, _request.url.path)
-    return JSONResponse(status_code=exc.status_code, content={"detail": exc.detail})
+        logger.error("HTTP %s on %s %s", exc.status_code, request.method, request.url.path)
+    elif exc.status_code >= 400:
+        logger.warning(
+            "HTTP %s on %s %s: %s",
+            exc.status_code,
+            request.method,
+            request.url.path,
+            exc.detail,
+        )
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={"detail": _serialize_detail(exc.detail)},
+    )
 
 
 async def validation_exception_handler(_request: Request, exc: RequestValidationError) -> JSONResponse:
@@ -38,7 +54,7 @@ async def unhandled_exception_handler(request: Request, exc: Exception) -> JSONR
         return await http_exception_handler(request, exc)
 
     logger.exception("Unhandled exception on %s %s", request.method, request.url.path)
-    return JSONResponse(status_code=500, content={"detail": _INTERNAL_ERROR_MESSAGE})
+    return JSONResponse(status_code=500, content={"detail": INTERNAL_SERVER_ERROR})
 
 
 def register_exception_handlers(app: FastAPI) -> None:

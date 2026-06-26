@@ -4,11 +4,28 @@ import {
   APP_NAV_ITEMS,
   canAccessRoute,
   getNavItemsForRole,
+  getNavItemsForUser,
+  getRouteIcon,
 } from "@/config/navigation";
+
+const adminUser = {
+  role: "admin",
+  permissions: {
+    dashboard: true,
+    evaluation: true,
+    simulation: true,
+    history: true,
+    analytics: true,
+    settings: true,
+  },
+};
 
 describe("navigation role access", () => {
   it("shows full navigation for admin", () => {
     expect(getNavItemsForRole("admin").map((item) => item.to)).toEqual(
+      APP_NAV_ITEMS.map((item) => item.to),
+    );
+    expect(getNavItemsForUser(adminUser).map((item) => item.to)).toEqual(
       APP_NAV_ITEMS.map((item) => item.to),
     );
   });
@@ -37,14 +54,26 @@ describe("navigation role access", () => {
   });
 
   it("denies nurse access to evaluation route", () => {
-    expect(canAccessRoute("nurse", "/evaluation")).toBe(false);
-    expect(canAccessRoute("clinician", "/evaluation")).toBe(true);
+    expect(canAccessRoute({ role: "nurse" }, "/evaluation")).toBe(false);
+    expect(canAccessRoute({ role: "clinician" }, "/evaluation")).toBe(true);
   });
 
   it("allows only admin access to settings", () => {
-    expect(canAccessRoute("admin", "/settings")).toBe(true);
-    expect(canAccessRoute("clinician", "/settings")).toBe(false);
-    expect(canAccessRoute("analyst", "/settings")).toBe(false);
-    expect(canAccessRoute("nurse", "/settings")).toBe(false);
+    expect(canAccessRoute(adminUser, "/settings")).toBe(true);
+    expect(canAccessRoute({ role: "clinician" }, "/settings")).toBe(false);
+    expect(canAccessRoute({ role: "analyst" }, "/settings")).toBe(false);
+    expect(canAccessRoute({ role: "nurse" }, "/settings")).toBe(false);
+  });
+
+  it("resolves nested route icons from parent navigation items", () => {
+    expect(getRouteIcon("/analytics")).toBe(
+      APP_NAV_ITEMS.find((item) => item.to === "/analytics")?.icon,
+    );
+    expect(getRouteIcon("/evaluation/result")).toBe(
+      APP_NAV_ITEMS.find((item) => item.to === "/evaluation")?.icon,
+    );
+    expect(getRouteIcon("/history/prediction-id")).toBe(
+      APP_NAV_ITEMS.find((item) => item.to === "/history")?.icon,
+    );
   });
 });

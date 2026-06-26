@@ -1,4 +1,3 @@
-import { BarChart3 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { AnalyticsDateRangeFilter } from "@/components/analytics/AnalyticsDateRangeFilter";
@@ -6,7 +5,10 @@ import { AnalyticsKpiCards } from "@/components/analytics/AnalyticsKpiCards";
 import { AnalyticsRiskDistributionChart } from "@/components/analytics/AnalyticsRiskDistributionChart";
 import { AnalyticsTrendChart } from "@/components/analytics/AnalyticsTrendChart";
 import { Alert } from "@/components/Alert";
+import { PageHeader } from "@/components/layout/PageHeader";
+import { PageShell } from "@/components/layout/PageShell";
 import { Spinner } from "@/components/Spinner";
+import { getRouteIcon } from "@/config/navigation";
 import {
   DEFAULT_ANALYTICS_DATE_RANGE,
   getAnalyticsDateRangeLabel,
@@ -44,31 +46,22 @@ export function AnalyticsPage() {
   }, [loadAnalytics]);
 
   return (
-    <div className="space-y-8 p-4 md:p-8">
-      <header className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
-        <div>
-          <p className="text-sm font-medium uppercase tracking-wide text-primary">
-            Population insights
-          </p>
-          <h1 className="mt-1 flex items-center gap-2 text-2xl font-semibold text-on-surface md:text-3xl">
-            <BarChart3 className="h-7 w-7 text-primary" aria-hidden />
-            Population Analytics
-          </h1>
-          <p className="mt-2 max-w-2xl text-on-surface-variant">
-            Comprehensive overview of institutional readmission risk, evaluation volume, and
-            population trends (UC-060, RF-060).
-          </p>
-          <p className="mt-2 text-sm text-on-surface-variant">
-            Showing: {getAnalyticsDateRangeLabel(dateRange)}
-          </p>
-        </div>
-        <AnalyticsDateRangeFilter
-          value={dateRange}
-          onChange={setDateRange}
-          disabled={isLoading}
-          className="lg:items-end"
-        />
-      </header>
+    <PageShell>
+      <PageHeader
+        icon={getRouteIcon("/analytics")}
+        eyebrow="Population insights"
+        title="Population Analytics"
+        description="Comprehensive overview of institutional readmission risk, evaluation volume, and population trends."
+        meta={<>Showing: {getAnalyticsDateRangeLabel(dateRange)}</>}
+        actions={
+          <AnalyticsDateRangeFilter
+            value={dateRange}
+            onChange={setDateRange}
+            disabled={isLoading}
+            className="lg:items-end"
+          />
+        }
+      />
 
       {error ? <Alert variant="error">{error}</Alert> : null}
 
@@ -88,6 +81,6 @@ export function AnalyticsPage() {
           </section>
         </>
       ) : null}
-    </div>
+    </PageShell>
   );
 }

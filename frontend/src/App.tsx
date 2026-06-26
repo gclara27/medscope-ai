@@ -1,7 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
+import { PermissionRoute } from "@/components/PermissionRoute";
 import { PrivateRoute } from "@/components/PrivateRoute";
-import { RoleRoute } from "@/components/RoleRoute";
 import { AuthProvider } from "@/context/AuthContext";
 import { AppLayout } from "@/layouts/AppLayout";
 import { DashboardPage } from "@/pages/DashboardPage";
@@ -28,67 +28,65 @@ export default function App() {
               <Route
                 path="/dashboard"
                 element={
-                  <RoleRoute
-                    allowedRoles={["admin", "clinician", "analyst", "nurse"]}
-                  >
+                  <PermissionRoute module="dashboard">
                     <DashboardPage />
-                  </RoleRoute>
+                  </PermissionRoute>
                 }
               />
               <Route
                 path="/evaluation"
                 element={
-                  <RoleRoute allowedRoles={["admin", "clinician"]}>
+                  <PermissionRoute module="evaluation">
                     <EvaluationPage />
-                  </RoleRoute>
+                  </PermissionRoute>
                 }
               />
               <Route
                 path="/evaluation/result"
                 element={
-                  <RoleRoute allowedRoles={["admin", "clinician"]}>
+                  <PermissionRoute module="evaluation">
                     <PredictionResultPage />
-                  </RoleRoute>
+                  </PermissionRoute>
                 }
               />
               <Route
                 path="/simulation"
                 element={
-                  <RoleRoute allowedRoles={["admin", "clinician"]}>
+                  <PermissionRoute module="simulation">
                     <SimulationPage />
-                  </RoleRoute>
+                  </PermissionRoute>
                 }
               />
               <Route
                 path="/history"
                 element={
-                  <RoleRoute allowedRoles={["admin", "clinician", "nurse"]}>
+                  <PermissionRoute module="history">
                     <HistoryPage />
-                  </RoleRoute>
+                  </PermissionRoute>
                 }
               />
               <Route
                 path="/history/:predictionId"
                 element={
-                  <RoleRoute allowedRoles={["admin", "clinician", "nurse"]}>
+                  <PermissionRoute module="history">
                     <HistoryDetailPage />
-                  </RoleRoute>
+                  </PermissionRoute>
                 }
               />
               <Route
                 path="/analytics"
                 element={
-                  <RoleRoute allowedRoles={["admin", "analyst"]}>
+                  <PermissionRoute module="analytics">
                     <AnalyticsPage />
-                  </RoleRoute>
+                  </PermissionRoute>
                 }
               />
               <Route
                 path="/settings"
                 element={
-                  <RoleRoute allowedRoles={["admin"]}>
+                  <PermissionRoute module="settings">
                     <SettingsPage />
-                  </RoleRoute>
+                  </PermissionRoute>
                 }
               />
               <Route path="/unauthorized" element={<UnauthorizedPage />} />

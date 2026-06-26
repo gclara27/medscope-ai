@@ -32,7 +32,9 @@ export const HISTORY_RISK_FILTER_OPTIONS: { value: HistoryRiskFilter; label: str
 ];
 
 export function resolveHistoryFilters(filters: HistoryFiltersValue): HistoryListParams {
-  const params = resolveAnalyticsDateRange(filters.dateRange);
+  const params: HistoryListParams = {
+    ...resolveAnalyticsDateRange(filters.dateRange),
+  };
 
   if (filters.risk_level !== "all") {
     params.risk_level = filters.risk_level;

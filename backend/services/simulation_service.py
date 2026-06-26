@@ -7,6 +7,8 @@ from decimal import Decimal
 from uuid import UUID
 
 from fastapi import HTTPException, status
+
+from core.api_errors import ML_SERVICE_UNAVAILABLE, PREDICTION_NOT_FOUND, SIMULATION_INPUT_NOT_FOUND
 from sqlalchemy.orm import Session
 
 from core.ml_registry import MLRegistry
@@ -14,6 +16,8 @@ from repositories.prediction_repository import PredictionRepository
 from repositories.simulation_repository import SimulationRepository
 from schemas.simulation import SimulateRequest, SimulateResponse
 from services.prediction_mapper import request_to_feature_frame
+from services.risk_classification import classify_risk_level
+from services.system_settings_service import SystemSettingsService
 from services.simulation_mapper import (
     apply_simulation_modifications,
     build_simulation_summary,
@@ -32,7 +36,7 @@ class SimulationService:
     def simulate(self, user_id: UUID, request: SimulateRequest) -> SimulateResponse:
         """Recalculate risk with modified variables, persist, and compare (RF-042, UC-044)."""
         if not self.registry.is_ready or self.registry.explainer_service is None:
-            detail = self.registry.load_error or "ML prediction service is unavailable"
+            detail = self.registry.load_error or ML_SERVICE_UNAVAILABLE
             raise HTTPException(
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
                 detail=detail,
@@ -42,12 +46,12 @@ class SimulationService:
         if prediction is None:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail="Prediction not found",
+                detail=PREDICTION_NOT_FOUND,
             )
         if prediction.patient_input is None:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail="Patient input not found for prediction",
+                detail=SIMULATION_INPUT_NOT_FOUND,
             )
 
         baseline = patient_input_to_predict_request(prediction.patient_input)
@@ -59,7 +63,13 @@ class SimulationService:
 
         started = time.perf_counter()
         features = request_to_feature_frame(simulated_request)
-        simulated_risk_score, simulated_risk_level = self.registry.explainer_service.predict_risk(features)
+        simulated_risk_score, _ = self.registry.explainer_service.predict_risk(features)
+        high_threshold, medium_threshold = SystemSettingsService(self.db).get_risk_thresholds()
+        simulated_risk_level = classify_risk_level(
+            simulated_risk_score,
+            high_threshold=high_threshold,
+            medium_threshold=medium_threshold,
+        )
         elapsed_ms = int((time.perf_counter() - started) * 1000)
 
         simulated_risk_percent = round(simulated_risk_score * 100, 2)

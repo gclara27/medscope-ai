@@ -18,6 +18,7 @@ export default defineConfig({
     port: 5173,
     proxy: {
       "/auth": apiProxy,
+      "/admin": apiProxy,
       "/health": apiProxy,
       "/predict": apiProxy,
       "/simulate": apiProxy,

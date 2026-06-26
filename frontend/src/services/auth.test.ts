@@ -2,13 +2,14 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { AUTH_TOKEN_KEY, AUTH_USER_KEY } from "@/utils/storage";
 import { api, setAuthToken } from "./api";
-import { clearSession, logout, persistSession } from "./auth";
+import { clearSession, logout, persistSession, refreshCurrentUser } from "./auth";
 
 vi.mock("./api", async (importOriginal) => {
   const actual = await importOriginal<typeof import("./api")>();
   return {
     ...actual,
     api: {
+      get: vi.fn(),
       post: vi.fn(),
     },
     setAuthToken: vi.fn(),
@@ -61,5 +62,37 @@ describe("clearSession", () => {
     clearSession();
     expect(localStorage.getItem(AUTH_TOKEN_KEY)).toBeNull();
     expect(localStorage.getItem(AUTH_USER_KEY)).toBeNull();
+  });
+});
+
+describe("refreshCurrentUser", () => {
+  beforeEach(() => {
+    localStorage.clear();
+    vi.clearAllMocks();
+  });
+
+  it("updates stored user from GET /auth/me", async () => {
+    persistSession({ accessToken: "token-123", user: demoUser });
+    vi.mocked(api.get).mockResolvedValue({
+      data: {
+        ...demoUser,
+        permissions: {
+          dashboard: true,
+          evaluation: true,
+          simulation: true,
+          history: true,
+          analytics: false,
+          settings: false,
+        },
+      },
+    });
+
+    const refreshed = await refreshCurrentUser();
+
+    expect(api.get).toHaveBeenCalledWith("/auth/me");
+    expect(refreshed?.user.permissions?.evaluation).toBe(true);
+    expect(JSON.parse(localStorage.getItem(AUTH_USER_KEY) ?? "{}").permissions.evaluation).toBe(
+      true,
+    );
   });
 });

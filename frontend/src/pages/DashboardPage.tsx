@@ -5,9 +5,14 @@ import {
   DashboardRecentEvaluations,
 } from "@/components/dashboard/DashboardActivityPanels";
 import { DashboardKpiCards } from "@/components/dashboard/DashboardKpiCards";
+import { PageHeader } from "@/components/layout/PageHeader";
+import { PageShell } from "@/components/layout/PageShell";
 import { Alert } from "@/components/Alert";
 import { Spinner } from "@/components/Spinner";
+import { getRouteIcon } from "@/config/navigation";
 import { useAuth } from "@/context/useAuth";
+import { DASHBOARD_CHART_ROW_HEIGHT_CLASS } from "@/lib/dashboardLayout";
+import { cn } from "@/lib/utils";
 import { getDashboard } from "@/services/dashboard";
 import type { DashboardResponse } from "@/types/dashboard";
 import { getDashboardErrorMessage } from "@/utils/dashboardErrors";
@@ -20,7 +25,10 @@ const DashboardRiskDistributionChart = lazy(async () => {
 function DashboardChartSkeleton() {
   return (
     <div
-      className="flex h-[320px] items-center justify-center rounded-xl border border-outline-variant bg-surface-container-lowest"
+      className={cn(
+        "flex items-center justify-center rounded-xl border border-outline-variant bg-surface-container-lowest",
+        DASHBOARD_CHART_ROW_HEIGHT_CLASS,
+      )}
       aria-hidden
     >
       <Spinner label="Loading risk distribution chart" />
@@ -56,19 +64,13 @@ export function DashboardPage() {
   }, [loadDashboard]);
 
   return (
-    <div className="space-y-8 p-4 md:p-8">
-      <header>
-        <p className="text-sm font-medium uppercase tracking-wide text-primary">
-          Clinical overview
-        </p>
-        <h1 className="mt-1 text-2xl font-semibold text-on-surface md:text-3xl">
-          Clinical Dashboard
-        </h1>
-        <p className="mt-2 max-w-2xl text-on-surface-variant">
-          Welcome back, {user?.first_name}. Review patient risk overview and recent
-          clinical activity (UC-010).
-        </p>
-      </header>
+    <PageShell>
+      <PageHeader
+        icon={getRouteIcon("/dashboard")}
+        eyebrow="Clinical overview"
+        title="Clinical Dashboard"
+        description={`Welcome back, ${user?.first_name}. Review patient risk overview and recent clinical activity.`}
+      />
 
       {error ? <Alert variant="error">{error}</Alert> : null}
 
@@ -80,18 +82,20 @@ export function DashboardPage() {
         <>
           <DashboardKpiCards kpis={dashboard.kpis} />
 
-          <section className="grid gap-4 xl:grid-cols-3">
-            <div className="xl:col-span-2">
-              <Suspense fallback={<DashboardChartSkeleton />}>
-                <DashboardRiskDistributionChart distribution={dashboard.risk_distribution} />
-              </Suspense>
-            </div>
-            <DashboardHighRiskAlerts alerts={dashboard.high_risk_alerts} />
-          </section>
+          <div className="space-y-4">
+            <section className="grid gap-4 xl:grid-cols-3 xl:items-start">
+              <div className="xl:col-span-2">
+                <Suspense fallback={<DashboardChartSkeleton />}>
+                  <DashboardRiskDistributionChart distribution={dashboard.risk_distribution} />
+                </Suspense>
+              </div>
+              <DashboardHighRiskAlerts alerts={dashboard.high_risk_alerts} />
+            </section>
 
-          <DashboardRecentEvaluations items={dashboard.recent_evaluations} />
+            <DashboardRecentEvaluations items={dashboard.recent_evaluations} />
+          </div>
         </>
       ) : null}
-    </div>
+    </PageShell>
   );
 }

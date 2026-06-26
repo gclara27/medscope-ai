@@ -1,4 +1,4 @@
-import { Activity, AlertTriangle } from "lucide-react";
+import { Activity, AlertTriangle, Eye } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
@@ -8,10 +8,18 @@ import {
   formatEvaluationReference,
   formatRelativeEvaluationTime,
 } from "@/lib/dashboardActivityDisplay";
+import { DASHBOARD_CHART_ROW_HEIGHT_CLASS } from "@/lib/dashboardLayout";
 import { formatPatientSnapshot } from "@/lib/historyDisplay";
 import { RISK_BADGE_CLASSES, RISK_BADGE_LABELS } from "@/lib/riskDisplay";
 import { cn } from "@/lib/utils";
 import type { HistoryListItem } from "@/types/history";
+
+const detailLinkClassName =
+  "text-primary underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary";
+
+function historyDetailPath(predictionId: string): string {
+  return `/history/${predictionId}`;
+}
 
 interface DashboardHighRiskAlertsProps {
   alerts: HistoryListItem[];
@@ -20,8 +28,13 @@ interface DashboardHighRiskAlertsProps {
 /** High-risk alert feed for the clinical dashboard (T-502, RF-010). */
 export function DashboardHighRiskAlerts({ alerts }: DashboardHighRiskAlertsProps) {
   return (
-    <Card className="flex h-full flex-col shadow-level-1">
-      <CardHeader className="border-b border-outline-variant bg-error-container/10">
+    <Card
+      className={cn(
+        "flex flex-col overflow-hidden shadow-level-1",
+        DASHBOARD_CHART_ROW_HEIGHT_CLASS,
+      )}
+    >
+      <CardHeader className="shrink-0 border-b border-outline-variant bg-error-container/10">
         <div className="flex items-center justify-between gap-3">
           <CardTitle className="flex items-center gap-2 text-base">
             <AlertTriangle className="size-5 text-error" aria-hidden />
@@ -35,38 +48,53 @@ export function DashboardHighRiskAlerts({ alerts }: DashboardHighRiskAlertsProps
         </div>
         <CardDescription>Recent high-risk evaluations requiring review</CardDescription>
       </CardHeader>
-      <CardContent className="flex flex-1 flex-col gap-3 p-4">
+      <CardContent
+        className="min-h-0 flex-1 overflow-y-auto p-4"
+        aria-label="Critical alerts list"
+        tabIndex={alerts.length > 0 ? 0 : undefined}
+      >
         {alerts.length === 0 ? (
           <p className="text-sm text-on-surface-variant">
             No high-risk alerts right now. New critical evaluations will appear here.
           </p>
         ) : (
-          alerts.map((alert) => (
-            <article
-              key={alert.id}
-              className="rounded-lg border border-error-container bg-error-container/20 p-3"
-            >
-              <div className="flex gap-3">
-                <Activity className="mt-0.5 size-4 shrink-0 text-error" aria-hidden />
-                <div className="min-w-0 flex-1">
-                  <div className="mb-1 flex items-center justify-between gap-2">
-                    <span className="font-mono text-sm font-semibold text-on-surface">
-                      {formatEvaluationReference(alert.id)}
-                    </span>
-                    <span className="text-xs font-medium text-error">
-                      {formatRelativeEvaluationTime(alert.created_at)}
-                    </span>
+          <div className="flex flex-col gap-3">
+            {alerts.map((alert) => (
+              <article
+                key={alert.id}
+                className="rounded-lg border border-error-container bg-error-container/20 p-3"
+              >
+                <div className="flex gap-3">
+                  <Activity className="mt-0.5 size-4 shrink-0 text-error" aria-hidden />
+                  <div className="min-w-0 flex-1">
+                    <div className="mb-1 flex items-center justify-between gap-2">
+                      <Link
+                        to={historyDetailPath(alert.id)}
+                        className={cn("font-mono text-sm font-semibold", detailLinkClassName)}
+                      >
+                        {formatEvaluationReference(alert.id)}
+                      </Link>
+                      <span className="text-xs font-medium text-error">
+                        {formatRelativeEvaluationTime(alert.created_at)}
+                      </span>
+                    </div>
+                    <p className="text-sm text-on-surface-variant">
+                      {formatAlertSummary(alert.summary, alert.risk_percent)}
+                    </p>
+                    <p className="mt-1 text-xs text-on-surface-variant">
+                      {formatPatientSnapshot(alert.patient_input)}
+                    </p>
+                    <Link
+                      to={historyDetailPath(alert.id)}
+                      className={cn("mt-2 inline-flex text-sm font-medium", detailLinkClassName)}
+                    >
+                      Review evaluation
+                    </Link>
                   </div>
-                  <p className="text-sm text-on-surface-variant">
-                    {formatAlertSummary(alert.summary, alert.risk_percent)}
-                  </p>
-                  <p className="mt-1 text-xs text-on-surface-variant">
-                    {formatPatientSnapshot(alert.patient_input)}
-                  </p>
                 </div>
-              </div>
-            </article>
-          ))
+              </article>
+            ))}
+          </div>
         )}
       </CardContent>
     </Card>
@@ -104,6 +132,9 @@ export function DashboardRecentEvaluations({ items }: DashboardRecentEvaluations
                   <th className="px-4 py-3 font-medium">Patient snapshot</th>
                   <th className="px-4 py-3 font-medium">Risk score</th>
                   <th className="px-4 py-3 font-medium">Time</th>
+                  <th className="px-4 py-3 font-medium">
+                    <span className="sr-only">View evaluation</span>
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -112,8 +143,10 @@ export function DashboardRecentEvaluations({ items }: DashboardRecentEvaluations
                     key={item.id}
                     className="border-b border-outline-variant/70 transition-colors hover:bg-surface-container-low"
                   >
-                    <td className="px-4 py-3 font-mono text-sm font-medium text-on-surface">
-                      {formatEvaluationReference(item.id)}
+                    <td className="px-4 py-3 font-mono text-sm font-medium">
+                      <Link to={historyDetailPath(item.id)} className={detailLinkClassName}>
+                        {formatEvaluationReference(item.id)}
+                      </Link>
                     </td>
                     <td className="px-4 py-3 text-sm text-on-surface-variant">
                       {formatPatientSnapshot(item.patient_input)}
@@ -148,6 +181,19 @@ export function DashboardRecentEvaluations({ items }: DashboardRecentEvaluations
                     </td>
                     <td className="px-4 py-3 text-sm text-on-surface-variant">
                       {formatRelativeEvaluationTime(item.created_at)}
+                    </td>
+                    <td className="px-4 py-3 text-right">
+                      <Link
+                        to={historyDetailPath(item.id)}
+                        className={cn(
+                          "inline-flex items-center gap-1.5 text-sm font-medium",
+                          detailLinkClassName,
+                        )}
+                        aria-label={`View evaluation ${formatEvaluationReference(item.id)}`}
+                      >
+                        <Eye className="size-4 shrink-0" aria-hidden />
+                        View
+                      </Link>
                     </td>
                   </tr>
                 ))}

@@ -3,23 +3,15 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
+from core.api_errors import INVALID_CREDENTIALS
 from core.database import get_db
-from core.deps import get_current_user, require_roles
+from core.deps import get_current_user, require_permission
 from models.user import User
 from schemas.auth import LoginRequest, LoginResponse, LogoutResponse, UserResponse
 from services.auth_service import AuthService
+from services.user_response_mapper import to_user_response
 
 router = APIRouter()
-
-
-def _to_user_response(user: User) -> UserResponse:
-    return UserResponse(
-        id=user.id,
-        email=user.email,
-        first_name=user.first_name,
-        last_name=user.last_name,
-        role=user.role.name,
-    )
 
 
 @router.post(
@@ -33,13 +25,13 @@ def login(body: LoginRequest, db: Session = Depends(get_db)) -> LoginResponse:
     if result is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid email or password",
+            detail=INVALID_CREDENTIALS,
         )
     return LoginResponse(
         access_token=result.access_token,
         token_type=result.token_type,
         expires_in=result.expires_in,
-        user=_to_user_response(result.user),
+        user=to_user_response(result.user),
     )
 
 
@@ -50,7 +42,7 @@ def login(body: LoginRequest, db: Session = Depends(get_db)) -> LoginResponse:
 )
 def get_me(current_user: User = Depends(get_current_user)) -> UserResponse:
     """Return the user identified by the Bearer JWT (UC-080)."""
-    return _to_user_response(current_user)
+    return to_user_response(current_user)
 
 
 @router.post(
@@ -70,7 +62,7 @@ def logout(_current_user: User = Depends(get_current_user)) -> LogoutResponse:
     summary="Admin-only health check for role authorization",
 )
 def admin_ping(
-    current_user: User = Depends(require_roles("admin")),
+    current_user: User = Depends(require_permission("settings")),
 ) -> dict[str, str]:
     """Example route restricted to admin role (UC-003)."""
     return {"status": "ok", "role": current_user.role.name}

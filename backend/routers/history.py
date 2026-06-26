@@ -9,15 +9,13 @@ from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
 from core.database import get_db
-from core.deps import require_roles
+from core.deps import require_permission
 from models.user import User
 from schemas.history import HistoryDetailResponse, HistoryListResponse
 from schemas.prediction import RiskLevel
 from services.history_service import HistoryService
 
 router = APIRouter()
-
-_HISTORY_ROLES = ("admin", "clinician", "nurse", "analyst")
 
 
 @router.get(
@@ -33,7 +31,7 @@ def list_history(
     limit: int = Query(50, ge=1, le=100),
     offset: int = Query(0, ge=0),
     db: Session = Depends(get_db),
-    _current_user: User = Depends(require_roles(*_HISTORY_ROLES)),
+    _current_user: User = Depends(require_permission("history")),
 ) -> HistoryListResponse:
     """Return paginated predictions filtered by date, risk level, or user (UC-050–051)."""
     return HistoryService(db).list_history(
@@ -54,7 +52,7 @@ def list_history(
 def get_history_prediction(
     prediction_id: UUID,
     db: Session = Depends(get_db),
-    _current_user: User = Depends(require_roles(*_HISTORY_ROLES)),
+    _current_user: User = Depends(require_permission("history")),
 ) -> HistoryDetailResponse:
     """Return stored evaluation detail for audit review (RF-052, UC-052)."""
     return HistoryService(db).get_prediction_detail(prediction_id)

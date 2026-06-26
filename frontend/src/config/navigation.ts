@@ -1,52 +1,94 @@
+import type { LucideIcon } from "lucide-react";
+import {
+  BarChart3,
+  FlaskConical,
+  History,
+  LayoutDashboard,
+  Settings,
+  Stethoscope,
+} from "lucide-react";
+
+import type { User } from "@/types/auth";
+import type { PermissionModule } from "@/types/permissions";
+import { DEFAULT_ROLE_PERMISSIONS } from "@/types/permissions";
 import type { UserRole } from "@/types/roles";
+import { resolveUserPermissions } from "@/utils/permissions";
 
 export interface AppNavItem {
   label: string;
   to: string;
-  roles: UserRole[];
+  permission: PermissionModule;
+  icon: LucideIcon;
 }
 
 export const APP_NAV_ITEMS: AppNavItem[] = [
   {
     label: "Dashboard",
     to: "/dashboard",
-    roles: ["admin", "clinician", "analyst", "nurse"],
+    permission: "dashboard",
+    icon: LayoutDashboard,
   },
   {
     label: "Evaluation",
     to: "/evaluation",
-    roles: ["admin", "clinician"],
+    permission: "evaluation",
+    icon: Stethoscope,
   },
   {
     label: "Simulation",
     to: "/simulation",
-    roles: ["admin", "clinician"],
+    permission: "simulation",
+    icon: FlaskConical,
   },
   {
     label: "History",
     to: "/history",
-    roles: ["admin", "clinician", "nurse"],
+    permission: "history",
+    icon: History,
   },
   {
     label: "Analytics",
     to: "/analytics",
-    roles: ["admin", "analyst"],
+    permission: "analytics",
+    icon: BarChart3,
   },
   {
     label: "Settings",
     to: "/settings",
-    roles: ["admin"],
+    permission: "settings",
+    icon: Settings,
   },
 ];
 
-export function getNavItemsForRole(role: string): AppNavItem[] {
-  return APP_NAV_ITEMS.filter((item) => item.roles.includes(role as UserRole));
+export function getNavItemsForUser(user: Pick<User, "role" | "permissions"> | null): AppNavItem[] {
+  const permissions = resolveUserPermissions(user);
+  return APP_NAV_ITEMS.filter((item) => permissions[item.permission]);
 }
 
-export function canAccessRoute(role: string, path: string): boolean {
-  const item = APP_NAV_ITEMS.find((nav) => nav.to === path);
+export function getNavItemsForRole(role: string): AppNavItem[] {
+  const permissions = DEFAULT_ROLE_PERMISSIONS[role as UserRole];
+  if (!permissions) {
+    return [];
+  }
+  return APP_NAV_ITEMS.filter((item) => permissions[item.permission]);
+}
+
+export function getRouteIcon(path: string): LucideIcon | undefined {
+  const item = APP_NAV_ITEMS.find(
+    (nav) => path === nav.to || path.startsWith(`${nav.to}/`),
+  );
+  return item?.icon;
+}
+
+export function canAccessRoute(
+  user: Pick<User, "role" | "permissions"> | null,
+  path: string,
+): boolean {
+  const item = APP_NAV_ITEMS.find(
+    (nav) => path === nav.to || path.startsWith(`${nav.to}/`),
+  );
   if (!item) {
     return true;
   }
-  return item.roles.includes(role as UserRole);
+  return resolveUserPermissions(user)[item.permission];
 }

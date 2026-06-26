@@ -123,10 +123,10 @@ Documento vivo para seguir el progreso del TFM.
 | Fase 4 — Frontend base | 14 | 14 | 100% |
 | Fase 5 — Features clínicas | 16 | 16 | 100% |
 | Fase 6 — Analytics + History | 10 | 10 | 100% |
-| Fase 7 — Polish + Testing | 0 | 12 | 0% |
+| Fase 7 — Polish + Testing | 1 | 12 | 8% |
 | Fase 8 — TFM + Documentación | 2 | 10 | 20% |
 | Fase 9 — Demo | 0 | 6 | 0% |
-| **TOTAL MVP** | **106** | **134** | **79%** |
+| **TOTAL MVP** | **108** | **134** | **81%** |
 
 ---
 
@@ -378,14 +378,14 @@ Entregables: historial (`/history`, filtros, detalle SHAP), analytics (`/analyti
 
 # FASE 7 — Polish + Testing
 
-**Progreso:** 0 / 12 (0%)
+**Progreso:** 2 / 12 (17%)
 
 [Testing.md](Testing/Testing.md) · [skill testing](../skills/testing/SKILL.md)
 
 | ID | ✓ | Tarea | Docs | Pedir a la IA |
 |---|---|---|---|---|
-| T-701 | [ ] | UI polish | [RUX-001](Requirements/Requirements.md#rux-001) · [Design](Design/design-system.light.md) | `Pulir spacing y tipografía según design system.` |
-| T-702 | [ ] | Errores backend | [UC-091](Use%20Cases/Use%20Cases.md#uc-091--handle-backend-failure) | `Revisar exception handlers y mensajes usuario.` |
+| T-701 | [x] | UI polish | [RUX-001](Requirements/Requirements.md#rux-001) · [Design](Design/design-system.light.md) | `Pulir spacing y tipografía según design system.` |
+| T-702 | [x] | Errores backend | [UC-091](Use%20Cases/Use%20Cases.md#uc-091--handle-backend-failure) | `Revisar exception handlers y mensajes usuario.` |
 | T-703 | [ ] | Performance | [RNF-001](Requirements/Requirements.md#rnf-001) · [RNF-002](Requirements/Requirements.md#rnf-002) | `Profile API y render. Optimizar charts.` |
 | T-704 | [ ] | test_auth.py | [RTS-001](Requirements/Requirements.md#rts-001) · [Testing §6](Testing/Testing.md#6-backend-tests-prioritarios) | `Tests pytest auth: login, JWT, roles.` |
 | T-705 | [ ] | test APIs | [RTS-001](Requirements/Requirements.md#rts-001) | `Tests predict, simulate, history, analytics.` |
@@ -447,8 +447,8 @@ Entregables: historial (`/history`, filtros, detalle SHAP), analytics (`/analyti
 
 | ID | ✓ | Tarea | Docs |
 |---|---|---|---|
-| T-X01 | [ ] | UI admin usuarios | [RF-070](Requirements/Requirements.md#rf-070--gestión-usuarios) · [UC-070](Use%20Cases/Use%20Cases.md#uc-070--manage-users) |
-| T-X02 | [ ] | Settings | [RF-071](Requirements/Requirements.md#rf-071--gestión-roles) · [UC-071](Use%20Cases/Use%20Cases.md#uc-071--configure-system-settings) |
+| T-X01 | [x] | UI admin usuarios | [RF-070](Requirements/Requirements.md#rf-070--gestión-usuarios) · [UC-070](Use%20Cases/Use%20Cases.md#uc-070--manage-users) |
+| T-X02 | [x] | Settings | [RF-071](Requirements/Requirements.md#rf-071--gestión-roles) · [UC-071](Use%20Cases/Use%20Cases.md#uc-071--configure-system-settings) |
 | T-X03 | [ ] | Dark mode | [Design dark](Design/design-system.dark.md) |
 | T-X04 | [ ] | Export PDF | [UC-063](Use%20Cases/Use%20Cases.md#uc-063--export-analytics-optional) |
 | T-X05 | [ ] | Support UI | [screens/support](Design/screens/support/reference.html) |
@@ -531,5 +531,9 @@ Entregables: historial (`/history`, filtros, detalle SHAP), analytics (`/analyti
 | 2026-06-11 | **T-503** chart distribución riesgo en dashboard con Recharts + datos `GET /dashboard` (UC-011). MVP 101/134 (75%). T-504 pendiente |
 | 2026-06-11 | **T-504 / US-030** dashboard optimizado RNF-002: snapshot SQL, lazy chart, test bajo 2s. MVP 102/134 (76%). T-524 pendiente |
 | 2026-06-11 | **T-524 / US-033** impacto visual simulación: waterfall `SimulationImpactChart`, highlight campos top SHAP. Fase 5 completa. MVP 103/134 (77%) |
+| 2026-06-11 | **T-X01** UI admin usuarios: `GET/POST/PATCH /admin/users`, `UserManagementPanel` en Settings (UC-070) |
+| 2026-06-11 | **T-702** errores UC-091: `api_errors.py`, handlers JSON + logging 4xx, `apiErrors.ts` centralizado. MVP 108/134 (81%) |
+| 2026-06-11 | **T-701** UI polish: `PageShell`/`PageHeader`, tokens tipografía, JetBrains Mono, márgenes 40px desktop. MVP 107/134 (80%) |
 | 2026-06-11 | **T-610** settings placeholder: `SettingsPage` admin-only, nav + RBAC. Fase 6 completa. MVP 106/134 (79%) |
 | 2026-06-11 | **T-603** detalle historial: `GET /history/{id}`, `HistoryDetailPage` inputs + SHAP + simulaciones. MVP 105/134 (78%) |
+| 2026-06-11 | **T-X02** settings avanzado: políticas de rol (RF-071), configuración sistema (UC-071), permisos en login + RBAC API/UI |

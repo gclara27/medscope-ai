@@ -181,6 +181,29 @@ Flujo previo obligatorio: **Evaluation → submit → Result → Run simulation*
 
 ---
 
+### MT-P05-SIM-011 — Driver impact waterfall (T-524)
+
+
+| Campo          | Valor                 |
+| -------------- | --------------------- |
+| **Prioridad**  | P0                    |
+| **Requisitos** | RF-043, UC-043, T-524 |
+
+
+**Pasos**
+
+1. Completar evaluación con SHAP y abrir simulación.
+2. Modificar al menos dos variables (p. ej. prior admissions + glucose).
+3. Esperar recálculo automático o pulsar **Recalculate risk**.
+
+**Criterios de aceptación**
+
+- [x] Card **Driver impact analysis** con barras verde/rojo según baja/sube riesgo.
+- [x] Variables con mayor impacto resaltadas con badge **Top driver** y borde primario en el panel de sliders.
+- [x] Texto aclaratorio: contribución estimada escalada al delta total.
+
+---
+
 ## P1 — Importantes
 
 ### MT-P05-SIM-008 — Persistencia tras refresh (F5)
@@ -245,14 +268,15 @@ Flujo previo obligatorio: **Evaluation → submit → Result → Run simulation*
 
 ## Fuera de alcance US-021
 
-- **T-524 / RF-043:** gráfico de impacto visual (waterfall) — pendiente US-033.
 - **E2E Playwright** completo — Fase 7 (T-708).
 
 ---
 
 ## Registro de sesiones
 
-| Fecha      | Ejecutado por | Commit / rama | P0  | P1  | Comentarios |
-| ---------- | ------------- | ------------- | --- | --- | ----------- |
+
+| Fecha      | Ejecutado por | Commit / rama | P0  | P1  | Comentarios                            |
+| ---------- | ------------- | ------------- | --- | --- | -------------------------------------- |
 | 25/06/2026 | GC            |               | 8/8 | 3/3 | Fix F5 persistencia + spinner simulado |
+
 

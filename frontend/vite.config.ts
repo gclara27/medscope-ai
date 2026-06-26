@@ -22,6 +22,7 @@ export default defineConfig({
       "/predict": apiProxy,
       "/simulate": apiProxy,
       "/history": apiProxy,
+      "/dashboard": apiProxy,
       "/analytics": apiProxy,
     },
   },

@@ -28,6 +28,8 @@ interface SimulationControlPanelProps {
   onReset: () => void;
   onRecalculate: () => void;
   isSubmitting: boolean;
+  /** Top-impact fields from the latest simulation (RF-043). */
+  impactHighlightFields?: string[];
 }
 
 function isModified(
@@ -41,20 +43,40 @@ function isModified(
 /** Uniform padding on every field; blue overlay on top when modified (no layout shift). */
 function SimulationFieldShell({
   modified,
+  highImpact,
+  label,
   children,
   className,
 }: {
   modified: boolean;
+  highImpact?: boolean;
+  label?: string;
   children: ReactNode;
   className?: string;
 }) {
   return (
-    <div className={cn("relative rounded-lg p-3", className)}>
+    <div
+      className={cn(
+        "relative rounded-lg p-3",
+        highImpact && "ring-2 ring-primary/70 ring-offset-2 ring-offset-surface",
+        className,
+      )}
+    >
       {modified ? (
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 rounded-lg bg-primary/[0.04] shadow-[inset_0_0_0_1px_rgba(0,88,188,0.4)]"
+          className={cn(
+            "pointer-events-none absolute inset-0 rounded-lg",
+            highImpact
+              ? "bg-primary/10 shadow-[inset_0_0_0_2px_rgba(0,88,188,0.85)]"
+              : "bg-primary/[0.04] shadow-[inset_0_0_0_1px_rgba(0,88,188,0.4)]",
+          )}
         />
+      ) : null}
+      {highImpact && label ? (
+        <span className="relative mb-2 inline-flex items-center rounded-md border border-primary/30 bg-primary/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-primary">
+          Top driver
+        </span>
       ) : null}
       <div className="relative">{children}</div>
     </div>
@@ -69,7 +91,10 @@ export function SimulationControlPanel({
   onReset,
   onRecalculate,
   isSubmitting,
+  impactHighlightFields = [],
 }: SimulationControlPanelProps) {
+  const impactHighlights = new Set(impactHighlightFields);
+
   function updateField<K extends keyof SimulationFormValues>(
     field: K,
     value: SimulationFormValues[K],
@@ -77,11 +102,26 @@ export function SimulationControlPanel({
     onChange({ ...values, [field]: value });
   }
 
+  function fieldShellProps(field: keyof SimulationFormValues, label?: string) {
+    const modified = isModified(field, values, baselineValues);
+    return {
+      modified,
+      highImpact: modified && impactHighlights.has(field),
+      label,
+    };
+  }
+
   return (
     <div className="flex flex-col gap-6">
       <ClinicalSection title="Clinical variables" icon={<SlidersHorizontal className="h-5 w-5" />}>
+        {impactHighlightFields.length > 0 ? (
+          <p className="text-xs text-on-surface-variant">
+            Fields marked <span className="font-semibold text-primary">Top driver</span> contribute
+            most to the simulated risk change.
+          </p>
+        ) : null}
         <div className="flex flex-col gap-5">
-          <SimulationFieldShell modified={isModified("age", values, baselineValues)}>
+          <SimulationFieldShell {...fieldShellProps("age", "Age (years)")}>
             <RangeField
               id="sim-age"
               label="Age (years)"
@@ -93,7 +133,7 @@ export function SimulationControlPanel({
           </SimulationFieldShell>
 
           <SimulationFieldShell
-            modified={isModified("gender", values, baselineValues)}
+            {...fieldShellProps("gender", "Biological sex")}
             className="flex flex-col gap-1.5"
           >
             <Label htmlFor="sim-gender">Biological sex</Label>
@@ -111,7 +151,7 @@ export function SimulationControlPanel({
             </select>
           </SimulationFieldShell>
 
-          <SimulationFieldShell modified={isModified("glucose", values, baselineValues)}>
+          <SimulationFieldShell {...fieldShellProps("glucose", "Blood glucose")}>
             <RangeField
               id="sim-glucose"
               label="Blood glucose"
@@ -123,7 +163,7 @@ export function SimulationControlPanel({
             />
           </SimulationFieldShell>
 
-          <SimulationFieldShell modified={isModified("blood_pressure", values, baselineValues)}>
+          <SimulationFieldShell {...fieldShellProps("blood_pressure", "Systolic BP")}>
             <RangeField
               id="sim-bp"
               label="Systolic blood pressure"
@@ -135,7 +175,7 @@ export function SimulationControlPanel({
             />
           </SimulationFieldShell>
 
-          <SimulationFieldShell modified={isModified("hospital_stay_days", values, baselineValues)}>
+          <SimulationFieldShell {...fieldShellProps("hospital_stay_days", "Hospital stay")}>
             <RangeField
               id="sim-stay"
               label="Hospital stay"
@@ -147,7 +187,7 @@ export function SimulationControlPanel({
             />
           </SimulationFieldShell>
 
-          <SimulationFieldShell modified={isModified("medications_count", values, baselineValues)}>
+          <SimulationFieldShell {...fieldShellProps("medications_count", "Medications count")}>
             <RangeField
               id="sim-meds"
               label="Medications count"
@@ -158,7 +198,7 @@ export function SimulationControlPanel({
             />
           </SimulationFieldShell>
 
-          <SimulationFieldShell modified={isModified("previous_admissions", values, baselineValues)}>
+          <SimulationFieldShell {...fieldShellProps("previous_admissions", "Previous admissions")}>
             <RangeField
               id="sim-admissions"
               label="Previous admissions"
@@ -170,7 +210,7 @@ export function SimulationControlPanel({
           </SimulationFieldShell>
 
           <div className="grid gap-4 sm:grid-cols-2">
-            <SimulationFieldShell modified={isModified("number_outpatient", values, baselineValues)}>
+            <SimulationFieldShell {...fieldShellProps("number_outpatient", "Outpatient visits")}>
               <RangeField
                 id="sim-outpatient"
                 label="Outpatient visits"
@@ -180,7 +220,7 @@ export function SimulationControlPanel({
                 onChange={(value) => updateField("number_outpatient", value)}
               />
             </SimulationFieldShell>
-            <SimulationFieldShell modified={isModified("number_emergency", values, baselineValues)}>
+            <SimulationFieldShell {...fieldShellProps("number_emergency", "Emergency visits")}>
               <RangeField
                 id="sim-emergency"
                 label="Emergency visits"
@@ -193,7 +233,7 @@ export function SimulationControlPanel({
           </div>
 
           <SimulationFieldShell
-            modified={isModified("bmi", values, baselineValues)}
+            {...fieldShellProps("bmi", "BMI")}
             className="flex flex-col gap-1.5"
           >
             <Label htmlFor="sim-bmi">BMI (optional)</Label>

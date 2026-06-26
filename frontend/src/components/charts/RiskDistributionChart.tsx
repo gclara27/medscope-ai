@@ -27,7 +27,7 @@ interface RiskDistributionChartProps {
 export function RiskDistributionChart({
   data,
   title = "Risk distribution",
-  description = "Population readmission risk buckets (preview data until analytics is wired).",
+  description = "Population readmission risk buckets.",
 }: RiskDistributionChartProps) {
   return (
     <ChartContainer title={title} description={description}>

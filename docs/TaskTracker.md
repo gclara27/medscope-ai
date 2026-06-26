@@ -121,12 +121,12 @@ Documento vivo para seguir el progreso del TFM.
 | Fase 2 — ML | 14 | 14 | 100% |
 | Fase 3 — ML + Backend | 14 | 14 | 100% |
 | Fase 4 — Frontend base | 14 | 14 | 100% |
-| Fase 5 — Features clínicas | 11 | 16 | 69% |
+| Fase 5 — Features clínicas | 16 | 16 | 100% |
 | Fase 6 — Analytics + History | 7 | 10 | 70% |
 | Fase 7 — Polish + Testing | 0 | 12 | 0% |
 | Fase 8 — TFM + Documentación | 2 | 10 | 20% |
 | Fase 9 — Demo | 0 | 6 | 0% |
-| **TOTAL MVP** | **98** | **134** | **73%** |
+| **TOTAL MVP** | **103** | **134** | **77%** |
 
 ---
 
@@ -310,7 +310,7 @@ Documento vivo para seguir el progreso del TFM.
 
 # FASE 5 — Features clínicas
 
-**Progreso:** 11 / 16 (69%)
+**Progreso:** 16 / 16 (100%)
 
 [Execution Plan — Fase 5](Execution%20Plan/ExecutionPlan.md#phase-5--core-clinical-features)
 
@@ -318,10 +318,10 @@ Documento vivo para seguir el progreso del TFM.
 
 | ID | ✓ | Tarea | Docs | Pedir a la IA |
 |---|---|---|---|---|
-| T-501 | [ ] | KPI cards | [RF-010](Requirements/Requirements.md#rf-010--dashboard-overview) · [RF-011](Requirements/Requirements.md#rf-011--kpis) | `Dashboard con KPI cards según RF-011 y mockup dashboard.` |
-| T-502 | [ ] | Actividad reciente | [RF-010](Requirements/Requirements.md#rf-010--dashboard-overview) · [UC-010](Use%20Cases/Use%20Cases.md#uc-010--view-clinical-dashboard) | `Lista evaluaciones recientes y alertas alto riesgo.` |
-| T-503 | [ ] | Distribución riesgo | [UC-011](Use%20Cases/Use%20Cases.md#uc-011--view-risk-distribution) | `Chart distribución riesgo con Recharts.` |
-| T-504 | [ ] | Performance < 2s | [RNF-002](Requirements/Requirements.md#rnf-002) | `Optimiza carga dashboard < 2 segundos.` |
+| T-501 | [x] | KPI cards | [RF-010](Requirements/Requirements.md#rf-010--dashboard-overview) · [RF-011](Requirements/Requirements.md#rf-011--kpis) | `Dashboard con KPI cards según RF-011 y mockup dashboard.` |
+| T-502 | [x] | Actividad reciente | [RF-010](Requirements/Requirements.md#rf-010--dashboard-overview) · [UC-010](Use%20Cases/Use%20Cases.md#uc-010--view-clinical-dashboard) | `Lista evaluaciones recientes y alertas alto riesgo.` |
+| T-503 | [x] | Distribución riesgo | [UC-011](Use%20Cases/Use%20Cases.md#uc-011--view-risk-distribution) | `Chart distribución riesgo con Recharts.` |
+| T-504 | [x] | Performance < 2s | [RNF-002](Requirements/Requirements.md#rnf-002) | `Optimiza carga dashboard < 2 segundos.` |
 
 ## Predicción + SHAP
 
@@ -343,15 +343,15 @@ Documento vivo para seguir el progreso del TFM.
 | T-521 | [x] | Recalcular | [RF-041](Requirements/Requirements.md#rf-041--recalcular-riesgo) · [UC-042](Use%20Cases/Use%20Cases.md#uc-042--recalculate-simulated-risk) | `POST /simulate al cambiar variables.` |
 | T-522 | [x] | Comparación | [RF-042](Requirements/Requirements.md#rf-042--comparación) · [UC-043](Use%20Cases/Use%20Cases.md#uc-043--compare-original-vs-simulation) | `UI lado a lado: score original vs simulado.` |
 | T-523 | [x] | Wire simulate API | [US-021](#us-021) | `Conectar simulación completa end-to-end.` |
-| T-524 | [ ] | Visual impacto | [RF-043](Requirements/Requirements.md#rf-043--visualización-impacto) | `Highlight cambios que más afectan el riesgo.` |
+| T-524 | [x] | Visual impacto | [RF-043](Requirements/Requirements.md#rf-043--visualización-impacto) | `Highlight cambios que más afectan el riesgo.` |
 
 | US | ✓ | Historia | UC | RF |
 |---|---|---|---|---|
-| US-030 | [ ] | Dashboard KPIs | [UC-010](Use%20Cases/Use%20Cases.md#uc-010--view-clinical-dashboard) | [RF-010](Requirements/Requirements.md#rf-010--dashboard-overview) |
-| US-031 | [ ] | Evaluar paciente | [UC-020–023](Use%20Cases/Use%20Cases.md#6-clinical-prediction) | [RF-020–023](Requirements/Requirements.md#53-evaluación-clínica) |
-| US-032 | [ ] | Ver factores SHAP | [UC-030–032](Use%20Cases/Use%20Cases.md#7-explainable-ai) | [RF-030–032](Requirements/Requirements.md#54-explicabilidad-ia) |
+| US-030 | [x] | Dashboard KPIs | [UC-010](Use%20Cases/Use%20Cases.md#uc-010--view-clinical-dashboard) | [RF-010](Requirements/Requirements.md#rf-010--dashboard-overview) |
+| US-031 | [x] | Evaluar paciente | [UC-020–023](Use%20Cases/Use%20Cases.md#6-clinical-prediction) | [RF-020–023](Requirements/Requirements.md#53-evaluación-clínica) |
+| US-032 | [x] | Ver factores SHAP | [UC-030–032](Use%20Cases/Use%20Cases.md#7-explainable-ai) | [RF-030–032](Requirements/Requirements.md#54-explicabilidad-ia) |
 | US-021 | [x] | Simular variables | [UC-040–043](Use%20Cases/Use%20Cases.md#8-clinical-simulation) | [RF-040](Requirements/Requirements.md#rf-040--simulación-interactiva) |
-| US-033 | [ ] | Simular escenarios (+ impacto visual) | [UC-040–044](Use%20Cases/Use%20Cases.md#8-clinical-simulation) | [RF-040–043](Requirements/Requirements.md#55-simulación-clínica) |
+| US-033 | [x] | Simular escenarios (+ impacto visual) | [UC-040–044](Use%20Cases/Use%20Cases.md#8-clinical-simulation) | [RF-040–043](Requirements/Requirements.md#55-simulación-clínica) |
 
 ---
 
@@ -523,3 +523,8 @@ Documento vivo para seguir el progreso del TFM.
 | 2026-06-11 | **US-021** simulación UI (T-520–523): panel, recálculo API, comparación, sesión persistente. Manual Phase-05-Simulation. MVP 91/134 (68%). T-524 pendiente (US-033 / RF-043) |
 | 2026-06-11 | Fixes simulación UI: spinner stuck (`useMemo` contexto + contador in-flight), F5 restaura borrador (`markSimulationForceReset`). Vitest frontend **92** tests. Manuales Phase-04/05 simulación sincronizados |
 | 2026-06-11 | **US-023** analytics UI (T-605–609): `AnalyticsPage`, KPIs, trend + risk charts, filtros fecha, `getAnalytics`. Manual Phase-06-Analytics. Vitest **126**. MVP 98/134 (73%). T-602–603, T-610 pendientes |
+| 2026-06-11 | **T-501** dashboard KPI cards: `GET /dashboard`, `DashboardKpiCards`, datos reales RF-011. MVP 99/134 (74%). T-502–504 pendientes |
+| 2026-06-11 | **T-502** actividad reciente: alertas alto riesgo + evaluaciones recientes en dashboard (UC-010). MVP 100/134 (75%). T-503–504 pendientes |
+| 2026-06-11 | **T-503** chart distribución riesgo en dashboard con Recharts + datos `GET /dashboard` (UC-011). MVP 101/134 (75%). T-504 pendiente |
+| 2026-06-11 | **T-504 / US-030** dashboard optimizado RNF-002: snapshot SQL, lazy chart, test bajo 2s. MVP 102/134 (76%). T-524 pendiente |
+| 2026-06-11 | **T-524 / US-033** impacto visual simulación: waterfall `SimulationImpactChart`, highlight campos top SHAP. Fase 5 completa. MVP 103/134 (77%) |

@@ -50,7 +50,13 @@ const simulateResponse = {
   simulated_risk_level: "medium" as const,
   delta_risk_percent: -7,
   simulation_summary: "Risk decreased after lowering glucose.",
-  changes: [],
+  changes: [
+    {
+      feature_name: "glucose",
+      original_value: "140",
+      simulated_value: "200",
+    },
+  ],
   simulation_time_ms: 60,
   model_version: "lr-v1",
   created_at: "2026-06-11T11:00:00Z",
@@ -299,5 +305,6 @@ describe("SimulationPage", () => {
     expect(screen.getByText(/risk decreased after lowering glucose/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/risk comparison summary/i)).toBeInTheDocument();
     expect(screen.getByText(/-7\.0 pts \(medium risk\)/i)).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /driver impact analysis/i })).toBeInTheDocument();
   });
 });

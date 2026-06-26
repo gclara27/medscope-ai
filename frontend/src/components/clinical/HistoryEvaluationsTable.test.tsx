@@ -1,3 +1,4 @@
+import { MemoryRouter } from "react-router-dom";
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
@@ -31,12 +32,20 @@ const demoItem: HistoryListItem = {
 
 describe("HistoryEvaluationsTable", () => {
   it("renders history rows with risk badge and summary", () => {
-    render(<HistoryEvaluationsTable items={[demoItem]} />);
+    render(
+      <MemoryRouter>
+        <HistoryEvaluationsTable items={[demoItem]} />
+      </MemoryRouter>,
+    );
 
     expect(screen.getByText(/demo clinician/i)).toBeInTheDocument();
     expect(screen.getByText(/42\.0%/)).toBeInTheDocument();
     expect(screen.getByText(/medium risk/i)).toBeInTheDocument();
     expect(screen.getByText(/moderate readmission risk/i)).toBeInTheDocument();
     expect(screen.getByText(/lr-v1/)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /view/i })).toHaveAttribute(
+      "href",
+      `/history/${demoItem.id}`,
+    );
   });
 });

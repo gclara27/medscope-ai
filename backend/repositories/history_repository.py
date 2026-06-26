@@ -43,6 +43,19 @@ class HistoryRepository:
             stmt = stmt.where(Prediction.created_at <= _end_of_day(date_to))
         return stmt
 
+    def get_prediction_detail(self, prediction_id: UUID) -> Prediction | None:
+        """Load a single prediction with clinical inputs, SHAP, and simulations (RF-052)."""
+        return self.db.scalar(
+            select(Prediction)
+            .options(
+                joinedload(Prediction.user).joinedload(User.role),
+                joinedload(Prediction.patient_input),
+                joinedload(Prediction.shap_explanations),
+                joinedload(Prediction.simulations),
+            )
+            .where(Prediction.id == prediction_id)
+        )
+
     def list_predictions(
         self,
         *,

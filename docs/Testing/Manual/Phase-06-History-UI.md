@@ -1,6 +1,8 @@
 # Fase 6 — Tests manuales: Historial (UI)
 
-**Alcance:** Pantalla `/history`, integración `GET /history`, lista paginada de evaluaciones, acceso nurse/clinician/admin (T-601, T-604, US-022, UC-050).
+**Alcance:** Pantallas `/history`, `/history/:id`, integración `GET /history` y `GET /history/{id}`, lista paginada, filtros, detalle con SHAP (T-601–603, T-604, US-022, UC-050–052).
+
+**Estado fase:** cerrada (implementación + tests automáticos). QA manual opcional en MT-P06-HIST-005/006.
 
 **Referencia:** [Task Tracker — Fase 6](../../TaskTracker.md#fase-6--historial--analytics) · [history mockup](../../Design/screens/history/reference.html)
 
@@ -191,21 +193,67 @@
 
 ---
 
-## Fuera de alcance US-022
+### MT-P06-HIST-006 — Detalle histórico (T-603)
 
-- **T-602 / UC-051:** filtros por fecha, riesgo, usuario — pendiente.
-- **T-603 / UC-052:** detalle histórico con SHAP — pendiente endpoint + UI.
+
+| Campo          | Valor                 |
+| -------------- | --------------------- |
+| **Prioridad**  | P0                    |
+| **Requisitos** | RF-052, UC-052, T-603 |
+
+
+**Pasos**
+
+1. Abrir `/history` y pulsar **View** (o la fecha) de una evaluación existente.
+2. Verificar gauge de riesgo, resumen XAI y tabla SHAP.
+3. Revisar tarjeta **Clinical inputs** con los valores guardados.
+4. Si hay simulaciones previas, comprobar panel **Linked simulations**.
+5. Como clinician/admin, pulsar **Run simulation** y confirmar que abre `/simulation` con el contexto cargado.
+
+**Criterios de aceptación**
+
+- [x] `GET /history/{prediction_id}` devuelve inputs, SHAP y simulaciones.
+- [x] La ruta `/history/:predictionId` muestra el detalle completo.
+- [x] Enlace **Back to history** vuelve al listado.
+- [x] Rol nurse ve detalle pero no el botón de simulación.
+
+---
+
+### MT-P06-HIST-005 — Filtros de búsqueda (T-602)
+
+
+| Campo          | Valor                 |
+| -------------- | --------------------- |
+| **Prioridad**  | P0                    |
+| **Requisitos** | RF-051, UC-051, T-602 |
+
+
+**Pasos**
+
+1. Abrir `/history` con varias evaluaciones de distintos evaluadores y niveles de riesgo.
+2. Cambiar **Risk level** a `High risk`.
+3. Ajustar rango de fechas (p. ej. Last 30 days o Custom).
+4. Seleccionar un evaluador en **Evaluator**.
+5. Pulsar **Reset**.
+
+**Criterios de aceptación**
+
+- [x] La tabla se actualiza al cambiar filtros (`GET /history?risk_level=…&date_from=…&user_id=…`).
+- [x] El contador *Showing X–Y of Z* refleja el total filtrado.
+- [x] Mensaje distinto cuando no hay resultados con filtros activos.
+- [x] **Reset** restaura fecha, riesgo y evaluador por defecto.
 
 ---
 
 ## Relación con tests automáticos
 
 
-| Manual               | Automatizado (`frontend/src` / `backend/tests`)                  |
-| -------------------- | ---------------------------------------------------------------- |
-| MT-P06-HIST-001/002  | `HistoryPage.test.tsx`, `history.test.ts`                        |
-| MT-P06-HIST-002      | `HistoryEvaluationsTable.test.tsx`, `test_history.py`            |
-| MT-P06-HIST-RBAC-001 | `navigation.test.ts`, `AppLayout.test.tsx`, `RoleRoute.test.tsx` |
+| Manual               | Automatizado (`frontend/src` / `backend/tests`)                           |
+| -------------------- | ------------------------------------------------------------------------- |
+| MT-P06-HIST-001/002  | `HistoryPage.test.tsx`, `history.test.ts`, `HistoryFiltersPanel.test.tsx` |
+| MT-P06-HIST-002      | `HistoryEvaluationsTable.test.tsx`, `test_history.py`                     |
+| MT-P06-HIST-006      | `HistoryDetailPage.test.tsx`, `historyDetail.test.ts`, `test_history.py`  |
+| MT-P06-HIST-RBAC-001 | `navigation.test.ts`, `AppLayout.test.tsx`, `RoleRoute.test.tsx`          |
 
 
 ---

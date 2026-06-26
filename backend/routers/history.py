@@ -11,7 +11,7 @@ from sqlalchemy.orm import Session
 from core.database import get_db
 from core.deps import require_roles
 from models.user import User
-from schemas.history import HistoryListResponse
+from schemas.history import HistoryDetailResponse, HistoryListResponse
 from schemas.prediction import RiskLevel
 from services.history_service import HistoryService
 
@@ -44,3 +44,17 @@ def list_history(
         limit=limit,
         offset=offset,
     )
+
+
+@router.get(
+    "/history/{prediction_id}",
+    response_model=HistoryDetailResponse,
+    summary="Historical prediction detail with SHAP and simulations",
+)
+def get_history_prediction(
+    prediction_id: UUID,
+    db: Session = Depends(get_db),
+    _current_user: User = Depends(require_roles(*_HISTORY_ROLES)),
+) -> HistoryDetailResponse:
+    """Return stored evaluation detail for audit review (RF-052, UC-052)."""
+    return HistoryService(db).get_prediction_detail(prediction_id)

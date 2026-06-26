@@ -3,9 +3,9 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import UTC, date, datetime, time
+from datetime import UTC, date, datetime, time, timedelta
 
-from sqlalchemy import func, select
+from sqlalchemy import case, func, select
 from sqlalchemy.orm import Session
 
 from models.prediction import Prediction
@@ -30,6 +30,14 @@ class TrendRow:
     period: date
     count: int
     average_risk_percent: float
+
+
+@dataclass(frozen=True)
+class DashboardAggregateSnapshot:
+    total: int
+    average_risk: float | None
+    evaluations_last_24h: int
+    buckets: dict[str, int]
 
 
 class AnalyticsRepository:
@@ -76,6 +84,26 @@ class AnalyticsRepository:
             float(avg_risk) if avg_risk is not None else None,
             float(avg_time_ms) if avg_time_ms is not None else None,
             buckets,
+        )
+
+    def fetch_dashboard_snapshot(self) -> DashboardAggregateSnapshot:
+        """Single-pass dashboard aggregates (T-504, RNF-002)."""
+        since_24h = datetime.now(UTC) - timedelta(hours=24)
+        summary_stmt = select(
+            func.count(Prediction.id),
+            func.avg(Prediction.risk_score),
+            func.sum(case((Prediction.created_at >= since_24h, 1), else_=0)),
+        )
+        total, avg_risk, last_24h = self.db.execute(summary_stmt).one()
+
+        bucket_stmt = select(Prediction.risk_level, func.count()).group_by(Prediction.risk_level)
+        buckets = {level: int(count) for level, count in self.db.execute(bucket_stmt).all()}
+
+        return DashboardAggregateSnapshot(
+            total=int(total or 0),
+            average_risk=float(avg_risk) if avg_risk is not None else None,
+            evaluations_last_24h=int(last_24h or 0),
+            buckets=buckets,
         )
 
     def fetch_risk_distribution(

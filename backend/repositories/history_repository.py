@@ -52,6 +52,7 @@ class HistoryRepository:
         date_to: date | None = None,
         limit: int = 50,
         offset: int = 0,
+        include_total: bool = True,
     ) -> tuple[list[Prediction], int]:
         """Return predictions newest-first with optional RF-051 filters."""
         list_stmt = select(Prediction).options(
@@ -66,15 +67,17 @@ class HistoryRepository:
             date_to=date_to,
         )
 
-        count_stmt = select(func.count()).select_from(Prediction)
-        count_stmt = self._apply_filters(
-            count_stmt,
-            risk_level=risk_level,
-            user_id=user_id,
-            date_from=date_from,
-            date_to=date_to,
-        )
-        total = int(self.db.scalar(count_stmt) or 0)
+        total = 0
+        if include_total:
+            count_stmt = select(func.count()).select_from(Prediction)
+            count_stmt = self._apply_filters(
+                count_stmt,
+                risk_level=risk_level,
+                user_id=user_id,
+                date_from=date_from,
+                date_to=date_to,
+            )
+            total = int(self.db.scalar(count_stmt) or 0)
 
         rows = (
             self.db.scalars(list_stmt.order_by(Prediction.created_at.desc()).limit(limit).offset(offset)).unique().all()

@@ -34,6 +34,7 @@ class HistoryService:
         date_to: date | None = None,
         limit: int = 50,
         offset: int = 0,
+        include_total: bool = True,
     ) -> HistoryListResponse:
         if date_from and date_to and date_from > date_to:
             raise HTTPException(
@@ -48,6 +49,7 @@ class HistoryService:
             date_to=date_to,
             limit=limit,
             offset=offset,
+            include_total=include_total,
         )
 
         return HistoryListResponse(

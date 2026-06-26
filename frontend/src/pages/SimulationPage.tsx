@@ -4,6 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 
 import { SimulationComparisonPanel } from "@/components/clinical/SimulationComparisonPanel";
 import { SimulationControlPanel } from "@/components/clinical/SimulationControlPanel";
+import { SimulationImpactChart } from "@/components/clinical/SimulationImpactChart";
 import { Alert } from "@/components/Alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -14,6 +15,10 @@ import {
   hasSimulationModifications,
   predictRequestToSimulationValues,
 } from "@/lib/simulationForm";
+import {
+  computeSimulationImpactRows,
+  topImpactFieldKeys,
+} from "@/lib/simulationImpact";
 import { createSimulation } from "@/services/simulations";
 import type {
   SimulateModifications,
@@ -212,6 +217,23 @@ export function SimulationPage() {
     void runSimulation(modifications, predictionId);
   }, [baseline, debouncedValues, predictionId, runSimulation]);
 
+  const impactRows = useMemo(() => {
+    if (!simResult || simResult.changes.length === 0) {
+      return [];
+    }
+
+    return computeSimulationImpactRows(
+      simResult.changes,
+      simResult.delta_risk_percent,
+      context?.result.shap_explanations ?? [],
+    );
+  }, [simResult, context?.result.shap_explanations]);
+
+  const impactHighlightFields = useMemo(
+    () => topImpactFieldKeys(impactRows),
+    [impactRows],
+  );
+
   if (!isValidSimulationContext(context) || !baselineValues) {
     return <SimulationEmptyState />;
   }
@@ -298,6 +320,7 @@ export function SimulationPage() {
               onReset={handleReset}
               onRecalculate={handleRecalculate}
               isSubmitting={isSubmitting}
+              impactHighlightFields={impactHighlightFields}
             />
           </CardContent>
         </Card>
@@ -310,6 +333,8 @@ export function SimulationPage() {
             isRecalculating={isSubmitting}
             hasSimulationResult={simResult !== null}
           />
+
+          {simResult ? <SimulationImpactChart rows={impactRows} /> : null}
 
           {simResult ? (
             <Card>

@@ -122,11 +122,11 @@ Documento vivo para seguir el progreso del TFM.
 | Fase 3 — ML + Backend | 14 | 14 | 100% |
 | Fase 4 — Frontend base | 14 | 14 | 100% |
 | Fase 5 — Features clínicas | 16 | 16 | 100% |
-| Fase 6 — Analytics + History | 7 | 10 | 70% |
+| Fase 6 — Analytics + History | 10 | 10 | 100% |
 | Fase 7 — Polish + Testing | 0 | 12 | 0% |
 | Fase 8 — TFM + Documentación | 2 | 10 | 20% |
 | Fase 9 — Demo | 0 | 6 | 0% |
-| **TOTAL MVP** | **103** | **134** | **77%** |
+| **TOTAL MVP** | **106** | **134** | **79%** |
 
 ---
 
@@ -357,20 +357,22 @@ Documento vivo para seguir el progreso del TFM.
 
 # FASE 6 — Historial + Analytics
 
-**Progreso:** 7 / 10 (70%)
+**Progreso:** 10 / 10 (100%) · **Estado:** cerrada (2026-06-11)
+
+Entregables: historial (`/history`, filtros, detalle SHAP), analytics (`/analytics`), settings placeholder admin (`/settings`). User stories **US-022** y **US-023** cerradas.
 
 | ID | ✓ | Tarea | Docs | Pedir a la IA |
 |---|---|---|---|---|
 | T-601 | [x] | Página historial | [RF-050](Requirements/Requirements.md#rf-050--historial-evaluaciones) · [history](Design/screens/history/reference.html) | `Lista evaluaciones según mockup history.` |
-| T-602 | [ ] | Filtros | [RF-051](Requirements/Requirements.md#rf-051--búsqueda) · [UC-051](Use%20Cases/Use%20Cases.md#uc-051--search-predictions) | `Filtros fecha, riesgo, usuario en GET /history.` |
-| T-603 | [ ] | Detalle histórico | [RF-052](Requirements/Requirements.md#rf-052--detalle-evaluación) · [UC-052](Use%20Cases/Use%20Cases.md#uc-052--open-historical-prediction) | `Vista detalle con inputs + SHAP histórico.` |
+| T-602 | [x] | Filtros | [RF-051](Requirements/Requirements.md#rf-051--búsqueda) · [UC-051](Use%20Cases/Use%20Cases.md#uc-051--search-predictions) | `Filtros fecha, riesgo, usuario en GET /history.` |
+| T-603 | [x] | Detalle histórico | [RF-052](Requirements/Requirements.md#rf-052--detalle-evaluación) · [UC-052](Use%20Cases/Use%20Cases.md#uc-052--open-historical-prediction) | `Vista detalle con inputs + SHAP histórico.` |
 | T-604 | [x] | API history | [RBE-012](Requirements/Requirements.md#rbe-012) | `Integrar GET /history en frontend.` |
 | T-605 | [x] | Analytics page | [RF-060](Requirements/Requirements.md#rf-060--dashboard-analítico) · [analytics](Design/screens/analytics/reference.html) | `Dashboard analytics según mockup.` |
 | T-606 | [x] | Categorías riesgo | [UC-062](Use%20Cases/Use%20Cases.md#uc-062--analyze-risk-categories) | `Chart distribución categorías.` |
 | T-607 | [x] | Filtros tiempo | [RF-061](Requirements/Requirements.md#rf-061--filtros) | `Selector rango temporal.` |
 | T-608 | [x] | KPIs ejecutivos | [RF-062](Requirements/Requirements.md#rf-062--kpis-ejecutivos) | `Cards métricas agregadas.` |
 | T-609 | [x] | API analytics | [RBE-014](Requirements/Requirements.md#rbe-014) | `Integrar GET /analytics.` |
-| T-610 | [ ] | Settings placeholder | [RF-012](Requirements/Requirements.md#rf-012--navegación-lateral) | `Link settings con página placeholder.` |
+| T-610 | [x] | Settings placeholder | [RF-012](Requirements/Requirements.md#rf-012--navegación-lateral) | `Link settings con página placeholder.` |
 
 ---
 
@@ -465,8 +467,9 @@ Documento vivo para seguir el progreso del TFM.
 | Predicción | T-510–516 | [RF-020–023](Requirements/Requirements.md#53-evaluación-clínica) |
 | SHAP | T-210, T-514–515 | [RF-030–032](Requirements/Requirements.md#54-explicabilidad-ia) |
 | Simulación | T-520–524 | [RF-040–043](Requirements/Requirements.md#55-simulación-clínica) |
-| Historial | T-601–604 | [RF-050–052](Requirements/Requirements.md#56-historial-clínico) |
+| Historial | T-601–603 | [RF-050–052](Requirements/Requirements.md#56-historial-clínico) |
 | Analytics | T-605–609 | [RF-060–062](Requirements/Requirements.md#57-analytics) |
+| Settings (placeholder) | T-610 | [RF-012](Requirements/Requirements.md#rf-012--navegación-lateral) |
 | API | T-304–307 | [RBE-010–014](Requirements/Requirements.md#92-endpoints) |
 | DB | T-110–119 | [Database](Database/Database.md) |
 | ML | T-201–210 | [RIA](Requirements/Requirements.md#7-requerimientos-ia--machine-learning) |
@@ -528,3 +531,5 @@ Documento vivo para seguir el progreso del TFM.
 | 2026-06-11 | **T-503** chart distribución riesgo en dashboard con Recharts + datos `GET /dashboard` (UC-011). MVP 101/134 (75%). T-504 pendiente |
 | 2026-06-11 | **T-504 / US-030** dashboard optimizado RNF-002: snapshot SQL, lazy chart, test bajo 2s. MVP 102/134 (76%). T-524 pendiente |
 | 2026-06-11 | **T-524 / US-033** impacto visual simulación: waterfall `SimulationImpactChart`, highlight campos top SHAP. Fase 5 completa. MVP 103/134 (77%) |
+| 2026-06-11 | **T-610** settings placeholder: `SettingsPage` admin-only, nav + RBAC. Fase 6 completa. MVP 106/134 (79%) |
+| 2026-06-11 | **T-603** detalle historial: `GET /history/{id}`, `HistoryDetailPage` inputs + SHAP + simulaciones. MVP 105/134 (78%) |

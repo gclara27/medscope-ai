@@ -6,6 +6,10 @@ import { getNavItemsForRole } from "@/config/navigation";
 import { useAuth } from "@/context/useAuth";
 import { cn } from "@/lib/utils";
 
+function isNavItemActive(pathname: string, itemTo: string): boolean {
+  return pathname === itemTo || pathname.startsWith(`${itemTo}/`);
+}
+
 export function AppLayout() {
   const { user, logout, isLoading } = useAuth();
   const navigate = useNavigate();
@@ -42,7 +46,7 @@ export function AppLayout() {
             onClick={closeMobileNav}
             className={cn(
               "rounded-lg px-3 py-2 text-sm font-medium",
-              location.pathname === item.to
+              isNavItemActive(location.pathname, item.to)
                 ? "bg-primary text-on-primary"
                 : "text-on-surface-variant hover:bg-surface-container-low",
             )}

@@ -1,4 +1,4 @@
-"""History API tests (T-306, T-314, UC-050–051, RF-051)."""
+"""History API tests (T-306, T-314, UC-050–052, RF-051–052)."""
 
 from __future__ import annotations
 
@@ -162,3 +162,86 @@ def test_history_analyst_role_allowed(client: TestClient, db_session) -> None:
     token = login.json()["access_token"]
     response = client.get("/history", headers={"Authorization": f"Bearer {token}"})
     assert response.status_code == 200
+
+
+def test_history_detail_requires_authentication(client: TestClient) -> None:
+    response = client.get(f"/history/{__import__('uuid').uuid4()}")
+    assert response.status_code == 401
+
+
+def test_history_detail_returns_prediction_with_shap(
+    client: TestClient,
+    auth_header,
+    seed_user,
+) -> None:
+    seed_user(email="nurse-detail@medscope.ai", role_name="nurse")
+    headers = auth_header("nurse-detail@medscope.ai")
+
+    predict = client.post("/predict", json=VALID_PREDICT_PAYLOAD, headers=headers)
+    assert predict.status_code == 200
+    predict_data = predict.json()
+    prediction_id = predict_data["id"]
+
+    response = client.get(f"/history/{prediction_id}", headers=headers)
+    assert response.status_code == 200
+    data = response.json()
+
+    assert data["id"] == prediction_id
+    assert data["risk_percent"] == pytest.approx(predict_data["risk_percent"], rel=1e-4)
+    assert data["baseline_request"]["age"] == VALID_PREDICT_PAYLOAD["age"]
+    assert data["patient_input"]["glucose"] == VALID_PREDICT_PAYLOAD["glucose"]
+    assert len(data["shap_explanations"]) >= 1
+    assert data["shap_explanations"][0]["feature_name"]
+    assert data["simulations"] == []
+
+
+def test_history_detail_includes_simulations(
+    client: TestClient,
+    auth_header,
+    seed_user,
+) -> None:
+    seed_user(email="clinician-detail@medscope.ai", role_name="clinician")
+    headers = auth_header("clinician-detail@medscope.ai")
+
+    predict = client.post("/predict", json=VALID_PREDICT_PAYLOAD, headers=headers)
+    prediction_id = predict.json()["id"]
+
+    simulate = client.post(
+        "/simulate",
+        json={
+            "prediction_id": prediction_id,
+            "modifications": {"previous_admissions": 0},
+        },
+        headers=headers,
+    )
+    assert simulate.status_code == 200
+
+    response = client.get(f"/history/{prediction_id}", headers=headers)
+    assert response.status_code == 200
+    data = response.json()
+    assert len(data["simulations"]) == 1
+    simulation = data["simulations"][0]
+    assert simulation["id"] == simulate.json()["id"]
+    assert simulation["original_risk_percent"] == pytest.approx(
+        simulate.json()["original_risk_percent"],
+        rel=1e-4,
+    )
+    assert simulation["simulated_risk_percent"] == pytest.approx(
+        simulate.json()["simulated_risk_percent"],
+        rel=1e-4,
+    )
+
+
+def test_history_detail_not_found(
+    client: TestClient,
+    auth_header,
+    seed_user,
+) -> None:
+    seed_user(email="admin-detail@medscope.ai", role_name="admin")
+    headers = auth_header("admin-detail@medscope.ai")
+
+    response = client.get(
+        f"/history/{__import__('uuid').uuid4()}",
+        headers=headers,
+    )
+    assert response.status_code == 404

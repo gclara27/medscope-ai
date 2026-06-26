@@ -26,7 +26,7 @@ Complementar los tests automáticos (`pytest`, `vitest`, Playwright) con un chec
 | 3 | [Phase-03-ML-Backend-Integration.md](Phase-03-ML-Backend-Integration.md) | `POST /predict`, `POST /simulate`, `GET /history`, `GET /analytics`, ML startup, persistencia |
 | 4 | [Phase-04-Frontend-Foundation.md](Phase-04-Frontend-Foundation.md) | Splash, login UI, rutas protegidas, roles, layout responsive, dashboard demo |
 | 5 | [Phase-05-Clinical-Prediction-UI.md](Phase-05-Clinical-Prediction-UI.md) · [Phase-05-Clinical-Simulation-UI.md](Phase-05-Clinical-Simulation-UI.md) | Predicción + simulación UI (Fase 5) |
-| 6 | [Phase-06-History-UI.md](Phase-06-History-UI.md) · [Phase-06-Analytics-UI.md](Phase-06-Analytics-UI.md) | Historial UI (US-022) · Analytics UI (US-023, T-605–609) |
+| 6 | [Phase-06-History-UI.md](Phase-06-History-UI.md) · [Phase-06-Analytics-UI.md](Phase-06-Analytics-UI.md) | Historial + Analytics UI — **cerrada** (US-022, US-023, T-601–610) |
 
 ---
 

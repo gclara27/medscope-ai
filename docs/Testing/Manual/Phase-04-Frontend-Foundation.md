@@ -251,7 +251,7 @@ Prueba al menos **Chrome/Edge** en escritorio. Para layout móvil (P1), usa DevT
 **Criterios de aceptación**
 
 - [x] Todos los ítems MVP visibles: Dashboard, Evaluation, Simulation, History, Analytics, Settings.
-- [x] Cada ruta carga sin error 404 (Analytics real para admin/analyst — ver [Phase 06 Analytics](Phase-06-Analytics-UI.md)).
+- [x] Cada ruta carga sin error 404 (Analytics real para admin/analyst — ver [Phase 06 Analytics](Phase-06-Analytics-UI.md); Settings placeholder — T-610).
 
 ---
 

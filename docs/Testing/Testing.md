@@ -227,11 +227,13 @@ Prioridad baja-media. No pixel-perfect testing.
 
 **Implementado (Fase 5 — simulación UI, T-520–523, US-021):** `SimulationPage`, panel sliders, recálculo debounced `POST /simulate`, `SimulationComparisonPanel`, persistencia `sessionStorage` (`simulationSession.ts`, `markSimulationForceReset` / `consumeSimulationForceReset` para F5 vs Run simulation) — archivos clave: `SimulationPage.test.tsx`, `SimulationComparisonPanel.test.tsx`, `simulationSession.test.ts`, `simulations.test.ts`, `simulationForm.test.ts`, `simulationDisplay.test.ts`.
 
-**Implementado (Fase 6 — historial UI, T-601, T-604, US-022):** `HistoryPage`, `HistoryEvaluationsTable`, `listHistory` — archivos clave: `HistoryPage.test.tsx`, `HistoryEvaluationsTable.test.tsx`, `history.test.ts`, `historyDisplay.test.ts`, `historyErrors.ts`.
+**Implementado (Fase 6 — historial UI, T-601–604, US-022):** `HistoryPage`, `HistoryFiltersPanel`, `HistoryEvaluationsTable`, `HistoryDetailPage`, `listHistory`, `getHistoryDetail` — archivos clave: `HistoryPage.test.tsx`, `HistoryFiltersPanel.test.tsx`, `HistoryDetailPage.test.tsx`, `historyFilters.test.ts`, `historyDetail.test.ts`, `HistoryEvaluationsTable.test.tsx`, `history.test.ts`, `test_history.py`.
 
 **Implementado (Fase 6 — analytics UI, T-605–609, US-023):** `AnalyticsPage`, `AnalyticsKpiCards`, `AnalyticsTrendChart`, `AnalyticsRiskDistributionChart`, `AnalyticsDateRangeFilter`, `getAnalytics` — archivos clave: `AnalyticsPage.test.tsx`, `analytics.test.ts`, `analyticsDateRange.test.ts`, `analyticsDisplay.test.ts`, `analyticsErrors.ts`.
 
-Ver `frontend/src/**/*.test.{ts,tsx}` (**38 archivos, 126 tests**).
+**Implementado (Fase 6 — settings placeholder, T-610):** `SettingsPage`, ruta admin `/settings` — archivos clave: `SettingsPage.test.tsx`, `navigation.test.ts`, `AppLayout.test.tsx`.
+
+Ver `frontend/src/**/*.test.{ts,tsx}` (**53 archivos, 164 tests**).
 
 ```bash
 cd frontend

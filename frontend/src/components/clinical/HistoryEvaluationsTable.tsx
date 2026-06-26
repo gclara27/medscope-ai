@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 import { RISK_BADGE_CLASSES, RISK_BADGE_LABELS } from "@/lib/riskDisplay";
 import {
   formatEvaluatorName,
@@ -24,6 +26,9 @@ export function HistoryEvaluationsTable({ items }: HistoryEvaluationsTableProps)
             <th className="px-3 py-3 font-medium">Risk score</th>
             <th className="px-3 py-3 font-medium">Summary</th>
             <th className="px-3 py-3 font-medium">Model</th>
+            <th className="px-3 py-3 font-medium">
+              <span className="sr-only">View detail</span>
+            </th>
           </tr>
         </thead>
         <tbody className="text-sm text-on-surface">
@@ -33,7 +38,12 @@ export function HistoryEvaluationsTable({ items }: HistoryEvaluationsTableProps)
               className="border-b border-outline-variant/70 transition-colors hover:bg-surface-container-low"
             >
               <td className="px-3 py-3 font-mono text-xs text-on-surface-variant">
-                {formatHistoryDateTime(item.created_at)}
+                <Link
+                  to={`/history/${item.id}`}
+                  className="block rounded-sm text-primary underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                >
+                  {formatHistoryDateTime(item.created_at)}
+                </Link>
               </td>
               <td className="px-3 py-3">
                 <span className="block font-medium">{formatEvaluatorName(item.user)}</span>
@@ -62,6 +72,14 @@ export function HistoryEvaluationsTable({ items }: HistoryEvaluationsTableProps)
               </td>
               <td className="px-3 py-3 font-mono text-xs text-on-surface-variant">
                 {item.model_version}
+              </td>
+              <td className="px-3 py-3 text-right">
+                <Link
+                  to={`/history/${item.id}`}
+                  className="text-sm font-medium text-primary underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                >
+                  View
+                </Link>
               </td>
             </tr>
           ))}

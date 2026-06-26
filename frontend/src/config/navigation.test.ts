@@ -40,4 +40,11 @@ describe("navigation role access", () => {
     expect(canAccessRoute("nurse", "/evaluation")).toBe(false);
     expect(canAccessRoute("clinician", "/evaluation")).toBe(true);
   });
+
+  it("allows only admin access to settings", () => {
+    expect(canAccessRoute("admin", "/settings")).toBe(true);
+    expect(canAccessRoute("clinician", "/settings")).toBe(false);
+    expect(canAccessRoute("analyst", "/settings")).toBe(false);
+    expect(canAccessRoute("nurse", "/settings")).toBe(false);
+  });
 });

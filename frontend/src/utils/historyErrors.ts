@@ -14,6 +14,9 @@ export function getHistoryErrorMessage(error: unknown): string {
     if (status === 403) {
       return "You do not have permission to view prediction history.";
     }
+    if (status === 404) {
+      return "The requested evaluation was not found.";
+    }
     if (status === 422) {
       const validationMessage = formatValidationDetail(detail);
       if (validationMessage) {

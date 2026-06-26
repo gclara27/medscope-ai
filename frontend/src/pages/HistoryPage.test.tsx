@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { MemoryRouter } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { HistoryPage } from "@/pages/HistoryPage";
@@ -35,42 +36,92 @@ const demoItem: HistoryListResponse["items"][number] = {
   },
 };
 
+const emptyResponse: HistoryListResponse = {
+  items: [],
+  total: 0,
+  limit: 20,
+  offset: 0,
+};
+
+const listResponse: HistoryListResponse = {
+  items: [demoItem],
+  total: 1,
+  limit: 20,
+  offset: 0,
+};
+
+function mockHistoryResponses(
+  main: HistoryListResponse = listResponse,
+  discovery: HistoryListResponse = listResponse,
+) {
+  vi.mocked(listHistory).mockImplementation(async (params) => {
+    if (params?.limit === 100) {
+      return discovery;
+    }
+    return main;
+  });
+}
+
+function renderHistoryPage() {
+  return render(
+    <MemoryRouter>
+      <HistoryPage />
+    </MemoryRouter>,
+  );
+}
+
 describe("HistoryPage", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockHistoryResponses();
   });
 
   it("loads and renders prediction history", async () => {
-    vi.mocked(listHistory).mockResolvedValue({
-      items: [demoItem],
-      total: 1,
-      limit: 20,
-      offset: 0,
-    });
-
-    render(<HistoryPage />);
+    renderHistoryPage();
 
     await waitFor(() => {
       expect(screen.getByText(/moderate readmission risk/i)).toBeInTheDocument();
     });
 
-    expect(listHistory).toHaveBeenCalledWith({ limit: 20, offset: 0 });
+    expect(listHistory).toHaveBeenCalledWith(
+      expect.objectContaining({ limit: 20, offset: 0 }),
+    );
     expect(screen.getByRole("heading", { name: /prediction history/i })).toBeInTheDocument();
   });
 
   it("shows empty state when no evaluations exist", async () => {
-    vi.mocked(listHistory).mockResolvedValue({
-      items: [],
-      total: 0,
-      limit: 20,
-      offset: 0,
-    });
+    mockHistoryResponses(emptyResponse, emptyResponse);
 
-    render(<HistoryPage />);
+    renderHistoryPage();
 
     await waitFor(() => {
       expect(screen.getByText(/no evaluations found yet/i)).toBeInTheDocument();
     });
+  });
+
+  it("shows filtered empty state when filters return no rows", async () => {
+    mockHistoryResponses(emptyResponse, listResponse);
+
+    renderHistoryPage();
+
+    const user = userEvent.setup();
+    await waitFor(() => {
+      expect(screen.getByLabelText(/risk level filter/i)).toBeInTheDocument();
+    });
+
+    await user.selectOptions(screen.getByLabelText(/risk level filter/i), "high");
+
+    await waitFor(() => {
+      expect(screen.getByText(/no evaluations match the selected filters/i)).toBeInTheDocument();
+    });
+
+    expect(listHistory).toHaveBeenCalledWith(
+      expect.objectContaining({
+        risk_level: "high",
+        limit: 20,
+        offset: 0,
+      }),
+    );
   });
 
   it("shows error message when API fails", async () => {
@@ -79,7 +130,7 @@ describe("HistoryPage", () => {
       response: { status: 403, data: { detail: "Forbidden" } },
     });
 
-    render(<HistoryPage />);
+    renderHistoryPage();
 
     await waitFor(() => {
       expect(
@@ -91,8 +142,20 @@ describe("HistoryPage", () => {
   it("requests next page when pagination is used", async () => {
     const user = userEvent.setup();
 
-    vi.mocked(listHistory)
-      .mockResolvedValueOnce({
+    vi.mocked(listHistory).mockImplementation(async (params) => {
+      if (params?.limit === 100) {
+        return listResponse;
+      }
+      if (params?.offset === 20) {
+        return {
+          items: [demoItem],
+          total: 25,
+          limit: 20,
+          offset: 20,
+        };
+      }
+
+      return {
         items: Array.from({ length: 20 }, (_, index) => ({
           ...demoItem,
           id: `00000000-0000-0000-0000-${String(index).padStart(12, "0")}`,
@@ -100,15 +163,10 @@ describe("HistoryPage", () => {
         total: 25,
         limit: 20,
         offset: 0,
-      })
-      .mockResolvedValueOnce({
-        items: [demoItem],
-        total: 25,
-        limit: 20,
-        offset: 20,
-      });
+      };
+    });
 
-    render(<HistoryPage />);
+    renderHistoryPage();
 
     await waitFor(() => {
       expect(screen.getByRole("button", { name: /next/i })).toBeEnabled();
@@ -117,7 +175,24 @@ describe("HistoryPage", () => {
     await user.click(screen.getByRole("button", { name: /next/i }));
 
     await waitFor(() => {
-      expect(listHistory).toHaveBeenLastCalledWith({ limit: 20, offset: 20 });
+      expect(listHistory).toHaveBeenCalledWith(
+        expect.objectContaining({ limit: 20, offset: 20 }),
+      );
     });
+  });
+
+  it("resets filters when reset is clicked", async () => {
+    const user = userEvent.setup();
+
+    renderHistoryPage();
+
+    await waitFor(() => {
+      expect(screen.getByLabelText(/risk level filter/i)).toBeInTheDocument();
+    });
+
+    await user.selectOptions(screen.getByLabelText(/risk level filter/i), "high");
+    await user.click(screen.getByRole("button", { name: /^reset$/i }));
+
+    expect(screen.getByLabelText(/risk level filter/i)).toHaveValue("all");
   });
 });

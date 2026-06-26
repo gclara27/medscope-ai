@@ -7,9 +7,10 @@ import { AppLayout } from "@/layouts/AppLayout";
 import { DashboardPage } from "@/pages/DashboardPage";
 import { EvaluationPage } from "@/pages/EvaluationPage";
 import { LoginPage } from "@/pages/LoginPage";
+import { HistoryDetailPage } from "@/pages/HistoryDetailPage";
 import { HistoryPage } from "@/pages/HistoryPage";
 import { AnalyticsPage } from "@/pages/AnalyticsPage";
-import { PlaceholderPage } from "@/pages/PlaceholderPage";
+import { SettingsPage } from "@/pages/SettingsPage";
 import { SimulationPage } from "@/pages/SimulationPage";
 import { PredictionResultPage } from "@/pages/PredictionResultPage";
 import { SplashPage } from "@/pages/SplashPage";
@@ -67,6 +68,14 @@ export default function App() {
                 }
               />
               <Route
+                path="/history/:predictionId"
+                element={
+                  <RoleRoute allowedRoles={["admin", "clinician", "nurse"]}>
+                    <HistoryDetailPage />
+                  </RoleRoute>
+                }
+              />
+              <Route
                 path="/analytics"
                 element={
                   <RoleRoute allowedRoles={["admin", "analyst"]}>
@@ -78,10 +87,7 @@ export default function App() {
                 path="/settings"
                 element={
                   <RoleRoute allowedRoles={["admin"]}>
-                    <PlaceholderPage
-                      title="System Settings"
-                      description="Manage users, roles, and platform configuration."
-                    />
+                    <SettingsPage />
                   </RoleRoute>
                 }
               />

@@ -133,7 +133,7 @@ describe("HistoryDetailPage", () => {
     renderDetail();
 
     await waitFor(() => {
-      expect(screen.getByText(/the requested evaluation was not found/i)).toBeInTheDocument();
+      expect(screen.getByText(/prediction not found/i)).toBeInTheDocument();
     });
   });
 });

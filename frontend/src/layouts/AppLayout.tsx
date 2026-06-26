@@ -2,7 +2,7 @@ import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { MedScopeAppIcon } from "@/components/brand/MedScopeAppIcon";
-import { getNavItemsForRole } from "@/config/navigation";
+import { getNavItemsForUser } from "@/config/navigation";
 import { useAuth } from "@/context/useAuth";
 import { cn } from "@/lib/utils";
 
@@ -14,7 +14,7 @@ export function AppLayout() {
   const { user, logout, isLoading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const navItems = getNavItemsForRole(user?.role ?? "");
+  const navItems = getNavItemsForUser(user);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   async function handleLogout() {
@@ -28,7 +28,7 @@ export function AppLayout() {
 
   const sidebarContent = (
     <>
-      <div className="border-b border-surface-container-highest p-6">
+      <div className="shrink-0 border-b border-surface-container-highest p-6">
         <div className="flex items-center gap-3">
           <MedScopeAppIcon size="md" className="shadow-level-1" />
           <div>
@@ -38,22 +38,28 @@ export function AppLayout() {
         </div>
       </div>
 
-      <nav className="flex flex-1 flex-col gap-1 p-4">
-        {navItems.map((item) => (
-          <Link
-            key={item.label}
-            to={item.to}
-            onClick={closeMobileNav}
-            className={cn(
-              "rounded-lg px-3 py-2 text-sm font-medium",
-              isNavItemActive(location.pathname, item.to)
-                ? "bg-primary text-on-primary"
-                : "text-on-surface-variant hover:bg-surface-container-low",
-            )}
-          >
-            {item.label}
-          </Link>
-        ))}
+      <nav className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto p-4">
+        {navItems.map((item) => {
+          const Icon = item.icon;
+          const isActive = isNavItemActive(location.pathname, item.to);
+
+          return (
+            <Link
+              key={item.label}
+              to={item.to}
+              onClick={closeMobileNav}
+              className={cn(
+                "flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium",
+                isActive
+                  ? "bg-primary text-on-primary"
+                  : "text-on-surface-variant hover:bg-surface-container-low",
+              )}
+            >
+              <Icon className="h-4 w-4 shrink-0" aria-hidden />
+              {item.label}
+            </Link>
+          );
+        })}
 
         <button
           type="button"
@@ -65,7 +71,7 @@ export function AppLayout() {
         </button>
       </nav>
 
-      <div className="border-t border-surface-container-highest p-4">
+      <div className="shrink-0 border-t border-surface-container-highest p-4">
         <p className="text-sm font-medium text-on-surface">
           {user?.first_name} {user?.last_name}
         </p>
@@ -75,9 +81,9 @@ export function AppLayout() {
   );
 
   return (
-    <div className="flex min-h-screen bg-surface">
-      {/* Desktop sidebar (T-405, T-413) */}
-      <aside className="hidden w-64 flex-col border-r border-outline-variant bg-surface-container-lowest md:flex">
+    <div className="flex h-screen overflow-hidden bg-surface">
+      {/* Desktop sidebar — viewport height; logout/user always visible (T-405, T-413) */}
+      <aside className="hidden h-full w-64 shrink-0 flex-col border-r border-outline-variant bg-surface-container-lowest md:flex">
         {sidebarContent}
       </aside>
 
@@ -110,7 +116,7 @@ export function AppLayout() {
         {sidebarContent}
       </aside>
 
-      <div className="flex min-h-screen flex-1 flex-col">
+      <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
         {/* Mobile top bar */}
         <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-outline-variant bg-surface-container-lowest px-4 md:hidden">
           <button
@@ -128,7 +134,7 @@ export function AppLayout() {
           <div className="w-9" aria-hidden />
         </header>
 
-        <main className="flex-1 overflow-auto">
+        <main className="app-main">
           <Outlet />
         </main>
       </div>

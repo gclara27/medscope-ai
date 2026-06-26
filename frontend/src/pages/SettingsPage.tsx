@@ -1,66 +1,64 @@
-import { Settings, Shield, Users } from "lucide-react";
+import { useState } from "react";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { RolePoliciesPanel } from "@/components/settings/RolePoliciesPanel";
+import { SystemConfigurationPanel } from "@/components/settings/SystemConfigurationPanel";
+import { UserManagementPanel } from "@/components/settings/UserManagementPanel";
+import { PageHeader } from "@/components/layout/PageHeader";
+import { PageShell } from "@/components/layout/PageShell";
+import { getRouteIcon } from "@/config/navigation";
+import { cn } from "@/lib/utils";
 
-const PLANNED_MODULES = [
-  {
-    icon: Users,
-    title: "User management",
-    description: "Create, deactivate, and assign roles to platform users (RF-071).",
-  },
-  {
-    icon: Shield,
-    title: "Role policies",
-    description: "Review role capabilities and access boundaries across clinical modules.",
-  },
-  {
-    icon: Settings,
-    title: "System configuration",
-    description: "Platform defaults, model metadata, and operational settings (UC-071).",
-  },
-] as const;
+type SettingsSection = "users" | "roles" | "system";
 
-/** Admin settings placeholder — full configuration ships post-MVP (T-610, RF-012). */
+const SETTINGS_SECTIONS: Array<{ id: SettingsSection; label: string }> = [
+  { id: "users", label: "User management" },
+  { id: "roles", label: "Role policies" },
+  { id: "system", label: "System configuration" },
+];
+
+/** Admin settings — users, role policies, and platform configuration (T-X01, T-X02). */
 export function SettingsPage() {
-  return (
-    <div className="space-y-8 p-4 md:p-8">
-      <header>
-        <p className="text-sm font-medium uppercase tracking-wide text-primary">
-          Platform administration
-        </p>
-        <h1 className="mt-1 text-2xl font-semibold text-on-surface md:text-3xl">
-          System Settings
-        </h1>
-        <p className="mt-2 max-w-2xl text-on-surface-variant">
-          Manage users, roles, and platform configuration. This area is reserved for
-          post-MVP administration workflows (RF-012, UC-071).
-        </p>
-      </header>
+  const [activeSection, setActiveSection] = useState<SettingsSection>("users");
 
-      <Card className="border-dashed">
-        <CardHeader className="border-b border-outline-variant">
-          <CardTitle className="text-base">Coming in a later sprint</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4 p-6 text-sm text-on-surface-variant">
-          <p>
-            The sidebar link is available for administrators so navigation matches the MVP
-            product map. Configuration screens will be implemented when user and role
-            management APIs are delivered.
-          </p>
-          <ul className="grid gap-4 sm:grid-cols-3">
-            {PLANNED_MODULES.map((module) => (
-              <li
-                key={module.title}
-                className="rounded-lg border border-outline-variant bg-surface-container-low p-4"
+  return (
+    <PageShell>
+      <PageHeader
+        icon={getRouteIcon("/settings")}
+        eyebrow="Platform administration"
+        title="System Settings"
+        description="Manage users, role access policies, and platform configuration."
+      />
+
+      <div className="grid gap-6 lg:grid-cols-4">
+        <aside className="lg:col-span-1">
+          <nav
+            className="space-y-1 rounded-xl border border-outline-variant bg-surface-container-lowest p-2"
+            aria-label="Settings sections"
+          >
+            {SETTINGS_SECTIONS.map((section) => (
+              <button
+                key={section.id}
+                type="button"
+                onClick={() => setActiveSection(section.id)}
+                className={cn(
+                  "w-full rounded-lg px-3 py-2 text-left text-sm font-medium transition",
+                  activeSection === section.id
+                    ? "bg-primary text-on-primary"
+                    : "text-on-surface-variant hover:bg-surface-container-low",
+                )}
               >
-                <module.icon className="mb-2 h-5 w-5 text-primary" aria-hidden />
-                <p className="font-medium text-on-surface">{module.title}</p>
-                <p className="mt-1 text-xs leading-relaxed">{module.description}</p>
-              </li>
+                {section.label}
+              </button>
             ))}
-          </ul>
-        </CardContent>
-      </Card>
-    </div>
+          </nav>
+        </aside>
+
+        <div className="lg:col-span-3">
+          {activeSection === "users" ? <UserManagementPanel /> : null}
+          {activeSection === "roles" ? <RolePoliciesPanel /> : null}
+          {activeSection === "system" ? <SystemConfigurationPanel /> : null}
+        </div>
+      </div>
+    </PageShell>
   );
 }

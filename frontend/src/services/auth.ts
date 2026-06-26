@@ -1,4 +1,4 @@
-import type { AuthSession, LoginResponse } from "@/types/auth";
+import type { AuthSession, LoginResponse, User } from "@/types/auth";
 import { AUTH_TOKEN_KEY, AUTH_USER_KEY } from "@/utils/storage";
 import { clearStoredSession } from "@/utils/session";
 import { api, setAuthToken } from "./api";
@@ -49,8 +49,24 @@ export async function logout(): Promise<void> {
   try {
     await api.post("/auth/logout");
   } catch {
-    // Client-side logout still clears local session (UC-002).
+    // Client-side logout still clears local session.
   } finally {
     clearSession();
   }
+}
+
+/** Refresh the stored user profile and permissions from GET /auth/me. */
+export async function refreshCurrentUser(): Promise<AuthSession | null> {
+  const session = loadStoredSession();
+  if (!session) {
+    return null;
+  }
+
+  const { data } = await api.get<User>("/auth/me");
+  const nextSession: AuthSession = {
+    accessToken: session.accessToken,
+    user: data,
+  };
+  persistSession(nextSession);
+  return nextSession;
 }

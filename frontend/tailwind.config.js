@@ -80,6 +80,7 @@ export default {
       },
       fontFamily: {
         sans: ["Inter", "system-ui", "sans-serif"],
+        mono: ["JetBrains Mono", "ui-monospace", "monospace"],
       },
       boxShadow: {
         "level-1": "0px 2px 4px rgba(0, 0, 0, 0.05)",

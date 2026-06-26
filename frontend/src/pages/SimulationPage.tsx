@@ -6,6 +6,9 @@ import { SimulationComparisonPanel } from "@/components/clinical/SimulationCompa
 import { SimulationControlPanel } from "@/components/clinical/SimulationControlPanel";
 import { SimulationImpactChart } from "@/components/clinical/SimulationImpactChart";
 import { Alert } from "@/components/Alert";
+import { PageHeader } from "@/components/layout/PageHeader";
+import { PageShell } from "@/components/layout/PageShell";
+import { getRouteIcon } from "@/config/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
@@ -68,19 +71,13 @@ function stripNavigationState(
 
 function SimulationEmptyState() {
   return (
-    <div className="space-y-8 p-4 md:p-8">
-      <header>
-        <p className="text-sm font-medium uppercase tracking-wide text-primary">
-          What-if clinical simulation
-        </p>
-        <h1 className="mt-1 text-2xl font-semibold text-on-surface md:text-3xl">
-          Clinical Simulation
-        </h1>
-        <p className="mt-2 max-w-2xl text-on-surface-variant">
-          Complete a clinical evaluation first to load patient variables and run what-if
-          scenarios (UC-040).
-        </p>
-      </header>
+    <PageShell>
+      <PageHeader
+        icon={getRouteIcon("/simulation")}
+        eyebrow="What-if clinical simulation"
+        title="Clinical Simulation"
+        description="Complete a clinical evaluation first to load patient variables and run what-if scenarios."
+      />
 
       <Card>
         <CardContent className="space-y-4 p-6">
@@ -94,7 +91,7 @@ function SimulationEmptyState() {
           </Button>
         </CardContent>
       </Card>
-    </div>
+    </PageShell>
   );
 }
 
@@ -284,29 +281,24 @@ export function SimulationPage() {
   const delta = simResult?.delta_risk_percent;
 
   return (
-    <div className="space-y-8 p-4 md:p-8">
-      <header className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-        <div>
-          <p className="text-sm font-medium uppercase tracking-wide text-primary">
-            What-if clinical simulation
-          </p>
-          <h1 className="mt-1 text-2xl font-semibold text-on-surface md:text-3xl">
-            Clinical Simulation
-          </h1>
-          <p className="mt-2 max-w-2xl text-on-surface-variant">
-            Adjust variables from the stored prediction and recalculate readmission risk (UC-040–043).
-          </p>
-        </div>
-        <Button asChild variant="outline" className="shrink-0 gap-2">
-          <Link
-            to="/evaluation/result"
-            state={{ result: activeStoredResult, baselineRequest: activeBaseline }}
-          >
-            <ArrowLeft className="h-4 w-4" aria-hidden />
-            Back to result
-          </Link>
-        </Button>
-      </header>
+    <PageShell>
+      <PageHeader
+        icon={getRouteIcon("/simulation")}
+        eyebrow="What-if clinical simulation"
+        title="Clinical Simulation"
+        description="Adjust variables from the stored prediction and recalculate readmission risk."
+        actions={
+          <Button asChild variant="outline" className="gap-2">
+            <Link
+              to="/evaluation/result"
+              state={{ result: activeStoredResult, baselineRequest: activeBaseline }}
+            >
+              <ArrowLeft className="h-4 w-4" aria-hidden />
+              Back to result
+            </Link>
+          </Button>
+        }
+      />
 
       {submitError ? <Alert variant="error">{submitError}</Alert> : null}
 
@@ -339,9 +331,7 @@ export function SimulationPage() {
           {simResult ? (
             <Card>
               <CardContent className="space-y-4 p-6">
-                <h2 className="text-sm font-semibold uppercase tracking-wide text-on-surface-variant">
-                  Simulation summary
-                </h2>
+                <h2 className="meta-label">Simulation summary</h2>
                 <p className="text-on-surface">{simResult.simulation_summary}</p>
                 {simResult.changes.length > 0 ? (
                   <ul className="grid gap-2 sm:grid-cols-2">
@@ -351,7 +341,7 @@ export function SimulationPage() {
                         className="rounded-lg border border-outline-variant bg-surface-container-low px-3 py-2 text-sm"
                       >
                         <span className="font-medium text-on-surface">{change.feature_name}</span>
-                        <span className="mt-1 block font-mono text-xs text-on-surface-variant">
+                        <span className="mt-1 block font-data text-xs text-on-surface-variant">
                           {change.original_value ?? "—"} → {change.simulated_value ?? "—"}
                         </span>
                       </li>
@@ -363,6 +353,6 @@ export function SimulationPage() {
           ) : null}
         </div>
       </div>
-    </div>
+    </PageShell>
   );
 }

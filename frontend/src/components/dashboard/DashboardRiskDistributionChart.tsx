@@ -19,7 +19,7 @@ interface DashboardRiskDistributionChartProps {
 export function DashboardRiskDistributionChart({
   distribution,
   title = "Risk distribution",
-  description = "Population readmission risk across low, medium, and high categories (UC-011).",
+  description = "Population readmission risk across low, medium, and high categories.",
 }: DashboardRiskDistributionChartProps) {
   const data: RiskDistributionDatum[] = mapAnalyticsRiskDistribution(distribution);
   const total = getRiskDistributionTotal(distribution);

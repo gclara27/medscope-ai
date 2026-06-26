@@ -118,15 +118,38 @@ def test_unhandled_exception_returns_safe_500(
     assert "RuntimeError" not in response.text
 
 
+def test_unauthenticated_returns_json_without_trace(client: TestClient) -> None:
+    response = client.get("/history")
+
+    assert response.status_code == 401
+    body = response.json()
+    assert body == {"detail": "Not authenticated"}
+    assert "Traceback" not in response.text
+
+
+def test_forbidden_returns_json_without_trace(
+    client: TestClient,
+    auth_header,
+    seed_user,
+) -> None:
+    seed_user(email="clinician-forbidden@medscope.ai", role_name="clinician")
+    headers = auth_header("clinician-forbidden@medscope.ai")
+
+    response = client.get("/auth/admin/ping", headers=headers)
+
+    assert response.status_code == 403
+    body = response.json()
+    assert body == {"detail": "Insufficient permissions"}
+    assert "Traceback" not in response.text
+
+
 @pytest.mark.asyncio
 async def test_unhandled_handler_delegates_validation_errors() -> None:
     """Catch-all must not mask 422 if a validation error reaches ServerErrorMiddleware."""
     from starlette.requests import Request
 
-    from core.exception_handlers import (
-        _INTERNAL_ERROR_MESSAGE,
-        unhandled_exception_handler,
-    )
+    from core.api_errors import INTERNAL_SERVER_ERROR
+    from core.exception_handlers import unhandled_exception_handler
 
     scope = {
         "type": "http",
@@ -152,4 +175,4 @@ async def test_unhandled_handler_delegates_validation_errors() -> None:
     assert response.status_code == 422
     assert response.body is not None
     assert b'"detail"' in response.body
-    assert _INTERNAL_ERROR_MESSAGE.encode() not in response.body
+    assert INTERNAL_SERVER_ERROR.encode() not in response.body

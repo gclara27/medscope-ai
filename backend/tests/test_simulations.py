@@ -92,8 +92,8 @@ def test_simulate_persisted_in_database(
     seed_user,
     db_session,
 ) -> None:
-    user = seed_user(email="nurse-sim@medscope.ai", role_name="nurse")
-    headers = auth_header("nurse-sim@medscope.ai")
+    user = seed_user(email="clinician-sim@medscope.ai", role_name="clinician")
+    headers = auth_header("clinician-sim@medscope.ai")
     prediction_id = _create_prediction_id(client, headers)
 
     before = db_session.scalar(select(func.count()).select_from(Simulation)) or 0

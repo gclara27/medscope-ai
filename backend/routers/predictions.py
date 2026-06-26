@@ -4,15 +4,13 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from core.database import get_db
-from core.deps import get_ml_registry, require_roles
+from core.deps import get_ml_registry, require_permission
 from core.ml_registry import MLRegistry
 from models.user import User
 from schemas.prediction import PredictRequest, PredictResponse
 from services.prediction_service import PredictionService
 
 router = APIRouter()
-
-_PREDICT_ROLES = ("admin", "clinician", "nurse")
 
 
 @router.post(
@@ -23,7 +21,7 @@ _PREDICT_ROLES = ("admin", "clinician", "nurse")
 def predict(
     body: PredictRequest,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_roles(*_PREDICT_ROLES)),
+    current_user: User = Depends(require_permission("evaluation")),
     registry: MLRegistry = Depends(get_ml_registry),
 ) -> PredictResponse:
     """Validate clinical input, run ML inference + SHAP, persist, and respond (UC-022–023)."""

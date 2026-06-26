@@ -18,6 +18,7 @@ class UserResponse(BaseModel):
     first_name: str
     last_name: str
     role: str
+    permissions: dict[str, bool] = Field(default_factory=dict)
 
 
 class LoginResponse(BaseModel):

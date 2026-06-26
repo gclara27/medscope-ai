@@ -96,8 +96,8 @@ def test_predict_persisted_in_database(
     seed_user,
     db_session,
 ) -> None:
-    user = seed_user(email="nurse@medscope.ai", role_name="nurse")
-    headers = auth_header("nurse@medscope.ai")
+    user = seed_user(email="clinician@medscope.ai", role_name="clinician")
+    headers = auth_header("clinician@medscope.ai")
 
     before_predictions = db_session.scalar(select(func.count()).select_from(Prediction)) or 0
     response = client.post("/predict", json=VALID_PAYLOAD, headers=headers)

@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 
 import { Alert } from "@/components/Alert";
 import { ClinicalEvaluationForm } from "@/components/clinical/ClinicalEvaluationForm";
+import { PageHeader } from "@/components/layout/PageHeader";
+import { PageShell } from "@/components/layout/PageShell";
+import { getRouteIcon } from "@/config/navigation";
 import { createPrediction } from "@/services/predictions";
 import type { PredictRequest } from "@/types/prediction";
 import { getPredictionErrorMessage } from "@/utils/predictionErrors";
@@ -28,20 +31,17 @@ export function EvaluationPage() {
   }
 
   return (
-    <div className="space-y-8 p-4 md:p-8">
-      <header>
-        <h1 className="text-2xl font-semibold text-on-surface md:text-3xl">
-          Clinical Evaluation
-        </h1>
-        <p className="mt-2 max-w-3xl text-on-surface-variant">
-          Enter de-identified clinical variables to generate an AI readmission risk
-          assessment. Fields align with the Diabetes 130-US model features (RF-020).
-        </p>
-      </header>
+    <PageShell>
+      <PageHeader
+        icon={getRouteIcon("/evaluation")}
+        eyebrow="Clinical decision support"
+        title="Clinical Evaluation"
+        description="Enter de-identified clinical variables to generate an AI readmission risk assessment based on the Diabetes 130-US cohort model."
+      />
 
       {submitError ? <Alert variant="error">{submitError}</Alert> : null}
 
       <ClinicalEvaluationForm onSubmit={handleSubmit} isSubmitting={isSubmitting} />
-    </div>
+    </PageShell>
   );
 }

@@ -35,12 +35,41 @@ const baseItem: HistoryListItem = {
 
 describe("Dashboard activity panels", () => {
   it("renders high-risk alerts", () => {
-    render(<DashboardHighRiskAlerts alerts={[baseItem]} />);
+    render(
+      <MemoryRouter>
+        <DashboardHighRiskAlerts alerts={[baseItem]} />
+      </MemoryRouter>,
+    );
 
     expect(screen.getByText(/critical alerts/i)).toBeInTheDocument();
     expect(screen.getByText(/1 active/i)).toBeInTheDocument();
     expect(screen.getByText(/EV-11111111/i)).toBeInTheDocument();
     expect(screen.getByText(/elevated readmission risk/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/critical alerts list/i)).toHaveClass("overflow-y-auto");
+    expect(screen.getAllByRole("link", { name: /EV-11111111/i })[0]).toHaveAttribute(
+      "href",
+      `/history/${baseItem.id}`,
+    );
+    expect(screen.getByRole("link", { name: /review evaluation/i })).toHaveAttribute(
+      "href",
+      `/history/${baseItem.id}`,
+    );
+  });
+
+  it("scrolls critical alerts when the feed exceeds panel height", () => {
+    const alerts = Array.from({ length: 8 }, (_, index) => ({
+      ...baseItem,
+      id: `11111111-2222-3333-4444-5555555555${String(index).padStart(2, "0")}`,
+    }));
+
+    render(
+      <MemoryRouter>
+        <DashboardHighRiskAlerts alerts={alerts} />
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByText(/8 active/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/critical alerts list/i)).toHaveClass("overflow-y-auto");
   });
 
   it("renders recent evaluations with link to history", () => {
@@ -52,6 +81,14 @@ describe("Dashboard activity panels", () => {
 
     expect(screen.getByText(/recent ai evaluations/i)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /view full log/i })).toHaveAttribute("href", "/history");
+    expect(screen.getByRole("link", { name: /view evaluation EV-11111111/i })).toHaveAttribute(
+      "href",
+      `/history/${baseItem.id}`,
+    );
+    expect(screen.getAllByRole("link", { name: /EV-11111111/i })[0]).toHaveAttribute(
+      "href",
+      `/history/${baseItem.id}`,
+    );
     expect(screen.getByText("82.0%")).toBeInTheDocument();
     expect(screen.getByText(/high/i)).toBeInTheDocument();
   });

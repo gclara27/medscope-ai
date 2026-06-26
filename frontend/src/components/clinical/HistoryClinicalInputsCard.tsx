@@ -34,9 +34,7 @@ export function HistoryClinicalInputsCard({ patientInput }: HistoryClinicalInput
         <dl className="grid gap-4 sm:grid-cols-2">
           {fields.map((field) => (
             <div key={field.label}>
-              <dt className="text-xs font-medium uppercase tracking-wide text-on-surface-variant">
-                {field.label}
-              </dt>
+              <dt className="meta-label">{field.label}</dt>
               <dd className="mt-1 text-sm text-on-surface">{field.value}</dd>
             </div>
           ))}

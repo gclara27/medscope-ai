@@ -6,17 +6,20 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.orm import Session
 
+from core.api_errors import INSUFFICIENT_PERMISSIONS, NOT_AUTHENTICATED
 from core.database import get_db
 from core.jwt import decode_access_token, is_token_error
 from core.ml_registry import MLRegistry, ml_registry
+from core.permissions import get_effective_permissions
 from models.user import User
 from repositories.user_repository import UserRepository
+from seeds.permissions import PERMISSION_MODULES
 
 _bearer_scheme = HTTPBearer(auto_error=False)
 
 _CREDENTIALS_EXCEPTION = HTTPException(
     status_code=status.HTTP_401_UNAUTHORIZED,
-    detail="Not authenticated",
+    detail=NOT_AUTHENTICATED,
     headers={"WWW-Authenticate": "Bearer"},
 )
 
@@ -49,11 +52,28 @@ def require_roles(*allowed_roles: str) -> Callable[..., User]:
         if current_user.role.name not in allowed:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
-                detail="Insufficient permissions",
+                detail=INSUFFICIENT_PERMISSIONS,
             )
         return current_user
 
     return _require_role
+
+
+def require_permission(module: str) -> Callable[..., User]:
+    """Dependency factory: authenticated user must have the given module permission."""
+    if module not in PERMISSION_MODULES:
+        raise ValueError(f"Unknown permission module: {module}")
+
+    def _require_permission(current_user: User = Depends(get_current_user)) -> User:
+        permissions = get_effective_permissions(current_user.role)
+        if not permissions.get(module, False):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=INSUFFICIENT_PERMISSIONS,
+            )
+        return current_user
+
+    return _require_permission
 
 
 def get_ml_registry() -> MLRegistry:

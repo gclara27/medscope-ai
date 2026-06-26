@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING
 
 from sqlalchemy import String, Text, Uuid
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.types import JSON
 
 from core.database import Base
 
@@ -24,6 +25,7 @@ class Role(Base):
     )
     name: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
+    permissions: Mapped[dict | None] = mapped_column(JSON, nullable=True)
 
     users: Mapped[list["User"]] = relationship(back_populates="role")
 

@@ -5,6 +5,7 @@ from models.prediction import Prediction
 from models.role import Role
 from models.shap_explanation import ShapExplanation
 from models.simulation import Simulation, SimulationInput
+from models.system_setting import SystemSetting
 from models.user import User
 
 __all__ = [
@@ -15,4 +16,5 @@ __all__ = [
     "ShapExplanation",
     "Simulation",
     "SimulationInput",
+    "SystemSetting",
 ]

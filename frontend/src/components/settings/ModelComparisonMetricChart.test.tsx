@@ -1,7 +1,8 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { ModelComparisonMetricChart } from "@/components/settings/ModelComparisonMetricChart";
+import { renderWithTheme } from "@/test/renderWithTheme";
 import type { ModelComparisonItem } from "@/types/mlComparison";
 
 const demoModels: ModelComparisonItem[] = [
@@ -37,7 +38,7 @@ const demoModels: ModelComparisonItem[] = [
 
 describe("ModelComparisonMetricChart", () => {
   it("renders recall comparison bar chart", () => {
-    const { container } = render(
+    const { container } = renderWithTheme(
       <ModelComparisonMetricChart
         models={demoModels}
         primaryMetric="recall"
@@ -50,7 +51,7 @@ describe("ModelComparisonMetricChart", () => {
   });
 
   it("shows empty state when no evaluated models exist", () => {
-    render(
+    renderWithTheme(
       <ModelComparisonMetricChart
         models={[
           {

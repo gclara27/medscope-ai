@@ -1,8 +1,11 @@
+import { useMemo } from "react";
+
 import { ChartContainer } from "@/components/charts/ChartContainer";
 import {
   RiskDistributionChart,
   type RiskDistributionDatum,
 } from "@/components/charts/RiskDistributionChart";
+import { useChartColors } from "@/hooks/useChartColors";
 import {
   getRiskDistributionTotal,
   mapAnalyticsRiskDistribution,
@@ -21,7 +24,11 @@ export function DashboardRiskDistributionChart({
   title = "Risk distribution",
   description = "Population readmission risk across low, medium, and high categories.",
 }: DashboardRiskDistributionChartProps) {
-  const data: RiskDistributionDatum[] = mapAnalyticsRiskDistribution(distribution);
+  const colors = useChartColors();
+  const data: RiskDistributionDatum[] = useMemo(
+    () => mapAnalyticsRiskDistribution(distribution, colors),
+    [colors, distribution],
+  );
   const total = getRiskDistributionTotal(distribution);
 
   if (total === 0) {

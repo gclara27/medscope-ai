@@ -1,7 +1,8 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { AnalyticsTrendChart } from "@/components/analytics/AnalyticsTrendChart";
+import { renderWithTheme } from "@/test/renderWithTheme";
 import type { TrendPoint } from "@/types/analytics";
 
 const demoTrend: TrendPoint[] = [
@@ -11,7 +12,7 @@ const demoTrend: TrendPoint[] = [
 
 describe("AnalyticsTrendChart", () => {
   it("renders trend chart from analytics payload", () => {
-    const { container } = render(<AnalyticsTrendChart trend={demoTrend} />);
+    const { container } = renderWithTheme(<AnalyticsTrendChart trend={demoTrend} />);
 
     expect(
       screen.getByRole("heading", { name: /prediction volume and average risk/i }),
@@ -20,7 +21,7 @@ describe("AnalyticsTrendChart", () => {
   });
 
   it("shows empty state when trend is empty", () => {
-    render(<AnalyticsTrendChart trend={[]} />);
+    renderWithTheme(<AnalyticsTrendChart trend={[]} />);
 
     expect(screen.getByText(/no trend data in the selected period/i)).toBeInTheDocument();
   });

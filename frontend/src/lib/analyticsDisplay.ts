@@ -2,7 +2,8 @@ import type { AnalyticsSummary, RiskDistributionItem, TrendPoint } from "@/types
 import type { RiskLevel } from "@/types/prediction";
 
 import type { RiskDistributionDatum } from "@/components/charts/RiskDistributionChart";
-import { CHART_COLORS } from "@/lib/recharts";
+import type { ChartColorPalette } from "@/lib/chartTheme";
+import { CHART_COLORS_LIGHT } from "@/lib/chartTheme";
 
 const RISK_DISTRIBUTION_ORDER: RiskLevel[] = ["low", "medium", "high"];
 
@@ -14,6 +15,7 @@ const RISK_CHART_LABELS: Record<RiskLevel, string> = {
 
 export function mapAnalyticsRiskDistribution(
   items: RiskDistributionItem[],
+  colors: Pick<ChartColorPalette, "low" | "medium" | "high"> = CHART_COLORS_LIGHT,
 ): RiskDistributionDatum[] {
   const byLevel = new Map(items.map((item) => [item.risk_level, item]));
 
@@ -23,7 +25,7 @@ export function mapAnalyticsRiskDistribution(
       level: RISK_CHART_LABELS[level],
       count: item?.count ?? 0,
       percentage: item?.percentage ?? 0,
-      fill: CHART_COLORS[level],
+      fill: colors[level],
     };
   });
 }

@@ -60,14 +60,16 @@ Alineado con `AGENTS.md` y `skills/testing/SKILL.md`.
 | RTS-042 | ML comparison (T-X07) | pytest `test_ml_comparison.py` + vitest + manual Phase-07-ML |
 | RTS-043 | Dark mode (T-X03) | vitest theme + manual [Phase-08-Dark-Mode](Manual/Phase-08-Dark-Mode.md) |
 
-### RTS-043 — archivos de test (T-X03, planificado)
+### RTS-043 — archivos de test (T-X03)
 
 | Archivo | Cubre |
 |---|---|
 | `frontend/src/lib/theme.test.ts` | resolveTheme, localStorage |
-| `frontend/src/context/ThemeProvider.test.tsx` | class `dark` en document |
+| `frontend/src/context/ThemeProvider.test.tsx` | class `dark` en document, meta theme-color |
 | `frontend/src/components/settings/AppearancePanel.test.tsx` | selector Light/Dark/System |
-| Manual Phase-08 | MT-P08-THEME/UI/CHART P0 |
+| `frontend/src/lib/chartTheme.test.ts` | paletas CSS light/dark |
+| `frontend/src/test/darkModeP0.test.tsx` | P0 screens + light regression |
+| Manual Phase-08 | MT-P08-THEME/UI/CHART smoke visual |
 
 ### RTS-040 — archivos de test (T-X05)
 

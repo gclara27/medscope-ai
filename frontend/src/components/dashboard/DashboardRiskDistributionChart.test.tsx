@@ -1,7 +1,8 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { DashboardRiskDistributionChart } from "@/components/dashboard/DashboardRiskDistributionChart";
+import { renderWithTheme } from "@/test/renderWithTheme";
 import type { RiskDistributionItem } from "@/types/analytics";
 
 const demoDistribution: RiskDistributionItem[] = [
@@ -12,7 +13,7 @@ const demoDistribution: RiskDistributionItem[] = [
 
 describe("DashboardRiskDistributionChart", () => {
   it("renders risk distribution chart from dashboard payload", () => {
-    const { container } = render(
+    const { container } = renderWithTheme(
       <DashboardRiskDistributionChart distribution={demoDistribution} />,
     );
 
@@ -23,7 +24,7 @@ describe("DashboardRiskDistributionChart", () => {
   });
 
   it("shows empty state when there are no evaluations", () => {
-    render(
+    renderWithTheme(
       <DashboardRiskDistributionChart
         distribution={[
           { risk_level: "low", count: 0, percentage: 0 },

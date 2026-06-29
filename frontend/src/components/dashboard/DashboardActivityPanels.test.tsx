@@ -34,8 +34,8 @@ const baseItem: HistoryListItem = {
 };
 
 describe("Dashboard activity panels", () => {
-  it("renders high-risk alerts", () => {
-    render(
+  it("renders high-risk alerts with risk emphasis styles", () => {
+    const { container } = render(
       <MemoryRouter>
         <DashboardHighRiskAlerts alerts={[baseItem]} />
       </MemoryRouter>,
@@ -46,6 +46,7 @@ describe("Dashboard activity panels", () => {
     expect(screen.getByText(/EV-11111111/i)).toBeInTheDocument();
     expect(screen.getByText(/elevated readmission risk/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/critical alerts list/i)).toHaveClass("overflow-y-auto");
+    expect(container.querySelector("article")).toHaveClass("border-l-risk-high");
     expect(screen.getAllByRole("link", { name: /EV-11111111/i })[0]).toHaveAttribute(
       "href",
       `/history/${baseItem.id}`,

@@ -27,15 +27,15 @@ export const RISK_TEXT_CLASSES: Record<RiskLevel, string> = {
 };
 
 export const RISK_BADGE_CLASSES: Record<RiskLevel, string> = {
-  low: "bg-risk-low/10 text-risk-low",
-  medium: "bg-risk-medium/10 text-risk-medium",
-  high: "bg-risk-high/10 text-risk-high",
+  low: "border border-risk-low/45 bg-risk-low/12 text-risk-low",
+  medium: "border border-risk-medium/55 bg-risk-medium/18 text-risk-medium",
+  high: "border border-risk-high/60 bg-risk-high/22 text-risk-high shadow-[inset_0_0_0_1px_rgb(var(--color-risk-high)/0.2)]",
 };
 
 export const RISK_STYLES: Record<RiskLevel, string> = {
-  low: "border-risk-low/40 bg-risk-low/10 text-risk-low",
-  medium: "border-risk-medium/40 bg-risk-medium/10 text-risk-medium",
-  high: "border-risk-high/40 bg-risk-high/10 text-risk-high",
+  low: "border border-risk-low/45 bg-risk-low/12 text-risk-low",
+  medium: "border border-risk-medium/55 bg-risk-medium/18 text-risk-medium",
+  high: "border border-risk-high/60 bg-risk-high/22 text-risk-high shadow-[inset_0_0_0_1px_rgb(var(--color-risk-high)/0.2)]",
 };
 
 export const RISK_RECOMMENDATIONS: Record<RiskLevel, string> = {

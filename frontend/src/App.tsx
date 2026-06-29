@@ -4,6 +4,7 @@ import { PermissionRoute } from "@/components/PermissionRoute";
 import { PrivateRoute } from "@/components/PrivateRoute";
 import { SettingsRoute } from "@/components/SettingsRoute";
 import { AuthProvider } from "@/context/AuthContext";
+import { ThemeProvider } from "@/context/ThemeProvider";
 import { AppLayout } from "@/layouts/AppLayout";
 import { DashboardPage } from "@/pages/DashboardPage";
 import { EvaluationPage } from "@/pages/EvaluationPage";
@@ -20,7 +21,8 @@ import { UnauthorizedPage } from "@/pages/UnauthorizedPage";
 
 export default function App() {
   return (
-    <AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<SplashPage />} />
@@ -99,5 +101,6 @@ export default function App() {
         </Routes>
       </BrowserRouter>
     </AuthProvider>
+    </ThemeProvider>
   );
 }

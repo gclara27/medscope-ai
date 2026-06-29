@@ -4,7 +4,48 @@
 
 @layer base {
   :root {
-    /* shadcn semantic tokens mapped to design-system.light.md (T-402, T-403) */
+    color-scheme: light;
+    /* MedScope tokens — RGB channels for Tailwind opacity (T-X03-02/03) */
+    --color-background: 248 249 250;
+    --color-surface: 248 249 250;
+    --color-surface-bright: 248 249 250;
+    --color-surface-dim: 217 218 219;
+    --color-surface-container: 237 238 239;
+    --color-surface-container-low: 243 244 245;
+    --color-surface-container-high: 231 232 233;
+    --color-surface-container-highest: 225 227 228;
+    --color-surface-container-lowest: 255 255 255;
+    --color-surface-variant: 225 227 228;
+    --color-on-surface: 25 28 29;
+    --color-on-surface-variant: 65 71 85;
+    --color-on-background: 25 28 29;
+    --color-outline: 113 119 134;
+    --color-outline-variant: 193 198 215;
+    --color-primary: 0 88 188;
+    --color-on-primary: 255 255 255;
+    --color-primary-container: 0 112 235;
+    --color-secondary: 79 96 115;
+    --color-secondary-container: 210 228 251;
+    --color-on-secondary-container: 85 102 121;
+    --color-tertiary: 0 93 167;
+    --color-tertiary-container: 41 118 199;
+    --color-error: 186 26 26;
+    --color-error-container: 255 218 214;
+    --color-on-error-container: 147 0 10;
+    --color-risk-low: 22 163 74;
+    --color-risk-medium: 245 158 11;
+    --color-risk-high: 220 38 38;
+    --color-chart-grid: #e1e3e4;
+    --color-chart-axis: #414755;
+    --color-chart-teal: #0d9488;
+    --color-chart-muted: #8b9199;
+    --color-chart-tooltip-bg: #ffffff;
+    --color-chart-tooltip-border: #c1c6d7;
+    --shadow-level-1: 0px 2px 4px rgba(0, 0, 0, 0.05);
+    --shadow-level-2: 0px 8px 24px rgba(0, 0, 0, 0.08);
+    --shadow-focus-glow: 0 0 0 2px rgb(var(--color-primary));
+
+    /* shadcn semantic tokens — HSL components (T-402, T-403) */
     --background: 210 17% 98%;
     --foreground: 192 9% 11%;
     --card: 0 0% 100%;
@@ -23,6 +64,68 @@
     --input: 225 16% 80%;
     --ring: 211 100% 37%;
     --radius: 0.5rem;
+  }
+
+  :root.dark {
+    color-scheme: dark;
+    /* MedScope tokens — design-system.dark.md (T-X03-02/03) */
+    --color-background: 11 19 38;
+    --color-surface: 11 19 38;
+    --color-surface-bright: 11 19 38;
+    --color-surface-dim: 23 31 51;
+    --color-surface-container: 23 31 51;
+    --color-surface-container-low: 23 31 51;
+    --color-surface-container-high: 34 42 61;
+    --color-surface-container-highest: 34 42 61;
+    --color-surface-container-lowest: 23 31 51;
+    --color-surface-variant: 34 42 61;
+    --color-on-surface: 218 226 253;
+    --color-on-surface-variant: 193 198 215;
+    --color-on-background: 218 226 253;
+    --color-outline: 139 144 160;
+    --color-outline-variant: 65 71 85;
+    --color-primary: 173 198 255;
+    --color-on-primary: 0 46 105;
+    --color-primary-container: 75 142 255;
+    --color-secondary: 123 208 255;
+    --color-secondary-container: 30 61 82;
+    --color-on-secondary-container: 123 208 255;
+    --color-tertiary: 78 222 163;
+    --color-tertiary-container: 45 143 111;
+    --color-error: 255 180 171;
+    --color-error-container: 61 21 18;
+    --color-on-error-container: 255 180 171;
+    --color-risk-low: 78 222 163;
+    --color-risk-medium: 251 191 36;
+    --color-risk-high: 255 107 107;
+    --color-chart-grid: #222a3d;
+    --color-chart-axis: #c1c6d7;
+    --color-chart-teal: #4edea3;
+    --color-chart-muted: #8b90a0;
+    --color-chart-tooltip-bg: #171f33;
+    --color-chart-tooltip-border: #414755;
+    --shadow-level-1: 0px 2px 8px rgba(0, 0, 0, 0.4);
+    --shadow-level-2: 0px 12px 32px rgba(0, 0, 0, 0.5);
+    --shadow-focus-glow: 0 0 0 2px rgb(var(--color-primary));
+
+    /* shadcn semantic tokens — dark */
+    --background: 222 55% 10%;
+    --foreground: 228 88% 92%;
+    --card: 222 38% 15%;
+    --card-foreground: 228 88% 92%;
+    --primary: 222 100% 84%;
+    --primary-foreground: 214 100% 21%;
+    --secondary: 199 100% 74%;
+    --secondary-foreground: 214 100% 21%;
+    --muted: 222 29% 19%;
+    --muted-foreground: 225 16% 77%;
+    --accent: 222 29% 22%;
+    --accent-foreground: 228 88% 92%;
+    --destructive: 6 100% 85%;
+    --destructive-foreground: 214 100% 21%;
+    --border: 222 13% 29%;
+    --input: 222 13% 29%;
+    --ring: 222 100% 84%;
   }
 
   * {

@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import {
   Bar,
   CartesianGrid,
@@ -11,8 +12,10 @@ import {
 } from "recharts";
 
 import { ChartContainer } from "@/components/charts/ChartContainer";
+import { ChartTooltipCard } from "@/components/charts/ChartTooltipCard";
+import { useChartColors } from "@/hooks/useChartColors";
 import { mapAnalyticsTrendPoints } from "@/lib/analyticsDisplay";
-import { CHART_COLORS } from "@/lib/recharts";
+import { getBarHighlightFill, getRechartsLegendStyle } from "@/lib/chartTheme";
 import type { TrendPoint } from "@/types/analytics";
 
 interface AnalyticsTrendChartProps {
@@ -27,7 +30,10 @@ export function AnalyticsTrendChart({
   title = "Prediction volume and average risk",
   description = "Daily evaluation count and average readmission risk for the selected period.",
 }: AnalyticsTrendChartProps) {
+  const colors = useChartColors();
   const data = mapAnalyticsTrendPoints(trend);
+  const barHighlightFill = useMemo(() => getBarHighlightFill(colors), [colors]);
+  const legendStyle = useMemo(() => getRechartsLegendStyle(colors), [colors]);
 
   if (data.length === 0) {
     return (
@@ -43,41 +49,53 @@ export function AnalyticsTrendChart({
     <ChartContainer title={title} description={description}>
       <ResponsiveContainer width="100%" height="100%">
         <ComposedChart data={data} margin={{ top: 8, right: 12, left: 0, bottom: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke={CHART_COLORS.grid} vertical={false} />
+          <CartesianGrid strokeDasharray="3 3" stroke={colors.grid} vertical={false} />
           <XAxis
             dataKey="label"
-            tick={{ fill: CHART_COLORS.axis, fontSize: 12 }}
-            axisLine={{ stroke: "#c1c6d7" }}
+            tick={{ fill: colors.axis, fontSize: 12 }}
+            axisLine={{ stroke: colors.outline }}
             tickLine={false}
           />
           <YAxis
             yAxisId="count"
             allowDecimals={false}
-            tick={{ fill: CHART_COLORS.axis, fontSize: 12 }}
-            axisLine={{ stroke: "#c1c6d7" }}
+            tick={{ fill: colors.axis, fontSize: 12 }}
+            axisLine={{ stroke: colors.outline }}
             tickLine={false}
           />
           <YAxis
             yAxisId="risk"
             orientation="right"
             domain={[0, 100]}
-            tick={{ fill: CHART_COLORS.axis, fontSize: 12 }}
-            axisLine={{ stroke: "#c1c6d7" }}
+            tick={{ fill: colors.axis, fontSize: 12 }}
+            axisLine={{ stroke: colors.outline }}
             tickLine={false}
           />
           <Tooltip
-            contentStyle={{
-              borderRadius: "8px",
-              border: "1px solid #c1c6d7",
-              fontSize: "13px",
+            cursor={{ fill: barHighlightFill }}
+            content={({ active, payload, label }) => {
+              if (!active || !payload?.length) {
+                return null;
+              }
+
+              return (
+                <ChartTooltipCard
+                  title={label ? String(label) : undefined}
+                  rows={payload.map((entry) => ({
+                    label: String(entry.name ?? "Value"),
+                    value: String(entry.value ?? ""),
+                    color: typeof entry.color === "string" ? entry.color : undefined,
+                  }))}
+                />
+              );
             }}
           />
-          <Legend />
+          <Legend wrapperStyle={legendStyle} />
           <Bar
             yAxisId="count"
             dataKey="count"
             name="Evaluations"
-            fill={CHART_COLORS.primary}
+            fill={colors.primary}
             radius={[4, 4, 0, 0]}
           />
           <Line
@@ -85,7 +103,7 @@ export function AnalyticsTrendChart({
             type="monotone"
             dataKey="averageRiskPercent"
             name="Avg risk %"
-            stroke="#0d9488"
+            stroke={colors.teal}
             strokeWidth={2}
             dot={{ r: 3 }}
           />

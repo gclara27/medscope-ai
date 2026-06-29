@@ -10,11 +10,13 @@
 
 ## Resumen de progreso
 
-| Prioridad | Total | Ejecutados | Pendientes |
-| --------- | ----- | ---------- | ---------- |
-| P0        | 6     | 0          | 6          |
-| P1        | 2     | 0          | 2          |
-| **Total** | **8** | **0**      | **8**      |
+| Prioridad | Total | Automatizado (vitest) | Manual pendiente |
+| --------- | ----- | --------------------- | ---------------- |
+| P0        | 6     | 4 (parcial)           | 6 (smoke visual) |
+| P1        | 2     | 1 (light regression)  | 2                |
+| **Total** | **8** | **RTS-043 suite**     | **QA en navegador** |
+
+> **Nota:** Los casos MT-P08-* requieren verificación humana en `localhost:5173`. La suite `darkModeP0.test.tsx` cubre persistencia, paleta charts y pantallas públicas.
 
 | Área | Tests | IDs |
 | --- | ----- | --- |
@@ -23,6 +25,16 @@
 | CHART | 1 | MT-P08-CHART-001 |
 | RBAC | 0 | — (todos los roles) |
 | P1 — Regresión light | 2 | MT-P08-REG-001 … 002 |
+
+### Cobertura automatizada (RTS-043)
+
+| Archivo vitest | Cubre |
+|---|---|
+| `lib/theme.test.ts` | resolveTheme, localStorage, class `dark` |
+| `context/ThemeProvider.test.tsx` | persistencia, meta theme-color |
+| `components/settings/AppearancePanel.test.tsx` | selector Light/Dark/System |
+| `lib/chartTheme.test.ts` | paletas light/dark desde CSS |
+| `test/darkModeP0.test.tsx` | login, splash, gauge, light regression P0 |
 
 ---
 
@@ -80,6 +92,6 @@
 
 ## Criterio de cierre US-043
 
-- [ ] Todos los P0 marcados
-- [ ] `vitest` theme suite en verde (RTS-043)
-- [ ] T-X03 marcado `[x]` en TaskTracker
+- [ ] Todos los P0 manuales marcados (smoke visual en navegador)
+- [x] `vitest` theme suite en verde (RTS-043) — `npm test -- darkModeP0 theme chartTheme AppearancePanel ThemeProvider`
+- [x] T-X03 marcado `[x]` en TaskTracker (implementación código)

@@ -191,7 +191,7 @@ localStorage → ThemeProvider → <html class="dark"> → CSS vars → Tailwind
 6. Light permanece default; sin regresión visual respecto al MVP.
 7. vitest: ThemeProvider + AppearancePanel (RTS-043).
 
-**Tareas:** T-X03-01 … T-X03-08 · **Manual:** [Phase-08-Dark-Mode.md](../Testing/Manual/Phase-08-Dark-Mode.md)
+**Tareas:** T-X03-01 … T-X03-08 · **Audit:** [dark-mode-token-audit.md](../Design/dark-mode-token-audit.md) · **Manual:** [Phase-08-Dark-Mode.md](../Testing/Manual/Phase-08-Dark-Mode.md)
 
 ---
 

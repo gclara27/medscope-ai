@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { AlertCircle, Check, Info } from "lucide-react";
 
 type ToastVariant = "success" | "error" | "info";
 
@@ -12,61 +13,34 @@ interface ToastProps {
 
 function SuccessIcon() {
   return (
-    <svg
-      aria-hidden="true"
-      className="h-5 w-5 shrink-0"
-      viewBox="0 0 32 32"
-      fill="none"
+    <span
+      aria-hidden
+      className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-risk-low text-on-primary"
     >
-      <circle cx="16" cy="16" r="16" fill="#16a34a" />
-      <path
-        d="M9 16.5l5 5 9-10.5"
-        stroke="#ffffff"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
+      <Check className="h-4 w-4" strokeWidth={3} />
+    </span>
   );
 }
 
 function ErrorIcon() {
   return (
-    <svg
-      aria-hidden="true"
-      className="h-5 w-5 shrink-0"
-      viewBox="0 0 32 32"
-      fill="none"
+    <span
+      aria-hidden
+      className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-error text-on-primary"
     >
-      <circle cx="16" cy="16" r="16" fill="#ba1a1a" />
-      <path
-        d="M16 10v7"
-        stroke="#ffffff"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-      />
-      <circle cx="16" cy="22" r="1.25" fill="#ffffff" />
-    </svg>
+      <AlertCircle className="h-4 w-4" strokeWidth={2.5} />
+    </span>
   );
 }
 
 function InfoIcon() {
   return (
-    <svg
-      aria-hidden="true"
-      className="h-5 w-5 shrink-0"
-      viewBox="0 0 32 32"
-      fill="none"
+    <span
+      aria-hidden
+      className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-on-primary"
     >
-      <circle cx="16" cy="16" r="16" fill="#0058bc" />
-      <path
-        d="M16 14v8"
-        stroke="#ffffff"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-      />
-      <circle cx="16" cy="10" r="1.25" fill="#ffffff" />
-    </svg>
+      <Info className="h-4 w-4" strokeWidth={2.5} />
+    </span>
   );
 }
 
@@ -86,7 +60,7 @@ function toastContainerClass(variant: ToastVariant, leaving: boolean): string {
     "pointer-events-auto flex w-full max-w-sm items-center gap-3 rounded-lg border px-4 py-3 shadow-level-2 backdrop-blur-sm";
 
   if (variant === "success") {
-    return `${base} ${animation} border-[#16a34a40] bg-surface-container-lowest text-on-surface`;
+    return `${base} ${animation} border-risk-low/25 bg-surface-container-lowest text-on-surface`;
   }
   if (variant === "error") {
     return `${base} ${animation} border-error/30 bg-error-container/40 text-on-error-container`;

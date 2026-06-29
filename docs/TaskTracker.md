@@ -464,7 +464,7 @@ Entregables: historial (`/history`, filtros, detalle SHAP), analytics (`/analyti
 |---|---|---|---|
 | T-X01 | [x] | UI admin usuarios | [RF-070](Requirements/Requirements.md#rf-070--gestión-usuarios) · [UC-070](Use%20Cases/Use%20Cases.md#uc-070--manage-users) |
 | T-X02 | [x] | Settings | [RF-071](Requirements/Requirements.md#rf-071--gestión-roles) · [UC-071](Use%20Cases/Use%20Cases.md#uc-071--configure-system-settings) |
-| T-X03 | [ ] | Dark mode | [US-043](#us-043--dark-mode) · [Design dark](Design/design-system.dark.md) · [Plan](Optional%20Features/Optional-Backlog-Plan.md#t-x03--dark-mode) |
+| T-X03 | [x] | Dark mode | [US-043](#us-043--dark-mode) · [Design dark](Design/design-system.dark.md) · [Plan](Optional%20Features/Optional-Backlog-Plan.md#t-x03--dark-mode) |
 | T-X04 | [x] | Export PDF | [UC-063](Use%20Cases/Use%20Cases.md#uc-063--export-analytics-optional) |
 | T-X05 | [x] | Support UI | [US-040](#us-040) · [RF-072–073](Requirements/Requirements.md#59-soporte-opcional--18) · [UC-064–065](Use%20Cases/Use%20Cases.md#uc-064--access-support-center) |
 | T-X06 | [x] | Audit avanzado | [US-041](#us-041) · [RF-074–075](Requirements/Requirements.md#510-auditoría-opcional--18) · [UC-081](Use%20Cases/Use%20Cases.md#uc-081--persist-audit-logs) |
@@ -475,20 +475,20 @@ Entregables: historial (`/history`, filtros, detalle SHAP), analytics (`/analyti
 
 # FASE X-b — Dark mode (T-X03)
 
-**Progreso:** 0 / 8 (0%) · **User story:** [US-043](#us-043--dark-mode) · **Manual:** [Phase-08-Dark-Mode](Testing/Manual/Phase-08-Dark-Mode.md)
+**Progreso:** 8 / 8 (100%) · **User story:** [US-043](#us-043--dark-mode) · **Manual:** [Phase-08-Dark-Mode](Testing/Manual/Phase-08-Dark-Mode.md) · **Audit:** [dark-mode-token-audit](Design/dark-mode-token-audit.md) · **P0 pass:** [dark-mode-p0-pass](Design/dark-mode-p0-pass.md)
 
 **Prompt:** `Implementa T-X03 dark mode según Optional-Backlog-Plan.md y design-system.dark.md: CSS variables, ThemeProvider, Settings Appearance. Skill: frontend + ui-ux.`
 
 | ID | ✓ | Tarea | Docs | Pedir a la IA |
 |---|---|---|---|---|
-| T-X03-01 | [ ] | Auditoría tokens | [Design dark](Design/design-system.dark.md) | `Lista hex hardcodeados en frontend/src; matriz light vs dark.` |
-| T-X03-02 | [ ] | CSS variables dual theme | [RUX-010](Requirements/Requirements.md#rux-010) | `index.css :root + .dark desde design-system.dark.md.` |
-| T-X03-03 | [ ] | Refactor Tailwind | [T-403](TaskTracker.md#fase-4--frontend-foundation) | `tailwind.config.js lee CSS vars; quita hex light fijos.` |
-| T-X03-04 | [ ] | ThemeProvider | [RF-078](Optional%20Features/Optional-Backlog-Plan.md#t-x03--dark-mode) | `localStorage + system pref + class en html; anti-FOUC.` |
-| T-X03-05 | [ ] | Appearance panel | [UC-086](Optional%20Features/Optional-Backlog-Plan.md#us-043--dark-mode-propuesta) | `Settings → Appearance: Light / Dark / System.` |
-| T-X03-06 | [ ] | Charts dark | [RUX-011](Requirements/Requirements.md#rux-011) | `recharts.ts + gauges + SHAP theme-aware.` |
-| T-X03-07 | [ ] | Pasada visual P0 | [Design dark](Design/design-system.dark.md) | `Login, dashboard, evaluation, analytics, simulation, history.` |
-| T-X03-08 | [ ] | Tests RTS-043 | [Testing](Testing/Testing.md) | `vitest theme + manual Phase-08-Dark-Mode P0.` |
+| T-X03-01 | [x] | Auditoría tokens | [Audit](Design/dark-mode-token-audit.md) | `Lista hex hardcodeados en frontend/src; matriz light vs dark.` |
+| T-X03-02 | [x] | CSS variables dual theme | [Audit](Design/dark-mode-token-audit.md) | `index.css :root + .dark desde design-system.dark.md.` |
+| T-X03-03 | [x] | Refactor Tailwind | [Audit](Design/dark-mode-token-audit.md) | `tailwind.config.js lee CSS vars; quita hex light fijos.` |
+| T-X03-04 | [x] | ThemeProvider | [RF-078](Optional%20Features/Optional-Backlog-Plan.md#t-x03--dark-mode) | `localStorage + system pref + class en html; anti-FOUC.` |
+| T-X03-05 | [x] | Appearance panel | [UC-086](Optional%20Features/Optional-Backlog-Plan.md#us-043--dark-mode-propuesta) | `Settings → Appearance: Light / Dark / System.` |
+| T-X03-06 | [x] | Charts dark | [Audit](Design/dark-mode-token-audit.md) | `recharts.ts + gauges + SHAP theme-aware.` |
+| T-X03-07 | [x] | Pasada visual P0 | [P0 pass](Design/dark-mode-p0-pass.md) | `Login, dashboard, evaluation, analytics, simulation, history.` |
+| T-X03-08 | [x] | Tests RTS-043 | [Testing](Testing/Testing.md) | `vitest theme + manual Phase-08-Dark-Mode P0.` |
 
 ## US-043 — Dark mode
 
@@ -496,10 +496,10 @@ Entregables: historial (`/history`, filtros, detalle SHAP), analytics (`/analyti
 
 | Criterio | Verificación |
 |---|---|
-| Selector en Settings | T-X03-05 |
-| Persistencia | T-X03-04 + manual MT-P08-THEME-001 |
-| Sin regresión light | T-X03-07 + manual MT-P08-REG-001 |
-| Charts legibles | T-X03-06 + manual MT-P08-CHART-001 |
+| Selector en Settings | T-X03-05 ✓ |
+| Persistencia | T-X03-04 ✓ + manual MT-P08-THEME-001 |
+| Sin regresión light | T-X03-07 ✓ + `darkModeP0.test` + manual MT-P08-REG-001 |
+| Charts legibles | T-X03-06 ✓ + manual MT-P08-CHART-001 |
 
 ---
 
@@ -556,7 +556,7 @@ Implementar **una feature a la vez**. Cada bloque cierra su user story y manual 
 
 | US | ✓ | Título | UC | RF |
 |---|---|---|---|---|
-| [US-043](#us-043--dark-mode) | [ ] | Dark mode | UC-086 (prop.) | RF-078 (prop.), RUX-012 (prop.) |
+| [US-043](#us-043--dark-mode) | [x] | Dark mode | UC-086 (prop.) | RF-078 (prop.), RUX-012 (prop.) |
 | [US-040](#us-040) | [x] | Support center | UC-064–065 | RF-072–073 |
 | [US-041](#us-041) | [x] | Audit trail | UC-081, UC-085 | RF-074–075 |
 | [US-042](#us-042) | [x] | ML model comparison | UC-084 | RF-076–077, RIA-040–041 |
@@ -646,4 +646,11 @@ Implementar **una feature a la vez**. Cada bloque cierra su user story y manual 
 | 2026-06-11 | **Plan T-X05–T-X07:** RF-072–077, UC-064–066/084–085, US-040–042, Fase X (22 tareas), RTS-040–042, manuales Phase-07 |
 | 2026-06-11 | **T-X05 / US-040** Support UI completo: KB, búsqueda, contacto API, ticket mailto, sidebar, RTS-040 (9 archivos test) |
 | 2026-06-11 | **T-703** performance RNF-001/002: middleware `X-Process-Time-Ms`, analytics SQL 2 queries, lazy Recharts, manualChunks, tests perf |
+| 2026-06-11 | **T-X03 / US-043** dark mode cerrado: P0 visual pass, RTS-043 suite, 8/8 tareas |
+| 2026-06-11 | **T-X03-06** charts theme-aware: `chartTheme.ts`, `useChartColors`, gauges, Recharts, Toast icons |
+| 2026-06-11 | **T-X03-05** Appearance panel Settings + nav settings para todos los roles autenticados |
+| 2026-06-11 | **T-X03-04** ThemeProvider: `useTheme`, localStorage, system pref, anti-FOUC script, tests RTS-043 |
+| 2026-06-11 | **T-X03-03** Tailwind refactor: MedScope tokens vía `rgb(var(--color-*))`, sin hex fijos |
+| 2026-06-11 | **T-X03-02** CSS variables dual theme: `index.css` `:root` + `.dark`, `riskColors.js` dark palette |
+| 2026-06-11 | **T-X03-01** auditoría tokens dark mode: `dark-mode-token-audit.md` (matriz light/dark, inventario hex) |
 | 2026-06-11 | **Plan T-X03** dark mode: US-043, T-X03-01…08, RTS-043, Phase-08 manual, Optional-Backlog-Plan |

@@ -68,8 +68,8 @@ function SimulationFieldShell({
           className={cn(
             "pointer-events-none absolute inset-0 rounded-lg",
             highImpact
-              ? "bg-primary/10 shadow-[inset_0_0_0_2px_rgba(0,88,188,0.85)]"
-              : "bg-primary/[0.04] shadow-[inset_0_0_0_1px_rgba(0,88,188,0.4)]",
+              ? "bg-primary/10 shadow-[inset_0_0_0_2px_rgb(var(--color-primary)/0.85)]"
+              : "bg-primary/[0.04] shadow-[inset_0_0_0_1px_rgb(var(--color-primary)/0.4)]",
           )}
         />
       ) : null}

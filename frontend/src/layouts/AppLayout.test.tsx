@@ -52,7 +52,7 @@ describe("AppLayout role navigation", () => {
     expect(screen.getByRole("link", { name: /history/i })).toBeInTheDocument();
     expect(screen.queryByRole("link", { name: /evaluation/i })).not.toBeInTheDocument();
     expect(screen.queryByRole("link", { name: /analytics/i })).not.toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: /settings/i })).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /settings/i })).toHaveAttribute("href", "/settings");
     expect(screen.getByRole("link", { name: /support/i })).toHaveAttribute("href", "/support");
   });
 

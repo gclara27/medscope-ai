@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 
+import { AppearancePanel } from "@/components/settings/AppearancePanel";
 import { AuditLogsPanel } from "@/components/settings/AuditLogsPanel";
 import { ModelComparisonPanel } from "@/components/settings/ModelComparisonPanel";
 import { RolePoliciesPanel } from "@/components/settings/RolePoliciesPanel";
@@ -13,55 +14,86 @@ import { cn } from "@/lib/utils";
 import { canAccessMlComparison } from "@/utils/mlComparisonAccess";
 import { canAccessModule } from "@/utils/permissions";
 
-type SettingsSection = "users" | "roles" | "system" | "audit" | "models";
+type SettingsSection = "appearance" | "users" | "roles" | "system" | "audit" | "models";
 
-const SETTINGS_SECTIONS: Array<{ id: SettingsSection; label: string }> = [
-  { id: "users", label: "User management" },
-  { id: "roles", label: "Role policies" },
-  { id: "system", label: "System configuration" },
-  { id: "audit", label: "Audit" },
-  { id: "models", label: "Models" },
-];
+const ADMIN_SECTIONS: Array<{ id: Exclude<SettingsSection, "appearance" | "models">; label: string }> =
+  [
+    { id: "users", label: "User management" },
+    { id: "roles", label: "Role policies" },
+    { id: "system", label: "System configuration" },
+    { id: "audit", label: "Audit" },
+  ];
+
+function getDefaultSection(): SettingsSection {
+  return "appearance";
+}
 
 function getVisibleSections(
   user: ReturnType<typeof useAuth>["user"],
-): Array<(typeof SETTINGS_SECTIONS)[number]> {
+): Array<{ id: SettingsSection; label: string }> {
   const isAdmin = canAccessModule(user, "settings");
   const canViewModels = canAccessMlComparison(user);
 
-  return SETTINGS_SECTIONS.filter((section) => {
-    if (section.id === "models") {
-      return canViewModels;
-    }
-    return isAdmin;
-  });
+  const sections: Array<{ id: SettingsSection; label: string }> = [
+    { id: "appearance", label: "Appearance" },
+  ];
+
+  if (isAdmin) {
+    sections.push(...ADMIN_SECTIONS);
+  }
+
+  if (canViewModels) {
+    sections.push({ id: "models", label: "Models" });
+  }
+
+  return [...sections].sort((a, b) => a.label.localeCompare(b.label));
 }
 
-/** Admin settings — users, role policies, platform configuration, audit, and ML models (T-X01, T-X07). */
+function getPageCopy(user: ReturnType<typeof useAuth>["user"], isAdmin: boolean) {
+  if (isAdmin) {
+    return {
+      eyebrow: "Platform administration",
+      title: "System Settings",
+      description:
+        "Manage users, role access policies, platform configuration, audit logs, ML model comparison, and appearance.",
+    };
+  }
+
+  if (canAccessMlComparison(user)) {
+    return {
+      eyebrow: "ML governance",
+      title: "System Settings",
+      description: "Review offline training metrics, production model details, and appearance.",
+    };
+  }
+
+  return {
+    eyebrow: "Preferences",
+    title: "Settings",
+    description: "Customize how MedScope AI looks on your device.",
+  };
+}
+
+/** Settings — appearance for all roles; admin and ML sections per RBAC (T-X01, T-X03-05, T-X07). */
 export function SettingsPage() {
   const { user } = useAuth();
   const visibleSections = useMemo(() => getVisibleSections(user), [user]);
-  const [activeSection, setActiveSection] = useState<SettingsSection>(
-    () => visibleSections[0]?.id ?? "models",
-  );
+  const [activeSection, setActiveSection] = useState<SettingsSection>(getDefaultSection);
 
   const resolvedSection = visibleSections.some((section) => section.id === activeSection)
     ? activeSection
-    : (visibleSections[0]?.id ?? "models");
+    : (visibleSections[0]?.id ?? "appearance");
 
   const isAdmin = canAccessModule(user, "settings");
+  const pageCopy = getPageCopy(user, isAdmin);
 
   return (
     <PageShell>
       <PageHeader
         icon={getRouteIcon("/settings")}
-        eyebrow={isAdmin ? "Platform administration" : "ML governance"}
-        title="System Settings"
-        description={
-          isAdmin
-            ? "Manage users, role access policies, platform configuration, audit logs, and ML model comparison."
-            : "Review offline training metrics and the production inference model."
-        }
+        eyebrow={pageCopy.eyebrow}
+        title={pageCopy.title}
+        description={pageCopy.description}
       />
 
       <div className="grid gap-6 lg:grid-cols-4">
@@ -89,6 +121,7 @@ export function SettingsPage() {
         </aside>
 
         <div className="lg:col-span-3">
+          {resolvedSection === "appearance" ? <AppearancePanel /> : null}
           {resolvedSection === "users" ? <UserManagementPanel /> : null}
           {resolvedSection === "roles" ? <RolePoliciesPanel /> : null}
           {resolvedSection === "system" ? <SystemConfigurationPanel /> : null}

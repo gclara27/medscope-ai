@@ -8,6 +8,27 @@
     <link rel="apple-touch-icon" href="/app-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#0058bc" />
+    <script>
+      (function () {
+        var key = "medscope_theme";
+        var stored = null;
+        try {
+          stored = localStorage.getItem(key);
+        } catch (e) {}
+        var pref =
+          stored === "dark" || stored === "light" || stored === "system" ? stored : "system";
+        var dark =
+          pref === "dark" ||
+          (pref === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+        if (dark) {
+          document.documentElement.classList.add("dark");
+          document.documentElement.style.colorScheme = "dark";
+        } else {
+          document.documentElement.classList.remove("dark");
+          document.documentElement.style.colorScheme = "light";
+        }
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

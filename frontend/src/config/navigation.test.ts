@@ -31,19 +31,21 @@ describe("navigation role access", () => {
     );
   });
 
-  it("limits clinician navigation to clinical modules", () => {
+  it("limits clinician navigation to clinical modules and settings", () => {
     expect(getNavItemsForRole("clinician").map((item) => item.to)).toEqual([
       "/dashboard",
       "/evaluation",
       "/simulation",
       "/history",
+      "/settings",
     ]);
   });
 
-  it("limits nurse navigation to dashboard and history", () => {
+  it("limits nurse navigation to dashboard, history, and settings", () => {
     expect(getNavItemsForRole("nurse").map((item) => item.to)).toEqual([
       "/dashboard",
       "/history",
+      "/settings",
     ]);
   });
 
@@ -60,11 +62,12 @@ describe("navigation role access", () => {
     expect(canAccessRoute({ role: "clinician" }, "/evaluation")).toBe(true);
   });
 
-  it("allows admin and analyst access to settings", () => {
+  it("allows all authenticated roles to access settings (appearance)", () => {
     expect(canAccessRoute(adminUser, "/settings")).toBe(true);
     expect(canAccessRoute({ role: "analyst" }, "/settings")).toBe(true);
-    expect(canAccessRoute({ role: "clinician" }, "/settings")).toBe(false);
-    expect(canAccessRoute({ role: "nurse" }, "/settings")).toBe(false);
+    expect(canAccessRoute({ role: "clinician" }, "/settings")).toBe(true);
+    expect(canAccessRoute({ role: "nurse" }, "/settings")).toBe(true);
+    expect(canAccessRoute(null, "/settings")).toBe(false);
   });
 
   it("allows all authenticated roles to access support", () => {

@@ -55,7 +55,7 @@ export function ModelComparisonTable({ models, primaryMetric }: ModelComparisonT
                       </span>
                     ) : null}
                   </div>
-                  <span className="mt-1 block font-mono text-xs text-on-surface-variant">
+                  <span className="mt-1 block text-xs text-on-surface-variant">
                     {model.model_id}
                   </span>
                 </td>

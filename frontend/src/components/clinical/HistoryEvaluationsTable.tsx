@@ -1,12 +1,11 @@
 import { Link } from "react-router-dom";
 
-import { RISK_BADGE_CLASSES, RISK_BADGE_LABELS } from "@/lib/riskDisplay";
+import { RiskScoreCell } from "@/components/clinical/RiskScoreCell";
 import {
   formatEvaluatorName,
   formatHistoryDateTime,
   formatPatientSnapshot,
 } from "@/lib/historyDisplay";
-import { cn } from "@/lib/utils";
 import type { HistoryListItem } from "@/types/history";
 
 interface HistoryEvaluationsTableProps {
@@ -37,7 +36,7 @@ export function HistoryEvaluationsTable({ items }: HistoryEvaluationsTableProps)
               key={item.id}
               className="border-b border-outline-variant/70 transition-colors hover:bg-surface-container-low"
             >
-              <td className="px-3 py-3 font-mono text-xs text-on-surface-variant">
+              <td className="px-3 py-3 text-xs text-on-surface-variant">
                 <Link
                   to={`/history/${item.id}`}
                   className="block rounded-sm text-primary underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
@@ -53,24 +52,12 @@ export function HistoryEvaluationsTable({ items }: HistoryEvaluationsTableProps)
                 {formatPatientSnapshot(item.patient_input)}
               </td>
               <td className="px-3 py-3">
-                <div className="flex flex-col gap-1.5">
-                  <span className="font-mono font-semibold tabular-nums">
-                    {item.risk_percent.toFixed(1)}%
-                  </span>
-                  <span
-                    className={cn(
-                      "inline-flex w-fit rounded-md px-2 py-0.5 text-xs font-semibold",
-                      RISK_BADGE_CLASSES[item.risk_level],
-                    )}
-                  >
-                    {RISK_BADGE_LABELS[item.risk_level]}
-                  </span>
-                </div>
+                <RiskScoreCell riskPercent={item.risk_percent} riskLevel={item.risk_level} />
               </td>
               <td className="max-w-xs px-3 py-3 text-on-surface-variant">
                 {item.summary ?? "—"}
               </td>
-              <td className="px-3 py-3 font-mono text-xs text-on-surface-variant">
+              <td className="px-3 py-3 text-xs text-on-surface-variant">
                 {item.model_version}
               </td>
               <td className="px-3 py-3 text-right">

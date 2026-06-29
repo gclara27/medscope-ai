@@ -1,28 +1,28 @@
 # Fase 7 — Tests manuales: ML model comparison (T-X07)
 
-**Alcance:** `GET /ml/models/comparison`, panel Models en Settings, métricas offline LR/RF/XGBoost (T-X07-01 … T-X07-07, US-042, UC-084).
+**Alcance:** `GET /ml/models/comparison`, panel Models en Settings, métricas offline LR/RF/XGBoost (T-X07-01 … T-X07-08, US-042, UC-084).
 
 **Referencia:** [Task Tracker — Fase X](../../TaskTracker.md#us-042--ml-model-comparison) · [ML-Pipeline](../../ML/ML-Pipeline.md) · [Plan](../../Optional%20Features/Optional-Backlog-Plan.md)
 
-**Prerrequisito:** Artefactos Fase 2 presentes (`models/model_manifest.json`, comparación baselines). ML `ml_ready: true`.
+**Prerrequisito:** Artefactos Fase 2 presentes (`models/model_manifest.json`, comparación baselines). ML `ml_ready: true`. Proxy Vite `/ml` activo (reiniciar frontend tras cambios en `vite.config.ts`).
 
 ---
 
 ## Resumen de progreso
 
-| Prioridad | Total | Ejecutados | Pendientes |
-| --------- | ----- | ---------- | ---------- |
-| P0        | 5     | 0          | 5          |
-| P1        | 2     | 0          | 2          |
-| **Total** | **7** | **0**      | **7**      |
+| Prioridad | Total | Automatizados (RTS-042) | Pendientes manuales |
+| --------- | ----- | ----------------------- | ------------------- |
+| P0        | 5     | 5                       | 0 (smoke opcional)  |
+| P1        | 2     | 1                       | 1                   |
+| **Total** | **7** | **6**                   | **1**               |
 
-| Área | Tests | IDs |
-| --- | ----- | --- |
-| API | 1 | MT-P07-ML-API-001 |
-| UI — Panel | 2 | MT-P07-ML-UI-001 … 002 |
-| RBAC | 1 | MT-P07-ML-RBAC-001 |
-| CHART | 1 | MT-P07-ML-CHART-001 |
-| P1 — Copy | 1 | MT-P07-ML-COPY-001 |
+| Área | Tests | IDs | Automatización |
+| --- | ----- | --- | -------------- |
+| API | 1 | MT-P07-ML-API-001 | `test_ml_comparison.py` |
+| UI — Panel | 2 | MT-P07-ML-UI-001 … 002 | `ModelComparisonPanel.test.tsx` |
+| RBAC | 1 | MT-P07-ML-RBAC-001 | pytest 403 + `navigation.test.ts` |
+| CHART | 1 | MT-P07-ML-CHART-001 | `ModelComparisonMetricChart.test.tsx` |
+| P1 — Copy | 1 | MT-P07-ML-COPY-001 | parcial (`is_available` en panel) |
 
 ---
 
@@ -45,28 +45,33 @@ Test-Path models\baseline_comparison.json
 
 ### MT-P07-ML-API-001 — Endpoint comparison
 
-- [ ] Login `analyst@medscope.ai` → obtener JWT
+- [x] **Automatizado:** `pytest backend/tests/test_ml_comparison.py`
+- [ ] Login `analyst@medscope.ai` → obtener JWT (smoke opcional)
 - [ ] `GET /ml/models/comparison` con Authorization
-- [ ] **Esperado:** 200 JSON con `production_model` y array `models[]` con métricas (recall, accuracy, etc.)
+- [ ] **Esperado:** 200 JSON con `production_model_id` y array `models[]` con métricas (recall, accuracy, etc.)
 
 ### MT-P07-ML-UI-001 — Pestaña Models en Settings
 
+- [x] **Automatizado:** `SettingsPage.test.tsx`, `ModelComparisonPanel.test.tsx`
 - [ ] Login `analyst@medscope.ai` → Settings → **Models**
 - [ ] **Esperado:** Tabla con Logistic Regression, Random Forest, XGBoost (si artefacto existe)
 - [ ] **Esperado:** Badge o texto “Production model” en modelo activo del manifest
 
 ### MT-P07-ML-UI-002 — Métricas recall visibles
 
+- [x] **Automatizado:** panel tests (columna recall % + offline note)
 - [ ] Revisar columna recall por modelo
 - [ ] **Esperado:** Valores numéricos coherentes (0–1 o % documentado)
 - [ ] **Esperado:** Texto indica comparación **offline** / training evaluation
 
 ### MT-P07-ML-CHART-001 — Gráfico comparativo
 
+- [x] **Automatizado:** `ModelComparisonMetricChart.test.tsx`
 - [ ] **Esperado:** Gráfico de barras (recall o métrica principal) renderiza sin error consola
 
 ### MT-P07-ML-RBAC-001 — Clinician sin acceso
 
+- [x] **Automatizado:** `test_ml_comparison.py` (403 clinician/nurse)
 - [ ] `clinician@medscope.ai` → Settings
 - [ ] **Esperado:** Pestaña Models no visible O 403 en API
 - [ ] `GET /ml/models/comparison` con token clinician → **403**
@@ -77,6 +82,7 @@ Test-Path models\baseline_comparison.json
 
 ### MT-P07-ML-COPY-001 — Artefactos faltantes
 
+- [x] **Automatizado:** panel test `is_available: false`
 - [ ] (Opcional) Renombrar temporalmente `baseline_comparison.json` y recargar
 - [ ] **Esperado:** Mensaje amigable “comparison unavailable”, no crash
 - [ ] Restaurar archivo
@@ -85,6 +91,6 @@ Test-Path models\baseline_comparison.json
 
 ## Criterio de cierre US-042
 
-- [ ] Todos los P0 marcados
-- [ ] `pytest test_ml_comparison.py` + vitest panel en verde
-- [ ] T-X07 marcado `[x]` en TaskTracker
+- [x] RTS-042 en verde (`pytest test_ml_comparison*.py` + vitest panel/chart)
+- [x] T-X07 marcado `[x]` en TaskTracker
+- [ ] Smoke manual P0 opcional en entorno local

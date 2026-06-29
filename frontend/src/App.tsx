@@ -2,6 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import { PermissionRoute } from "@/components/PermissionRoute";
 import { PrivateRoute } from "@/components/PrivateRoute";
+import { SettingsRoute } from "@/components/SettingsRoute";
 import { AuthProvider } from "@/context/AuthContext";
 import { AppLayout } from "@/layouts/AppLayout";
 import { DashboardPage } from "@/pages/DashboardPage";
@@ -85,9 +86,9 @@ export default function App() {
               <Route
                 path="/settings"
                 element={
-                  <PermissionRoute module="settings">
+                  <SettingsRoute>
                     <SettingsPage />
-                  </PermissionRoute>
+                  </SettingsRoute>
                 }
               />
               <Route path="/support" element={<SupportPage />} />

@@ -9,6 +9,7 @@ const createAdminUserMock = vi.fn();
 const listRolePoliciesMock = vi.fn();
 const getSystemSettingsMock = vi.fn();
 const listAuditLogsMock = vi.fn();
+const getModelComparisonMock = vi.fn();
 
 vi.mock("@/services/adminUsers", () => ({
   listAdminUsers: (...args: unknown[]) => listAdminUsersMock(...args),
@@ -25,6 +26,10 @@ vi.mock("@/services/adminSettings", () => ({
 
 vi.mock("@/services/auditLogs", () => ({
   listAuditLogs: (...args: unknown[]) => listAuditLogsMock(...args),
+}));
+
+vi.mock("@/services/mlComparison", () => ({
+  getModelComparison: (...args: unknown[]) => getModelComparisonMock(...args),
 }));
 
 vi.mock("@/context/useAuth", () => ({
@@ -128,12 +133,42 @@ const demoAuditLogs = {
   page_size: 20,
 };
 
+const demoModelComparison = {
+  is_available: true,
+  primary_metric: "recall",
+  recall_winner: "logistic_regression",
+  baseline_winner: "logistic_regression",
+  production_model_id: "logistic_regression",
+  production_model_version: "1.0.0",
+  summary: "Logistic Regression leads on recall.",
+  rationale: [],
+  offline_note: "Metrics come from offline training evaluation.",
+  missing_artifacts: [],
+  models: [
+    {
+      model_id: "logistic_regression",
+      display_name: "Logistic Regression",
+      version: "1.0.0",
+      is_production: true,
+      available: true,
+      metrics: {
+        accuracy: 0.61,
+        recall: 0.54,
+        precision: 0.12,
+        f1: 0.2,
+        roc_auc: 0.61,
+      },
+    },
+  ],
+};
+
 describe("SettingsPage", () => {
   it("renders user management by default", async () => {
     listAdminUsersMock.mockResolvedValue(demoUsers);
     listRolePoliciesMock.mockResolvedValue(demoPolicies);
     getSystemSettingsMock.mockResolvedValue(demoSettings);
     listAuditLogsMock.mockResolvedValue(demoAuditLogs);
+    getModelComparisonMock.mockResolvedValue(demoModelComparison);
 
     render(<SettingsPage />);
 
@@ -182,5 +217,24 @@ describe("SettingsPage", () => {
     });
     expect(screen.getAllByText("Login").length).toBeGreaterThan(0);
     expect(listAuditLogsMock).toHaveBeenCalled();
+  });
+
+  it("switches to the models section", async () => {
+    listAdminUsersMock.mockResolvedValue(demoUsers);
+    listRolePoliciesMock.mockResolvedValue(demoPolicies);
+    getSystemSettingsMock.mockResolvedValue(demoSettings);
+    listAuditLogsMock.mockResolvedValue(demoAuditLogs);
+    getModelComparisonMock.mockResolvedValue(demoModelComparison);
+
+    const user = userEvent.setup();
+    render(<SettingsPage />);
+
+    await user.click(screen.getByRole("button", { name: /^models$/i }));
+
+    await waitFor(() => {
+      expect(screen.getByRole("heading", { name: /ml model comparison/i })).toBeInTheDocument();
+    });
+    expect(screen.getByText("Production model")).toBeInTheDocument();
+    expect(getModelComparisonMock).toHaveBeenCalled();
   });
 });

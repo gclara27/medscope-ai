@@ -466,14 +466,14 @@ Entregables: historial (`/history`, filtros, detalle SHAP), analytics (`/analyti
 | T-X04 | [x] | Export PDF | [UC-063](Use%20Cases/Use%20Cases.md#uc-063--export-analytics-optional) |
 | T-X05 | [x] | Support UI | [US-040](#us-040) · [RF-072–073](Requirements/Requirements.md#59-soporte-opcional--18) · [UC-064–065](Use%20Cases/Use%20Cases.md#uc-064--access-support-center) |
 | T-X06 | [x] | Audit avanzado | [US-041](#us-041) · [RF-074–075](Requirements/Requirements.md#510-auditoría-opcional--18) · [UC-081](Use%20Cases/Use%20Cases.md#uc-081--persist-audit-logs) |
-| T-X07 | [ ] | Multi-model | [US-042](#us-042) · [RF-076–077](Requirements/Requirements.md#511-comparación-de-modelos-ml-opcional--18) · [UC-084](Use%20Cases/Use%20Cases.md#uc-084--view-ml-model-comparison-optional) |
+| T-X07 | [x] | Multi-model | [US-042](#us-042) · [RF-076–077](Requirements/Requirements.md#511-comparación-de-modelos-ml-opcional--18) · [UC-084](Use%20Cases/Use%20Cases.md#uc-084--view-ml-model-comparison-optional) |
 | T-X08 | [ ] | FHIR / cloud | [UC-120–124](Use%20Cases/Use%20Cases.md#16-future-expansion-use-cases) |
 
 ---
 
 # FASE X — Backlog opcional T-X05–T-X07
 
-**Progreso:** 15 / 22 (68%) · **Orden:** T-X05 → T-X06 → T-X07 · **T-X05:** cerrado (US-040) · **T-X06:** cerrado (US-041)
+**Progreso:** 22 / 22 (100%) · **Orden:** T-X05 → T-X06 → T-X07 · **T-X05:** cerrado (US-040) · **T-X06:** cerrado (US-041) · **T-X07:** cerrado (US-042)
 
 Implementar **una feature a la vez**. Cada bloque cierra su user story y manual Phase-07.
 
@@ -512,13 +512,13 @@ Implementar **una feature a la vez**. Cada bloque cierra su user story y manual 
 
 | ID | ✓ | Tarea | Docs | Pedir a la IA |
 |---|---|---|---|---|
-| T-X07-01 | [ ] | ML comparison service | [RIA-040](Requirements/Requirements.md#ria-040) | `Lee baseline_comparison.json, xgboost_evaluation, manifest.` |
-| T-X07-02 | [ ] | GET /ml/models/comparison | [RBE-017](Requirements/Requirements.md#rbe-017) · [RF-077](Requirements/Requirements.md#rf-077--api-de-comparación-ml) | `Endpoint JSON; permiso analyst/admin.` |
-| T-X07-03 | [ ] | Schemas Pydantic | [RF-076](Requirements/Requirements.md#rf-076--visualizar-comparación-de-modelos) | `ModelComparisonResponse con métricas por modelo.` |
-| T-X07-04 | [ ] | ModelComparisonPanel | [RFW-026](Requirements/Requirements.md#rfw-026) · [UC-084](Use%20Cases/Use%20Cases.md#uc-084--view-ml-model-comparison-optional) | `Tabla métricas + badge production model.` |
-| T-X07-05 | [ ] | Chart barras recall | [RIA-041](Requirements/Requirements.md#ria-041) | `Recharts comparativa recall (y opcional F1/AUC).` |
-| T-X07-06 | [ ] | Settings tab Models | [RF-012](Requirements/Requirements.md#rf-012--navegación-lateral) | `Pestaña Models en Settings; RBAC analyst/admin.` |
-| T-X07-07 | [ ] | Tests RTS-042 | [Testing](Testing/Testing.md) | `pytest API + vitest panel + manual Phase-07-ML.` |
+| T-X07-01 | [x] | ML comparison service | [RIA-040](Requirements/Requirements.md#ria-040) | `Lee baseline_comparison.json, xgboost_evaluation, manifest.` |
+| T-X07-02 | [x] | GET /ml/models/comparison | [RBE-017](Requirements/Requirements.md#rbe-017) · [RF-077](Requirements/Requirements.md#rf-077--api-de-comparación-ml) | `Endpoint JSON; permiso analyst/admin.` |
+| T-X07-03 | [x] | Schemas Pydantic | [RF-076](Requirements/Requirements.md#rf-076--visualizar-comparación-de-modelos) | `ModelComparisonResponse con métricas por modelo.` |
+| T-X07-04 | [x] | ModelComparisonPanel | [RFW-026](Requirements/Requirements.md#rfw-026) · [UC-084](Use%20Cases/Use%20Cases.md#uc-084--view-ml-model-comparison-optional) | `Tabla métricas + badge production model.` |
+| T-X07-05 | [x] | Chart barras recall | [RIA-041](Requirements/Requirements.md#ria-041) | `Recharts comparativa recall (y opcional F1/AUC).` |
+| T-X07-06 | [x] | Settings tab Models | [RF-012](Requirements/Requirements.md#rf-012--navegación-lateral) | `Pestaña Models en Settings; RBAC analyst/admin.` |
+| T-X07-07 | [x] | Tests RTS-042 | [Testing](Testing/Testing.md) | `pytest API + vitest panel + manual Phase-07-ML.` |
 
 ### US-040 · US-041 · US-042 (resumen)
 
@@ -526,7 +526,7 @@ Implementar **una feature a la vez**. Cada bloque cierra su user story y manual 
 |---|---|---|---|---|
 | [US-040](#us-040) | [x] | Support center | UC-064–065 | RF-072–073 |
 | [US-041](#us-041) | [x] | Audit trail | UC-081, UC-085 | RF-074–075 |
-| [US-042](#us-042) | [ ] | ML model comparison | UC-084 | RF-076–077, RIA-040–041 |
+| [US-042](#us-042) | [x] | ML model comparison | UC-084 | RF-076–077, RIA-040–041 |
 
 ---
 

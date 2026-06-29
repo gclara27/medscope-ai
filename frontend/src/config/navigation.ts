@@ -13,6 +13,7 @@ import type { User } from "@/types/auth";
 import type { PermissionModule } from "@/types/permissions";
 import { DEFAULT_ROLE_PERMISSIONS } from "@/types/permissions";
 import type { UserRole } from "@/types/roles";
+import { canAccessMlComparison } from "@/utils/mlComparisonAccess";
 import { resolveUserPermissions } from "@/utils/permissions";
 
 export interface AppNavItem {
@@ -76,7 +77,16 @@ export const APP_NAV_ITEMS: AppNavItem[] = [
 
 export function getNavItemsForUser(user: Pick<User, "role" | "permissions"> | null): AppNavItem[] {
   const permissions = resolveUserPermissions(user);
-  return APP_NAV_ITEMS.filter((item) => permissions[item.permission]);
+  const items = APP_NAV_ITEMS.filter((item) => permissions[item.permission]);
+
+  if (canAccessMlComparison(user) && !permissions.settings) {
+    const settingsItem = APP_NAV_ITEMS.find((item) => item.to === "/settings");
+    if (settingsItem && !items.some((item) => item.to === "/settings")) {
+      items.push(settingsItem);
+    }
+  }
+
+  return items;
 }
 
 export function getNavItemsForRole(role: string): AppNavItem[] {
@@ -84,7 +94,7 @@ export function getNavItemsForRole(role: string): AppNavItem[] {
   if (!permissions) {
     return [];
   }
-  return APP_NAV_ITEMS.filter((item) => permissions[item.permission]);
+  return getNavItemsForUser({ role: role as UserRole, permissions });
 }
 
 export function getRouteIcon(path: string): LucideIcon | undefined {
@@ -102,6 +112,10 @@ export function canAccessRoute(
   user: Pick<User, "role" | "permissions"> | null,
   path: string,
 ): boolean {
+  if (path === "/settings" || path.startsWith("/settings/")) {
+    return resolveUserPermissions(user).settings || canAccessMlComparison(user);
+  }
+
   const item = APP_NAV_ITEMS.find(
     (nav) => path === nav.to || path.startsWith(`${nav.to}/`),
   );

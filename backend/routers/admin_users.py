@@ -16,6 +16,7 @@ from schemas.admin_users import (
     CreateAdminUserRequest,
     UpdateAdminUserRequest,
 )
+from services.audit_service import AuditService
 from services.user_admin_service import UserAdminService
 
 router = APIRouter()
@@ -42,11 +43,23 @@ def list_users(
 )
 def create_user(
     body: CreateAdminUserRequest,
-    _admin: User = Depends(require_permission("settings")),
+    admin: User = Depends(require_permission("settings")),
     db: Session = Depends(get_db),
 ) -> AdminUserResponse:
     """Create a user with role and bcrypt password (RF-070)."""
-    return UserAdminService(db).create_user(body)
+    created = UserAdminService(db).create_user(body)
+    AuditService(db).record_safely(
+        action_type="admin.user.create",
+        user_id=admin.id,
+        entity_type="user",
+        entity_id=created.id,
+        action_details={
+            "user_id": str(created.id),
+            "email": created.email,
+            "role": created.role,
+        },
+    )
+    return created
 
 
 @router.patch(
@@ -61,4 +74,15 @@ def update_user(
     db: Session = Depends(get_db),
 ) -> AdminUserResponse:
     """Deactivate users or change roles (UC-070)."""
-    return UserAdminService(db).update_user(user_id, body, acting_user_id=admin.id)
+    updated = UserAdminService(db).update_user(user_id, body, acting_user_id=admin.id)
+    AuditService(db).record_safely(
+        action_type="admin.user.update",
+        user_id=admin.id,
+        entity_type="user",
+        entity_id=updated.id,
+        action_details={
+            "user_id": str(updated.id),
+            "updated_fields": list(body.model_dump(exclude_unset=True).keys()),
+        },
+    )
+    return updated

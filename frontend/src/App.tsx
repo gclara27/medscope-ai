@@ -11,6 +11,7 @@ import { HistoryDetailPage } from "@/pages/HistoryDetailPage";
 import { HistoryPage } from "@/pages/HistoryPage";
 import { AnalyticsPage } from "@/pages/AnalyticsPage";
 import { SettingsPage } from "@/pages/SettingsPage";
+import { SupportPage } from "@/pages/SupportPage";
 import { SimulationPage } from "@/pages/SimulationPage";
 import { PredictionResultPage } from "@/pages/PredictionResultPage";
 import { SplashPage } from "@/pages/SplashPage";
@@ -89,6 +90,7 @@ export default function App() {
                   </PermissionRoute>
                 }
               />
+              <Route path="/support" element={<SupportPage />} />
               <Route path="/unauthorized" element={<UnauthorizedPage />} />
             </Route>
           </Route>

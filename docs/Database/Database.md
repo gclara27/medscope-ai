@@ -88,7 +88,7 @@ Detalle de testing: §13 y `docs/Testing/Testing.md`.
 
 | Tabla | Notas |
 |---|---|
-| `audit_logs` | UC-081 — logs básicos en MVP; auditoría avanzada §18 opcional |
+| `audit_logs` | UC-081, UC-085 — **planificado T-X06**; ver §4.8 |
 | `analytics_snapshots` | **No requerida en MVP** — calcular métricas desde `predictions` (GET `/analytics`) |
 | `system_settings` | UC-071 — post-MVP |
 | `user_sessions` | **No requerida** — JWT stateless cubre RF-003 |
@@ -223,7 +223,7 @@ Datos **de-identificados** — sin PHI real (RNF-034). Alineado con dataset Diab
 
 ---
 
-## 4.8 `audit_logs` (opcional MVP)
+## 4.8 `audit_logs` (opcional — T-X06)
 
 | Campo | Tipo | Constraints |
 |---|---|---|
@@ -234,6 +234,21 @@ Datos **de-identificados** — sin PHI real (RNF-034). Alineado con dataset Diab
 | entity_id | UUID | NULL |
 | action_details | JSONB | NULL |
 | created_at | TIMESTAMPTZ | DEFAULT NOW() |
+
+**Índices recomendados:** `(created_at DESC)`, `(user_id)`, `(action_type)`.
+
+**`action_type` seed (v1):**
+
+```text
+auth.login | auth.logout | prediction.create | simulation.create
+admin.user.create | admin.user.update | admin.role.update | admin.settings.update
+```
+
+**Reglas:** sin PHI en `action_details`; solo IDs, tipos y metadatos operativos (RNF-053).
+
+**Migración:** Alembic al implementar T-X06-01.
+
+**API:** `GET /admin/audit-logs` — filtros `date_from`, `date_to`, `action_type`, `user_id`, `page`, `page_size` (RBE-016).
 
 ---
 
@@ -437,5 +452,6 @@ Opcional según Requirements §18: multi-hospital, FHIR, Redis, jobs async, ML e
 | UC-023 | predictions, patient_inputs, shap_explanations |
 | UC-044 | simulations, simulation_inputs |
 | UC-050–052 | predictions (+ joins) |
+| UC-081, UC-085 | audit_logs (T-X06) |
 | UC-060–062 | agregaciones sobre predictions |
 | UC-081 | audit_logs (opcional) |

@@ -345,6 +345,72 @@ Modificar permisos.
 
 ---
 
+# 5.9 Soporte (opcional — §18)
+
+> Implementar solo si hay tiempo (T-X05). Referencia UI: `docs/Design/screens/support/`.
+
+## RF-072 — Centro de soporte
+
+Pantalla `/support` accesible a usuarios autenticados con:
+
+- knowledge base estática (categorías de ayuda),
+
+- búsqueda client-side sobre contenido FAQ,
+
+- diseño alineado con `design-system.light.md`.
+
+## RF-073 — Contacto y ticket de soporte
+
+Mostrar email de contacto desde `system_settings.support_contact_email` (UC-071).
+
+Formulario de ticket que permita enviar incidencia vía `mailto:` (categoría, prioridad, descripción) sin backend de tickets en v1.
+
+---
+
+# 5.10 Auditoría (opcional — §18)
+
+> Trazabilidad avanzada (T-X06). Complementa historial clínico (RF-050) con logs de sistema.
+
+## RF-074 — Registro de auditoría
+
+Persistir en `audit_logs` las acciones críticas:
+
+- autenticación (login/logout),
+
+- predicción y simulación,
+
+- cambios admin (usuarios, roles, settings).
+
+Sin almacenar PHI ni contraseñas en `action_details` (RNF-053).
+
+## RF-075 — Consulta de auditoría
+
+Endpoint `GET /admin/audit-logs` con filtros temporales, tipo de acción y usuario.
+
+Solo rol **admin** (o permiso explícito `audit`).
+
+UI de consulta en Settings (pestaña Audit).
+
+---
+
+# 5.11 Comparación de modelos ML (opcional — §18)
+
+> T-X07 — enfoque v1: métricas offline de entrenamiento, no inferencia multi-modelo en runtime.
+
+## RF-076 — Visualizar comparación de modelos
+
+Mostrar métricas de evaluación (accuracy, recall, F1, ROC-AUC) de Logistic Regression, Random Forest y XGBoost cuando existan artefactos en `ml/` y `models/`.
+
+Indicar claramente cuál es el **modelo en producción** (`model_manifest.json`).
+
+## RF-077 — API de comparación ML
+
+Endpoint de solo lectura `GET /ml/models/comparison` protegido por rol analyst/admin.
+
+Respuesta JSON estructurada para UI (tabla + gráficos).
+
+---
+
 # 6. Requerimientos no funcionales
 
 # 6.1 Rendimiento
@@ -441,6 +507,14 @@ Logs backend.
 
 Logs errores ML.
 
+## RNF-052
+
+Retención de audit logs en PostgreSQL con timestamp e índices por `user_id`, `action_type`, `created_at` (T-X06).
+
+## RNF-053
+
+Audit logs no deben contener PHI, valores clínicos de paciente ni credenciales.
+
 ---
 
 # 7. Requerimientos IA / Machine Learning
@@ -497,6 +571,18 @@ Top features visibles.
 
 ---
 
+# 7.5 Comparación multi-modelo (opcional)
+
+## RIA-040
+
+Exponer resultados de `compare_baselines` / `extended_compare` (Fase 2 ML) vía API de solo lectura.
+
+## RIA-041
+
+Documentar en UI que la comparación es **offline** (entrenamiento); el modelo activo en inferencia es único (`ml_registry`).
+
+---
+
 # 8. Requerimientos frontend
 
 # 8.1 Framework
@@ -544,6 +630,18 @@ Analytics.
 ## RFW-018
 
 History.
+
+## RFW-024
+
+Support center (`/support`) — knowledge base, búsqueda, contacto (RF-072, RF-073).
+
+## RFW-025
+
+Audit logs panel (admin) — tabla filtrable de `audit_logs` (RF-075).
+
+## RFW-026
+
+ML model comparison panel — métricas y gráfico barras (RF-076).
 
 ---
 
@@ -602,6 +700,22 @@ POST /auth/login
 ## RBE-014
 
 GET /analytics
+
+## RBE-015
+
+GET /analytics/export.pdf — export PDF analytics (UC-063, T-X04).
+
+## RBE-016
+
+GET /admin/audit-logs — consulta auditoría (RF-075, T-X06).
+
+## RBE-017
+
+GET /ml/models/comparison — métricas comparativas offline (RF-077, T-X07).
+
+## RBE-018
+
+GET /support/contact — email de soporte para usuarios autenticados (RF-073, T-X05).
 
 ---
 
@@ -733,6 +847,22 @@ Testing navegación básica y formularios críticos (vitest).
 ## RTS-030
 
 Flujo E2E MVP con Playwright: login → prediction → SHAP → simulation → history → analytics.
+
+---
+
+# 12.5 Opcional (T-X05–T-X07)
+
+## RTS-040
+
+Tests Support UI: render, búsqueda KB, mailto ticket (T-X05).
+
+## RTS-041
+
+Tests audit: escritura en login/predict, consulta admin, 403 no-admin (T-X06).
+
+## RTS-042
+
+Tests comparación ML: API JSON, permisos, UI métricas (T-X07).
 
 ---
 
@@ -888,23 +1018,21 @@ Documentar:
 
 ## Solo si sobra tiempo
 
-- UI de gestión de usuarios (RF-070, RF-071) — en MVP bastan usuarios seed por migración,
+| Feature | IDs | Tarea |
+|---|---|---|
+| UI admin usuarios | RF-070, UC-070 | T-X01 ✅ |
+| Settings avanzado | RF-071, UC-071 | T-X02 ✅ |
+| Export PDF analytics | UC-063 | T-X04 ✅ |
+| Support UI | RF-072–073, UC-064–065 | T-X05 |
+| Audit avanzado | RF-074–075, UC-081 | T-X06 |
+| Multi-model comparison | RF-076–077, RIA-040–041, UC-084–085 | T-X07 |
+| Dark mode | Design dark | T-X03 |
+| Alertas automáticas | — | — |
+| FHIR / cloud | UC-120–124 | T-X08 |
+| Tiempo real | UC-122 | — |
+| Cloud deployment | UC-124 | — |
 
-- export PDF,  
-
-- multi-model comparison,  
-
-- dark mode,  
-
-- alertas automáticas,  
-
-- auditoría avanzada,  
-
-- integración FHIR,  
-
-- tiempo real,  
-
-- cloud deployment.  
+Plan detallado: [Optional-Backlog-Plan.md](Optional%20Features/Optional-Backlog-Plan.md).
 
 
 ---

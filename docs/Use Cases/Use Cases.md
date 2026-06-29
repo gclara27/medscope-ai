@@ -546,7 +546,77 @@ Exportar datos.
 
 ---
 
-# 11. Administration
+# 11. Support (optional)
+
+> Requirements §18 — T-X05. Mockup: `docs/Design/screens/support/reference.html`.
+
+---
+
+# UC-064 — Access Support Center
+
+## Goal
+
+Consultar ayuda y documentación de uso dentro de la plataforma.
+
+## Actor
+
+Cualquier usuario autenticado (admin, clinician, analyst, nurse).
+
+## Preconditions
+
+- Sesión JWT válida.
+
+## Flow
+
+1. Usuario abre `/support` desde sidebar o URL.
+2. Sistema muestra knowledge base por categorías.
+3. Usuario puede buscar términos en contenido FAQ (client-side).
+4. Usuario lee artículos/categorías de ayuda.
+
+## Postconditions
+
+- Ninguna persistencia requerida.
+
+## Acceptance criteria
+
+- Layout coherente con design system.
+- ≥4 categorías visibles (Getting Started, AI calibration, Data integration, Compliance).
+- Accesible para todos los roles autenticados.
+
+---
+
+# UC-065 — Submit Support Ticket
+
+## Goal
+
+Reportar incidencia o solicitud de ayuda al equipo de soporte.
+
+## Actor
+
+Cualquier usuario autenticado.
+
+## Preconditions
+
+- `support_contact_email` configurado en system settings (UC-071).
+
+## Flow
+
+1. Usuario completa categoría, prioridad y descripción.
+2. Usuario pulsa enviar.
+3. Sistema abre cliente de correo (`mailto:`) con destinatario, asunto y cuerpo pre-rellenados.
+
+## Postconditions
+
+- No se persiste ticket en BD en v1.
+
+## Acceptance criteria
+
+- Email destino = `support_contact_email`.
+- Prioridad “Urgent (Clinical)” visible pero no dispara alertas automáticas.
+
+---
+
+# 12. Administration
 
 ---
 
@@ -604,14 +674,33 @@ Proteger endpoints.
 
 # UC-081 — Persist Audit Logs
 
+> **Alcance:** opcional avanzado (T-X06). Historial de predicciones (UC-050) cubre trazabilidad clínica; este UC cubre **auditoría de sistema**.
+
 ## Goal
 
-Mantener trazabilidad.
+Mantener trazabilidad de acciones críticas para gobernanza y compliance.
 
-## Flow
+## Actor
 
-1. Acción crítica ejecutada.
-2. Audit log generado.
+Sistema (escritura automática); **Admin** (lectura).
+
+## Flow — escritura
+
+1. Acción crítica ejecutada (login, predict, simulate, admin CRUD, settings).
+2. `AuditService` genera registro en `audit_logs`.
+3. `action_details` JSON con metadatos (sin PHI).
+
+## Flow — consulta (UC-085)
+
+1. Admin abre pestaña Audit en Settings.
+2. Sistema lista logs con filtros (fecha, acción, usuario).
+3. Admin revisa trazabilidad.
+
+## Acceptance criteria
+
+- Tabla `audit_logs` según Database.md §4.8.
+- `GET /admin/audit-logs` solo admin.
+- No passwords ni valores clínicos en logs.
 
 ---
 
@@ -640,6 +729,62 @@ Ejecutar pipeline ML.
 2. Predict.
 3. SHAP.
 4. Response.
+
+---
+
+# UC-084 — View ML Model Comparison (Optional)
+
+> T-X07 — Requirements RF-076, RIA-040. Comparación **offline** de baselines entrenados.
+
+## Goal
+
+Visualizar métricas comparativas entre modelos candidatos y el modelo en producción.
+
+## Actor
+
+Analyst, Admin.
+
+## Preconditions
+
+- Artefactos ML generados en Fase 2 (`baseline_comparison.json`, `model_manifest.json`).
+
+## Flow
+
+1. Usuario abre pestaña Models (Settings) o sección equivalente.
+2. Sistema llama `GET /ml/models/comparison`.
+3. UI muestra tabla de métricas y gráfico (recall prioritario).
+4. Se destaca modelo activo en inferencia.
+
+## Acceptance criteria
+
+- Clinician/nurse sin acceso.
+- Mensaje claro si faltan artefactos.
+- Texto: comparación de entrenamiento, no predicción multi-modelo en vivo.
+
+---
+
+# UC-085 — Query Audit Logs (Optional)
+
+> T-X06 — lectura; escritura en UC-081.
+
+## Goal
+
+Consultar registros de auditoría del sistema.
+
+## Actor
+
+Admin.
+
+## Flow
+
+1. Admin aplica filtros (rango fechas, tipo acción, usuario).
+2. Sistema devuelve página de resultados desde `audit_logs`.
+3. Admin revisa detalle por fila (`action_details` legible).
+
+## Acceptance criteria
+
+- Paginación o límite razonable (ej. 50 por página).
+- Orden descendente por `created_at`.
 
 ---
 

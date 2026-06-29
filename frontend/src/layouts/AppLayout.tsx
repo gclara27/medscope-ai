@@ -2,7 +2,7 @@ import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { MedScopeAppIcon } from "@/components/brand/MedScopeAppIcon";
-import { getNavItemsForUser } from "@/config/navigation";
+import { getNavItemsForUser, SUPPORT_NAV_ITEM } from "@/config/navigation";
 import { useAuth } from "@/context/useAuth";
 import { cn } from "@/lib/utils";
 
@@ -61,14 +61,30 @@ export function AppLayout() {
           );
         })}
 
-        <button
-          type="button"
-          onClick={handleLogout}
-          disabled={isLoading}
-          className="mt-auto rounded-lg px-3 py-2 text-left text-sm font-medium text-error transition hover:bg-error-container disabled:cursor-not-allowed disabled:opacity-70"
-        >
-          {isLoading ? "Signing out…" : "Log out"}
-        </button>
+        <div className="mt-auto flex flex-col gap-1 border-t border-outline-variant pt-4">
+          <Link
+            to={SUPPORT_NAV_ITEM.to}
+            onClick={closeMobileNav}
+            className={cn(
+              "flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium",
+              isNavItemActive(location.pathname, SUPPORT_NAV_ITEM.to)
+                ? "bg-secondary-container text-on-secondary-container"
+                : "text-on-surface-variant hover:bg-surface-container-low",
+            )}
+          >
+            <SUPPORT_NAV_ITEM.icon className="h-4 w-4 shrink-0" aria-hidden />
+            {SUPPORT_NAV_ITEM.label}
+          </Link>
+
+          <button
+            type="button"
+            onClick={handleLogout}
+            disabled={isLoading}
+            className="rounded-lg px-3 py-2 text-left text-sm font-medium text-error transition hover:bg-error-container disabled:cursor-not-allowed disabled:opacity-70"
+          >
+            {isLoading ? "Signing out…" : "Log out"}
+          </button>
+        </div>
       </nav>
 
       <div className="shrink-0 border-t border-surface-container-highest p-4">

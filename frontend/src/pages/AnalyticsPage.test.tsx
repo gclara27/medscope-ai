@@ -13,6 +13,22 @@ vi.mock("@/services/analytics", () => ({
 
 import { downloadAnalyticsPdf, getAnalytics } from "@/services/analytics";
 
+vi.mock("@/components/analytics/AnalyticsTrendChart", () => ({
+  AnalyticsTrendChart: () => (
+    <section aria-label="Analytics trend chart">
+      <h2>Prediction volume and average risk</h2>
+    </section>
+  ),
+}));
+
+vi.mock("@/components/analytics/AnalyticsRiskDistributionChart", () => ({
+  AnalyticsRiskDistributionChart: () => (
+    <section aria-label="Analytics risk distribution chart">
+      <h2>Risk distribution</h2>
+    </section>
+  ),
+}));
+
 const demoResponse: AnalyticsResponse = {
   summary: {
     total_predictions: 12,

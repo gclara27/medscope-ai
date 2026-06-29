@@ -1,7 +1,7 @@
 import { BrainCircuit } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useState } from "react";
 
-import { ModelComparisonMetricChart } from "@/components/settings/ModelComparisonMetricChart";
+import { ModelComparisonChartSkeleton } from "@/components/charts/ChartSectionSkeleton";
 import { ModelComparisonTable } from "@/components/settings/ModelComparisonTable";
 import { ModelSelectionExplanation } from "@/components/settings/ModelSelectionExplanation";
 import { Alert } from "@/components/Alert";
@@ -14,6 +14,11 @@ import {
 import { getModelComparison } from "@/services/mlComparison";
 import type { ModelComparisonResponse } from "@/types/mlComparison";
 import { getMlComparisonErrorMessage } from "@/utils/mlComparisonErrors";
+
+const ModelComparisonMetricChart = lazy(async () => {
+  const module = await import("@/components/settings/ModelComparisonMetricChart");
+  return { default: module.ModelComparisonMetricChart };
+});
 
 /** Offline ML model comparison for analyst/admin review (T-X07-04, UC-084, RFW-026). */
 export function ModelComparisonPanel() {
@@ -117,11 +122,13 @@ export function ModelComparisonPanel() {
               </section>
             ) : null}
 
-            <ModelComparisonMetricChart
-              models={comparison.models}
-              primaryMetric={comparison.primary_metric}
-              productionModelId={comparison.production_model_id}
-            />
+            <Suspense fallback={<ModelComparisonChartSkeleton />}>
+              <ModelComparisonMetricChart
+                models={comparison.models}
+                primaryMetric={comparison.primary_metric}
+                productionModelId={comparison.production_model_id}
+              />
+            </Suspense>
 
             <ModelComparisonTable
               models={comparison.models}

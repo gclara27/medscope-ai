@@ -8,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from core.config import settings
 from core.exception_handlers import register_exception_handlers
 from core.ml_registry import ml_registry
+from core.performance_middleware import PerformanceMiddleware
 from routers import admin_audit, admin_settings, admin_users, analytics, auth, dashboard, history, ml, predictions, simulations, support
 
 
@@ -27,6 +28,8 @@ app = FastAPI(
 )
 
 register_exception_handlers(app)
+
+app.add_middleware(PerformanceMiddleware)
 
 app.add_middleware(
     CORSMiddleware,

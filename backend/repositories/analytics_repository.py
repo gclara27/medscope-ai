@@ -58,29 +58,29 @@ class AnalyticsRepository:
         date_from: date | None = None,
         date_to: date | None = None,
     ) -> tuple[int, float | None, float | None, dict[str, int]]:
+        """Summary KPIs and risk buckets in a single table scan (T-703, RNF-002)."""
         stmt = select(
             func.count(Prediction.id),
             func.avg(Prediction.risk_score),
             func.avg(Prediction.prediction_time_ms),
+            func.sum(case((Prediction.risk_level == "low", 1), else_=0)),
+            func.sum(case((Prediction.risk_level == "medium", 1), else_=0)),
+            func.sum(case((Prediction.risk_level == "high", 1), else_=0)),
         )
         if date_from is not None:
             stmt = stmt.where(Prediction.created_at >= _start_of_day(date_from))
         if date_to is not None:
             stmt = stmt.where(Prediction.created_at <= _end_of_day(date_to))
 
-        total, avg_risk, avg_time_ms = self.db.execute(stmt).one()
-        total_int = int(total or 0)
-
-        bucket_stmt = select(Prediction.risk_level, func.count()).group_by(Prediction.risk_level)
-        if date_from is not None:
-            bucket_stmt = bucket_stmt.where(Prediction.created_at >= _start_of_day(date_from))
-        if date_to is not None:
-            bucket_stmt = bucket_stmt.where(Prediction.created_at <= _end_of_day(date_to))
-
-        buckets = {level: int(count) for level, count in self.db.execute(bucket_stmt).all()}
+        total, avg_risk, avg_time_ms, low_count, medium_count, high_count = self.db.execute(stmt).one()
+        buckets = {
+            "low": int(low_count or 0),
+            "medium": int(medium_count or 0),
+            "high": int(high_count or 0),
+        }
 
         return (
-            total_int,
+            int(total or 0),
             float(avg_risk) if avg_risk is not None else None,
             float(avg_time_ms) if avg_time_ms is not None else None,
             buckets,

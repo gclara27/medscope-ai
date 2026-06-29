@@ -391,7 +391,7 @@ Entregables: historial (`/history`, filtros, detalle SHAP), analytics (`/analyti
 
 # FASE 7 — Polish + Testing
 
-**Progreso:** 2 / 12 (17%)
+**Progreso:** 3 / 12 (25%)
 
 [Testing.md](Testing/Testing.md) · [skill testing](../skills/testing/SKILL.md)
 
@@ -399,7 +399,7 @@ Entregables: historial (`/history`, filtros, detalle SHAP), analytics (`/analyti
 |---|---|---|---|---|
 | T-701 | [x] | UI polish | [RUX-001](Requirements/Requirements.md#rux-001) · [Design](Design/design-system.light.md) | `Pulir spacing y tipografía según design system.` |
 | T-702 | [x] | Errores backend | [UC-091](Use%20Cases/Use%20Cases.md#uc-091--handle-backend-failure) | `Revisar exception handlers y mensajes usuario.` |
-| T-703 | [ ] | Performance | [RNF-001](Requirements/Requirements.md#rnf-001) · [RNF-002](Requirements/Requirements.md#rnf-002) | `Profile API y render. Optimizar charts.` |
+| T-703 | [x] | Performance | [RNF-001](Requirements/Requirements.md#rnf-001) · [RNF-002](Requirements/Requirements.md#rnf-002) | `Profile API y render. Optimizar charts.` |
 | T-704 | [ ] | test_auth.py | [RTS-001](Requirements/Requirements.md#rts-001) · [Testing §6](Testing/Testing.md#6-backend-tests-prioritarios) | `Tests pytest auth: login, JWT, roles.` |
 | T-705 | [ ] | test APIs | [RTS-001](Requirements/Requirements.md#rts-001) | `Tests predict, simulate, history, analytics.` |
 | T-706 | [ ] | Coverage 60–75% | [Testing §11](Testing/Testing.md#11-cobertura) | `pytest --cov hasta 60-75% backend.` |
@@ -612,3 +612,4 @@ Implementar **una feature a la vez**. Cada bloque cierra su user story y manual 
 | 2026-06-11 | **T-X04** export PDF analytics: `GET /analytics/export.pdf`, botón en `AnalyticsPage` (UC-063) |
 | 2026-06-11 | **Plan T-X05–T-X07:** RF-072–077, UC-064–066/084–085, US-040–042, Fase X (22 tareas), RTS-040–042, manuales Phase-07 |
 | 2026-06-11 | **T-X05 / US-040** Support UI completo: KB, búsqueda, contacto API, ticket mailto, sidebar, RTS-040 (9 archivos test) |
+| 2026-06-11 | **T-703** performance RNF-001/002: middleware `X-Process-Time-Ms`, analytics SQL 2 queries, lazy Recharts, manualChunks, tests perf |

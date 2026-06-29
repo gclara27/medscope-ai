@@ -39,10 +39,6 @@ class AnalyticsService:
             date_from=date_from,
             date_to=date_to,
         )
-        distribution_rows = self.repository.fetch_risk_distribution(
-            date_from=date_from,
-            date_to=date_to,
-        )
         trend_rows = self.repository.fetch_daily_trend(
             date_from=date_from,
             date_to=date_to,
@@ -57,7 +53,7 @@ class AnalyticsService:
                 low_risk_count=buckets.get("low", 0),
                 average_prediction_time_ms=round(avg_time_ms, 2) if avg_time_ms is not None else None,
             ),
-            risk_distribution=self._build_distribution(distribution_rows, total),
+            risk_distribution=self._build_distribution_from_buckets(buckets, total),
             trend=[
                 TrendPoint(
                     date=row.period,
@@ -70,15 +66,14 @@ class AnalyticsService:
             date_to=date_to,
         )
 
-    def _build_distribution(
+    def _build_distribution_from_buckets(
         self,
-        rows: list,
+        buckets: dict[str, int],
         total: int,
     ) -> list[RiskDistributionItem]:
-        counts = {row.risk_level: row.count for row in rows}
         items: list[RiskDistributionItem] = []
         for level in ("low", "medium", "high"):
-            count = counts.get(level, 0)
+            count = buckets.get(level, 0)
             percentage = round((count / total) * 100, 2) if total else 0.0
             items.append(
                 RiskDistributionItem(

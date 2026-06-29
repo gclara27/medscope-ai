@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from core.config import settings
 from core.exception_handlers import register_exception_handlers
 from core.ml_registry import ml_registry
-from routers import admin_audit, admin_settings, admin_users, analytics, auth, dashboard, history, predictions, simulations, support
+from routers import admin_audit, admin_settings, admin_users, analytics, auth, dashboard, history, ml, predictions, simulations, support
 
 
 @asynccontextmanager
@@ -45,6 +45,7 @@ app.include_router(simulations.router, tags=["simulations"])
 app.include_router(history.router, tags=["history"])
 app.include_router(dashboard.router, tags=["dashboard"])
 app.include_router(analytics.router, tags=["analytics"])
+app.include_router(ml.router)
 app.include_router(support.router)
 
 

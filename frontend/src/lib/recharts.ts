@@ -6,6 +6,8 @@ export const CHART_COLORS = {
   medium: RISK_COLORS.medium,
   high: RISK_COLORS.high,
   primary: "#0058bc",
+  teal: "#0d9488",
+  muted: "#8b9199",
   grid: "#e1e3e4",
   axis: "#414755",
 } as const;

@@ -25,6 +25,7 @@ export default defineConfig({
       "/history": apiProxy,
       "/dashboard": apiProxy,
       "/analytics": apiProxy,
+      "/ml": apiProxy,
       "/support/contact": apiProxy,
     },
   },

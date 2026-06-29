@@ -87,6 +87,20 @@ Alineado con `AGENTS.md` y `skills/testing/SKILL.md`.
 | `frontend/src/services/auditLogs.test.ts` | cliente API audit logs |
 | `frontend/src/config/navigation.test.ts` | RBAC `/settings` solo admin |
 
+### RTS-042 — archivos de test (T-X07)
+
+| Archivo | Cubre |
+|---|---|
+| `backend/tests/test_ml_comparison.py` | **RTS-042** API 200 analyst/admin + 403 clinician/nurse |
+| `backend/tests/test_ml_comparison_service.py` | servicio offline artifacts |
+| `backend/tests/test_openapi.py` | `/ml/models/comparison` en OpenAPI |
+| `frontend/src/services/mlComparison.test.ts` | cliente API + validación payload |
+| `frontend/src/lib/mlComparisonDisplay.test.ts` | explicación producción + chart data |
+| `frontend/src/components/settings/ModelComparisonPanel.test.tsx` | panel tabla + explicación + chart |
+| `frontend/src/components/settings/ModelComparisonMetricChart.test.tsx` | gráfico barras Recharts |
+| `frontend/src/pages/SettingsPage.test.tsx` | pestaña Models en Settings |
+| `frontend/src/config/navigation.test.ts` | RBAC Settings analyst/admin |
+
 ---
 
 # 4. Estructura de carpetas

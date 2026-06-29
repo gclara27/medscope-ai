@@ -21,6 +21,7 @@ def test_openapi_json_schema(client: TestClient) -> None:
     assert schema["info"]["title"] == "MedScope AI"
     assert schema["info"]["version"] == "0.1.0"
     assert "/health" in schema["paths"]
+    assert "/ml/models/comparison" in schema["paths"]
 
 
 def test_openapi_router_tags_on_operations(client: TestClient) -> None:
@@ -31,4 +32,5 @@ def test_openapi_router_tags_on_operations(client: TestClient) -> None:
         for operation in path_item.values():
             operation_tags.update(operation.get("tags", []))
     assert "system" in operation_tags
+    assert "ml" in operation_tags
     assert schema["openapi"].startswith("3.")

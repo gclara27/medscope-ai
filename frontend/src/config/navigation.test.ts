@@ -47,10 +47,11 @@ describe("navigation role access", () => {
     ]);
   });
 
-  it("limits analyst navigation to dashboard and analytics", () => {
+  it("limits analyst navigation to dashboard, analytics, and settings", () => {
     expect(getNavItemsForRole("analyst").map((item) => item.to)).toEqual([
       "/dashboard",
       "/analytics",
+      "/settings",
     ]);
   });
 
@@ -59,10 +60,10 @@ describe("navigation role access", () => {
     expect(canAccessRoute({ role: "clinician" }, "/evaluation")).toBe(true);
   });
 
-  it("allows only admin access to settings", () => {
+  it("allows admin and analyst access to settings", () => {
     expect(canAccessRoute(adminUser, "/settings")).toBe(true);
+    expect(canAccessRoute({ role: "analyst" }, "/settings")).toBe(true);
     expect(canAccessRoute({ role: "clinician" }, "/settings")).toBe(false);
-    expect(canAccessRoute({ role: "analyst" }, "/settings")).toBe(false);
     expect(canAccessRoute({ role: "nurse" }, "/settings")).toBe(false);
   });
 

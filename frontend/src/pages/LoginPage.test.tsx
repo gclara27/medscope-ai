@@ -1,7 +1,7 @@
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import axios from "axios";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { AuthProvider } from "@/context/AuthContext";
@@ -17,11 +17,22 @@ vi.mock("@/services/auth", async (importOriginal) => {
   };
 });
 
-function renderLoginPage() {
+const clinicianUser = {
+  id: "00000000-0000-0000-0000-000000000001",
+  email: "clinician@medscope.ai",
+  first_name: "Clara",
+  last_name: "Clinician",
+  role: "clinician" as const,
+};
+
+function renderLoginPage(initialPath = "/login") {
   return render(
     <AuthProvider>
-      <MemoryRouter>
-        <LoginPage />
+      <MemoryRouter initialEntries={[initialPath]}>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/dashboard" element={<div>Dashboard home</div>} />
+        </Routes>
       </MemoryRouter>
     </AuthProvider>,
   );
@@ -57,10 +68,34 @@ describe("LoginPage", () => {
 
     expect(screen.getByLabelText(/email/i)).toHaveValue("");
     expect(screen.getByLabelText(/password/i)).toHaveValue("");
+    expect(screen.getByLabelText(/email/i)).toBeRequired();
+    expect(screen.getByLabelText(/password/i)).toBeRequired();
     expect(screen.getByPlaceholderText(/your\.email@hospital\.org/i)).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: /authenticate/i }),
     ).toBeInTheDocument();
+  });
+
+  it("navigates to dashboard after successful authentication", async () => {
+    vi.mocked(login).mockResolvedValue({
+      accessToken: "jwt-token",
+      user: clinicianUser,
+    });
+
+    const user = userEvent.setup();
+    renderLoginPage();
+
+    await user.type(screen.getByLabelText(/email/i), "clinician@medscope.ai");
+    await user.type(screen.getByLabelText(/password/i), "MedScope123!");
+    await user.click(screen.getByRole("button", { name: /authenticate/i }));
+
+    await waitFor(() => {
+      expect(login).toHaveBeenCalledWith({
+        email: "clinician@medscope.ai",
+        password: "MedScope123!",
+      });
+    });
+    expect(await screen.findByText("Dashboard home")).toBeInTheDocument();
   });
 
   it("dismisses login error when user focuses a field", async () => {

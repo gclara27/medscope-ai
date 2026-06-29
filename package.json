@@ -1,0 +1,13 @@
+{
+  "name": "medscope-ai",
+  "private": true,
+  "description": "MedScope AI — root tooling (Playwright E2E)",
+  "scripts": {
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:install": "playwright install chromium"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.1"
+  }
+}

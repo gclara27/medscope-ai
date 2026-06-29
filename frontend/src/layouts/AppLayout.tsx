@@ -38,7 +38,7 @@ export function AppLayout() {
         </div>
       </div>
 
-      <nav className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto p-4">
+      <nav className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto p-4" aria-label="Main navigation">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = isNavItemActive(location.pathname, item.to);
@@ -98,6 +98,13 @@ export function AppLayout() {
 
   return (
     <div className="flex h-screen overflow-hidden bg-surface">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-on-primary focus:shadow-level-2"
+      >
+        Skip to main content
+      </a>
+
       {/* Desktop sidebar — viewport height; logout/user always visible (T-405, T-413) */}
       <aside className="hidden h-full w-64 shrink-0 flex-col border-r border-outline-variant bg-surface-container-lowest md:flex">
         {sidebarContent}
@@ -150,7 +157,7 @@ export function AppLayout() {
           <div className="w-9" aria-hidden />
         </header>
 
-        <main className="app-main">
+        <main id="main-content" className="app-main" tabIndex={-1}>
           <Outlet />
         </main>
       </div>

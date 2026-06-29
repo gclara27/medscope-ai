@@ -73,6 +73,9 @@ export default {
         "risk-low": med("--color-risk-low"),
         "risk-medium": med("--color-risk-medium"),
         "risk-high": med("--color-risk-high"),
+        "risk-low-readable": med("--color-risk-low-readable"),
+        "risk-medium-readable": med("--color-risk-medium-readable"),
+        "risk-high-readable": med("--color-risk-high-readable"),
       },
       borderRadius: {
         lg: "var(--radius)",

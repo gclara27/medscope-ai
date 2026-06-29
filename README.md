@@ -98,7 +98,7 @@ Stops processes on ports **8000** (backend) and **5173** (frontend), closes **Me
 
 ## Quick start (Docker — recommended)
 
-Runs PostgreSQL and the FastAPI backend. Frontend is not dockerized yet (see [EP-0.4](docs/Execution%20Plan/ExecutionPlan.md#04-create-docker-base)).
+Runs **PostgreSQL**, **FastAPI backend**, and **React frontend** (nginx + API proxy).
 
 ### 1. Clone and configure environment
 
@@ -116,6 +116,12 @@ Edit `.env` if you need non-default ports or credentials. Defaults work for loca
 docker compose up --build
 ```
 
+Windows helper:
+
+```powershell
+.\scripts\docker-up.ps1
+```
+
 Detached mode:
 
 ```bash
@@ -126,16 +132,21 @@ docker compose up --build -d
 
 | Service | URL / endpoint |
 |---------|----------------|
+| **Frontend UI** | http://localhost:3000 |
 | Backend API | http://localhost:8000 |
 | Health check | http://localhost:8000/health → `{"status":"ok","ml_ready":true}` |
 | API docs (Swagger) | http://localhost:8000/docs |
 | Predict (JWT) | `POST /auth/login` then `POST /predict` — see [Manual Phase 03](docs/Testing/Manual/Phase-03-ML-Backend-Integration.md) |
 | PostgreSQL | `localhost:5432` — DB `medscope_ai`, user `medscope` |
 
+Demo login (seed data): `clinician@medscope.ai` / `MedScope123!`
+
 ```bash
 docker compose ps
 curl http://localhost:8000/health
 ```
+
+The frontend container serves the built React app and proxies API routes (`/auth`, `/predict`, `/simulate`, etc.) to the backend service.
 
 ### 4. Stop
 
@@ -252,7 +263,10 @@ Static analysis and automated tests (reference counts, jun 2026):
 # Lint (Python + frontend)
 .\scripts\lint.ps1
 
-# Backend (93 tests)
+# Backend (215+ tests; coverage gate 60%+)
+.\scripts\test-backend.ps1
+
+# Backend rápido sin coverage
 cd backend
 pytest
 
@@ -260,8 +274,14 @@ pytest
 cd ..\ml
 pytest
 
-# Frontend (62 tests, 19 archivos)
-cd ..\frontend
+# Frontend (RTS-020 vitest)
+.\scripts\test-frontend.ps1
+
+# E2E Playwright (RTS-030) — start dev stack first: .\scripts\start-dev.ps1
+.\scripts\test-e2e.ps1
+
+# Frontend manual
+cd frontend
 npm run test
 npm run lint
 npm run build
@@ -273,18 +293,21 @@ See [Testing strategy](docs/Testing/Testing.md) for manual checklists per phase 
 
 ## Environment variables
 
-Copy [`.env.example`](.env.example) to `.env`:
+Full reference: **[docs/Environment/Environment.md](docs/Environment/Environment.md)** (RDO-010, T-710).
+
+```powershell
+copy .env.example .env
+copy frontend\.env.example frontend\.env   # optional for Vite
+```
 
 | Variable | Description |
 |----------|-------------|
-| `POSTGRES_USER` / `POSTGRES_PASSWORD` / `POSTGRES_DB` | Database credentials |
-| `POSTGRES_PORT` | Host port for PostgreSQL (default `5432`) |
-| `DATABASE_URL` | SQLAlchemy connection string |
-| `BACKEND_PORT` | Host port for API (default `8000`) |
-| `JWT_SECRET` | Signing key for JWT (change in production) |
-| `JWT_ALGORITHM` | Default `HS256` |
-| `JWT_EXPIRE_MINUTES` | Token lifetime |
-| `CORS_ORIGINS` | Comma-separated frontend origins |
+| `POSTGRES_*` | PostgreSQL credentials and host port (Docker) |
+| `DATABASE_URL` | SQLAlchemy URL (`localhost` on host, `postgres` in containers) |
+| `BACKEND_PORT` / `FRONTEND_PORT` | Published ports for Docker Compose |
+| `JWT_SECRET` / `JWT_*` | JWT signing (change secret in production) |
+| `CORS_ORIGINS` | Comma-separated allowed frontend origins |
+| `VITE_API_BASE_URL` | Frontend API base (`frontend/.env`; empty = proxy) |
 
 Never commit `.env` — it is listed in `.gitignore`.
 
@@ -301,7 +324,7 @@ medscope-ai/
 ├── datasets/           # Clinical datasets (large files not committed)
 ├── docs/               # Requirements, use cases, database, testing, design
 ├── skills/             # Domain skills for AI-assisted development
-├── docker-compose.yml  # postgres + backend
+├── docker-compose.yml  # postgres + backend + frontend
 └── tests/              # Cross-cutting tests (e2e)
 ```
 

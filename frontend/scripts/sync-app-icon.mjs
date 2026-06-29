@@ -7,11 +7,18 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const repoRoot = join(root, "..");
 const source = join(root, "src", "assets", "app-icon.png");
 const composeScript = join(repoRoot, "scripts", "compose_app_icon.py");
-const python = join(repoRoot, ".venv", "Scripts", "python.exe");
+const pythonWin = join(repoRoot, ".venv", "Scripts", "python.exe");
+const pythonUnix = join(repoRoot, ".venv", "bin", "python");
+const python = existsSync(pythonWin) ? pythonWin : existsSync(pythonUnix) ? pythonUnix : null;
 
 if (!existsSync(source)) {
   console.error(`Missing app icon source: ${source}`);
   process.exit(1);
+}
+
+if (process.env.SKIP_APP_ICON_SYNC === "1" || !python || !existsSync(composeScript)) {
+  console.log("Skipping app icon sync (using committed public/app-icon.png).");
+  process.exit(0);
 }
 
 try {

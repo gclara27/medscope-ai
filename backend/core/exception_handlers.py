@@ -37,7 +37,15 @@ async def http_exception_handler(request: Request, exc: HTTPException) -> JSONRe
     )
 
 
-async def validation_exception_handler(_request: Request, exc: RequestValidationError) -> JSONResponse:
+async def validation_exception_handler(request: Request, exc: RequestValidationError) -> JSONResponse:
+    logger.info(
+        "validation_error",
+        extra={
+            "http_method": request.method,
+            "http_path": request.url.path,
+            "error_count": len(exc.errors()),
+        },
+    )
     return JSONResponse(
         status_code=422,
         content={"detail": jsonable_encoder(exc.errors())},

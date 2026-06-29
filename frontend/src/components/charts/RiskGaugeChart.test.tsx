@@ -24,13 +24,13 @@ describe("RiskGaugeChart", () => {
 
   it("applies RUX-011 risk color classes per level", () => {
     const { rerender } = renderWithTheme(<RiskGaugeChart riskPercent={78} riskLevel="high" />);
-    expect(screen.getByText("HIGH RISK")).toHaveClass("text-risk-high");
+    expect(screen.getByText("HIGH RISK")).toHaveClass("text-risk-high-readable");
 
     rerender(<RiskGaugeChart riskPercent={42} riskLevel="medium" />);
-    expect(screen.getByText("MEDIUM RISK")).toHaveClass("text-risk-medium");
+    expect(screen.getByText("MEDIUM RISK")).toHaveClass("text-risk-medium-readable");
 
     rerender(<RiskGaugeChart riskPercent={18} riskLevel="low" />);
-    expect(screen.getByText("LOW RISK")).toHaveClass("text-risk-low");
+    expect(screen.getByText("LOW RISK")).toHaveClass("text-risk-low-readable");
   });
 
   it("shows custom title", () => {

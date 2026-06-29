@@ -31,3 +31,20 @@ known-first-party = [
 quote-style = "double"
 indent-style = "space"
 line-ending = "auto"
+
+[tool.coverage.run]
+branch = false
+source = ["backend"]
+omit = [
+    "backend/tests/*",
+    "backend/alembic/*",
+]
+
+[tool.coverage.report]
+fail_under = 60
+show_missing = true
+skip_covered = false
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+]

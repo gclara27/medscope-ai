@@ -51,6 +51,13 @@ htmlcov/
 coverage.xml
 *.cover
 .hypothesis/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+# --- Node (root E2E tooling) ---
+/node_modules/
 
 # --- Type checkers & linters ---
 .mypy_cache/

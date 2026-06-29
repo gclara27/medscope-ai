@@ -19,7 +19,7 @@ Documento vivo para seguir el progreso del TFM.
 | Execution Plan | [ExecutionPlan.md](Execution%20Plan/ExecutionPlan.md) | Fases y orden |
 | Base de datos | [Database.md](Database/Database.md) | Esquema, tablas |
 | Testing | [Testing.md](Testing/Testing.md) | Tests, RTS-* |
-| Plan opcional T-X05–07 | [Optional-Backlog-Plan.md](Optional%20Features/Optional-Backlog-Plan.md) | US, tareas, alcance |
+| Plan opcional | [Optional-Backlog-Plan.md](Optional%20Features/Optional-Backlog-Plan.md) | US, tareas, alcance (T-X03, T-X05–07) |
 | Design | [Design/README.md](Design/README.md) | UI, mockups |
 | AGENTS | [AGENTS.md](../AGENTS.md) | Convenciones IA |
 | Visión producto | [General Description.md](MedScope%20AI%20General%20Description.md) | Narrativa TFM |
@@ -42,7 +42,7 @@ Documento vivo para seguir el progreso del TFM.
 
 | Pantalla | Mockup | Design system |
 |---|---|---|
-| Splash | [screens/splash/](Design/screens/splash/light.reference.html) | [light](Design/design-system.light.md) |
+| Splash | [screens/splash/](Design/screens/splash/light.reference.html) · [dark](Design/screens/splash/dark.reference.html) | [light](Design/design-system.light.md) · [dark](Design/design-system.dark.md) |
 | Login | [screens/login/](Design/screens/login/reference.html) | [light](Design/design-system.light.md) |
 | Dashboard | [screens/dashboard/](Design/screens/dashboard/reference.html) | [light](Design/design-system.light.md) |
 | Formulario | [screens/prediction-form/](Design/screens/prediction-form/reference.html) | [light](Design/design-system.light.md) |
@@ -88,6 +88,7 @@ Documento vivo para seguir el progreso del TFM.
 | RF-075 | [Audit consulta](Requirements/Requirements.md#rf-075--consulta-de-auditoría) | API + UI admin (T-X06) |
 | RF-076 | [ML comparación UI](Requirements/Requirements.md#rf-076--visualizar-comparación-de-modelos) | Métricas offline (T-X07) |
 | RF-077 | [ML comparación API](Requirements/Requirements.md#rf-077--api-de-comparación-ml) | GET /ml/models/comparison (T-X07) |
+| RF-078 | [Apariencia / tema](Optional%20Features/Optional-Backlog-Plan.md#t-x03--dark-mode) | Light / Dark / System (T-X03, propuesto) |
 
 ## Índice — API, DB, ML, Tests
 
@@ -97,7 +98,7 @@ Documento vivo para seguir el progreso del TFM.
 | RDB-001–020 | [Requisitos BD §10](Requirements/Requirements.md#10-requerimientos-base-de-datos) · [Database.md](Database/Database.md) |
 | RIA-001–031 | [Requisitos IA §7](Requirements/Requirements.md#7-requerimientos-ia--machine-learning) |
 | RTS-001–030 | [Requisitos testing §12](Requirements/Requirements.md#12-requerimientos-testing) · [Testing.md](Testing/Testing.md) |
-| RTS-040–042 | [Testing opcional §12.5](Requirements/Requirements.md#125-opcional-t-x05t-x07) · [Plan](Optional%20Features/Optional-Backlog-Plan.md) |
+| RTS-040–043 | [Testing opcional §12.5](Requirements/Requirements.md#125-opcional-t-x05t-x07) · [Plan](Optional%20Features/Optional-Backlog-Plan.md) |
 | RNF-001–051 | [No funcionales §6](Requirements/Requirements.md#6-requerimientos-no-funcionales) |
 | RFW-001–023 | [Frontend §8](Requirements/Requirements.md#8-requerimientos-frontend) |
 | MVP §17 | [MVP obligatorio](Requirements/Requirements.md#17-mvp-real-recomendado) |
@@ -116,6 +117,7 @@ Documento vivo para seguir el progreso del TFM.
 | UC-064–065 | [Support](Use%20Cases/Use%20Cases.md#11-support-optional) | Centro ayuda (T-X05) |
 | UC-081, UC-085 | [Audit](Use%20Cases/Use%20Cases.md#uc-081--persist-audit-logs) | Logs sistema (T-X06) |
 | UC-084 | [ML compare](Use%20Cases/Use%20Cases.md#uc-084--view-ml-model-comparison-optional) | Comparación modelos (T-X07) |
+| UC-086 | [Tema apariencia](Optional%20Features/Optional-Backlog-Plan.md#us-043--dark-mode-propuesta) | Dark mode (T-X03, propuesto) |
 | UC-080–083 | [Backend](Use%20Cases/Use%20Cases.md#12-backend--infrastructure) | API, ML pipeline |
 | UC-090–091 | [Errores](Use%20Cases/Use%20Cases.md#13-error-handling) | Validación, fallos |
 | UC-100–103 | [UX](Use%20Cases/Use%20Cases.md#14-uxui-cases) | Loading, notificaciones |
@@ -462,12 +464,42 @@ Entregables: historial (`/history`, filtros, detalle SHAP), analytics (`/analyti
 |---|---|---|---|
 | T-X01 | [x] | UI admin usuarios | [RF-070](Requirements/Requirements.md#rf-070--gestión-usuarios) · [UC-070](Use%20Cases/Use%20Cases.md#uc-070--manage-users) |
 | T-X02 | [x] | Settings | [RF-071](Requirements/Requirements.md#rf-071--gestión-roles) · [UC-071](Use%20Cases/Use%20Cases.md#uc-071--configure-system-settings) |
-| T-X03 | [ ] | Dark mode | [Design dark](Design/design-system.dark.md) |
+| T-X03 | [ ] | Dark mode | [US-043](#us-043--dark-mode) · [Design dark](Design/design-system.dark.md) · [Plan](Optional%20Features/Optional-Backlog-Plan.md#t-x03--dark-mode) |
 | T-X04 | [x] | Export PDF | [UC-063](Use%20Cases/Use%20Cases.md#uc-063--export-analytics-optional) |
 | T-X05 | [x] | Support UI | [US-040](#us-040) · [RF-072–073](Requirements/Requirements.md#59-soporte-opcional--18) · [UC-064–065](Use%20Cases/Use%20Cases.md#uc-064--access-support-center) |
 | T-X06 | [x] | Audit avanzado | [US-041](#us-041) · [RF-074–075](Requirements/Requirements.md#510-auditoría-opcional--18) · [UC-081](Use%20Cases/Use%20Cases.md#uc-081--persist-audit-logs) |
 | T-X07 | [x] | Multi-model | [US-042](#us-042) · [RF-076–077](Requirements/Requirements.md#511-comparación-de-modelos-ml-opcional--18) · [UC-084](Use%20Cases/Use%20Cases.md#uc-084--view-ml-model-comparison-optional) |
 | T-X08 | [ ] | FHIR / cloud | [UC-120–124](Use%20Cases/Use%20Cases.md#16-future-expansion-use-cases) |
+
+---
+
+# FASE X-b — Dark mode (T-X03)
+
+**Progreso:** 0 / 8 (0%) · **User story:** [US-043](#us-043--dark-mode) · **Manual:** [Phase-08-Dark-Mode](Testing/Manual/Phase-08-Dark-Mode.md)
+
+**Prompt:** `Implementa T-X03 dark mode según Optional-Backlog-Plan.md y design-system.dark.md: CSS variables, ThemeProvider, Settings Appearance. Skill: frontend + ui-ux.`
+
+| ID | ✓ | Tarea | Docs | Pedir a la IA |
+|---|---|---|---|---|
+| T-X03-01 | [ ] | Auditoría tokens | [Design dark](Design/design-system.dark.md) | `Lista hex hardcodeados en frontend/src; matriz light vs dark.` |
+| T-X03-02 | [ ] | CSS variables dual theme | [RUX-010](Requirements/Requirements.md#rux-010) | `index.css :root + .dark desde design-system.dark.md.` |
+| T-X03-03 | [ ] | Refactor Tailwind | [T-403](TaskTracker.md#fase-4--frontend-foundation) | `tailwind.config.js lee CSS vars; quita hex light fijos.` |
+| T-X03-04 | [ ] | ThemeProvider | [RF-078](Optional%20Features/Optional-Backlog-Plan.md#t-x03--dark-mode) | `localStorage + system pref + class en html; anti-FOUC.` |
+| T-X03-05 | [ ] | Appearance panel | [UC-086](Optional%20Features/Optional-Backlog-Plan.md#us-043--dark-mode-propuesta) | `Settings → Appearance: Light / Dark / System.` |
+| T-X03-06 | [ ] | Charts dark | [RUX-011](Requirements/Requirements.md#rux-011) | `recharts.ts + gauges + SHAP theme-aware.` |
+| T-X03-07 | [ ] | Pasada visual P0 | [Design dark](Design/design-system.dark.md) | `Login, dashboard, evaluation, analytics, simulation, history.` |
+| T-X03-08 | [ ] | Tests RTS-043 | [Testing](Testing/Testing.md) | `vitest theme + manual Phase-08-Dark-Mode P0.` |
+
+## US-043 — Dark mode
+
+**Como** usuario autenticado, **quiero** elegir tema claro u oscuro, **para** trabajar cómodo en distintos entornos.
+
+| Criterio | Verificación |
+|---|---|
+| Selector en Settings | T-X03-05 |
+| Persistencia | T-X03-04 + manual MT-P08-THEME-001 |
+| Sin regresión light | T-X03-07 + manual MT-P08-REG-001 |
+| Charts legibles | T-X03-06 + manual MT-P08-CHART-001 |
 
 ---
 
@@ -520,10 +552,11 @@ Implementar **una feature a la vez**. Cada bloque cierra su user story y manual 
 | T-X07-06 | [x] | Settings tab Models | [RF-012](Requirements/Requirements.md#rf-012--navegación-lateral) | `Pestaña Models en Settings; RBAC analyst/admin.` |
 | T-X07-07 | [x] | Tests RTS-042 | [Testing](Testing/Testing.md) | `pytest API + vitest panel + manual Phase-07-ML.` |
 
-### US-040 · US-041 · US-042 (resumen)
+### US-040 · US-041 · US-042 · US-043 (resumen)
 
 | US | ✓ | Título | UC | RF |
 |---|---|---|---|---|
+| [US-043](#us-043--dark-mode) | [ ] | Dark mode | UC-086 (prop.) | RF-078 (prop.), RUX-012 (prop.) |
 | [US-040](#us-040) | [x] | Support center | UC-064–065 | RF-072–073 |
 | [US-041](#us-041) | [x] | Audit trail | UC-081, UC-085 | RF-074–075 |
 | [US-042](#us-042) | [x] | ML model comparison | UC-084 | RF-076–077, RIA-040–041 |
@@ -613,3 +646,4 @@ Implementar **una feature a la vez**. Cada bloque cierra su user story y manual 
 | 2026-06-11 | **Plan T-X05–T-X07:** RF-072–077, UC-064–066/084–085, US-040–042, Fase X (22 tareas), RTS-040–042, manuales Phase-07 |
 | 2026-06-11 | **T-X05 / US-040** Support UI completo: KB, búsqueda, contacto API, ticket mailto, sidebar, RTS-040 (9 archivos test) |
 | 2026-06-11 | **T-703** performance RNF-001/002: middleware `X-Process-Time-Ms`, analytics SQL 2 queries, lazy Recharts, manualChunks, tests perf |
+| 2026-06-11 | **Plan T-X03** dark mode: US-043, T-X03-01…08, RTS-043, Phase-08 manual, Optional-Backlog-Plan |

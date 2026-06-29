@@ -31,7 +31,7 @@ MedScope AI is a **Clinical Decision Support System (CDSS)** for hospital readmi
 | Screen folder | Notes |
 |---|---|
 | `screens/settings/` | RF-012 sidebar link |
-| `screens/support/` | Help / support center |
+| `screens/support/` | Help / support center (T-X05, RF-072) |
 | `screens/system-status/` | Ops transparency |
 
 ## Design philosophy

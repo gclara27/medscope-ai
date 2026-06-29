@@ -1,14 +1,17 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { buildAnalyticsDateRangeValue } from "@/lib/analyticsDateRange";
 import { AnalyticsPage } from "@/pages/AnalyticsPage";
-import { getAnalytics } from "@/services/analytics";
 import type { AnalyticsResponse } from "@/types/analytics";
 
 vi.mock("@/services/analytics", () => ({
   getAnalytics: vi.fn(),
+  downloadAnalyticsPdf: vi.fn(),
 }));
+
+import { downloadAnalyticsPdf, getAnalytics } from "@/services/analytics";
 
 const demoResponse: AnalyticsResponse = {
   summary: {
@@ -91,6 +94,26 @@ describe("AnalyticsPage", () => {
 
     await waitFor(() => {
       expect(screen.getByText(/you do not have permission to view analytics/i)).toBeInTheDocument();
+    });
+  });
+
+  it("exports analytics as PDF for the active date range", async () => {
+    vi.mocked(getAnalytics).mockResolvedValue(demoResponse);
+    vi.mocked(downloadAnalyticsPdf).mockResolvedValue();
+
+    const user = userEvent.setup();
+    render(<AnalyticsPage />);
+
+    await waitFor(() => {
+      expect(screen.getByText("12")).toBeInTheDocument();
+    });
+
+    const defaultRange = buildAnalyticsDateRangeValue("last_30");
+    await user.click(screen.getByRole("button", { name: /export pdf/i }));
+
+    expect(downloadAnalyticsPdf).toHaveBeenCalledWith({
+      date_from: defaultRange.date_from,
+      date_to: defaultRange.date_to,
     });
   });
 });

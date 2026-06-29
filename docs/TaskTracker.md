@@ -19,6 +19,7 @@ Documento vivo para seguir el progreso del TFM.
 | Execution Plan | [ExecutionPlan.md](Execution%20Plan/ExecutionPlan.md) | Fases y orden |
 | Base de datos | [Database.md](Database/Database.md) | Esquema, tablas |
 | Testing | [Testing.md](Testing/Testing.md) | Tests, RTS-* |
+| Plan opcional T-X05–07 | [Optional-Backlog-Plan.md](Optional%20Features/Optional-Backlog-Plan.md) | US, tareas, alcance |
 | Design | [Design/README.md](Design/README.md) | UI, mockups |
 | AGENTS | [AGENTS.md](../AGENTS.md) | Convenciones IA |
 | Visión producto | [General Description.md](MedScope%20AI%20General%20Description.md) | Narrativa TFM |
@@ -49,6 +50,7 @@ Documento vivo para seguir el progreso del TFM.
 | Simulación | [screens/simulation/](Design/screens/simulation/reference.html) | [light](Design/design-system.light.md) |
 | Historial | [screens/history/](Design/screens/history/reference.html) | [light](Design/design-system.light.md) |
 | Analytics | [screens/analytics/](Design/screens/analytics/reference.html) | [light](Design/design-system.light.md) |
+| Support (opcional) | [screens/support/](Design/screens/support/reference.html) | [light](Design/design-system.light.md) |
 
 ---
 
@@ -80,6 +82,12 @@ Documento vivo para seguir el progreso del TFM.
 | RF-060 | [Analytics](Requirements/Requirements.md#rf-060--dashboard-analítico) | Dashboard analítico |
 | RF-061 | [Filtros temp.](Requirements/Requirements.md#rf-061--filtros) | Filtros temporales |
 | RF-062 | [KPIs ejecutivos](Requirements/Requirements.md#rf-062--kpis-ejecutivos) | Métricas agregadas |
+| RF-072 | [Support center](Requirements/Requirements.md#rf-072--centro-de-soporte) | KB + ayuda (T-X05) |
+| RF-073 | [Ticket soporte](Requirements/Requirements.md#rf-073--contacto-y-ticket-de-soporte) | mailto + email (T-X05) |
+| RF-074 | [Audit registro](Requirements/Requirements.md#rf-074--registro-de-auditoría) | Persistir logs (T-X06) |
+| RF-075 | [Audit consulta](Requirements/Requirements.md#rf-075--consulta-de-auditoría) | API + UI admin (T-X06) |
+| RF-076 | [ML comparación UI](Requirements/Requirements.md#rf-076--visualizar-comparación-de-modelos) | Métricas offline (T-X07) |
+| RF-077 | [ML comparación API](Requirements/Requirements.md#rf-077--api-de-comparación-ml) | GET /ml/models/comparison (T-X07) |
 
 ## Índice — API, DB, ML, Tests
 
@@ -89,6 +97,7 @@ Documento vivo para seguir el progreso del TFM.
 | RDB-001–020 | [Requisitos BD §10](Requirements/Requirements.md#10-requerimientos-base-de-datos) · [Database.md](Database/Database.md) |
 | RIA-001–031 | [Requisitos IA §7](Requirements/Requirements.md#7-requerimientos-ia--machine-learning) |
 | RTS-001–030 | [Requisitos testing §12](Requirements/Requirements.md#12-requerimientos-testing) · [Testing.md](Testing/Testing.md) |
+| RTS-040–042 | [Testing opcional §12.5](Requirements/Requirements.md#125-opcional-t-x05t-x07) · [Plan](Optional%20Features/Optional-Backlog-Plan.md) |
 | RNF-001–051 | [No funcionales §6](Requirements/Requirements.md#6-requerimientos-no-funcionales) |
 | RFW-001–023 | [Frontend §8](Requirements/Requirements.md#8-requerimientos-frontend) |
 | MVP §17 | [MVP obligatorio](Requirements/Requirements.md#17-mvp-real-recomendado) |
@@ -104,6 +113,9 @@ Documento vivo para seguir el progreso del TFM.
 | UC-040–044 | [Simulación](Use%20Cases/Use%20Cases.md#8-clinical-simulation) | Sandbox what-if |
 | UC-050–052 | [Historial](Use%20Cases/Use%20Cases.md#9-prediction-history) | Historial |
 | UC-060–062 | [Analytics](Use%20Cases/Use%20Cases.md#10-analytics) | Métricas población |
+| UC-064–065 | [Support](Use%20Cases/Use%20Cases.md#11-support-optional) | Centro ayuda (T-X05) |
+| UC-081, UC-085 | [Audit](Use%20Cases/Use%20Cases.md#uc-081--persist-audit-logs) | Logs sistema (T-X06) |
+| UC-084 | [ML compare](Use%20Cases/Use%20Cases.md#uc-084--view-ml-model-comparison-optional) | Comparación modelos (T-X07) |
 | UC-080–083 | [Backend](Use%20Cases/Use%20Cases.md#12-backend--infrastructure) | API, ML pipeline |
 | UC-090–091 | [Errores](Use%20Cases/Use%20Cases.md#13-error-handling) | Validación, fallos |
 | UC-100–103 | [UX](Use%20Cases/Use%20Cases.md#14-uxui-cases) | Loading, notificaciones |
@@ -126,6 +138,7 @@ Documento vivo para seguir el progreso del TFM.
 | Fase 7 — Polish + Testing | 1 | 12 | 8% |
 | Fase 8 — TFM + Documentación | 2 | 10 | 20% |
 | Fase 9 — Demo | 0 | 6 | 0% |
+| Fase X — Opcional T-X05–07 | 7 | 22 | 32% |
 | **TOTAL MVP** | **108** | **134** | **81%** |
 
 ---
@@ -443,18 +456,77 @@ Entregables: historial (`/history`, filtros, detalle SHAP), analytics (`/analyti
 
 # BACKLOG OPCIONAL
 
-[Requirements §18](Requirements/Requirements.md#18-features-opcionales)
+[Requirements §18](Requirements/Requirements.md#18-features-opcionales) · **Plan maestro:** [Optional-Backlog-Plan.md](Optional%20Features/Optional-Backlog-Plan.md)
 
 | ID | ✓ | Tarea | Docs |
 |---|---|---|---|
 | T-X01 | [x] | UI admin usuarios | [RF-070](Requirements/Requirements.md#rf-070--gestión-usuarios) · [UC-070](Use%20Cases/Use%20Cases.md#uc-070--manage-users) |
 | T-X02 | [x] | Settings | [RF-071](Requirements/Requirements.md#rf-071--gestión-roles) · [UC-071](Use%20Cases/Use%20Cases.md#uc-071--configure-system-settings) |
 | T-X03 | [ ] | Dark mode | [Design dark](Design/design-system.dark.md) |
-| T-X04 | [ ] | Export PDF | [UC-063](Use%20Cases/Use%20Cases.md#uc-063--export-analytics-optional) |
-| T-X05 | [ ] | Support UI | [screens/support](Design/screens/support/reference.html) |
-| T-X06 | [ ] | Audit avanzado | [UC-081](Use%20Cases/Use%20Cases.md#uc-081--persist-audit-logs) |
-| T-X07 | [ ] | Multi-model | [§18](Requirements/Requirements.md#18-features-opcionales) |
+| T-X04 | [x] | Export PDF | [UC-063](Use%20Cases/Use%20Cases.md#uc-063--export-analytics-optional) |
+| T-X05 | [x] | Support UI | [US-040](#us-040) · [RF-072–073](Requirements/Requirements.md#59-soporte-opcional--18) · [UC-064–065](Use%20Cases/Use%20Cases.md#uc-064--access-support-center) |
+| T-X06 | [x] | Audit avanzado | [US-041](#us-041) · [RF-074–075](Requirements/Requirements.md#510-auditoría-opcional--18) · [UC-081](Use%20Cases/Use%20Cases.md#uc-081--persist-audit-logs) |
+| T-X07 | [ ] | Multi-model | [US-042](#us-042) · [RF-076–077](Requirements/Requirements.md#511-comparación-de-modelos-ml-opcional--18) · [UC-084](Use%20Cases/Use%20Cases.md#uc-084--view-ml-model-comparison-optional) |
 | T-X08 | [ ] | FHIR / cloud | [UC-120–124](Use%20Cases/Use%20Cases.md#16-future-expansion-use-cases) |
+
+---
+
+# FASE X — Backlog opcional T-X05–T-X07
+
+**Progreso:** 15 / 22 (68%) · **Orden:** T-X05 → T-X06 → T-X07 · **T-X05:** cerrado (US-040) · **T-X06:** cerrado (US-041)
+
+Implementar **una feature a la vez**. Cada bloque cierra su user story y manual Phase-07.
+
+## US-040 — Support center
+
+**Prompt:** `Implementa T-X05 Support UI según Optional-Backlog-Plan.md y mockup support/reference.html. Skill: frontend + ui-ux.`
+
+| ID | ✓ | Tarea | Docs | Pedir a la IA |
+|---|---|---|---|---|
+| T-X05-01 | [x] | Contenido KB estático | [RF-072](Requirements/Requirements.md#rf-072--centro-de-soporte) | `Crea supportKb.ts con 4 categorías FAQ en inglés.` |
+| T-X05-02 | [x] | SupportPage | [RFW-024](Requirements/Requirements.md#rfw-024) · [mockup](Design/screens/support/reference.html) | `Página /support con hero, grid KB, layout design system.` |
+| T-X05-03 | [x] | Búsqueda client-side | [UC-064](Use%20Cases/Use%20Cases.md#uc-064--access-support-center) | `Input búsqueda filtra categorías por título/descripción.` |
+| T-X05-04 | [x] | Email desde settings | [RF-073](Requirements/Requirements.md#rf-073--contacto-y-ticket-de-soporte) | `Lee support_contact_email vía GET /admin/settings o contexto.` |
+| T-X05-05 | [x] | Formulario mailto | [UC-065](Use%20Cases/Use%20Cases.md#uc-065--submit-support-ticket) | `Submit ticket abre mailto con categoría, prioridad, body.` |
+| T-X05-06 | [x] | Ruta + sidebar | [RF-012](Requirements/Requirements.md#rf-012--navegación-lateral) | `Añade /support en router y enlace sidebar (todos los roles).` |
+| T-X05-07 | [x] | Tests RTS-040 | [Testing](Testing/Testing.md#3-requisitos-de-testing-traceability) | `Vitest SupportPage + manual Phase-07-Support-UI.` |
+
+## US-041 — Audit trail
+
+**Prompt:** `Implementa T-X06 audit avanzado: migración audit_logs, AuditService, GET /admin/audit-logs, pestaña Settings. Skill: backend + database + frontend.`
+
+| ID | ✓ | Tarea | Docs | Pedir a la IA |
+|---|---|---|---|---|
+| T-X06-01 | [x] | Migración audit_logs | [Database §4.8](Database/Database.md#48-audit_logs-opcional--t-x06) | `Alembic: tabla audit_logs + índices.` |
+| T-X06-02 | [x] | Modelo + repository | [RDB-001](Requirements/Requirements.md#rdb-001) | `AuditLog SQLAlchemy + AuditLogRepository.` |
+| T-X06-03 | [x] | AuditService | [RF-074](Requirements/Requirements.md#rf-074--registro-de-auditoría) · [RNF-053](Requirements/Requirements.md#rnf-053) | `record() sin PHI; action_types v1 del plan.` |
+| T-X06-04 | [x] | Hooks en routers | [UC-081](Use%20Cases/Use%20Cases.md#uc-081--persist-audit-logs) | `Registrar login, predict, simulate, admin.*.` |
+| T-X06-05 | [x] | GET /admin/audit-logs | [RBE-016](Requirements/Requirements.md#rbe-016) · [RF-075](Requirements/Requirements.md#rf-075--consulta-de-auditoría) | `Filtros fecha, action_type, user_id, paginación.` |
+| T-X06-06 | [x] | AuditLogsPanel UI | [RFW-025](Requirements/Requirements.md#rfw-025) · [UC-085](Use%20Cases/Use%20Cases.md#uc-085--query-audit-logs-optional) | `Pestaña Audit en Settings, solo admin.` |
+| T-X06-07 | [x] | Tests RTS-041 | [Testing](Testing/Testing.md) | `pytest test_audit_logs.py: write + query + 403.` |
+| T-X06-08 | [x] | Manual Phase-07 | [Manual](Testing/Manual/Phase-07-Audit-Logs.md) | `Ejecutar checklist P0 audit.` |
+
+## US-042 — ML model comparison
+
+**Prompt:** `Implementa T-X07 multi-model: GET /ml/models/comparison leyendo artefactos ML offline, panel Models en Settings. Skill: backend + ml + frontend.`
+
+| ID | ✓ | Tarea | Docs | Pedir a la IA |
+|---|---|---|---|---|
+| T-X07-01 | [ ] | ML comparison service | [RIA-040](Requirements/Requirements.md#ria-040) | `Lee baseline_comparison.json, xgboost_evaluation, manifest.` |
+| T-X07-02 | [ ] | GET /ml/models/comparison | [RBE-017](Requirements/Requirements.md#rbe-017) · [RF-077](Requirements/Requirements.md#rf-077--api-de-comparación-ml) | `Endpoint JSON; permiso analyst/admin.` |
+| T-X07-03 | [ ] | Schemas Pydantic | [RF-076](Requirements/Requirements.md#rf-076--visualizar-comparación-de-modelos) | `ModelComparisonResponse con métricas por modelo.` |
+| T-X07-04 | [ ] | ModelComparisonPanel | [RFW-026](Requirements/Requirements.md#rfw-026) · [UC-084](Use%20Cases/Use%20Cases.md#uc-084--view-ml-model-comparison-optional) | `Tabla métricas + badge production model.` |
+| T-X07-05 | [ ] | Chart barras recall | [RIA-041](Requirements/Requirements.md#ria-041) | `Recharts comparativa recall (y opcional F1/AUC).` |
+| T-X07-06 | [ ] | Settings tab Models | [RF-012](Requirements/Requirements.md#rf-012--navegación-lateral) | `Pestaña Models en Settings; RBAC analyst/admin.` |
+| T-X07-07 | [ ] | Tests RTS-042 | [Testing](Testing/Testing.md) | `pytest API + vitest panel + manual Phase-07-ML.` |
+
+### US-040 · US-041 · US-042 (resumen)
+
+| US | ✓ | Título | UC | RF |
+|---|---|---|---|---|
+| [US-040](#us-040) | [x] | Support center | UC-064–065 | RF-072–073 |
+| [US-041](#us-041) | [x] | Audit trail | UC-081, UC-085 | RF-074–075 |
+| [US-042](#us-042) | [ ] | ML model comparison | UC-084 | RF-076–077, RIA-040–041 |
 
 ---
 
@@ -537,3 +609,6 @@ Entregables: historial (`/history`, filtros, detalle SHAP), analytics (`/analyti
 | 2026-06-11 | **T-610** settings placeholder: `SettingsPage` admin-only, nav + RBAC. Fase 6 completa. MVP 106/134 (79%) |
 | 2026-06-11 | **T-603** detalle historial: `GET /history/{id}`, `HistoryDetailPage` inputs + SHAP + simulaciones. MVP 105/134 (78%) |
 | 2026-06-11 | **T-X02** settings avanzado: políticas de rol (RF-071), configuración sistema (UC-071), permisos en login + RBAC API/UI |
+| 2026-06-11 | **T-X04** export PDF analytics: `GET /analytics/export.pdf`, botón en `AnalyticsPage` (UC-063) |
+| 2026-06-11 | **Plan T-X05–T-X07:** RF-072–077, UC-064–066/084–085, US-040–042, Fase X (22 tareas), RTS-040–042, manuales Phase-07 |
+| 2026-06-11 | **T-X05 / US-040** Support UI completo: KB, búsqueda, contacto API, ticket mailto, sidebar, RTS-040 (9 archivos test) |

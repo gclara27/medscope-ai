@@ -895,6 +895,27 @@ For MVP, seed users via migration (Requirements §18).
 
 ---
 
+# 6.5 Optional backlog (T-X05–T-X07)
+
+**Duration:** 1–2 weeks (after Phase 6, parallel or before Phase 9 demo)
+
+**Plan:** [Optional-Backlog-Plan.md](../Optional%20Features/Optional-Backlog-Plan.md)
+
+## Order
+
+1. **T-X05** Support UI — frontend only, US-040
+2. **T-X06** Audit avanzado — migration + API + Settings tab, US-041
+3. **T-X07** Multi-model — read-only ML metrics API + UI, US-042
+
+## Deliverables
+
+- `/support` + sidebar link (RF-072, RF-073)
+- `audit_logs` + `GET /admin/audit-logs` (RF-074, RF-075)
+- `GET /ml/models/comparison` + Models panel (RF-076, RF-077)
+- Manual tests Phase-07 + RTS-040–042
+
+---
+
 # DELIVERABLE
 
 ✅ Enterprise feel achieved  
@@ -1218,15 +1239,21 @@ Your project idea is already strong enough to become an exceptional TFM if execu
 | History RF-050–052, UC-050–052 | Phase 3.6, 6.1 | Covered |
 | Analytics RF-060–062, UC-060–062 | Phase 3.7, 6.2 | Covered |
 | Admin RF-070–071, UC-070–071 | Phase 6.4 (optional) | Post-MVP |
+| Support RF-072–073, UC-064–065 | Phase 6.5 (T-X05) | Planned |
+| Audit RF-074–075, UC-081/085 | Phase 6.5 (T-X06) | Planned |
+| ML compare RF-076–077, RIA-040–041, UC-084 | Phase 6.5 (T-X07) | Planned |
+| Export PDF UC-063 | Phase 6.2 / T-X04 | Done |
 | API RBE-010–014 | Phase 3 | Covered |
 | Performance RNF-001–002 | Phase 3.8, 7.3 | Covered |
 | Security RNF-030–034 | Phase 1 | Covered |
 | ML RIA-001–031 | Phase 2–3 | Covered |
 | Frontend screens RFW-010–018 | Phase 4–6 | Covered |
+| Frontend optional RFW-024–026 | Phase 6.5 | Planned |
 | Design system RUX-010–011 | `docs/Design/` | Covered |
 | Docker RDO-001–002 | Phase 0, 7.5 | Covered |
 | Thesis RAC-001–010 | Phase 8 | Covered |
 | Testing RTS-001–030 | Phase 7.4 | `docs/Testing/Testing.md` |
+| Testing RTS-040–042 | Phase 6.5 | `docs/Testing/Manual/Phase-07-*.md` |
 | Database RDB-001–020 | Phase 1 | `docs/Database/Database.md` |
 
 ---

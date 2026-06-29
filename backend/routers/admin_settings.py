@@ -18,6 +18,7 @@ from schemas.admin_settings import (
     UpdateRolePolicyRequest,
     UpdateSystemSettingsRequest,
 )
+from services.audit_service import AuditService
 from services.role_policy_service import RolePolicyService
 from services.system_settings_service import SystemSettingsService
 
@@ -45,11 +46,23 @@ def list_role_policies(
 def update_role_policy(
     role_id: uuid.UUID,
     body: UpdateRolePolicyRequest,
-    _admin: User = Depends(require_permission("settings")),
+    admin: User = Depends(require_permission("settings")),
     db: Session = Depends(get_db),
 ) -> RolePolicyResponse:
     """Modify module access for a non-admin role (RF-071)."""
-    return RolePolicyService(db).update_policy(role_id, body)
+    updated = RolePolicyService(db).update_policy(role_id, body)
+    AuditService(db).record_safely(
+        action_type="admin.role.update",
+        user_id=admin.id,
+        entity_type="role",
+        entity_id=role_id,
+        action_details={
+            "role_id": str(role_id),
+            "role_name": updated.name,
+            "permission_keys": list(body.permissions.keys()),
+        },
+    )
+    return updated
 
 
 @router.get(
@@ -73,9 +86,18 @@ def get_system_settings(
 )
 def update_system_settings(
     body: UpdateSystemSettingsRequest,
-    _admin: User = Depends(require_permission("settings")),
+    admin: User = Depends(require_permission("settings")),
     db: Session = Depends(get_db),
     registry: MLRegistry = Depends(get_ml_registry),
 ) -> SystemSettingsResponse:
     """Persist admin-editable platform settings (UC-071)."""
-    return SystemSettingsService(db, registry).update_settings(body)
+    updated = SystemSettingsService(db, registry).update_settings(body)
+    AuditService(db).record_safely(
+        action_type="admin.settings.update",
+        user_id=admin.id,
+        entity_type="system_settings",
+        action_details={
+            "updated_fields": list(body.model_dump(exclude_unset=True).keys()),
+        },
+    )
+    return updated

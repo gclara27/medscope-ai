@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { AnalyticsResponse } from "@/types/analytics";
 import { api } from "./api";
-import { getAnalytics } from "./analytics";
+import { downloadAnalyticsPdf, getAnalytics } from "./analytics";
 
 vi.mock("./api", async (importOriginal) => {
   const actual = await importOriginal<typeof import("./api")>();
@@ -70,5 +70,50 @@ describe("getAnalytics", () => {
         date_to: "2026-06-30",
       },
     });
+  });
+});
+
+describe("downloadAnalyticsPdf", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    vi.stubGlobal("URL", {
+      createObjectURL: vi.fn(() => "blob:analytics"),
+      revokeObjectURL: vi.fn(),
+    });
+  });
+
+  it("downloads analytics export from GET /analytics/export.pdf", async () => {
+    const clickMock = vi.fn();
+    const removeMock = vi.fn();
+    const appendChildMock = vi.fn();
+    const link = {
+      href: "",
+      download: "",
+      rel: "",
+      click: clickMock,
+      remove: removeMock,
+    };
+    vi.spyOn(document, "createElement").mockReturnValue(link as unknown as HTMLAnchorElement);
+    vi.spyOn(document.body, "appendChild").mockImplementation(appendChildMock);
+
+    vi.mocked(api.get).mockResolvedValue({
+      data: new Blob(["%PDF-1.4"], { type: "application/pdf" }),
+      headers: {
+        "content-disposition": 'attachment; filename="medscope-analytics-2026-06-11.pdf"',
+      },
+    });
+
+    await downloadAnalyticsPdf({ date_from: "2026-06-01", date_to: "2026-06-11" });
+
+    expect(api.get).toHaveBeenCalledWith("/analytics/export.pdf", {
+      params: {
+        date_from: "2026-06-01",
+        date_to: "2026-06-11",
+      },
+      responseType: "blob",
+    });
+    expect(link.download).toBe("medscope-analytics-2026-06-11.pdf");
+    expect(clickMock).toHaveBeenCalled();
+    expect(removeMock).toHaveBeenCalled();
   });
 });

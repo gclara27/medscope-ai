@@ -8,6 +8,7 @@ from core.database import get_db
 from core.deps import get_current_user, require_permission
 from models.user import User
 from schemas.auth import LoginRequest, LoginResponse, LogoutResponse, UserResponse
+from services.audit_service import AuditService
 from services.auth_service import AuthService
 from services.user_response_mapper import to_user_response
 
@@ -27,6 +28,13 @@ def login(body: LoginRequest, db: Session = Depends(get_db)) -> LoginResponse:
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=INVALID_CREDENTIALS,
         )
+    AuditService(db).record_safely(
+        action_type="auth.login",
+        user_id=result.user.id,
+        entity_type="user",
+        entity_id=result.user.id,
+        action_details={"email": result.user.email},
+    )
     return LoginResponse(
         access_token=result.access_token,
         token_type=result.token_type,
@@ -50,8 +58,17 @@ def get_me(current_user: User = Depends(get_current_user)) -> UserResponse:
     response_model=LogoutResponse,
     summary="End the current session",
 )
-def logout(_current_user: User = Depends(get_current_user)) -> LogoutResponse:
+def logout(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> LogoutResponse:
     """Acknowledge logout; client must discard the JWT (UC-002, RF-002)."""
+    AuditService(db).record_safely(
+        action_type="auth.logout",
+        user_id=current_user.id,
+        entity_type="user",
+        entity_id=current_user.id,
+    )
     return LogoutResponse(
         message="Logged out successfully. Remove the access token on the client.",
     )

@@ -55,6 +55,37 @@ Alineado con `AGENTS.md` y `skills/testing/SKILL.md`.
 | RTS-010 | Validación métricas ML | `ml/tests/` — accuracy, recall, ranges |
 | RTS-020 | Navegación básica frontend | vitest — login, sidebar, rutas MVP |
 | RTS-030 | Flujo E2E MVP | Playwright — flujo completo §10 |
+| RTS-040 | Support UI (T-X05) | vitest support suite + manual [Phase-07-Support-UI](Manual/Phase-07-Support-UI.md) |
+| RTS-041 | Audit logs (T-X06) | pytest `test_audit_logs.py` + manual Phase-07-Audit |
+| RTS-042 | ML comparison (T-X07) | pytest `test_ml_comparison.py` + vitest + manual Phase-07-ML |
+
+### RTS-040 — archivos de test (T-X05)
+
+| Archivo | Cubre |
+|---|---|
+| `frontend/src/lib/supportKb.test.ts` | KB estática, filtro búsqueda |
+| `frontend/src/lib/supportTicket.test.ts` | mailto URL |
+| `frontend/src/services/support.test.ts` | `GET /support/contact` |
+| `frontend/src/components/support/SupportKbSearch.test.tsx` | input búsqueda |
+| `frontend/src/components/support/SupportTicketForm.test.tsx` | formulario ticket |
+| `frontend/src/pages/SupportPage.test.tsx` | página integrada |
+| `frontend/src/config/navigation.test.ts` | acceso `/support` todos los roles |
+| `frontend/src/layouts/AppLayout.test.tsx` | enlace sidebar Support |
+| `backend/tests/test_support.py` | API contacto autenticada |
+
+### RTS-041 — archivos de test (T-X06)
+
+| Archivo | Cubre |
+|---|---|
+| `backend/tests/test_audit_logs.py` | **RTS-041** write + query + 403 |
+| `backend/tests/test_audit_hooks.py` | hooks por endpoint |
+| `backend/tests/test_admin_audit_logs.py` | filtros y paginación API |
+| `backend/tests/test_audit_service.py` | sanitización PHI |
+| `backend/tests/test_audit_log_repository.py` | repositorio |
+| `frontend/src/components/settings/AuditLogsPanel.test.tsx` | panel Audit + filtros |
+| `frontend/src/pages/SettingsPage.test.tsx` | pestaña Audit en Settings |
+| `frontend/src/services/auditLogs.test.ts` | cliente API audit logs |
+| `frontend/src/config/navigation.test.ts` | RBAC `/settings` solo admin |
 
 ---
 
@@ -393,6 +424,9 @@ Checklists ejecutables por una persona **sin experiencia previa** en la aplicaci
 | Fase 2 — Pipeline ML | [`Manual/Phase-02-ML-Pipeline.md`](Manual/Phase-02-ML-Pipeline.md) |
 | Fase 3 — ML + Backend | [`Manual/Phase-03-ML-Backend-Integration.md`](Manual/Phase-03-ML-Backend-Integration.md) |
 | Fase 4 — Frontend base | [`Manual/Phase-04-Frontend-Foundation.md`](Manual/Phase-04-Frontend-Foundation.md) |
+| Fase 7 — Support (T-X05) | [`Manual/Phase-07-Support-UI.md`](Manual/Phase-07-Support-UI.md) |
+| Fase 7 — Audit (T-X06) | [`Manual/Phase-07-Audit-Logs.md`](Manual/Phase-07-Audit-Logs.md) |
+| Fase 7 — ML models (T-X07) | [`Manual/Phase-07-ML-Model-Comparison.md`](Manual/Phase-07-ML-Model-Comparison.md) |
 
 Cada caso incluye: precondiciones, pasos detallados, resultado esperado, criterios de aceptación y tabla para marcar ejecución (`[ ]` → `[x]`).
 
@@ -413,3 +447,6 @@ Complementan (no sustituyen) `pytest` / Playwright: validan entorno real (Docker
 | UC-090 | backend | validación en todos los endpoints |
 | UC-091 | backend | `test_exception_handlers.py` |
 | UC-101–103 | frontend + E2E | `ux-feedback.test.tsx`, `LoginPage.logout.test.tsx` |
+| UC-064–065 | frontend vitest + manual | `SupportPage.test.tsx`, Phase-07-Support |
+| UC-081, UC-085 | backend pytest + manual | `test_audit_logs.py`, Phase-07-Audit |
+| UC-084 | backend + frontend + manual | `test_ml_comparison.py`, Phase-07-ML |

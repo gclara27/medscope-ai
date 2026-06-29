@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import { AuditLogsPanel } from "@/components/settings/AuditLogsPanel";
 import { RolePoliciesPanel } from "@/components/settings/RolePoliciesPanel";
 import { SystemConfigurationPanel } from "@/components/settings/SystemConfigurationPanel";
 import { UserManagementPanel } from "@/components/settings/UserManagementPanel";
@@ -8,12 +9,13 @@ import { PageShell } from "@/components/layout/PageShell";
 import { getRouteIcon } from "@/config/navigation";
 import { cn } from "@/lib/utils";
 
-type SettingsSection = "users" | "roles" | "system";
+type SettingsSection = "users" | "roles" | "system" | "audit";
 
 const SETTINGS_SECTIONS: Array<{ id: SettingsSection; label: string }> = [
   { id: "users", label: "User management" },
   { id: "roles", label: "Role policies" },
   { id: "system", label: "System configuration" },
+  { id: "audit", label: "Audit" },
 ];
 
 /** Admin settings — users, role policies, and platform configuration (T-X01, T-X02). */
@@ -26,7 +28,7 @@ export function SettingsPage() {
         icon={getRouteIcon("/settings")}
         eyebrow="Platform administration"
         title="System Settings"
-        description="Manage users, role access policies, and platform configuration."
+        description="Manage users, role access policies, platform configuration, and audit logs."
       />
 
       <div className="grid gap-6 lg:grid-cols-4">
@@ -57,6 +59,7 @@ export function SettingsPage() {
           {activeSection === "users" ? <UserManagementPanel /> : null}
           {activeSection === "roles" ? <RolePoliciesPanel /> : null}
           {activeSection === "system" ? <SystemConfigurationPanel /> : null}
+          {activeSection === "audit" ? <AuditLogsPanel /> : null}
         </div>
       </div>
     </PageShell>

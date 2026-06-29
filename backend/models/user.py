@@ -10,6 +10,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from core.database import Base
 
 if TYPE_CHECKING:
+    from models.audit_log import AuditLog
     from models.prediction import Prediction
     from models.role import Role
     from models.simulation import Simulation
@@ -48,6 +49,7 @@ class User(Base):
     role: Mapped["Role"] = relationship(back_populates="users")
     predictions: Mapped[list["Prediction"]] = relationship(back_populates="user")
     simulations: Mapped[list["Simulation"]] = relationship(back_populates="user")
+    audit_logs: Mapped[list["AuditLog"]] = relationship(back_populates="user")
 
     def __repr__(self) -> str:
         return f"<User id={self.id} email={self.email!r}>"

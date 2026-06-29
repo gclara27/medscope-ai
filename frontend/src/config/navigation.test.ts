@@ -6,6 +6,7 @@ import {
   getNavItemsForRole,
   getNavItemsForUser,
   getRouteIcon,
+  SUPPORT_NAV_ITEM,
 } from "@/config/navigation";
 
 const adminUser = {
@@ -63,6 +64,17 @@ describe("navigation role access", () => {
     expect(canAccessRoute({ role: "clinician" }, "/settings")).toBe(false);
     expect(canAccessRoute({ role: "analyst" }, "/settings")).toBe(false);
     expect(canAccessRoute({ role: "nurse" }, "/settings")).toBe(false);
+  });
+
+  it("allows all authenticated roles to access support", () => {
+    expect(canAccessRoute({ role: "nurse" }, "/support")).toBe(true);
+    expect(canAccessRoute({ role: "clinician" }, "/support")).toBe(true);
+    expect(canAccessRoute({ role: "analyst" }, "/support")).toBe(true);
+    expect(canAccessRoute(adminUser, "/support")).toBe(true);
+  });
+
+  it("resolves support route icon", () => {
+    expect(getRouteIcon("/support")).toBe(SUPPORT_NAV_ITEM.icon);
   });
 
   it("resolves nested route icons from parent navigation items", () => {

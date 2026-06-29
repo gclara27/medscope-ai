@@ -63,6 +63,11 @@ class SystemSettingsService:
             float(self._get_value("risk_threshold_medium")),
         )
 
+    def get_support_contact_email(self) -> str:
+        """Public support contact for authenticated users (T-X05-04)."""
+        self.settings.ensure_defaults()
+        return str(self._get_value("support_contact_email"))
+
     def _values_map(self) -> dict[str, object]:
         self.settings.ensure_defaults()
         return {setting.key: setting.value for setting in self.settings.list_settings()}

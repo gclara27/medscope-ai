@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { FileDown } from "lucide-react";
 
 import { AnalyticsDateRangeFilter } from "@/components/analytics/AnalyticsDateRangeFilter";
 import { AnalyticsKpiCards } from "@/components/analytics/AnalyticsKpiCards";
@@ -8,21 +9,24 @@ import { Alert } from "@/components/Alert";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { PageShell } from "@/components/layout/PageShell";
 import { Spinner } from "@/components/Spinner";
+import { Button } from "@/components/ui/button";
 import { getRouteIcon } from "@/config/navigation";
 import {
   DEFAULT_ANALYTICS_DATE_RANGE,
   getAnalyticsDateRangeLabel,
   resolveAnalyticsDateRange,
 } from "@/lib/analyticsDateRange";
-import { getAnalytics } from "@/services/analytics";
+import { downloadAnalyticsPdf, getAnalytics } from "@/services/analytics";
 import type { AnalyticsDateRangeValue, AnalyticsResponse } from "@/types/analytics";
-import { getAnalyticsErrorMessage } from "@/utils/analyticsErrors";
+import { getAnalyticsErrorMessage, getAnalyticsExportErrorMessage } from "@/utils/analyticsErrors";
 
 export function AnalyticsPage() {
   const [dateRange, setDateRange] = useState<AnalyticsDateRangeValue>(DEFAULT_ANALYTICS_DATE_RANGE);
   const [analytics, setAnalytics] = useState<AnalyticsResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isExporting, setIsExporting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [exportError, setExportError] = useState<string | null>(null);
 
   const queryParams = useMemo(() => resolveAnalyticsDateRange(dateRange), [dateRange]);
 
@@ -45,6 +49,18 @@ export function AnalyticsPage() {
     void loadAnalytics();
   }, [loadAnalytics]);
 
+  async function handleExportPdf() {
+    setIsExporting(true);
+    setExportError(null);
+    try {
+      await downloadAnalyticsPdf(queryParams);
+    } catch (exportFailure) {
+      setExportError(getAnalyticsExportErrorMessage(exportFailure));
+    } finally {
+      setIsExporting(false);
+    }
+  }
+
   return (
     <PageShell>
       <PageHeader
@@ -54,16 +70,29 @@ export function AnalyticsPage() {
         description="Comprehensive overview of institutional readmission risk, evaluation volume, and population trends."
         meta={<>Showing: {getAnalyticsDateRangeLabel(dateRange)}</>}
         actions={
-          <AnalyticsDateRangeFilter
-            value={dateRange}
-            onChange={setDateRange}
-            disabled={isLoading}
-            className="lg:items-end"
-          />
+          <div className="flex flex-col gap-2 sm:items-end">
+            <AnalyticsDateRangeFilter
+              value={dateRange}
+              onChange={setDateRange}
+              disabled={isLoading || isExporting}
+              className="lg:items-end"
+            />
+            <Button
+              type="button"
+              variant="outline"
+              className="gap-2"
+              disabled={isLoading || isExporting || !analytics}
+              onClick={() => void handleExportPdf()}
+            >
+              <FileDown className="h-4 w-4" aria-hidden />
+              {isExporting ? "Exporting PDF…" : "Export PDF"}
+            </Button>
+          </div>
         }
       />
 
       {error ? <Alert variant="error">{error}</Alert> : null}
+      {exportError ? <Alert variant="error">{exportError}</Alert> : null}
 
       {isLoading ? (
         <div className="flex justify-center py-24">

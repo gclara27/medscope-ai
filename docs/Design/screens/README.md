@@ -20,7 +20,7 @@ Each folder maps to a frontend page in `frontend/src/pages/`.
 | Folder | Notes |
 |---|---|
 | `settings/` | Admin config — post-MVP (RF-070) |
-| `support/` | Help center — not in Requirements |
+| `support/` | Help center — [UC-064–065](Use%20Cases/Use%20Cases.md#uc-064--access-support-center), RF-072–073 (T-X05) |
 | `system-status/` | Ops dashboard — not in Requirements |
 
 ## Implementation notes

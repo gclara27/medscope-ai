@@ -4,6 +4,7 @@ import {
   FlaskConical,
   History,
   LayoutDashboard,
+  LifeBuoy,
   Settings,
   Stethoscope,
 } from "lucide-react";
@@ -20,6 +21,19 @@ export interface AppNavItem {
   permission: PermissionModule;
   icon: LucideIcon;
 }
+
+export interface AppFooterNavItem {
+  label: string;
+  to: string;
+  icon: LucideIcon;
+}
+
+/** Support center — visible to every authenticated user (T-X05-06, RF-012). */
+export const SUPPORT_NAV_ITEM: AppFooterNavItem = {
+  label: "Support",
+  to: "/support",
+  icon: LifeBuoy,
+};
 
 export const APP_NAV_ITEMS: AppNavItem[] = [
   {
@@ -74,6 +88,10 @@ export function getNavItemsForRole(role: string): AppNavItem[] {
 }
 
 export function getRouteIcon(path: string): LucideIcon | undefined {
+  if (path === "/support" || path.startsWith("/support/")) {
+    return LifeBuoy;
+  }
+
   const item = APP_NAV_ITEMS.find(
     (nav) => path === nav.to || path.startsWith(`${nav.to}/`),
   );

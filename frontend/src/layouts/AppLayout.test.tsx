@@ -22,6 +22,7 @@ function renderLayout(initialPath = "/dashboard") {
           <Route path="/history" element={<div>History content</div>} />
           <Route path="/history/:predictionId" element={<div>History detail content</div>} />
           <Route path="/settings" element={<div>Settings content</div>} />
+          <Route path="/support" element={<div>Support content</div>} />
         </Route>
       </Routes>
     </MemoryRouter>,
@@ -52,6 +53,15 @@ describe("AppLayout role navigation", () => {
     expect(screen.queryByRole("link", { name: /evaluation/i })).not.toBeInTheDocument();
     expect(screen.queryByRole("link", { name: /analytics/i })).not.toBeInTheDocument();
     expect(screen.queryByRole("link", { name: /settings/i })).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /support/i })).toHaveAttribute("href", "/support");
+  });
+
+  it("highlights support nav when on support route", () => {
+    renderLayout("/support");
+
+    const supportLink = screen.getByRole("link", { name: /support/i });
+    expect(supportLink.className).toMatch(/bg-secondary-container/);
+    expect(screen.getByText("Support content")).toBeInTheDocument();
   });
 
   it("shows settings link for admin role", () => {

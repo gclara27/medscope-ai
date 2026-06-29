@@ -46,16 +46,16 @@ export function HistorySimulationsPanel({ simulations }: HistorySimulationsPanel
                     key={simulation.id}
                     className="border-b border-outline-variant/70 last:border-b-0"
                   >
-                    <td className="px-4 py-3 font-mono text-xs text-on-surface-variant">
+                    <td className="px-4 py-3 text-xs text-on-surface-variant">
                       {formatHistoryDateTime(simulation.created_at)}
                     </td>
-                    <td className="px-4 py-3 font-mono tabular-nums">
+                    <td className="px-4 py-3 tabular-nums">
                       {simulation.original_risk_percent.toFixed(1)}%
                     </td>
-                    <td className="px-4 py-3 font-mono tabular-nums">
+                    <td className="px-4 py-3 tabular-nums">
                       {simulation.simulated_risk_percent.toFixed(1)}%
                     </td>
-                    <td className="px-4 py-3 font-mono tabular-nums">
+                    <td className="px-4 py-3 tabular-nums">
                       {formatDelta(simulation.delta_risk_percent)}
                     </td>
                     <td className="max-w-sm px-4 py-3 text-on-surface-variant">

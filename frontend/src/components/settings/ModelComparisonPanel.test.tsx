@@ -10,6 +10,14 @@ vi.mock("@/services/mlComparison", () => ({
   getModelComparison: (...args: unknown[]) => getModelComparisonMock(...args),
 }));
 
+vi.mock("@/components/settings/ModelComparisonMetricChart", () => ({
+  ModelComparisonMetricChart: () => (
+    <section aria-label="Model comparison chart">
+      <h2>Recall comparison</h2>
+    </section>
+  ),
+}));
+
 const demoComparison: ModelComparisonResponse = {
   is_available: true,
   primary_metric: "recall",
@@ -76,7 +84,9 @@ describe("ModelComparisonPanel", () => {
     expect(screen.getByText("Random Forest")).toBeInTheDocument();
     expect(screen.getByText("54.0%")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: /why this production model/i })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: /recall comparison/i })).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByRole("heading", { name: /recall comparison/i })).toBeInTheDocument();
+    });
     expect(screen.getByText(/highest recall/i)).toBeInTheDocument();
     expect(screen.getByText(/offline training evaluation/i)).toBeInTheDocument();
     expect(getModelComparisonMock).toHaveBeenCalled();

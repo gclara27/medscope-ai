@@ -1,6 +1,6 @@
-# MedScope AI — Plan de trabajo: backlog opcional T-X05–T-X07
+# MedScope AI — Plan de trabajo: backlog opcional (T-X03, T-X05–T-X07)
 
-Documento maestro de planificación para las tres features opcionales acordadas.
+Documento maestro de planificación para features opcionales post-MVP.
 **No implementa código** — define requisitos, casos de uso, user stories, tareas y tests para implementar **una a una**.
 
 ---
@@ -9,22 +9,25 @@ Documento maestro de planificación para las tres features opcionales acordadas.
 
 | Documento | Rol |
 |---|---|
-| [Requirements.md](../Requirements/Requirements.md) | RF-072–077, RIA-040–041, RBE-015–017, RNF-052–053 |
-| [Use Cases.md](../Use%20Cases/Use%20Cases.md) | UC-064–066, UC-081 (ampliado), UC-084–085 |
-| [TaskTracker.md](../TaskTracker.md) | Fase X — tareas T-X05-01 … T-X07-07 |
+| [Requirements.md](../Requirements/Requirements.md) | RF-072–078 (propuesto), RIA-040–041, RBE-015–017, RNF-052–053 |
+| [Use Cases.md](../Use%20Cases/Use%20Cases.md) | UC-064–066, UC-081 (ampliado), UC-084–085, UC-086 (propuesto) |
+| [TaskTracker.md](../TaskTracker.md) | T-X03-01 … T-X03-08 · T-X05-01 … T-X07-07 |
+| [design-system.dark.md](../Design/design-system.dark.md) | Tokens tema oscuro (T-X03) |
 | [Database.md](../Database/Database.md) | `audit_logs`, índices, flujos |
-| [Testing.md](../Testing/Testing.md) | RTS-040–042, manuales Phase-07 |
+| [Testing.md](../Testing/Testing.md) | RTS-040–043, manuales Phase-07 / Phase-08 |
 | [ExecutionPlan.md](../Execution%20Plan/ExecutionPlan.md) | Phase 6.5 |
 | [screens/support/](../Design/screens/support/reference.html) | Mockup T-X05 |
+| [screens/splash/dark.reference.html](../Design/screens/splash/dark.reference.html) | Referencia visual T-X03 |
 
 ---
 
 ## Objetivo
 
-Completar tres capacidades **post-MVP** (Requirements §18) con trazabilidad de TFM:
+Completar capacidades **post-MVP** (Requirements §18) con trazabilidad de TFM:
 
 | ID | Feature | Valor principal |
 |---|---|---|
+| **T-X03** | Dark mode | UX enterprise — tema clínico oscuro, accesibilidad |
 | **T-X05** | Support UI | UX enterprise — ayuda, FAQ, contacto |
 | **T-X06** | Audit avanzado | Trazabilidad y gobernanza (UC-081) |
 | **T-X07** | Multi-model | Narrativa ML — comparación LR / RF / XGBoost |
@@ -34,12 +37,15 @@ Completar tres capacidades **post-MVP** (Requirements §18) con trazabilidad de 
 ## Orden de implementación recomendado
 
 ```text
+0. T-X03  Dark mode        → solo frontend (tokens + ThemeProvider)
 1. T-X05  Support UI      → solo frontend (+ lectura settings existente)
 2. T-X06  Audit avanzado  → backend + migración + UI admin
 3. T-X07  Multi-model     → API lectura artefactos ML + UI analyst/admin
 ```
 
-**Rationale:** T-X05 es la más aislada y de menor riesgo. T-X06 prepara infraestructura de compliance antes de ampliar superficie ML. T-X07 reutiliza artefactos ya generados en Fase 2 (`baseline_comparison.json`, `xgboost_evaluation.json`, `model_manifest.json`).
+**Rationale T-X03:** independiente del backend; mejora demo/TFM sin tocar ML ni BD. Conviene antes o después de T-X05–07 según prioridad visual; no bloquea otras features.
+
+**Rationale T-X05–07:** T-X05 es la más aislada y de menor riesgo. T-X06 prepara infraestructura de compliance antes de ampliar superficie ML. T-X07 reutiliza artefactos ya generados en Fase 2.
 
 ---
 
@@ -47,6 +53,7 @@ Completar tres capacidades **post-MVP** (Requirements §18) con trazabilidad de 
 
 | Feature | User story | Requisitos | Casos de uso | Pantalla | API |
 |---|---|---|---|---|---|
+| T-X03 | US-043 | RF-078 (prop.), RUX-010/011, RUX-012 (prop.) | UC-086 (prop.) | Settings → Appearance | — |
 | T-X05 | US-040 | RF-072, RF-073, RFW-024 | UC-064, UC-065 | `/support` | — (mailto) |
 | T-X06 | US-041 | RF-074, RF-075, RNF-052, RNF-053 | UC-081 | Settings → Audit | `GET /admin/audit-logs` |
 | T-X07 | US-042 | RF-076, RF-077, RIA-040, RIA-041 | UC-084, UC-085 | Settings → Models | `GET /ml/models/comparison` |
@@ -54,6 +61,38 @@ Completar tres capacidades **post-MVP** (Requirements §18) con trazabilidad de 
 ---
 
 ## Alcance por feature
+
+### T-X03 — Dark mode
+
+**In scope (obligatorio para cerrar T-X03):**
+
+- Infraestructura `ThemeProvider` + hook `useTheme` (`light` | `dark` | `system`)
+- Persistencia en `localStorage`; anti-FOUC en `index.html` (script inline opcional)
+- Tokens CSS en `index.css`: bloques `:root` (light) y `.dark` desde [design-system.dark.md](../Design/design-system.dark.md)
+- Refactor `tailwind.config.js`: colores MedScope vía CSS variables (no hex fijos light-only)
+- Panel **Appearance** en Settings (todos los roles autenticados)
+- `document.documentElement.classList.toggle('dark', …)` — ya preparado: `darkMode: ['class']`
+- Pantallas MVP: login, dashboard, evaluation, result, simulation, history, analytics, support, settings
+- Charts: `recharts.ts`, gauges, SHAP, simulation impact — colores theme-aware
+- Risk colors dark: `#4edea3` / `#fbbf24` / `#ffb4ab` (design-system.dark)
+- Default **light** sin regresión MVP
+
+**Out of scope (stretch — T-X03b):**
+
+- Preferencia en PostgreSQL / sync multi-dispositivo
+- Mockups dark por cada pantalla (solo splash tiene referencia HTML completa)
+- PDF export con tema dark
+- E2E Playwright screenshots dark (opcional en T-708)
+
+**Dependencias:** T-403 (tokens light), T-X02 (Settings), `skills/frontend` + `skills/ui-ux`.
+
+**Arquitectura resumida:**
+
+```text
+localStorage → ThemeProvider → <html class="dark"> → CSS vars → Tailwind + Recharts
+```
+
+---
 
 ### T-X05 — Support UI
 
@@ -136,6 +175,26 @@ Completar tres capacidades **post-MVP** (Requirements §18) con trazabilidad de 
 
 ## User stories
 
+### US-043 — Dark mode (propuesta)
+
+**Como** usuario autenticado (cualquier rol),  
+**quiero** elegir entre tema claro, oscuro o seguir el sistema,  
+**para** trabajar cómodo en distintos entornos de iluminación.
+
+**Criterios de aceptación:**
+
+1. Selector Light / Dark / System en Settings → Appearance.
+2. Tema dark usa tokens de `design-system.dark.md` (fondo navy, primary `#adc6ff`).
+3. Preferencia persiste tras recargar (`localStorage`).
+4. Pantallas P0 MVP legibles en dark (dashboard, evaluation, analytics, login).
+5. Badges de riesgo distinguibles en dark (RUX-011).
+6. Light permanece default; sin regresión visual respecto al MVP.
+7. vitest: ThemeProvider + AppearancePanel (RTS-043).
+
+**Tareas:** T-X03-01 … T-X03-08 · **Audit:** [dark-mode-token-audit.md](../Design/dark-mode-token-audit.md) · **Manual:** [Phase-08-Dark-Mode.md](../Testing/Manual/Phase-08-Dark-Mode.md)
+
+---
+
 ### US-040 — Access support center
 
 **Como** usuario autenticado (cualquier rol),  
@@ -210,6 +269,7 @@ Para marcar cada T-X0N como `[x]` en TaskTracker:
 
 | Feature | Tareas | Esfuerzo | Riesgo |
 |---|---|---|---|
+| T-X03 | 8 | 1.5–2.5 días | Medio |
 | T-X05 | 7 | 0.5–1 día | Bajo |
 | T-X06 | 8 | 1.5–2 días | Medio |
 | T-X07 | 7 | 1–1.5 días | Bajo–medio |
@@ -220,4 +280,5 @@ Para marcar cada T-X0N como `[x]` en TaskTracker:
 
 | Fecha | Cambio |
 |---|---|
+| 2026-06-11 | **Plan T-X03** dark mode: US-043, RF-078/UC-086/RUX-012 (prop.), T-X03-01…08, RTS-043, Phase-08 manual |
 | 2026-06-11 | Creación plan T-X05–T-X07 con trazabilidad RF/UC/US/tareas/tests |

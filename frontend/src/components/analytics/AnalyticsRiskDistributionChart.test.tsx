@@ -1,7 +1,8 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { AnalyticsRiskDistributionChart } from "@/components/analytics/AnalyticsRiskDistributionChart";
+import { renderWithTheme } from "@/test/renderWithTheme";
 import type { RiskDistributionItem } from "@/types/analytics";
 
 const demoDistribution: RiskDistributionItem[] = [
@@ -12,7 +13,7 @@ const demoDistribution: RiskDistributionItem[] = [
 
 describe("AnalyticsRiskDistributionChart", () => {
   it("renders risk distribution chart from analytics payload", () => {
-    const { container } = render(
+    const { container } = renderWithTheme(
       <AnalyticsRiskDistributionChart distribution={demoDistribution} />,
     );
 
@@ -22,7 +23,7 @@ describe("AnalyticsRiskDistributionChart", () => {
   });
 
   it("shows empty state when there are no predictions", () => {
-    render(
+    renderWithTheme(
       <AnalyticsRiskDistributionChart
         distribution={[
           { risk_level: "low", count: 0, percentage: 0 },

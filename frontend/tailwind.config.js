@@ -1,6 +1,7 @@
 import tailwindcssAnimate from "tailwindcss-animate";
 
-import { RISK_COLORS } from "./riskColors.js";
+/** MedScope token → Tailwind color with opacity support (T-X03-03). */
+const med = (name) => `rgb(var(${name}) / <alpha-value>)`;
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -9,7 +10,7 @@ export default {
   safelist: [
     "animate-toast-in",
     "animate-toast-out",
-    "border-[#16a34a40]",
+    "border-risk-low/25",
     "border-error/30",
     "bg-error-container/40",
   ],
@@ -45,33 +46,33 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        /* MedScope design-system.light.md (T-403) — legacy utility names */
-        "on-primary": "#ffffff",
-        "primary-container": "#0070eb",
-        tertiary: "#005da7",
-        "tertiary-container": "#2976c7",
-        surface: "#f8f9fa",
-        "surface-bright": "#f8f9fa",
-        "surface-dim": "#d9dadb",
-        "surface-container": "#edeeef",
-        "surface-container-lowest": "#ffffff",
-        "surface-container-low": "#f3f4f5",
-        "surface-container-high": "#e7e8e9",
-        "surface-container-highest": "#e1e3e4",
-        "surface-variant": "#e1e3e4",
-        "on-surface": "#191c1d",
-        "on-surface-variant": "#414755",
-        "on-background": "#191c1d",
-        outline: "#717786",
-        "outline-variant": "#c1c6d7",
-        error: "#ba1a1a",
-        "error-container": "#ffdad6",
-        "on-error-container": "#93000a",
-        "secondary-container": "#d2e4fb",
-        "on-secondary-container": "#556679",
-        "risk-low": RISK_COLORS.low,
-        "risk-medium": RISK_COLORS.medium,
-        "risk-high": RISK_COLORS.high,
+        /* MedScope design tokens — index.css --color-* (T-X03-03) */
+        "on-primary": med("--color-on-primary"),
+        "primary-container": med("--color-primary-container"),
+        tertiary: med("--color-tertiary"),
+        "tertiary-container": med("--color-tertiary-container"),
+        surface: med("--color-surface"),
+        "surface-bright": med("--color-surface-bright"),
+        "surface-dim": med("--color-surface-dim"),
+        "surface-container": med("--color-surface-container"),
+        "surface-container-lowest": med("--color-surface-container-lowest"),
+        "surface-container-low": med("--color-surface-container-low"),
+        "surface-container-high": med("--color-surface-container-high"),
+        "surface-container-highest": med("--color-surface-container-highest"),
+        "surface-variant": med("--color-surface-variant"),
+        "on-surface": med("--color-on-surface"),
+        "on-surface-variant": med("--color-on-surface-variant"),
+        "on-background": med("--color-on-background"),
+        outline: med("--color-outline"),
+        "outline-variant": med("--color-outline-variant"),
+        error: med("--color-error"),
+        "error-container": med("--color-error-container"),
+        "on-error-container": med("--color-on-error-container"),
+        "secondary-container": med("--color-secondary-container"),
+        "on-secondary-container": med("--color-on-secondary-container"),
+        "risk-low": med("--color-risk-low"),
+        "risk-medium": med("--color-risk-medium"),
+        "risk-high": med("--color-risk-high"),
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -83,9 +84,9 @@ export default {
         mono: ["JetBrains Mono", "ui-monospace", "monospace"],
       },
       boxShadow: {
-        "level-1": "0px 2px 4px rgba(0, 0, 0, 0.05)",
-        "level-2": "0px 8px 24px rgba(0, 0, 0, 0.08)",
-        "focus-glow": "0 0 0 2px #0058bc",
+        "level-1": "var(--shadow-level-1)",
+        "level-2": "var(--shadow-level-2)",
+        "focus-glow": "var(--shadow-focus-glow)",
       },
       keyframes: {
         "toast-in": {

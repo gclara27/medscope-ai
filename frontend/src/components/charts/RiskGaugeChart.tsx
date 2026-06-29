@@ -2,11 +2,10 @@ import { cn } from "@/lib/utils";
 import {
   RISK_BADGE_CLASSES,
   RISK_BADGE_LABELS,
-  RISK_COLORS,
-  RISK_GAUGE_TRACK_COLOR,
   RISK_TEXT_CLASSES,
   clampRiskPercent,
 } from "@/lib/riskDisplay";
+import { useChartColors } from "@/hooks/useChartColors";
 import type { RiskLevel } from "@/types/prediction";
 import type { ReactNode } from "react";
 
@@ -29,8 +28,9 @@ export function RiskGaugeChart({
   titleClassName,
   className,
 }: RiskGaugeChartProps) {
+  const colors = useChartColors();
   const percent = clampRiskPercent(riskPercent);
-  const strokeColor = RISK_COLORS[riskLevel];
+  const strokeColor = colors[riskLevel];
   const dashOffset = GAUGE_CIRCUMFERENCE * (1 - percent / 100);
   const gaugeLabel = `Readmission risk ${percent.toFixed(1)} percent, ${RISK_BADGE_LABELS[riskLevel]}`;
 
@@ -60,7 +60,7 @@ export function RiskGaugeChart({
             cy="50"
             r={GAUGE_RADIUS}
             fill="transparent"
-            stroke={RISK_GAUGE_TRACK_COLOR}
+            stroke={colors.gaugeTrack}
             strokeWidth="8"
           />
           <circle

@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import {
   Bar,
   BarChart,
@@ -10,6 +11,9 @@ import {
 } from "recharts";
 
 import { ChartContainer } from "@/components/charts/ChartContainer";
+import { ChartTooltipCard } from "@/components/charts/ChartTooltipCard";
+import { useChartColors } from "@/hooks/useChartColors";
+import { getBarHighlightFill } from "@/lib/chartTheme";
 
 export interface RiskDistributionDatum {
   level: string;
@@ -29,36 +33,55 @@ export function RiskDistributionChart({
   title = "Risk distribution",
   description = "Population readmission risk buckets.",
 }: RiskDistributionChartProps) {
+  const colors = useChartColors();
+  const barHighlightFill = useMemo(() => getBarHighlightFill(colors), [colors]);
+
   return (
     <ChartContainer title={title} description={description}>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#e1e3e4" vertical={false} />
+          <CartesianGrid strokeDasharray="3 3" stroke={colors.grid} vertical={false} />
           <XAxis
             dataKey="level"
-            tick={{ fill: "#414755", fontSize: 12 }}
-            axisLine={{ stroke: "#c1c6d7" }}
+            tick={{ fill: colors.axis, fontSize: 12 }}
+            axisLine={{ stroke: colors.outline }}
             tickLine={false}
           />
           <YAxis
             allowDecimals={false}
-            tick={{ fill: "#414755", fontSize: 12 }}
-            axisLine={{ stroke: "#c1c6d7" }}
+            tick={{ fill: colors.axis, fontSize: 12 }}
+            axisLine={{ stroke: colors.outline }}
             tickLine={false}
           />
           <Tooltip
-            contentStyle={{
-              borderRadius: "8px",
-              border: "1px solid #c1c6d7",
-              fontSize: "13px",
-            }}
-            formatter={(value, _name, item) => {
-              const numericValue = typeof value === "number" ? value : Number(value ?? 0);
-              const percentage = item.payload?.percentage;
-              if (typeof percentage === "number") {
-                return [`${numericValue} (${percentage.toFixed(1)}%)`, "Evaluations"];
+            cursor={{ fill: barHighlightFill }}
+            content={({ active, payload, label }) => {
+              if (!active || !payload?.length || !label) {
+                return null;
               }
-              return [numericValue, "Evaluations"];
+
+              const datum = payload[0]?.payload as RiskDistributionDatum | undefined;
+              const rawValue = payload[0]?.value;
+              const numericValue =
+                typeof rawValue === "number" ? rawValue : Number(rawValue ?? 0);
+              const percentage = datum?.percentage;
+              const valueText =
+                typeof percentage === "number"
+                  ? `${numericValue} (${percentage.toFixed(1)}%)`
+                  : String(numericValue);
+
+              return (
+                <ChartTooltipCard
+                  title={String(label)}
+                  rows={[
+                    {
+                      label: "Evaluations",
+                      value: valueText,
+                      color: datum?.fill,
+                    },
+                  ]}
+                />
+              );
             }}
           />
           <Bar dataKey="count" radius={[4, 4, 0, 0]}>

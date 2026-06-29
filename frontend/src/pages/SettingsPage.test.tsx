@@ -3,6 +3,15 @@ import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 
 import { SettingsPage } from "@/pages/SettingsPage";
+import { ThemeProvider } from "@/context/ThemeProvider";
+
+function renderSettingsPage() {
+  return render(
+    <ThemeProvider>
+      <SettingsPage />
+    </ThemeProvider>,
+  );
+}
 
 const listAdminUsersMock = vi.fn();
 const createAdminUserMock = vi.fn();
@@ -163,16 +172,33 @@ const demoModelComparison = {
 };
 
 describe("SettingsPage", () => {
-  it("renders user management by default", async () => {
+  it("renders appearance by default", () => {
     listAdminUsersMock.mockResolvedValue(demoUsers);
     listRolePoliciesMock.mockResolvedValue(demoPolicies);
     getSystemSettingsMock.mockResolvedValue(demoSettings);
     listAuditLogsMock.mockResolvedValue(demoAuditLogs);
     getModelComparisonMock.mockResolvedValue(demoModelComparison);
 
-    render(<SettingsPage />);
+    renderSettingsPage();
 
     expect(screen.getByRole("heading", { name: /system settings/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /appearance/i })).toBeInTheDocument();
+    expect(screen.getByRole("radio", { name: /light/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /appearance/i })).toHaveClass("bg-primary");
+  });
+
+  it("switches to user management", async () => {
+    listAdminUsersMock.mockResolvedValue(demoUsers);
+    listRolePoliciesMock.mockResolvedValue(demoPolicies);
+    getSystemSettingsMock.mockResolvedValue(demoSettings);
+    listAuditLogsMock.mockResolvedValue(demoAuditLogs);
+    getModelComparisonMock.mockResolvedValue(demoModelComparison);
+
+    const user = userEvent.setup();
+    renderSettingsPage();
+
+    await user.click(screen.getByRole("button", { name: /user management/i }));
+
     await waitFor(() => {
       expect(screen.getByText("admin@medscope.ai")).toBeInTheDocument();
     });
@@ -186,7 +212,7 @@ describe("SettingsPage", () => {
     listAuditLogsMock.mockResolvedValue(demoAuditLogs);
 
     const user = userEvent.setup();
-    render(<SettingsPage />);
+    renderSettingsPage();
 
     await user.click(screen.getByRole("button", { name: /role policies/i }));
     await waitFor(() => {
@@ -208,7 +234,7 @@ describe("SettingsPage", () => {
     listAuditLogsMock.mockResolvedValue(demoAuditLogs);
 
     const user = userEvent.setup();
-    render(<SettingsPage />);
+    renderSettingsPage();
 
     await user.click(screen.getByRole("button", { name: /^audit$/i }));
 
@@ -219,6 +245,17 @@ describe("SettingsPage", () => {
     expect(listAuditLogsMock).toHaveBeenCalled();
   });
 
+  it("keeps appearance selected when revisiting from the nav", () => {
+    listAdminUsersMock.mockResolvedValue(demoUsers);
+    listRolePoliciesMock.mockResolvedValue(demoPolicies);
+    getSystemSettingsMock.mockResolvedValue(demoSettings);
+
+    renderSettingsPage();
+
+    expect(screen.getByRole("heading", { name: /appearance/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /appearance/i })).toHaveClass("bg-primary");
+  });
+
   it("switches to the models section", async () => {
     listAdminUsersMock.mockResolvedValue(demoUsers);
     listRolePoliciesMock.mockResolvedValue(demoPolicies);
@@ -227,7 +264,7 @@ describe("SettingsPage", () => {
     getModelComparisonMock.mockResolvedValue(demoModelComparison);
 
     const user = userEvent.setup();
-    render(<SettingsPage />);
+    renderSettingsPage();
 
     await user.click(screen.getByRole("button", { name: /^models$/i }));
 

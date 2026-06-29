@@ -1,11 +1,12 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { RiskGaugeChart } from "@/components/charts/RiskGaugeChart";
+import { renderWithTheme } from "@/test/renderWithTheme";
 
 describe("RiskGaugeChart", () => {
   it("renders risk percent and level in accessible label", () => {
-    render(<RiskGaugeChart riskPercent={78.2} riskLevel="high" />);
+    renderWithTheme(<RiskGaugeChart riskPercent={78.2} riskLevel="high" />);
 
     expect(screen.getByRole("img")).toHaveAttribute(
       "aria-label",
@@ -16,13 +17,13 @@ describe("RiskGaugeChart", () => {
   });
 
   it("clamps percent display to 0–100", () => {
-    render(<RiskGaugeChart riskPercent={150} riskLevel="high" />);
+    renderWithTheme(<RiskGaugeChart riskPercent={150} riskLevel="high" />);
 
     expect(screen.getByText(/100\.0/)).toBeInTheDocument();
   });
 
   it("applies RUX-011 risk color classes per level", () => {
-    const { rerender } = render(<RiskGaugeChart riskPercent={78} riskLevel="high" />);
+    const { rerender } = renderWithTheme(<RiskGaugeChart riskPercent={78} riskLevel="high" />);
     expect(screen.getByText("HIGH RISK")).toHaveClass("text-risk-high");
 
     rerender(<RiskGaugeChart riskPercent={42} riskLevel="medium" />);
@@ -33,7 +34,7 @@ describe("RiskGaugeChart", () => {
   });
 
   it("shows custom title", () => {
-    render(
+    renderWithTheme(
       <RiskGaugeChart
         riskPercent={25}
         riskLevel="low"

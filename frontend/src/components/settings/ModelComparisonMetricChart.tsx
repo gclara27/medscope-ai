@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import {
   Bar,
   BarChart,
@@ -10,11 +11,13 @@ import {
 } from "recharts";
 
 import { ChartContainer } from "@/components/charts/ChartContainer";
+import { ChartTooltipCard } from "@/components/charts/ChartTooltipCard";
+import { useChartColors } from "@/hooks/useChartColors";
 import {
   formatPrimaryMetricLabel,
   mapModelComparisonChartData,
 } from "@/lib/mlComparisonDisplay";
-import { CHART_COLORS } from "@/lib/recharts";
+import { getBarHighlightFill } from "@/lib/chartTheme";
 import type { ModelComparisonItem } from "@/types/mlComparison";
 
 interface ModelComparisonMetricChartProps {
@@ -29,7 +32,12 @@ export function ModelComparisonMetricChart({
   primaryMetric,
   productionModelId,
 }: ModelComparisonMetricChartProps) {
-  const data = mapModelComparisonChartData(models, primaryMetric, productionModelId);
+  const colors = useChartColors();
+  const data = useMemo(
+    () => mapModelComparisonChartData(models, primaryMetric, productionModelId, colors),
+    [colors, models, primaryMetric, productionModelId],
+  );
+  const barHighlightFill = useMemo(() => getBarHighlightFill(colors), [colors]);
   const metricLabel = formatPrimaryMetricLabel(primaryMetric);
   const title = `${metricLabel} comparison`;
   const description = `Offline ${metricLabel.toLowerCase()} by candidate model on the validation split. The production model is highlighted in blue.`;
@@ -48,30 +56,45 @@ export function ModelComparisonMetricChart({
     <ChartContainer title={title} description={description}>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke={CHART_COLORS.grid} vertical={false} />
+          <CartesianGrid strokeDasharray="3 3" stroke={colors.grid} vertical={false} />
           <XAxis
             dataKey="model"
-            tick={{ fill: CHART_COLORS.axis, fontSize: 12 }}
-            axisLine={{ stroke: "#c1c6d7" }}
+            tick={{ fill: colors.axis, fontSize: 12 }}
+            axisLine={{ stroke: colors.outline }}
             tickLine={false}
           />
           <YAxis
             domain={[0, 100]}
             tickFormatter={(value) => `${value}%`}
-            tick={{ fill: CHART_COLORS.axis, fontSize: 12 }}
-            axisLine={{ stroke: "#c1c6d7" }}
+            tick={{ fill: colors.axis, fontSize: 12 }}
+            axisLine={{ stroke: colors.outline }}
             tickLine={false}
           />
           <Tooltip
-            contentStyle={{
-              borderRadius: "8px",
-              border: "1px solid #c1c6d7",
-              fontSize: "13px",
-            }}
-            formatter={(value, _name, item) => {
-              const numericValue = typeof value === "number" ? value : Number(value ?? 0);
-              const productionLabel = item.payload?.isProduction ? " (production)" : "";
-              return [`${numericValue.toFixed(1)}%`, `${metricLabel}${productionLabel}`];
+            cursor={{ fill: barHighlightFill }}
+            content={({ active, payload, label }) => {
+              if (!active || !payload?.length || !label) {
+                return null;
+              }
+
+              const datum = payload[0]?.payload as (typeof data)[number] | undefined;
+              const rawValue = payload[0]?.value;
+              const numericValue =
+                typeof rawValue === "number" ? rawValue : Number(rawValue ?? 0);
+              const productionLabel = datum?.isProduction ? " (production)" : "";
+
+              return (
+                <ChartTooltipCard
+                  title={String(label)}
+                  rows={[
+                    {
+                      label: `${metricLabel}${productionLabel}`,
+                      value: `${numericValue.toFixed(1)}%`,
+                      color: datum?.fill,
+                    },
+                  ]}
+                />
+              );
             }}
           />
           <Bar dataKey="metricPercent" radius={[4, 4, 0, 0]}>

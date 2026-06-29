@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import time
 from datetime import date, timedelta
 
 import pytest
@@ -131,3 +132,20 @@ def test_analytics_admin_role_allowed(
     headers = auth_header("admin-analytics@medscope.ai")
     response = client.get("/analytics", headers=headers)
     assert response.status_code == 200
+
+
+def test_analytics_responds_within_rnf002_budget(
+    client: TestClient,
+    auth_header,
+    seed_user,
+) -> None:
+    """GET /analytics should complete within 2 seconds (RNF-002, T-703)."""
+    seed_user(email="analyst-analytics-perf@medscope.ai", role_name="analyst")
+    headers = auth_header("analyst-analytics-perf@medscope.ai")
+
+    started = time.perf_counter()
+    response = client.get("/analytics", headers=headers)
+    elapsed = time.perf_counter() - started
+
+    assert response.status_code == 200
+    assert elapsed < 2.0, f"Analytics took {elapsed:.3f}s"

@@ -78,7 +78,7 @@ export function LoginPage() {
         onClose={() => setLogoutToastOpen(false)}
       />
 
-      <div className="flex min-h-screen items-center justify-center p-4 md:p-10">
+      <div className="flex min-h-screen items-center justify-center bg-background p-4 md:p-10">
         <Card className="w-full max-w-[440px] overflow-hidden">
           <div className="flex flex-col items-center border-b border-surface-container-highest p-8 text-center">
             <MedScopeAppIcon size="lg" className="mb-4 shadow-level-1" />

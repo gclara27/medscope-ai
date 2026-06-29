@@ -26,12 +26,15 @@ export function SplashPage() {
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-surface">
       <div
-        className="absolute inset-0 scale-105 bg-cover bg-center opacity-[0.17] blur-[1px] brightness-[2] saturate-[0.35] contrast-[0.85]"
+        className="absolute inset-0 scale-105 bg-cover bg-center opacity-[0.2] saturate-[0.4] contrast-[0.9] dark:opacity-[0.35] dark:saturate-[0.55]"
         style={{ backgroundImage: "url('/splash-corridor.png')" }}
         aria-hidden
       />
-      <div className="absolute inset-0 bg-surface/94 backdrop-blur-md" aria-hidden />
-      <div className="absolute inset-0 bg-gradient-to-t from-primary/5 via-surface/30 to-transparent" aria-hidden />
+      <div className="absolute inset-0 bg-surface/90 backdrop-blur-md dark:bg-surface/80" aria-hidden />
+      <div
+        className="absolute inset-0 bg-gradient-to-t from-primary/5 via-transparent to-transparent dark:from-primary/10"
+        aria-hidden
+      />
 
       <main className="relative z-10 flex max-w-3xl flex-col items-center px-4 text-center md:px-10">
         <div className="mb-6 animate-fade-in-up" style={{ animationDelay: "0ms" }}>

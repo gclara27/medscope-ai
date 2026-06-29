@@ -58,6 +58,18 @@ Alineado con `AGENTS.md` y `skills/testing/SKILL.md`.
 | RTS-040 | Support UI (T-X05) | vitest support suite + manual [Phase-07-Support-UI](Manual/Phase-07-Support-UI.md) |
 | RTS-041 | Audit logs (T-X06) | pytest `test_audit_logs.py` + manual Phase-07-Audit |
 | RTS-042 | ML comparison (T-X07) | pytest `test_ml_comparison.py` + vitest + manual Phase-07-ML |
+| RTS-043 | Dark mode (T-X03) | vitest theme + manual [Phase-08-Dark-Mode](Manual/Phase-08-Dark-Mode.md) |
+
+### RTS-043 — archivos de test (T-X03)
+
+| Archivo | Cubre |
+|---|---|
+| `frontend/src/lib/theme.test.ts` | resolveTheme, localStorage |
+| `frontend/src/context/ThemeProvider.test.tsx` | class `dark` en document, meta theme-color |
+| `frontend/src/components/settings/AppearancePanel.test.tsx` | selector Light/Dark/System |
+| `frontend/src/lib/chartTheme.test.ts` | paletas CSS light/dark |
+| `frontend/src/test/darkModeP0.test.tsx` | P0 screens + light regression |
+| Manual Phase-08 | MT-P08-THEME/UI/CHART smoke visual |
 
 ### RTS-040 — archivos de test (T-X05)
 
@@ -441,6 +453,7 @@ Checklists ejecutables por una persona **sin experiencia previa** en la aplicaci
 | Fase 7 — Support (T-X05) | [`Manual/Phase-07-Support-UI.md`](Manual/Phase-07-Support-UI.md) |
 | Fase 7 — Audit (T-X06) | [`Manual/Phase-07-Audit-Logs.md`](Manual/Phase-07-Audit-Logs.md) |
 | Fase 7 — ML models (T-X07) | [`Manual/Phase-07-ML-Model-Comparison.md`](Manual/Phase-07-ML-Model-Comparison.md) |
+| Fase 8 — Dark mode (T-X03) | [`Manual/Phase-08-Dark-Mode.md`](Manual/Phase-08-Dark-Mode.md) |
 
 Cada caso incluye: precondiciones, pasos detallados, resultado esperado, criterios de aceptación y tabla para marcar ejecución (`[ ]` → `[x]`).
 
@@ -464,3 +477,4 @@ Complementan (no sustituyen) `pytest` / Playwright: validan entorno real (Docker
 | UC-064–065 | frontend vitest + manual | `SupportPage.test.tsx`, Phase-07-Support |
 | UC-081, UC-085 | backend pytest + manual | `test_audit_logs.py`, Phase-07-Audit |
 | UC-084 | backend + frontend + manual | `test_ml_comparison.py`, Phase-07-ML |
+| UC-086 (prop.) | frontend vitest + manual | theme tests, Phase-08-Dark-Mode |

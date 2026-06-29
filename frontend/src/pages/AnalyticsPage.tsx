@@ -1,10 +1,9 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { lazy, startTransition, Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { FileDown } from "lucide-react";
 
+import { AnalyticsChartsSkeleton } from "@/components/charts/ChartSectionSkeleton";
 import { AnalyticsDateRangeFilter } from "@/components/analytics/AnalyticsDateRangeFilter";
 import { AnalyticsKpiCards } from "@/components/analytics/AnalyticsKpiCards";
-import { AnalyticsRiskDistributionChart } from "@/components/analytics/AnalyticsRiskDistributionChart";
-import { AnalyticsTrendChart } from "@/components/analytics/AnalyticsTrendChart";
 import { Alert } from "@/components/Alert";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { PageShell } from "@/components/layout/PageShell";
@@ -19,6 +18,16 @@ import {
 import { downloadAnalyticsPdf, getAnalytics } from "@/services/analytics";
 import type { AnalyticsDateRangeValue, AnalyticsResponse } from "@/types/analytics";
 import { getAnalyticsErrorMessage, getAnalyticsExportErrorMessage } from "@/utils/analyticsErrors";
+
+const AnalyticsTrendChart = lazy(async () => {
+  const module = await import("@/components/analytics/AnalyticsTrendChart");
+  return { default: module.AnalyticsTrendChart };
+});
+
+const AnalyticsRiskDistributionChart = lazy(async () => {
+  const module = await import("@/components/analytics/AnalyticsRiskDistributionChart");
+  return { default: module.AnalyticsRiskDistributionChart };
+});
 
 export function AnalyticsPage() {
   const [dateRange, setDateRange] = useState<AnalyticsDateRangeValue>(DEFAULT_ANALYTICS_DATE_RANGE);
@@ -36,7 +45,9 @@ export function AnalyticsPage() {
 
     try {
       const response = await getAnalytics(queryParams);
-      setAnalytics(response);
+      startTransition(() => {
+        setAnalytics(response);
+      });
     } catch (loadError) {
       setAnalytics(null);
       setError(getAnalyticsErrorMessage(loadError));
@@ -102,12 +113,14 @@ export function AnalyticsPage() {
         <>
           <AnalyticsKpiCards summary={analytics.summary} />
 
-          <section className="grid gap-6 lg:grid-cols-3">
-            <div className="lg:col-span-2">
-              <AnalyticsTrendChart trend={analytics.trend} />
-            </div>
-            <AnalyticsRiskDistributionChart distribution={analytics.risk_distribution} />
-          </section>
+          <Suspense fallback={<AnalyticsChartsSkeleton />}>
+            <section className="grid gap-6 lg:grid-cols-3">
+              <div className="lg:col-span-2">
+                <AnalyticsTrendChart trend={analytics.trend} />
+              </div>
+              <AnalyticsRiskDistributionChart distribution={analytics.risk_distribution} />
+            </section>
+          </Suspense>
         </>
       ) : null}
     </PageShell>

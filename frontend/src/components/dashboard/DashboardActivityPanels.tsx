@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { RiskScoreCell } from "@/components/clinical/RiskScoreCell";
 import {
   formatAlertSummary,
   formatEvaluationReference,
@@ -10,7 +11,6 @@ import {
 } from "@/lib/dashboardActivityDisplay";
 import { DASHBOARD_CHART_ROW_HEIGHT_CLASS } from "@/lib/dashboardLayout";
 import { formatPatientSnapshot } from "@/lib/historyDisplay";
-import { RISK_BADGE_CLASSES, RISK_BADGE_LABELS } from "@/lib/riskDisplay";
 import { cn } from "@/lib/utils";
 import type { HistoryListItem } from "@/types/history";
 
@@ -34,14 +34,14 @@ export function DashboardHighRiskAlerts({ alerts }: DashboardHighRiskAlertsProps
         DASHBOARD_CHART_ROW_HEIGHT_CLASS,
       )}
     >
-      <CardHeader className="shrink-0 border-b border-outline-variant bg-error-container/10">
+      <CardHeader className="shrink-0 border-b border-risk-high/30 bg-risk-high/10">
         <div className="flex items-center justify-between gap-3">
           <CardTitle className="flex items-center gap-2 text-base">
-            <AlertTriangle className="size-5 text-error" aria-hidden />
+            <AlertTriangle className="size-5 text-risk-high" aria-hidden />
             Critical alerts
           </CardTitle>
           {alerts.length > 0 ? (
-            <span className="rounded-full bg-error px-2.5 py-0.5 text-xs font-semibold text-on-primary">
+            <span className="rounded-full bg-risk-high px-2.5 py-0.5 text-xs font-semibold text-on-primary">
               {alerts.length} active
             </span>
           ) : null}
@@ -62,10 +62,10 @@ export function DashboardHighRiskAlerts({ alerts }: DashboardHighRiskAlertsProps
             {alerts.map((alert) => (
               <article
                 key={alert.id}
-                className="rounded-lg border border-error-container bg-error-container/20 p-3"
+                className="rounded-lg border border-risk-high/40 border-l-4 border-l-risk-high bg-risk-high/10 p-3 shadow-[inset_0_0_0_1px_rgb(var(--color-risk-high)/0.18)]"
               >
                 <div className="flex gap-3">
-                  <Activity className="mt-0.5 size-4 shrink-0 text-error" aria-hidden />
+                  <Activity className="mt-0.5 size-4 shrink-0 text-risk-high" aria-hidden />
                   <div className="min-w-0 flex-1">
                     <div className="mb-1 flex items-center justify-between gap-2">
                       <Link
@@ -74,7 +74,7 @@ export function DashboardHighRiskAlerts({ alerts }: DashboardHighRiskAlertsProps
                       >
                         {formatEvaluationReference(alert.id)}
                       </Link>
-                      <span className="text-xs font-medium text-error">
+                      <span className="text-xs font-medium text-risk-high">
                         {formatRelativeEvaluationTime(alert.created_at)}
                       </span>
                     </div>
@@ -137,49 +137,28 @@ export function DashboardRecentEvaluations({ items }: DashboardRecentEvaluations
                   </th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="text-sm text-on-surface">
                 {items.map((item) => (
                   <tr
                     key={item.id}
                     className="border-b border-outline-variant/70 transition-colors hover:bg-surface-container-low"
                   >
-                    <td className="px-4 py-3 font-mono text-sm font-medium">
+                    <td className="px-4 py-3 font-medium">
                       <Link to={historyDetailPath(item.id)} className={detailLinkClassName}>
                         {formatEvaluationReference(item.id)}
                       </Link>
                     </td>
-                    <td className="px-4 py-3 text-sm text-on-surface-variant">
+                    <td className="px-4 py-3 text-on-surface-variant">
                       {formatPatientSnapshot(item.patient_input)}
                     </td>
                     <td className="px-4 py-3">
-                      <div className="flex items-center gap-2">
-                        <div className="h-2 w-16 overflow-hidden rounded-full bg-surface-container-high">
-                          <div
-                            className={cn(
-                              "h-full rounded-full",
-                              item.risk_level === "high"
-                                ? "bg-error"
-                                : item.risk_level === "medium"
-                                  ? "bg-risk-medium"
-                                  : "bg-risk-low",
-                            )}
-                            style={{ width: `${Math.min(item.risk_percent, 100)}%` }}
-                          />
-                        </div>
-                        <span className="font-mono text-sm font-semibold tabular-nums">
-                          {item.risk_percent.toFixed(1)}%
-                        </span>
-                        <span
-                          className={cn(
-                            "rounded-md px-2 py-0.5 text-xs font-semibold",
-                            RISK_BADGE_CLASSES[item.risk_level],
-                          )}
-                        >
-                          {RISK_BADGE_LABELS[item.risk_level]}
-                        </span>
-                      </div>
+                      <RiskScoreCell
+                        riskPercent={item.risk_percent}
+                        riskLevel={item.risk_level}
+                        variant="inline"
+                      />
                     </td>
-                    <td className="px-4 py-3 text-sm text-on-surface-variant">
+                    <td className="px-4 py-3 text-on-surface-variant">
                       {formatRelativeEvaluationTime(item.created_at)}
                     </td>
                     <td className="px-4 py-3 text-right">

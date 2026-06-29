@@ -1,5 +1,6 @@
 import type { ModelComparisonItem, ModelComparisonResponse } from "@/types/mlComparison";
-import { CHART_COLORS } from "@/lib/recharts";
+import type { ChartColorPalette } from "@/lib/chartTheme";
+import { CHART_COLORS_LIGHT } from "@/lib/chartTheme";
 
 /** Format offline evaluation metric as percentage (0–1 scale). */
 export function formatModelMetric(value: number | null | undefined): string {
@@ -202,6 +203,7 @@ export function mapModelComparisonChartData(
   models: ModelComparisonItem[],
   primaryMetric: string,
   productionModelId: string | null,
+  colors: Pick<ChartColorPalette, "primary" | "teal"> = CHART_COLORS_LIGHT,
 ): ModelComparisonChartDatum[] {
   return models
     .filter((model) => model.available && model.metrics)
@@ -212,7 +214,7 @@ export function mapModelComparisonChartData(
         model: model.display_name,
         metricPercent: Number((metricValue * 100).toFixed(1)),
         fill:
-          model.model_id === productionModelId ? CHART_COLORS.primary : CHART_COLORS.teal,
+          model.model_id === productionModelId ? colors.primary : colors.teal,
         isProduction: model.model_id === productionModelId,
       };
     });

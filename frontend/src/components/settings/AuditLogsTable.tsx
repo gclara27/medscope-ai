@@ -31,24 +31,28 @@ export function AuditLogsTable({ items }: AuditLogsTableProps) {
               key={item.id}
               className="border-b border-outline-variant/70 align-top transition-colors hover:bg-surface-container-low"
             >
-              <td className="px-3 py-3 font-mono text-xs text-on-surface-variant">
+              <td className="px-3 py-3 text-xs text-on-surface-variant">
                 {formatAuditDateTime(item.created_at)}
               </td>
               <td className="px-3 py-3">
-                <span className="block font-medium">{formatAuditActionLabel(item.action_type)}</span>
-                <span className="font-mono text-xs text-on-surface-variant">{item.action_type}</span>
+                <span className="block font-medium text-on-surface">
+                  {formatAuditActionLabel(item.action_type)}
+                </span>
+                <span className="text-xs text-on-surface-variant">{item.action_type}</span>
               </td>
               <td className="px-3 py-3">
-                <span className="block font-medium">{formatAuditUser(item.user)}</span>
+                <span className="block font-medium text-on-surface">
+                  {formatAuditUser(item.user)}
+                </span>
                 {item.user ? (
                   <span className="text-xs text-on-surface-variant">{item.user.email}</span>
                 ) : null}
               </td>
-              <td className="px-3 py-3 font-mono text-xs text-on-surface-variant">
+              <td className="px-3 py-3 text-xs text-on-surface-variant">
                 {formatAuditEntity(item)}
               </td>
               <td className="max-w-sm px-3 py-3 text-xs text-on-surface-variant">
-                <span className="line-clamp-3 break-all">{formatAuditDetails(item.action_details)}</span>
+                <span className="line-clamp-3 break-words">{formatAuditDetails(item.action_details)}</span>
               </td>
             </tr>
           ))}

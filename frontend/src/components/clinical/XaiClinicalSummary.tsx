@@ -71,7 +71,7 @@ export function XaiClinicalSummary({
               return (
                 <p key={paragraph.raw}>
                   {paragraph.label}:{" "}
-                  <FeatureHighlightList features={paragraph.features} className="text-risk-high" />
+                  <FeatureHighlightList features={paragraph.features} className="text-risk-high-readable" />
                 </p>
               );
             }
@@ -80,7 +80,7 @@ export function XaiClinicalSummary({
               return (
                 <p key={paragraph.raw}>
                   {paragraph.label}:{" "}
-                  <FeatureHighlightList features={paragraph.features} className="text-risk-low" />
+                  <FeatureHighlightList features={paragraph.features} className="text-risk-low-readable" />
                 </p>
               );
             }

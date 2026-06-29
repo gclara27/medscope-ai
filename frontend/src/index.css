@@ -35,10 +35,13 @@
     --color-risk-low: 22 163 74;
     --color-risk-medium: 245 158 11;
     --color-risk-high: 220 38 38;
+    --color-risk-low-readable: 21 128 61;
+    --color-risk-medium-readable: 180 83 9;
+    --color-risk-high-readable: 185 28 28;
     --color-chart-grid: #e1e3e4;
     --color-chart-axis: #414755;
     --color-chart-teal: #0d9488;
-    --color-chart-muted: #8b9199;
+    --color-chart-muted: #5f6672;
     --color-chart-tooltip-bg: #ffffff;
     --color-chart-tooltip-border: #c1c6d7;
     --shadow-level-1: 0px 2px 4px rgba(0, 0, 0, 0.05);
@@ -98,10 +101,13 @@
     --color-risk-low: 78 222 163;
     --color-risk-medium: 251 191 36;
     --color-risk-high: 255 107 107;
+    --color-risk-low-readable: 78 222 163;
+    --color-risk-medium-readable: 251 191 36;
+    --color-risk-high-readable: 255 107 107;
     --color-chart-grid: #222a3d;
     --color-chart-axis: #c1c6d7;
     --color-chart-teal: #4edea3;
-    --color-chart-muted: #8b90a0;
+    --color-chart-muted: #a8adba;
     --color-chart-tooltip-bg: #171f33;
     --color-chart-tooltip-border: #414755;
     --shadow-level-1: 0px 2px 8px rgba(0, 0, 0, 0.4);
@@ -132,8 +138,23 @@
     @apply border-border;
   }
 
+  html {
+    font-size: 16px;
+  }
+
   body {
-    @apply bg-background font-sans text-foreground antialiased;
+    @apply bg-background font-sans text-base text-foreground antialiased;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }
 
@@ -161,7 +182,7 @@
   }
 
   .meta-label {
-    @apply text-xs font-semibold uppercase tracking-[0.05em] text-on-surface-variant;
+    @apply text-sm font-semibold uppercase tracking-[0.05em] text-on-surface-variant;
   }
 
   .font-data {

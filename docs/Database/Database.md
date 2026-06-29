@@ -50,6 +50,8 @@ Separación obligatoria **dev / prod** (RDO-010). El motor es siempre **PostgreS
 
 Copiar [`.env.example`](../../.env.example) → `.env` en **dev**. Nunca commitear `.env` (RDO-020).
 
+**Referencia completa:** [Environment.md](../Environment/Environment.md) (T-710, RDO-010).
+
 | Variable | dev | prod |
 |---|---|---|
 | `DATABASE_URL` | Usuario/contraseña de desarrollo | URL del proveedor (RDS, Supabase, etc.) |

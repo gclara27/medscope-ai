@@ -99,7 +99,7 @@ describe("dark mode P0 screens (T-X03-07/08, RTS-043)", () => {
     const colors = getChartColors();
     expect(colors.high).toMatch(/rgb\(255,\s*107,\s*107\)|#ff6b6b/i);
     expect(colors.gaugeTrack).toBe("#222a3d");
-    expect(screen.getByText("HIGH RISK")).toHaveClass("text-risk-high");
+    expect(screen.getByText("HIGH RISK")).toHaveClass("text-risk-high-readable");
   });
 
   it("appearance panel switches back to light without regression", async () => {

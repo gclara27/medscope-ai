@@ -19,23 +19,23 @@ export const RISK_BADGE_LABELS: Record<RiskLevel, string> = {
   high: "HIGH RISK",
 };
 
-/** Tailwind utility bundles for risk level UI (RUX-011). */
+/** Tailwind utility bundles for risk level UI (RUX-011, RUX-020). */
 export const RISK_TEXT_CLASSES: Record<RiskLevel, string> = {
-  low: "text-risk-low",
-  medium: "text-risk-medium",
-  high: "text-risk-high",
+  low: "text-risk-low-readable",
+  medium: "text-risk-medium-readable",
+  high: "text-risk-high-readable",
 };
 
 export const RISK_BADGE_CLASSES: Record<RiskLevel, string> = {
-  low: "border border-risk-low/45 bg-risk-low/12 text-risk-low",
-  medium: "border border-risk-medium/55 bg-risk-medium/18 text-risk-medium",
-  high: "border border-risk-high/60 bg-risk-high/22 text-risk-high shadow-[inset_0_0_0_1px_rgb(var(--color-risk-high)/0.2)]",
+  low: "border border-risk-low/45 bg-risk-low/12 text-risk-low-readable",
+  medium: "border border-risk-medium/55 bg-risk-medium/18 text-risk-medium-readable",
+  high: "border border-risk-high/60 bg-risk-high/22 text-risk-high-readable shadow-[inset_0_0_0_1px_rgb(var(--color-risk-high)/0.2)]",
 };
 
 export const RISK_STYLES: Record<RiskLevel, string> = {
-  low: "border border-risk-low/45 bg-risk-low/12 text-risk-low",
-  medium: "border border-risk-medium/55 bg-risk-medium/18 text-risk-medium",
-  high: "border border-risk-high/60 bg-risk-high/22 text-risk-high shadow-[inset_0_0_0_1px_rgb(var(--color-risk-high)/0.2)]",
+  low: "border border-risk-low/45 bg-risk-low/12 text-risk-low-readable",
+  medium: "border border-risk-medium/55 bg-risk-medium/18 text-risk-medium-readable",
+  high: "border border-risk-high/60 bg-risk-high/22 text-risk-high-readable shadow-[inset_0_0_0_1px_rgb(var(--color-risk-high)/0.2)]",
 };
 
 export const RISK_RECOMMENDATIONS: Record<RiskLevel, string> = {

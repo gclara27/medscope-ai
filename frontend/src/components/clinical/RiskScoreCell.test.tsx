@@ -18,7 +18,7 @@ describe("RiskScoreCell", () => {
     );
 
     expect(screen.getByText("49.0%")).toBeInTheDocument();
-    expect(screen.getByText("MEDIUM RISK")).toHaveClass("text-risk-medium");
+    expect(screen.getByText("MEDIUM RISK")).toHaveClass("text-risk-medium-readable");
     expect(container.querySelector('[aria-hidden="true"]')).not.toBeNull();
   });
 });

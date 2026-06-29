@@ -73,9 +73,11 @@ describe("AnalyticsPage", () => {
     expect(screen.getByRole("heading", { name: /population analytics/i })).toBeInTheDocument();
     expect(screen.getByLabelText(/analytics kpis/i)).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { name: /prediction volume and average risk/i }),
+      await screen.findByRole("heading", { name: /prediction volume and average risk/i }),
     ).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: /risk distribution/i })).toBeInTheDocument();
+    expect(
+      await screen.findByRole("heading", { name: /risk distribution/i }),
+    ).toBeInTheDocument();
   });
 
   it("refetches analytics when date preset changes", async () => {

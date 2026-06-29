@@ -51,10 +51,52 @@ Alineado con `AGENTS.md` y `skills/testing/SKILL.md`.
 | ID | Requisito | Implementación |
 |---|---|---|
 | RTS-001 | Tests endpoints | pytest + httpx en `backend/tests/` |
+
+### RTS-001 — archivos de test (auth T-704, APIs T-705)
+
+| Archivo | Cubre |
+|---|---|
+| `backend/tests/test_auth.py` | **RTS-001** login, JWT, `/me`, roles 403, logout, audit hooks auth (T-704) |
+| `backend/tests/test_apis.py` | **RTS-001** predict, simulate, history, analytics + flujo MVP integrado (T-705) |
+| `backend/tests/test_auth_service.py` | bcrypt, `AuthService.authenticate` |
+| `backend/tests/test_auth_login.py` | casos adicionales POST `/auth/login` |
+| `backend/tests/test_auth_jwt.py` | casos adicionales JWT `/me` |
+| `backend/tests/test_auth_roles.py` | casos adicionales `/auth/admin/ping` |
+| `backend/tests/test_auth_logout.py` | casos adicionales POST `/auth/logout` |
 | RTS-002 | Tests validación | schemas Pydantic + inputs inválidos (UC-090) |
 | RTS-010 | Validación métricas ML | `ml/tests/` — accuracy, recall, ranges |
 | RTS-020 | Navegación básica frontend | vitest — login, sidebar, rutas MVP |
+| RUX-020 | Contraste accesible | vitest — pares de tokens WCAG AA (T-712) |
+
+### RUX-020 — archivos de test (T-712)
+
+| Archivo | Cubre |
+|---|---|
+| `frontend/src/test/rux020.test.tsx` | Contraste light/dark, tipografía base 16px, skip link |
+| `frontend/src/lib/accessibility/contrast.ts` | Cálculo ratio WCAG |
+| `frontend/src/lib/accessibility/designTokens.ts` | Pares foreground/background del design system |
+
+### RTS-020 — archivos de test (T-707)
+
+| Archivo | Cubre |
+|---|---|
+| `frontend/src/test/rts020.test.tsx` | **RTS-020** suite consolidada: login submit, guards, sidebar MVP (T-707) |
+| `frontend/src/pages/LoginPage.test.tsx` | render campos, errores auth, dismiss |
+| `frontend/src/pages/LoginPage.logout.test.tsx` | toast post-logout (UC-002) |
+| `frontend/src/config/navigation.test.ts` | `getNavItemsForRole`, `canAccessRoute` |
+| `frontend/src/layouts/AppLayout.test.tsx` | sidebar por rol, logout, nav activa |
+| `frontend/src/components/RoleRoute.test.tsx` | redirect login / unauthorized |
+| `frontend/src/pages/SplashPage.test.tsx` | splash → `/login` |
 | RTS-030 | Flujo E2E MVP | Playwright — flujo completo §10 |
+
+### RTS-030 — archivos E2E (T-708)
+
+| Archivo | Cubre |
+|---|---|
+| `tests/e2e/mvp-flow.spec.ts` | Flujo MVP completo (admin): predict → SHAP → simulate → history → analytics |
+| `tests/e2e/auth.spec.ts` | Login válido / inválido (UC-001) |
+| `tests/e2e/rbac.spec.ts` | Nurse / analyst RBAC navegación (UC-003) |
+| `tests/e2e/helpers/auth.ts` | Helpers login/logout demo |
 | RTS-040 | Support UI (T-X05) | vitest support suite + manual [Phase-07-Support-UI](Manual/Phase-07-Support-UI.md) |
 | RTS-041 | Audit logs (T-X06) | pytest `test_audit_logs.py` + manual Phase-07-Audit |
 | RTS-042 | ML comparison (T-X07) | pytest `test_ml_comparison.py` + vitest + manual Phase-07-ML |
@@ -122,7 +164,7 @@ medscope-ai/
 ├── backend/
 │   └── tests/
 │       ├── conftest.py
-│       ├── test_auth*.py, test_security.py
+│       ├── test_auth*.py, test_apis.py, test_security.py
 │       ├── test_predictions.py, test_ml_registry.py
 │       ├── test_simulations.py, test_simulation_service.py, test_simulation_mapper.py
 │       ├── test_history.py, test_analytics.py, test_risk_format.py
@@ -162,6 +204,8 @@ Rutas protegidas: validar JWT y roles `admin`, `clinician`, `analyst`, `nurse` (
 
 ## 6.1 Authentication (UC-001–003)
 
+**Implementado:** `backend/tests/test_auth.py` (27 tests, T-704).
+
 - login correcto → JWT
 - login inválido → 401
 - endpoint protegido sin token → 401
@@ -170,7 +214,7 @@ Rutas protegidas: validar JWT y roles `admin`, `clinician`, `analyst`, `nurse` (
 
 ## 6.2 Prediction API (UC-020–023, UC-030)
 
-**Implementado:** `backend/tests/test_predictions.py` (7 tests).
+**Implementado:** `backend/tests/test_predictions.py` (7 tests). **Suite consolidada:** `backend/tests/test_apis.py` (T-705).
 
 - payload válido → 200 + `risk_score` + categoría + `prediction_time_ms` < 1000 (RNF-001)
 - respuesta incluye SHAP / feature contributions
@@ -181,7 +225,7 @@ Rutas protegidas: validar JWT y roles `admin`, `clinician`, `analyst`, `nurse` (
 
 ## 6.3 Simulation API (UC-040–044)
 
-**Implementado:** `backend/tests/test_simulations.py` (6 tests), `test_simulation_service.py` (5), `test_simulation_mapper.py` (4).
+**Implementado:** `backend/tests/test_simulations.py` (6 tests), `test_simulation_service.py` (5), `test_simulation_mapper.py` (4). **Suite consolidada:** `backend/tests/test_apis.py` (T-705).
 
 - modificar variables → nuevo score (original vs simulado)
 - simulación persistida (`simulations` + `simulation_inputs`)
@@ -191,7 +235,7 @@ Rutas protegidas: validar JWT y roles `admin`, `clinician`, `analyst`, `nurse` (
 
 ## 6.4 History & Analytics (UC-050–052, UC-060–062)
 
-**Implementado:** `backend/tests/test_history.py` (6 tests), `backend/tests/test_analytics.py` (6 tests).
+**Implementado:** `backend/tests/test_history.py` (6 tests), `backend/tests/test_analytics.py` (6 tests). **Suite consolidada:** `backend/tests/test_apis.py` (26 tests total, T-705).
 
 - GET `/history` devuelve predicciones tras `POST /predict`; `risk_score` / `risk_percent` alineados con `/predict`
 - filtros por `risk_level`, `user_id`, rango de fechas inválido → 422
@@ -290,9 +334,16 @@ Prioridad baja-media. No pixel-perfect testing.
 
 **Implementado (Fase 6 — settings placeholder, T-610):** `SettingsPage`, ruta admin `/settings` — archivos clave: `SettingsPage.test.tsx`, `navigation.test.ts`, `AppLayout.test.tsx`.
 
-Ver `frontend/src/**/*.test.{ts,tsx}` (**53 archivos, 164 tests**).
+**Implementado (T-707, RTS-020):** login (render, validación HTML5, submit → dashboard), `PrivateRoute` / `PermissionRoute`, sidebar MVP clinician — suite consolidada `frontend/src/test/rts020.test.tsx` + archivos listados arriba.
 
-```bash
+**Implementado (T-712, RUX-020 / RUX-021):** auditoría contraste WCAG AA en tokens light/dark, `--color-risk-*-readable` para texto UI, `chart-muted` reforzado, root 16px, `prefers-reduced-motion`, skip link → `#main-content` — `frontend/src/test/rux020.test.tsx`.
+
+Ver `frontend/src/**/*.test.{ts,tsx}` (**79+ archivos**).
+
+```powershell
+# Desde la raíz (Windows)
+.\scripts\test-frontend.ps1
+
 cd frontend
 npm run test
 npm run lint
@@ -303,25 +354,21 @@ npm run build
 
 # 10. E2E — Playwright (MVP demo flow)
 
-Ubicación: `tests/e2e/`
+**Implementado (T-708, RTS-030):** Playwright en `tests/e2e/` — `auth.spec.ts`, `rbac.spec.ts`, `mvp-flow.spec.ts` (flujo completo admin). Requiere stack dev (`.\scripts\start-dev.ps1`).
 
-Flujo obligatorio (Requirements §17, Use Cases §17):
+```powershell
+# Desde la raíz (Windows) — backend :8000 + frontend :5173 deben estar activos
+.\scripts\test-e2e.ps1
+
+# Instalar navegadores (primera vez)
+npm install
+npx playwright install chromium
+```
+
+Flujo cubierto en `mvp-flow.spec.ts`:
 
 ```text
 login → dashboard → prediction → SHAP → simulation → history → analytics
-```
-
-Ejemplo:
-
-```typescript
-test('complete MVP flow', async ({ page }) => {
-  await page.goto('/login');
-  await page.fill('input[name=email]', 'clinician@test.com');
-  await page.fill('input[name=password]', 'testpass');
-  await page.click('button[type=submit]');
-  await expect(page).toHaveURL('/dashboard');
-  // ... prediction, simulation, history, analytics
-});
 ```
 
 Recomendación TFM: **3–5 tests E2E** cubriendo el flujo completo.
@@ -337,9 +384,20 @@ Recomendación TFM: **3–5 tests E2E** cubriendo el flujo completo.
 | ML | métricas + pipeline, no 100% líneas |
 | E2E | flujos MVP, no exhaustivo |
 
-```bash
-pytest --cov=backend --cov-report=html
+**Implementado (T-706):** suite backend **215+ tests**; cobertura de código de aplicación **~95%** (excluye `tests/`). Umbral mínimo **60%** en CI local vía script.
+
+```powershell
+# Desde la raíz (Windows)
+.\scripts\test-backend.ps1
+
+# HTML report opcional
+cd backend
+pytest --cov=core --cov=models --cov=repositories --cov=routers --cov=schemas --cov=services --cov=seeds --cov=main --cov-report=html
 ```
+
+Configuración: `[tool.coverage.run]` / `[tool.coverage.report]` en `pyproject.toml` (`fail_under = 60`, omite `backend/tests/*`).
+
+Paquetes medidos: `core`, `models`, `repositories`, `routers`, `schemas`, `services`, `seeds`, `main.py`.
 
 ---
 

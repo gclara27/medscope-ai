@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import logging
 import sys
 from pathlib import Path
 
@@ -10,12 +11,16 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
+from ml.logging_config import configure_logging, get_logger
 from ml.training.constants import (
     MODEL_MANIFEST_PATH,
     PRODUCTION_MODEL_PATH,
     PRODUCTION_PREPROCESSOR_PATH,
 )
 from ml.training.serialize import serialize_production_model, validate_production_artifacts
+
+configure_logging(service="medscope-ml")
+logger = get_logger(__name__)
 
 
 def main() -> int:
@@ -30,20 +35,23 @@ def main() -> int:
     try:
         manifest = serialize_production_model()
     except FileNotFoundError as exc:
-        print(str(exc), file=sys.stderr)
+        logger.error("serialize_failed", extra={"reason": str(exc)})
         return 1
 
     if not args.skip_validation:
         validate_production_artifacts()
 
-    print("Production model serialization complete.")
-    print(f"  model_id     : {manifest.model_id} v{manifest.model_version}")
-    print(f"  threshold    : {manifest.production_threshold}")
-    print(f"  shap         : {manifest.shap_explainer}")
-    print(f"  features     : {len(manifest.feature_columns)}")
-    print(f"  model        : {PRODUCTION_MODEL_PATH}")
-    print(f"  preprocessor : {PRODUCTION_PREPROCESSOR_PATH}")
-    print(f"  manifest     : {MODEL_MANIFEST_PATH}")
+    logger.info(
+        "serialize_complete",
+        extra={
+            "model_id": manifest.model_id,
+            "model_version": manifest.model_version,
+            "feature_count": len(manifest.feature_columns),
+            "model_path": str(PRODUCTION_MODEL_PATH),
+            "preprocessor_path": str(PRODUCTION_PREPROCESSOR_PATH),
+            "manifest_path": str(MODEL_MANIFEST_PATH),
+        },
+    )
     return 0
 
 

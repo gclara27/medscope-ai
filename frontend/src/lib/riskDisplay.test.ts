@@ -18,9 +18,9 @@ describe("riskDisplay (RUX-011)", () => {
   });
 
   it("maps each risk level to tailwind risk utilities", () => {
-    expect(RISK_TEXT_CLASSES.low).toBe("text-risk-low");
-    expect(RISK_TEXT_CLASSES.medium).toBe("text-risk-medium");
-    expect(RISK_TEXT_CLASSES.high).toBe("text-risk-high");
+    expect(RISK_TEXT_CLASSES.low).toBe("text-risk-low-readable");
+    expect(RISK_TEXT_CLASSES.medium).toBe("text-risk-medium-readable");
+    expect(RISK_TEXT_CLASSES.high).toBe("text-risk-high-readable");
 
     expect(RISK_BADGE_CLASSES.low).toContain("risk-low");
     expect(RISK_BADGE_CLASSES.medium).toContain("risk-medium");

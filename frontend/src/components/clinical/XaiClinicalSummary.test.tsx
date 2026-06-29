@@ -16,8 +16,8 @@ describe("XaiClinicalSummary", () => {
 
     expect(screen.getByRole("region", { name: /ai clinical summary/i })).toBeInTheDocument();
     expect(screen.getByText(/model: lr-v1/i)).toBeInTheDocument();
-    expect(screen.getByText("Prior inpatient visits")).toHaveClass("text-risk-high");
-    expect(screen.getByText("Age")).toHaveClass("text-risk-low");
+    expect(screen.getByText("Prior inpatient visits")).toHaveClass("text-risk-high-readable");
+    expect(screen.getByText("Age")).toHaveClass("text-risk-low-readable");
     expect(screen.getByText(/clinical insight/i)).toBeInTheDocument();
     expect(screen.getByText(CLINICAL_DISCLAIMER)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /view full shap analysis/i })).toHaveAttribute(

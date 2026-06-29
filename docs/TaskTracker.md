@@ -402,23 +402,23 @@ Entregables: historial (`/history`, filtros, detalle SHAP), analytics (`/analyti
 | T-701 | [x] | UI polish | [RUX-001](Requirements/Requirements.md#rux-001) · [Design](Design/design-system.light.md) | `Pulir spacing y tipografía según design system.` |
 | T-702 | [x] | Errores backend | [UC-091](Use%20Cases/Use%20Cases.md#uc-091--handle-backend-failure) | `Revisar exception handlers y mensajes usuario.` |
 | T-703 | [x] | Performance | [RNF-001](Requirements/Requirements.md#rnf-001) · [RNF-002](Requirements/Requirements.md#rnf-002) | `Profile API y render. Optimizar charts.` |
-| T-704 | [ ] | test_auth.py | [RTS-001](Requirements/Requirements.md#rts-001) · [Testing §6](Testing/Testing.md#6-backend-tests-prioritarios) | `Tests pytest auth: login, JWT, roles.` |
-| T-705 | [ ] | test APIs | [RTS-001](Requirements/Requirements.md#rts-001) | `Tests predict, simulate, history, analytics.` |
-| T-706 | [ ] | Coverage 60–75% | [Testing §11](Testing/Testing.md#11-cobertura) | `pytest --cov hasta 60-75% backend.` |
-| T-707 | [ ] | vitest frontend | [RTS-020](Requirements/Requirements.md#rts-020) | `Tests básicos login form y navegación.` |
-| T-708 | [ ] | Playwright E2E | [RTS-030](Requirements/Requirements.md#rts-030) · [Testing §10](Testing/Testing.md#10-e2e--playwright-mvp-demo-flow) | `E2E flujo MVP completo en tests/e2e/.` |
-| T-709 | [ ] | docker-compose final | [RDO-001](Requirements/Requirements.md#rdo-001) | `docker-compose: postgres + backend + frontend.` |
-| T-710 | [ ] | Env dev/prod | [RDO-010](Requirements/Requirements.md#rdo-010) | `Documentar variables entorno.` |
-| T-711 | [ ] | Logs | [RNF-050](Requirements/Requirements.md#rnf-050) | `Logging estructurado backend y ML.` |
-| T-712 | [ ] | Accesibilidad | [RUX-020](Requirements/Requirements.md#rux-020) | `Revisar contraste y tipografía legible.` |
+| T-704 | [x] | test_auth.py | [RTS-001](Requirements/Requirements.md#rts-001) · [Testing §6](Testing/Testing.md#6-backend-tests-prioritarios) | `Tests pytest auth: login, JWT, roles.` |
+| T-705 | [x] | test APIs | [RTS-001](Requirements/Requirements.md#rts-001) · [Testing §6.2–6.4](Testing/Testing.md#62-prediction-api-uc-020023-uc-030) | `test_apis.py (26): predict, simulate, history, analytics + flujo MVP.` |
+| T-706 | [x] | Coverage 60–75% | [Testing §11](Testing/Testing.md#11-cobertura) | `test-backend.ps1 + pyproject coverage; ~95% app code, fail_under 60.` |
+| T-707 | [x] | vitest frontend | [RTS-020](Requirements/Requirements.md#rts-020) · [Testing §9](Testing/Testing.md#9-frontend-tests-rts-020) | `rts020.test.tsx + test-frontend.ps1; login, guards, sidebar MVP.` |
+| T-708 | [x] | Playwright E2E | [RTS-030](Requirements/Requirements.md#rts-030) · [Testing §10](Testing/Testing.md#10-e2e--playwright-mvp-demo-flow) | `tests/e2e: auth, rbac, mvp-flow + test-e2e.ps1 (5 tests).` |
+| T-709 | [x] | docker-compose final | [RDO-001](Requirements/Requirements.md#rdo-001) | `postgres + backend + frontend (nginx); docker-up.ps1; migrations entrypoint.` |
+| T-710 | [x] | Env dev/prod | [RDO-010](Requirements/Requirements.md#rdo-010) · [Environment.md](Environment/Environment.md) | `docs/Environment/Environment.md + .env.example ampliados.` |
+| T-711 | [x] | Logs | [RNF-050](Requirements/Requirements.md#rnf-050) | `ml/logging_config.py + middleware/handlers; LOG_LEVEL/LOG_FORMAT.` |
+| T-712 | [x] | Accesibilidad | [RUX-020](Requirements/Requirements.md#rux-020) | `contrast audit + readable tokens; skip link; rux020.test.tsx.` |
 
 ### E2E checklist
 
-- [ ] [Login → Dashboard](Use%20Cases/Use%20Cases.md#uc-001--user-login)
-- [ ] [Predicción + SHAP](Use%20Cases/Use%20Cases.md#uc-030--generate-shap-explanation)
-- [ ] [Simulación](Use%20Cases/Use%20Cases.md#uc-043--compare-original-vs-simulation)
-- [ ] [Historial](Use%20Cases/Use%20Cases.md#uc-052--open-historical-prediction)
-- [ ] [Analytics](Use%20Cases/Use%20Cases.md#uc-060--view-analytics-dashboard)
+- [x] [Login → Dashboard](Use%20Cases/Use%20Cases.md#uc-001--user-login)
+- [x] [Predicción + SHAP](Use%20Cases/Use%20Cases.md#uc-030--generate-shap-explanation)
+- [x] [Simulación](Use%20Cases/Use%20Cases.md#uc-043--compare-original-vs-simulation)
+- [x] [Historial](Use%20Cases/Use%20Cases.md#uc-052--open-historical-prediction)
+- [x] [Analytics](Use%20Cases/Use%20Cases.md#uc-060--view-analytics-dashboard)
 
 ---
 
@@ -637,6 +637,7 @@ Implementar **una feature a la vez**. Cada bloque cierra su user story y manual 
 | 2026-06-11 | **T-504 / US-030** dashboard optimizado RNF-002: snapshot SQL, lazy chart, test bajo 2s. MVP 102/134 (76%). T-524 pendiente |
 | 2026-06-11 | **T-524 / US-033** impacto visual simulación: waterfall `SimulationImpactChart`, highlight campos top SHAP. Fase 5 completa. MVP 103/134 (77%) |
 | 2026-06-11 | **T-X01** UI admin usuarios: `GET/POST/PATCH /admin/users`, `UserManagementPanel` en Settings (UC-070) |
+| 2026-06-11 | **T-704** `test_auth.py` RTS-001: 27 tests login/JWT/roles/logout/audit (UC-001–003) |
 | 2026-06-11 | **T-702** errores UC-091: `api_errors.py`, handlers JSON + logging 4xx, `apiErrors.ts` centralizado. MVP 108/134 (81%) |
 | 2026-06-11 | **T-701** UI polish: `PageShell`/`PageHeader`, tokens tipografía, JetBrains Mono, márgenes 40px desktop. MVP 107/134 (80%) |
 | 2026-06-11 | **T-610** settings placeholder: `SettingsPage` admin-only, nav + RBAC. Fase 6 completa. MVP 106/134 (79%) |

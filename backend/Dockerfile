@@ -17,8 +17,13 @@ RUN pip install --no-cache-dir -r /tmp/backend-requirements.txt -r /tmp/ml-requi
 COPY backend /workspace/backend
 COPY ml /workspace/ml
 
+COPY backend/docker-entrypoint.sh /usr/local/bin/medscope-entrypoint.sh
+RUN sed -i 's/\r$//' /usr/local/bin/medscope-entrypoint.sh \
+    && chmod +x /usr/local/bin/medscope-entrypoint.sh
+
 WORKDIR /workspace/backend
 
 EXPOSE 8000
 
+ENTRYPOINT ["/bin/sh", "/usr/local/bin/medscope-entrypoint.sh"]
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

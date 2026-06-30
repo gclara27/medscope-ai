@@ -22,6 +22,7 @@ COPY models /workspace/models
 RUN test -f /workspace/models/model.pkl \
     && test -f /workspace/models/preprocessor.pkl \
     && test -f /workspace/models/model_manifest.json \
+    && test -f /workspace/models/shap_background.npy \
     || (echo "ERROR: Missing models/. Run: python ml/scripts/serialize_model.py" && exit 1)
 
 COPY backend/docker-entrypoint.sh /usr/local/bin/medscope-entrypoint.sh

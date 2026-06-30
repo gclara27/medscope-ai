@@ -139,6 +139,8 @@ Leídas en **build time** por Vite (`import.meta.env`).
 6. Modelos ML en `models/` (gitignored si son grandes); montar volumen o artefacto en el despliegue.
 7. Ejecutar migraciones antes de arrancar el API: `alembic upgrade head` (el entrypoint Docker de dev ya lo hace).
 
+Guía completa de despliegue cloud: [Deployment.md](../Deployment/Deployment.md).
+
 ### Ejemplo mínimo prod (referencia)
 
 ```env

@@ -8,6 +8,7 @@ Create Date: 2026-06-11 22:00:00.000000
 
 from __future__ import annotations
 
+import json
 from typing import Sequence, Union
 
 import sqlalchemy as sa
@@ -44,11 +45,11 @@ def upgrade() -> None:
         permissions = DEFAULT_ROLE_PERMISSIONS.get(role["name"], {})
         connection.execute(
             sa.text(
-                "UPDATE roles SET permissions = :permissions WHERE name = :name",
+                "UPDATE roles SET permissions = CAST(:permissions AS JSON) WHERE name = :name",
             ),
             {
                 "name": role["name"],
-                "permissions": dict(permissions),
+                "permissions": json.dumps(dict(permissions)),
             },
         )
 

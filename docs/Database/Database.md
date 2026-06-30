@@ -52,6 +52,8 @@ Copiar [`.env.example`](../../.env.example) → `.env` en **dev**. Nunca commite
 
 **Referencia completa:** [Environment.md](../Environment/Environment.md) (T-710, RDO-010).
 
+**Despliegue producción (Supabase + Render + Vercel):** [Deployment.md](../Deployment/Deployment.md).
+
 | Variable | dev | prod |
 |---|---|---|
 | `DATABASE_URL` | Usuario/contraseña de desarrollo | URL del proveedor (RDS, Supabase, etc.) |

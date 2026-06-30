@@ -157,6 +157,18 @@ docker compose down -v       # stop and remove database volume
 
 ---
 
+## Production deployment (cloud)
+
+Step-by-step guide for **free-tier** hosting: **Supabase** (PostgreSQL) + **Render** (FastAPI + ML) + **Vercel** (React).
+
+See **[docs/Deployment/Deployment.md](docs/Deployment/Deployment.md)** for the full checklist (architecture, env vars, CI/CD on `main`, troubleshooting).
+
+Before the first cloud deploy, run `.\scripts\prepare-docker-build.ps1` and commit the production files under `models/` (`model.pkl`, `preprocessor.pkl`, `model_manifest.json`).
+
+Environment variables reference: [docs/Environment/Environment.md](docs/Environment/Environment.md).
+
+---
+
 ## Local development (without Docker)
 
 Use this when you want to run the backend or ML code directly on the host.

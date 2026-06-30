@@ -75,7 +75,13 @@ datasets/*
 !datasets/README.md
 !datasets/manifest.json
 models/*
+!models/.gitkeep
+!models/model.pkl
+!models/preprocessor.pkl
+!models/model_manifest.json
 *.pkl
+!models/model.pkl
+!models/preprocessor.pkl
 *.pickle
 *.joblib
 *.h5

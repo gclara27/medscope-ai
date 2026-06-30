@@ -21,6 +21,9 @@ datasets/*
 !datasets/manifest.json
 models/*
 !models/.gitkeep
+!models/model.pkl
+!models/preprocessor.pkl
+!models/model_manifest.json
 notebooks
 docs
 tests

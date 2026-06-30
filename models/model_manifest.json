@@ -1,0 +1,31 @@
+{
+  "model_id": "logistic_regression",
+  "model_version": "1.0.0",
+  "production_threshold": 0.5,
+  "feature_columns": [
+    "age_midpoint",
+    "time_in_hospital",
+    "num_medications",
+    "number_inpatient",
+    "number_outpatient",
+    "number_emergency",
+    "num_lab_procedures",
+    "num_procedures",
+    "number_diagnoses",
+    "total_prior_visits",
+    "active_diabetes_meds_count",
+    "has_insulin",
+    "meds_per_day",
+    "gender",
+    "race",
+    "max_glu_serum",
+    "A1Cresult",
+    "change",
+    "diabetesMed"
+  ],
+  "shap_explainer": "linear",
+  "model_path": "model.pkl",
+  "preprocessor_path": "preprocessor.pkl",
+  "source_directory": "C:\\Pojects\\medscope-ai\\models\\final",
+  "serialized_at": "2026-06-25T19:11:47.584536+00:00"
+}

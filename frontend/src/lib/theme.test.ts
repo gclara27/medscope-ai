@@ -20,8 +20,8 @@ describe("theme (T-X03-04)", () => {
     document.documentElement.classList.remove("dark");
   });
 
-  it("defaults to system when nothing is stored", () => {
-    expect(readStoredThemePreference()).toBe("system");
+  it("defaults to light when nothing is stored", () => {
+    expect(readStoredThemePreference()).toBe("light");
     expect(resolveTheme("light")).toBe("light");
   });
 
@@ -64,7 +64,7 @@ describe("theme (T-X03-04)", () => {
     expect(readStoredThemePreference()).toBe("system");
 
     localStorage.setItem(THEME_STORAGE_KEY, "invalid");
-    expect(readStoredThemePreference()).toBe("system");
+    expect(readStoredThemePreference()).toBe("light");
   });
 
   it("toggles the dark class on documentElement", () => {
@@ -77,7 +77,7 @@ describe("theme (T-X03-04)", () => {
     expect(document.documentElement.style.colorScheme).toBe("light");
   });
 
-  it("initializeTheme follows system dark when nothing is stored", () => {
+  it("initializeTheme defaults to light when nothing is stored", () => {
     const matchMedia = vi.spyOn(window, "matchMedia").mockImplementation((query: string) => ({
       matches: query === "(prefers-color-scheme: dark)",
       media: query,
@@ -93,9 +93,9 @@ describe("theme (T-X03-04)", () => {
     document.documentElement.classList.remove("dark");
     document.documentElement.style.colorScheme = "light";
 
-    expect(initializeTheme()).toBe("dark");
-    expect(readStoredThemePreference()).toBe("system");
-    expect(document.documentElement.classList.contains("dark")).toBe(true);
+    expect(initializeTheme()).toBe("light");
+    expect(readStoredThemePreference()).toBe("light");
+    expect(document.documentElement.classList.contains("dark")).toBe(false);
 
     matchMedia.mockRestore();
   });

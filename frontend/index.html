@@ -16,7 +16,7 @@
           stored = localStorage.getItem(key);
         } catch (e) {}
         var pref =
-          stored === "dark" || stored === "light" || stored === "system" ? stored : "system";
+          stored === "dark" || stored === "light" || stored === "system" ? stored : "light";
         var dark =
           pref === "dark" ||
           (pref === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);

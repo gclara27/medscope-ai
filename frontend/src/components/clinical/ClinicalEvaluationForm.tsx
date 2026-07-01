@@ -46,20 +46,37 @@ export interface ClinicalEvaluationFormProps {
   /** Wired in T-512 — POST /predict and navigate to result. */
   onSubmit?: (payload: PredictRequest) => void | Promise<void>;
   isSubmitting?: boolean;
+  /** Controlled form values (T-907-03 demo scenario prefill). */
+  values?: ClinicalFormValues;
+  onValuesChange?: (values: ClinicalFormValues) => void;
 }
 
 export function ClinicalEvaluationForm({
   onSubmit,
   isSubmitting = false,
+  values: controlledValues,
+  onValuesChange,
 }: ClinicalEvaluationFormProps) {
-  const [values, setValues] = useState<ClinicalFormValues>(DEFAULT_CLINICAL_FORM_VALUES);
+  const [uncontrolledValues, setUncontrolledValues] = useState<ClinicalFormValues>(
+    DEFAULT_CLINICAL_FORM_VALUES,
+  );
+  const isControlled = controlledValues !== undefined;
+  const values = isControlled ? controlledValues : uncontrolledValues;
   const [errors, setErrors] = useState<ClinicalFormFieldErrors>({});
+
+  function setValues(next: ClinicalFormValues) {
+    if (isControlled) {
+      onValuesChange?.(next);
+      return;
+    }
+    setUncontrolledValues(next);
+  }
 
   function updateField<K extends keyof ClinicalFormValues>(
     field: K,
     value: ClinicalFormValues[K],
   ) {
-    setValues((current) => ({ ...current, [field]: value }));
+    setValues({ ...values, [field]: value });
     setErrors((current) => {
       if (!current[field]) {
         return current;

@@ -514,6 +514,7 @@ Checklists ejecutables por una persona **sin experiencia previa** en la aplicaci
 | Fase 7 — ML models (T-X07) | [`Manual/Phase-07-ML-Model-Comparison.md`](Manual/Phase-07-ML-Model-Comparison.md) |
 | Fase 8 — Dark mode (T-X03) | [`Manual/Phase-08-Dark-Mode.md`](Manual/Phase-08-Dark-Mode.md) |
 | Fase 9 — Producción (UC-124) | [`Manual/Phase-09-Production-Smoke.md`](Manual/Phase-09-Production-Smoke.md) |
+| Fase 9b — Demo WOW | [`Manual/Phase-10-Demo-Playbook.md`](Manual/Phase-10-Demo-Playbook.md) · [`Demo/Demo-Playbook-Plan.md`](../Demo/Demo-Playbook-Plan.md) |
 
 **CI (GitHub Actions):** en cada push/PR a `main`, `.github/workflows/ci.yml` ejecuta pytest (backend, con `pytest-asyncio`) y vitest (frontend). No despliega; el deploy es automático vía Render + Vercel.
 

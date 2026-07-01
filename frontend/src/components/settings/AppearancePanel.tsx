@@ -43,8 +43,8 @@ export function AppearancePanel() {
       <CardHeader className="border-b border-outline-variant">
         <CardTitle className="text-base">Appearance</CardTitle>
         <p className="text-sm text-on-surface-variant">
-          Choose how MedScope AI looks on this device. By default, the app follows your system
-          theme unless you select Light or Dark explicitly. Your choice is saved locally.
+          Choose how MedScope AI looks on this device. The app starts in Light mode by default.
+          Select Dark or System to override. Your choice is saved locally on this browser.
         </p>
       </CardHeader>
       <CardContent className="space-y-4 p-6">

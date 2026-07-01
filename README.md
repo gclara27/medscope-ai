@@ -363,6 +363,7 @@ medscope-ai/
 | [Database](docs/Database/Database.md) | Schema and persistence |
 | [Testing](docs/Testing/Testing.md) | Automated tests, lint, manual checklists |
 | [Deployment](docs/Deployment/Deployment.md) | Production cloud deploy (Supabase + Render + Vercel) |
+| [Demo Playbook](docs/Demo/Demo-Playbook-Plan.md) | Clinical scenarios + simulation animation (defense) |
 | [Task Tracker](docs/TaskTracker.md) | MVP task checklist |
 
 ---

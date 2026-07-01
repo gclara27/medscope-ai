@@ -32,7 +32,7 @@ export function readStoredThemePreference(): ThemePreference {
   } catch {
     // Storage blocked (private mode, SSR).
   }
-  return "system";
+  return "light";
 }
 
 export function applyResolvedTheme(resolved: ResolvedTheme): void {
@@ -41,7 +41,7 @@ export function applyResolvedTheme(resolved: ResolvedTheme): void {
   root.style.colorScheme = resolved;
 }
 
-/** Apply stored or system theme before React mounts (pairs with anti-FOUC in index.html). */
+/** Apply stored preference before React mounts (pairs with anti-FOUC in index.html). */
 export function initializeTheme(): ResolvedTheme {
   return applyThemePreference(readStoredThemePreference());
 }

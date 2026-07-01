@@ -1092,7 +1092,14 @@ Prepare:
 - stable dataset
     
 - no random failures
-    
+
+**Fase 9b (implementación):** [Demo-Playbook-Plan.md](../Demo/Demo-Playbook-Plan.md)
+
+| Entrega | Tareas | Descripción |
+|---|---|---|
+| Clinical demo playbook | T-907 | 4 escenarios sintéticos en Evaluation — prefill formulario |
+| Simulation WOW | T-908 | Animación gauge al recalcular what-if |
+| Ensayo integrado | T-903, T-810 | Guion 8–10 min con animación + escenarios |
 
 ---
 

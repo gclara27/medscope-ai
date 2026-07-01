@@ -1,7 +1,6 @@
 import { FlaskConical, Minus, TrendingDown, TrendingUp } from "lucide-react";
 
 import { RiskGaugeChart } from "@/components/charts/RiskGaugeChart";
-import { Spinner } from "@/components/Spinner";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   formatRiskDelta,
@@ -23,6 +22,8 @@ interface SimulationComparisonPanelProps {
   delta?: number;
   isRecalculating?: boolean;
   hasSimulationResult?: boolean;
+  simulatedAnimateFromPercent?: number;
+  simulationAnimationKey?: string;
 }
 
 function DeltaBadge({ delta, riskLevel }: { delta: number; riskLevel: RiskLevel }) {
@@ -53,6 +54,8 @@ export function SimulationComparisonPanel({
   delta,
   isRecalculating = false,
   hasSimulationResult = false,
+  simulatedAnimateFromPercent,
+  simulationAnimationKey,
 }: SimulationComparisonPanelProps) {
   const showDelta = hasSimulationResult && delta !== undefined;
 
@@ -124,6 +127,7 @@ export function SimulationComparisonPanel({
             "relative overflow-hidden",
             hasSimulationResult && "border-primary ring-1 ring-primary/20",
           )}
+          aria-busy={isRecalculating}
         >
           <div
             aria-hidden
@@ -133,15 +137,11 @@ export function SimulationComparisonPanel({
             )}
           />
           <CardContent className="relative p-6">
-            {isRecalculating ? (
-              <div className="absolute inset-0 z-10 flex items-center justify-center rounded-lg bg-surface/80">
-                <Spinner label="Recalculating risk" />
-              </div>
-            ) : null}
-
             <RiskGaugeChart
               riskPercent={simulatedRisk.risk_percent}
               riskLevel={simulatedRisk.risk_level}
+              animateFromPercent={simulatedAnimateFromPercent}
+              animationKey={simulationAnimationKey}
               title={
                 <span className="inline-flex items-center justify-center gap-1.5">
                   {hasSimulationResult ? (

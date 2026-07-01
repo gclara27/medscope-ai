@@ -1,9 +1,16 @@
-import { render, screen } from "@testing-library/react";
+import type { ReactNode } from "react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
 
 import { AuthProvider } from "@/context/AuthContext";
+import {
+  CLINICAL_DEMO_SCENARIOS,
+  buildScenarioPredictRequest,
+  getClinicalDemoScenario,
+} from "@/lib/clinicalDemoScenarios";
+import { buildPredictRequest, DEFAULT_CLINICAL_FORM_VALUES } from "@/lib/clinicalFormDefaults";
 import { EvaluationPage } from "@/pages/EvaluationPage";
 import { PredictionResultPage } from "@/pages/PredictionResultPage";
 import { createPrediction } from "@/services/predictions";
@@ -13,6 +20,32 @@ import { demoBaselineRequest } from "@/test/fixtures/prediction";
 vi.mock("@/services/predictions", () => ({
   createPrediction: vi.fn(),
 }));
+
+function renderEvaluationPage(ui: ReactNode = <EvaluationPage />, initialEntries?: string[]) {
+  return render(
+    <AuthProvider>
+      <MemoryRouter initialEntries={initialEntries}>{ui}</MemoryRouter>
+    </AuthProvider>,
+  );
+}
+
+function renderEvaluationWithResultRoute(initialEntries = ["/evaluation"]) {
+  return renderEvaluationPage(
+    <Routes>
+      <Route path="/evaluation" element={<EvaluationPage />} />
+      <Route path="/evaluation/result" element={<PredictionResultPage />} />
+    </Routes>,
+    initialEntries,
+  );
+}
+
+function scenarioButtonName(title: string) {
+  return new RegExp(`load demo scenario: ${title}`, "i");
+}
+
+async function expandDemoScenarios(user: ReturnType<typeof userEvent.setup>) {
+  await user.click(screen.getByRole("button", { name: /show demo clinical scenarios/i }));
+}
 
 const demoResponse: PredictResponse = {
   id: "11111111-1111-1111-1111-111111111111",
@@ -38,39 +71,209 @@ const demoResponse: PredictResponse = {
 
 describe("EvaluationPage", () => {
   it("renders page header and clinical form", () => {
-    render(
-      <AuthProvider>
-        <MemoryRouter>
-          <EvaluationPage />
-        </MemoryRouter>
-      </AuthProvider>,
-    );
+    renderEvaluationPage();
 
     expect(screen.getByRole("heading", { name: /clinical evaluation/i })).toBeInTheDocument();
     expect(screen.getByText(/patient demographics/i)).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: /generate ai prediction/i }),
     ).toBeInTheDocument();
+    expect(screen.getByText("Demo clinical scenarios")).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /show demo clinical scenarios/i }),
+    ).toHaveAttribute("aria-expanded", "false");
+  });
+
+  describe("demo playbook (T-907-04)", () => {
+    it.each(CLINICAL_DEMO_SCENARIOS.map((scenario) => [scenario.title, scenario]))(
+      "prefills form values for %s",
+      async (title, scenario) => {
+        const user = userEvent.setup();
+        renderEvaluationPage();
+
+        await expandDemoScenarios(user);
+        await user.click(screen.getByRole("button", { name: scenarioButtonName(title) }));
+
+        expect(screen.getByLabelText(/age/i)).toHaveValue(scenario.formValues.age);
+        expect(screen.getByLabelText(/blood glucose/i)).toHaveValue(scenario.formValues.glucose);
+        expect(screen.getByLabelText(/previous admissions/i)).toHaveValue(
+          scenario.formValues.previous_admissions,
+        );
+        expect(screen.getByLabelText(/biological sex/i)).toHaveValue(scenario.formValues.gender);
+        expect(
+          screen.getByRole("button", { name: scenarioButtonName(title) }),
+        ).toHaveAttribute("aria-pressed", "true");
+      },
+    );
+
+    it("switches the active scenario when another card is selected", async () => {
+      const user = userEvent.setup();
+      renderEvaluationPage();
+
+      await expandDemoScenarios(user);
+      await user.click(
+        screen.getByRole("button", { name: scenarioButtonName("High readmission risk") }),
+      );
+      await user.click(
+        screen.getByRole("button", { name: scenarioButtonName("Moderate risk profile") }),
+      );
+
+      expect(screen.getByLabelText(/age/i)).toHaveValue(58);
+      expect(
+        screen.getByRole("button", { name: scenarioButtonName("Moderate risk profile") }),
+      ).toHaveAttribute("aria-pressed", "true");
+      expect(
+        screen.getByRole("button", { name: scenarioButtonName("High readmission risk") }),
+      ).toHaveAttribute("aria-pressed", "false");
+    });
+
+    it("submits the API payload built from the selected scenario", async () => {
+      const user = userEvent.setup();
+      const moderate = getClinicalDemoScenario("moderate-risk")!;
+      vi.mocked(createPrediction).mockResolvedValue(demoResponse);
+
+      renderEvaluationWithResultRoute();
+
+      await expandDemoScenarios(user);
+      await user.click(
+        screen.getByRole("button", { name: scenarioButtonName("Moderate risk profile") }),
+      );
+      await user.click(screen.getByRole("button", { name: /generate ai prediction/i }));
+
+      expect(createPrediction).toHaveBeenCalledWith(buildScenarioPredictRequest(moderate));
+    });
+
+    it("disables scenario cards while a prediction request is in flight", async () => {
+      const user = userEvent.setup();
+      let resolvePrediction: ((value: PredictResponse) => void) | undefined;
+      vi.mocked(createPrediction).mockImplementation(
+        () =>
+          new Promise((resolve) => {
+            resolvePrediction = resolve;
+          }),
+      );
+
+      renderEvaluationPage();
+
+      await expandDemoScenarios(user);
+      await user.click(
+        screen.getByRole("button", { name: scenarioButtonName("High readmission risk") }),
+      );
+      await user.click(screen.getByRole("button", { name: /generate ai prediction/i }));
+
+      for (const button of screen.getAllByRole("button", { name: /load demo scenario/i })) {
+        expect(button).toBeDisabled();
+      }
+      expect(screen.getByRole("button", { name: /generating prediction/i })).toBeDisabled();
+
+      resolvePrediction?.(demoResponse);
+      await waitFor(() => {
+        expect(screen.getAllByRole("button", { name: /load demo scenario/i })[0]).not.toBeDisabled();
+      });
+    });
+
+    it("supports manual form entry without selecting a demo scenario", async () => {
+      const user = userEvent.setup();
+      vi.mocked(createPrediction).mockResolvedValue(demoResponse);
+
+      renderEvaluationPage();
+
+      expect(screen.queryByText(/active scenario:/i)).not.toBeInTheDocument();
+
+      await user.clear(screen.getByLabelText(/age/i));
+      await user.type(screen.getByLabelText(/age/i), "80");
+      await user.click(screen.getByRole("button", { name: /generate ai prediction/i }));
+
+      expect(createPrediction).toHaveBeenCalledWith(
+        expect.objectContaining({
+          age: 80,
+          glucose: DEFAULT_CLINICAL_FORM_VALUES.glucose,
+        }),
+      );
+    });
+
+    it("shows simulation demo tip only on the showcase scenario card", async () => {
+      const user = userEvent.setup();
+      renderEvaluationPage();
+
+      await expandDemoScenarios(user);
+
+      expect(screen.getAllByText(/demo tip:/i)).toHaveLength(1);
+      expect(screen.getByText(/reduce previous admissions to 2/i)).toBeInTheDocument();
+    });
+
+    it("clears API error when a new scenario is selected", async () => {
+      const user = userEvent.setup();
+      vi.mocked(createPrediction).mockRejectedValue({
+        isAxiosError: true,
+        response: {
+          status: 503,
+          data: { detail: "ML prediction service is unavailable" },
+        },
+      });
+
+      renderEvaluationPage();
+
+      await user.click(screen.getByRole("button", { name: /generate ai prediction/i }));
+      expect(screen.getByText(/ml prediction service is unavailable/i)).toBeInTheDocument();
+
+      await expandDemoScenarios(user);
+      await user.click(
+        screen.getByRole("button", { name: scenarioButtonName("Low risk — stable outpatient") }),
+      );
+
+      expect(
+        screen.queryByText(/ml prediction service is unavailable/i),
+      ).not.toBeInTheDocument();
+    });
+  });
+
+  it("prefills the form when a demo scenario is selected", async () => {
+    const user = userEvent.setup();
+    renderEvaluationPage();
+
+    expect(screen.getByLabelText(/age/i)).toHaveValue(65);
+
+    await expandDemoScenarios(user);
+    await user.click(
+      screen.getByRole("button", { name: /load demo scenario: high readmission risk/i }),
+    );
+
+    expect(screen.getByLabelText(/age/i)).toHaveValue(72);
+    expect(screen.getByLabelText(/blood glucose/i)).toHaveValue(198);
+    expect(screen.getByLabelText(/previous admissions/i)).toHaveValue(5);
+    expect(
+      screen.getByRole("button", { name: /load demo scenario: high readmission risk/i }),
+    ).toHaveAttribute("aria-pressed", "true");
+  });
+
+  it("clears scenario selection when the user edits the form manually", async () => {
+    const user = userEvent.setup();
+    renderEvaluationPage();
+
+    await expandDemoScenarios(user);
+    await user.click(
+      screen.getByRole("button", { name: /load demo scenario: low risk/i }),
+    );
+    expect(screen.getByLabelText(/age/i)).toHaveValue(42);
+
+    await user.clear(screen.getByLabelText(/age/i));
+    await user.type(screen.getByLabelText(/age/i), "43");
+
+    expect(
+      screen.getByRole("button", { name: /load demo scenario: low risk/i }),
+    ).toHaveAttribute("aria-pressed", "false");
   });
 
   it("submits prediction and navigates to result page", async () => {
     const user = userEvent.setup();
     vi.mocked(createPrediction).mockResolvedValue(demoResponse);
 
-    render(
-      <AuthProvider>
-        <MemoryRouter initialEntries={["/evaluation"]}>
-          <Routes>
-            <Route path="/evaluation" element={<EvaluationPage />} />
-            <Route path="/evaluation/result" element={<PredictionResultPage />} />
-          </Routes>
-        </MemoryRouter>
-      </AuthProvider>,
-    );
+    renderEvaluationWithResultRoute();
 
     await user.click(screen.getByRole("button", { name: /generate ai prediction/i }));
 
-    expect(createPrediction).toHaveBeenCalledTimes(1);
+    expect(createPrediction).toHaveBeenCalledWith(buildPredictRequest(DEFAULT_CLINICAL_FORM_VALUES));
     expect(screen.getByRole("heading", { name: /prediction result/i })).toBeInTheDocument();
     expect(screen.getByRole("img", { name: /readmission risk 42\.0 percent/i })).toBeInTheDocument();
     expect(screen.getByText(/moderate readmission risk/i)).toBeInTheDocument();
@@ -86,13 +289,7 @@ describe("EvaluationPage", () => {
       },
     });
 
-    render(
-      <AuthProvider>
-        <MemoryRouter>
-          <EvaluationPage />
-        </MemoryRouter>
-      </AuthProvider>,
-    );
+    renderEvaluationPage();
 
     await user.click(screen.getByRole("button", { name: /generate ai prediction/i }));
 

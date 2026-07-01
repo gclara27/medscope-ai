@@ -30,6 +30,7 @@ Complementar los tests automáticos (`pytest`, `vitest`, Playwright) con un chec
 | 7 (opcional) | [Phase-07-Support-UI.md](Phase-07-Support-UI.md) · [Phase-07-Audit-Logs.md](Phase-07-Audit-Logs.md) · [Phase-07-ML-Model-Comparison.md](Phase-07-ML-Model-Comparison.md) | T-X05–T-X07 — Support, Audit, Multi-model |
 | 8 (opcional) | [Phase-08-Dark-Mode.md](Phase-08-Dark-Mode.md) | T-X03 — Dark mode |
 | 9 | [Phase-09-Production-Smoke.md](Phase-09-Production-Smoke.md) | **Smoke test producción** (Vercel + Render + Supabase, UC-124) |
+| 10 | [Phase-10-Demo-Playbook.md](Phase-10-Demo-Playbook.md) | **Demo playbook + animación simulación** (T-907, T-908, Fase 9b) |
 
 ---
 

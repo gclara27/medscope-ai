@@ -51,11 +51,16 @@ describe("dark mode P0 screens (T-X03-07/08, RTS-043)", () => {
     expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
   });
 
-  it("splash hero remains readable in dark", () => {
+  it("splash hero remains readable on cinematic overlay", () => {
     renderWithRouter(<SplashPage />);
 
-    expect(screen.getByRole("heading", { name: /medscope ai/i })).toHaveClass("text-primary");
-    expect(screen.getByRole("button", { name: /get started/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        name: /predictive intelligence for critical decisions/i,
+      }),
+    ).toHaveClass("text-white");
+    expect(screen.getByRole("link", { name: /sign in/i })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /explore demo/i })).toBeInTheDocument();
   });
 
   it("defaults to light when no theme is stored, even if OS prefers dark", () => {
@@ -76,7 +81,11 @@ describe("dark mode P0 screens (T-X03-07/08, RTS-043)", () => {
     renderWithRouter(<SplashPage />);
 
     expect(document.documentElement.classList.contains("dark")).toBe(false);
-    expect(screen.getByRole("heading", { name: /medscope ai/i })).toHaveClass("text-primary");
+    expect(
+      screen.getByRole("heading", {
+        name: /predictive intelligence for critical decisions/i,
+      }),
+    ).toBeInTheDocument();
 
     matchMedia.mockRestore();
   });

@@ -17,6 +17,7 @@ import { SupportPage } from "@/pages/SupportPage";
 import { SimulationPage } from "@/pages/SimulationPage";
 import { PredictionResultPage } from "@/pages/PredictionResultPage";
 import { SplashPage } from "@/pages/SplashPage";
+import { DemoPlaygroundPage } from "@/pages/DemoPlaygroundPage";
 import { UnauthorizedPage } from "@/pages/UnauthorizedPage";
 
 export default function App() {
@@ -26,6 +27,7 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<SplashPage />} />
+          <Route path="/demo" element={<DemoPlaygroundPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route element={<PrivateRoute />}>
             <Route element={<AppLayout />}>

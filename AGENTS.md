@@ -196,6 +196,16 @@ See `docs/Requirements/Requirements.md` §17 for full MVP and optional features.
 | GET | `/history` | Prediction history |
 | GET | `/analytics` | Aggregated metrics |
 
+## Production (TFM, jul 2026)
+
+| Layer | URL |
+|---|---|
+| Frontend | https://medscope-ai-delta.vercel.app |
+| API | https://medscope-ai-q8tg.onrender.com |
+| Health | https://medscope-ai-q8tg.onrender.com/health |
+
+Deploy guide: `docs/Deployment/Deployment.md` (Supabase + Render + Vercel).
+
 ## Performance targets
 
 - Prediction response: **< 1 second**

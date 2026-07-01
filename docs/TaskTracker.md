@@ -19,6 +19,7 @@ Documento vivo para seguir el progreso del TFM.
 | Execution Plan | [ExecutionPlan.md](Execution%20Plan/ExecutionPlan.md) | Fases y orden |
 | Base de datos | [Database.md](Database/Database.md) | Esquema, tablas |
 | Testing | [Testing.md](Testing/Testing.md) | Tests, RTS-* |
+| Despliegue | [Deployment.md](Deployment/Deployment.md) | Cloud prod UC-124 |
 | Plan opcional | [Optional-Backlog-Plan.md](Optional%20Features/Optional-Backlog-Plan.md) | US, tareas, alcance (T-X03, T-X05–07) |
 | Design | [Design/README.md](Design/README.md) | UI, mockups |
 | AGENTS | [AGENTS.md](../AGENTS.md) | Convenciones IA |
@@ -137,11 +138,12 @@ Documento vivo para seguir el progreso del TFM.
 | Fase 4 — Frontend base | 14 | 14 | 100% |
 | Fase 5 — Features clínicas | 16 | 16 | 100% |
 | Fase 6 — Analytics + History | 10 | 10 | 100% |
-| Fase 7 — Polish + Testing | 1 | 12 | 8% |
+| Fase 7 — Polish + Testing | 12 | 12 | 100% |
+| Despliegue cloud (UC-124) | 6 | 6 | 100% |
 | Fase 8 — TFM + Documentación | 2 | 10 | 20% |
 | Fase 9 — Demo | 0 | 6 | 0% |
 | Fase X — Opcional T-X05–07 | 7 | 22 | 32% |
-| **TOTAL MVP** | **108** | **134** | **81%** |
+| **TOTAL MVP** | **114** | **140** | **81%** |
 
 ---
 
@@ -393,7 +395,7 @@ Entregables: historial (`/history`, filtros, detalle SHAP), analytics (`/analyti
 
 # FASE 7 — Polish + Testing
 
-**Progreso:** 3 / 12 (25%)
+**Progreso:** 12 / 12 (100%)
 
 [Testing.md](Testing/Testing.md) · [skill testing](../skills/testing/SKILL.md)
 
@@ -419,6 +421,21 @@ Entregables: historial (`/history`, filtros, detalle SHAP), analytics (`/analyti
 - [x] [Simulación](Use%20Cases/Use%20Cases.md#uc-043--compare-original-vs-simulation)
 - [x] [Historial](Use%20Cases/Use%20Cases.md#uc-052--open-historical-prediction)
 - [x] [Analytics](Use%20Cases/Use%20Cases.md#uc-060--view-analytics-dashboard)
+
+---
+
+# DESPLIEGUE CLOUD — UC-124
+
+**Progreso:** 6 / 6 (100%) · [Deployment.md](Deployment/Deployment.md)
+
+| ID | ✓ | Tarea | Docs | Notas |
+|---|---|---|---|---|
+| T-713 | [x] | Prep repo Fase 0 | [Deployment §3](Deployment/Deployment.md#3-fase-0--preparar-el-repositorio) | Dockerfile, `vercel.json`, CI, artefactos ML |
+| T-714 | [x] | Supabase + migraciones | [Deployment §4](Deployment/Deployment.md#4-fase-1--supabase-base-de-datos) | Session pooler, `alembic upgrade head` |
+| T-715 | [x] | Render API + ML | [Deployment §5](Deployment/Deployment.md#5-fase-2--render-backend-api) | Docker, `/health` `ml_ready: true` |
+| T-716 | [x] | Vercel frontend | [Deployment §6](Deployment/Deployment.md#6-fase-3--vercel-frontend) | Root `frontend`, `VITE_API_BASE_URL` |
+| T-717 | [x] | CORS + E2E prod | [Deployment §6.4](Deployment/Deployment.md#64-verificación-end-to-end) | https://medscope-ai-delta.vercel.app |
+| T-718 | [x] | CI/CD `main` | [Deployment §7](Deployment/Deployment.md#7-cicd--deploy-automático-en-main) | GitHub Actions + webhooks |
 
 ---
 
@@ -469,7 +486,7 @@ Entregables: historial (`/history`, filtros, detalle SHAP), analytics (`/analyti
 | T-X05 | [x] | Support UI | [US-040](#us-040) · [RF-072–073](Requirements/Requirements.md#59-soporte-opcional--18) · [UC-064–065](Use%20Cases/Use%20Cases.md#uc-064--access-support-center) |
 | T-X06 | [x] | Audit avanzado | [US-041](#us-041) · [RF-074–075](Requirements/Requirements.md#510-auditoría-opcional--18) · [UC-081](Use%20Cases/Use%20Cases.md#uc-081--persist-audit-logs) |
 | T-X07 | [x] | Multi-model | [US-042](#us-042) · [RF-076–077](Requirements/Requirements.md#511-comparación-de-modelos-ml-opcional--18) · [UC-084](Use%20Cases/Use%20Cases.md#uc-084--view-ml-model-comparison-optional) |
-| T-X08 | [ ] | FHIR / cloud | [UC-120–124](Use%20Cases/Use%20Cases.md#16-future-expansion-use-cases) |
+| T-X08 | [x] | Cloud deploy (UC-124) | [Deployment](Deployment/Deployment.md) · [UC-124](Use%20Cases/Use%20Cases.md#uc-124--cloud-deployment) | Supabase + Render + Vercel live |
 
 ---
 
@@ -655,3 +672,5 @@ Implementar **una feature a la vez**. Cada bloque cierra su user story y manual 
 | 2026-06-11 | **T-X03-02** CSS variables dual theme: `index.css` `:root` + `.dark`, `riskColors.js` dark palette |
 | 2026-06-11 | **T-X03-01** auditoría tokens dark mode: `dark-mode-token-audit.md` (matriz light/dark, inventario hex) |
 | 2026-06-11 | **Plan T-X03** dark mode: US-043, T-X03-01…08, RTS-043, Phase-08 manual, Optional-Backlog-Plan |
+| 2026-06-30 | **Despliegue cloud UC-124** completado: Supabase + Render (`medscope-ai-q8tg`) + Vercel (`medscope-ai-delta`). PRs #16–#19. T-713–718 |
+| 2026-06-30 | Docs Deployment/Environment/README/TaskTracker actualizados con URLs y troubleshooting de prod |

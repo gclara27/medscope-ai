@@ -6,6 +6,7 @@
 
 | Documento | Propósito |
 |---|---|
+| `docs/Deployment/Deployment.md` | Despliegue cloud y smoke test en prod |
 | `docs/Requirements/Requirements.md` | Requisitos de testing RTS-* (§12) |
 | `docs/Use Cases/Use Cases.md` | Flujos críticos UC-* para validar |
 | `docs/Execution Plan/ExecutionPlan.md` | Fase 7.4 — cuándo introducir tests |
@@ -512,10 +513,13 @@ Checklists ejecutables por una persona **sin experiencia previa** en la aplicaci
 | Fase 7 — Audit (T-X06) | [`Manual/Phase-07-Audit-Logs.md`](Manual/Phase-07-Audit-Logs.md) |
 | Fase 7 — ML models (T-X07) | [`Manual/Phase-07-ML-Model-Comparison.md`](Manual/Phase-07-ML-Model-Comparison.md) |
 | Fase 8 — Dark mode (T-X03) | [`Manual/Phase-08-Dark-Mode.md`](Manual/Phase-08-Dark-Mode.md) |
+| Fase 9 — Producción (UC-124) | [`Manual/Phase-09-Production-Smoke.md`](Manual/Phase-09-Production-Smoke.md) |
+
+**CI (GitHub Actions):** en cada push/PR a `main`, `.github/workflows/ci.yml` ejecuta pytest (backend, con `pytest-asyncio`) y vitest (frontend). No despliega; el deploy es automático vía Render + Vercel.
 
 Cada caso incluye: precondiciones, pasos detallados, resultado esperado, criterios de aceptación y tabla para marcar ejecución (`[ ]` → `[x]`).
 
-Complementan (no sustituyen) `pytest` / Playwright: validan entorno real (Docker, PostgreSQL, Swagger) antes de demos y defensa del TFM.
+Complementan (no sustituyen) `pytest` / Playwright: validan entorno real (Docker, PostgreSQL, Swagger, **o URLs cloud**) antes de demos y defensa del TFM.
 
 ---
 
@@ -532,6 +536,7 @@ Complementan (no sustituyen) `pytest` / Playwright: validan entorno real (Docker
 | UC-090 | backend | validación en todos los endpoints |
 | UC-091 | backend | `test_exception_handlers.py` |
 | UC-101–103 | frontend + E2E | `ux-feedback.test.tsx`, `LoginPage.logout.test.tsx` |
+| UC-124 | manual prod smoke | `Manual/Phase-09-Production-Smoke.md` |
 | UC-064–065 | frontend vitest + manual | `SupportPage.test.tsx`, Phase-07-Support |
 | UC-081, UC-085 | backend pytest + manual | `test_audit_logs.py`, Phase-07-Audit |
 | UC-084 | backend + frontend + manual | `test_ml_comparison.py`, Phase-07-ML |

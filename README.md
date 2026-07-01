@@ -159,13 +159,24 @@ docker compose down -v       # stop and remove database volume
 
 ## Production deployment (cloud)
 
-Step-by-step guide for **free-tier** hosting: **Supabase** (PostgreSQL) + **Render** (FastAPI + ML) + **Vercel** (React).
+**Live MVP (julio 2026):**
 
-See **[docs/Deployment/Deployment.md](docs/Deployment/Deployment.md)** for the full checklist (architecture, env vars, CI/CD on `main`, troubleshooting).
+| Component | URL |
+|-----------|-----|
+| **App (login)** | https://medscope-ai-delta.vercel.app/login |
+| **API** | https://medscope-ai-q8tg.onrender.com |
+| **Health** | https://medscope-ai-q8tg.onrender.com/health |
+| **API docs** | https://medscope-ai-q8tg.onrender.com/docs |
 
-Before the first cloud deploy, run `.\scripts\prepare-docker-build.ps1` and commit the production files under `models/` (`model.pkl`, `preprocessor.pkl`, `model_manifest.json`).
+Stack: **Supabase** (PostgreSQL) + **Render** (FastAPI + ML, Docker) + **Vercel** (React).
+
+Step-by-step guide, troubleshooting, and env vars: **[docs/Deployment/Deployment.md](docs/Deployment/Deployment.md)**.
+
+Before the first cloud deploy, run `.\scripts\prepare-docker-build.ps1` and commit the production files under `models/` (`model.pkl`, `preprocessor.pkl`, `model_manifest.json`, `shap_background.npy`).
 
 Environment variables reference: [docs/Environment/Environment.md](docs/Environment/Environment.md).
+
+**CI/CD:** push to `main` triggers GitHub Actions (pytest + vitest), Render rebuild, and Vercel rebuild. Use PRs to `main` (branch protection).
 
 ---
 
@@ -243,7 +254,7 @@ MedScope AI uses a **local PostgreSQL database for development and testing** bef
 | **dev** | PostgreSQL (`medscope_ai`) | `docker compose up` — daily development, Alembic migrations |
 | **test** | SQLite in memory | Fast unit tests (`pytest` in `backend/tests/`) |
 | **test** (integration) | PostgreSQL in Docker | Optional — real SQL, migrations, API + DB flows |
-| **prod** | Managed PostgreSQL | Cloud / VPS — separate `.env`, never dev credentials |
+| **prod** | Managed PostgreSQL (Supabase) | [Deployment.md](docs/Deployment/Deployment.md) | Live TFM demo — `DATABASE_URL` only in Render |
 
 ### Connection strings
 
@@ -351,6 +362,7 @@ medscope-ai/
 | [Execution Plan](docs/Execution%20Plan/ExecutionPlan.md) | Phased delivery plan |
 | [Database](docs/Database/Database.md) | Schema and persistence |
 | [Testing](docs/Testing/Testing.md) | Automated tests, lint, manual checklists |
+| [Deployment](docs/Deployment/Deployment.md) | Production cloud deploy (Supabase + Render + Vercel) |
 | [Task Tracker](docs/TaskTracker.md) | MVP task checklist |
 
 ---

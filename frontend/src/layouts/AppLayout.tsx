@@ -68,7 +68,7 @@ export function AppLayout() {
             className={cn(
               "flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium",
               isNavItemActive(location.pathname, SUPPORT_NAV_ITEM.to)
-                ? "bg-secondary-container text-on-secondary-container"
+                ? "bg-primary text-on-primary"
                 : "text-on-surface-variant hover:bg-surface-container-low",
             )}
           >

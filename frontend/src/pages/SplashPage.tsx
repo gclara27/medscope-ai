@@ -80,11 +80,11 @@ export function SplashPage() {
 
           <SplashFadeIn
             delayMs={300}
-            className="flex w-full max-w-md flex-col gap-3 sm:max-w-none sm:flex-row sm:justify-center"
+            className="grid w-full max-w-xs grid-cols-1 gap-3 sm:w-auto sm:max-w-none sm:grid-cols-2"
           >
             <Button
               size="lg"
-              className="group gap-2 px-8 shadow-xl transition-transform active:scale-95"
+              className="group w-full justify-center gap-2 px-8 shadow-xl transition-transform active:scale-95"
               asChild
             >
               <Link to="/login">
@@ -95,7 +95,7 @@ export function SplashPage() {
             <Button
               size="lg"
               variant="outline"
-              className="gap-2 border-white/40 bg-white/10 px-8 text-white backdrop-blur-md hover:bg-white/20 hover:text-white active:scale-95"
+              className="w-full justify-center gap-2 border-white/40 bg-white/10 px-8 text-white backdrop-blur-md hover:bg-white/20 hover:text-white active:scale-95"
               asChild
             >
               <Link to="/demo">

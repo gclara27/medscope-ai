@@ -10,7 +10,7 @@ from core.exception_handlers import register_exception_handlers
 from core.logging_config import configure_logging
 from core.ml_registry import ml_registry
 from core.performance_middleware import PerformanceMiddleware
-from routers import admin_audit, admin_settings, admin_users, analytics, auth, dashboard, history, ml, predictions, simulations, support
+from routers import admin_audit, admin_settings, admin_users, analytics, auth, dashboard, demo, history, ml, predictions, simulations, support
 
 configure_logging()
 
@@ -43,6 +43,7 @@ app.add_middleware(
 )
 
 app.include_router(auth.router, prefix="/auth", tags=["auth"])
+app.include_router(demo.router)
 app.include_router(admin_users.router, prefix="/admin", tags=["admin"])
 app.include_router(admin_settings.router, prefix="/admin", tags=["admin"])
 app.include_router(admin_audit.router, prefix="/admin", tags=["admin"])

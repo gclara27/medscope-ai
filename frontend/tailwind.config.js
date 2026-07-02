@@ -19,12 +19,12 @@ export default {
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
+        ring: med("--color-primary"),
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          DEFAULT: med("--color-primary"),
+          foreground: med("--color-on-primary"),
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",

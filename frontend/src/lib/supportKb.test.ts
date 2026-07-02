@@ -28,6 +28,7 @@ describe("supportKb", () => {
   it("exposes support center hero copy", () => {
     expect(SUPPORT_CENTER_COPY.title).toBe("Clinical Support Center");
     expect(SUPPORT_CENTER_COPY.knowledgeBaseHeading).toBe("Knowledge Base Topics");
+    expect(SUPPORT_CENTER_COPY.knowledgeBaseFutureNotice).toMatch(/planned for a future release/i);
   });
 
   it("filterSupportKbCategories matches title and description", () => {

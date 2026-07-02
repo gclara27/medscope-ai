@@ -29,7 +29,7 @@ export function UnauthorizedPage() {
         </p>
         <Link
           to="/dashboard"
-          className="mt-6 inline-flex rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-on-primary transition hover:bg-primary-container"
+          className="mt-6 inline-flex rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-on-primary transition hover:bg-primary/90"
         >
           Back to dashboard
         </Link>

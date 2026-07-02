@@ -27,7 +27,7 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<SplashPage />} />
-          <Route path="/demo" element={<DemoPlaygroundPage />} />
+          <Route path="/demo/:stepId?" element={<DemoPlaygroundPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route element={<PrivateRoute />}>
             <Route element={<AppLayout />}>

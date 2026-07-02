@@ -69,11 +69,14 @@ export function SupportPage() {
         <section className="xl:col-span-2" aria-labelledby="support-kb-heading">
           <h2
             id="support-kb-heading"
-            className="mb-4 flex items-center gap-2 text-xl font-semibold text-on-surface"
+            className="mb-2 flex items-center gap-2 text-xl font-semibold text-on-surface"
           >
             <LifeBuoy className="h-5 w-5 text-primary" aria-hidden />
             {SUPPORT_CENTER_COPY.knowledgeBaseHeading}
           </h2>
+          <p className="mb-4 text-sm leading-relaxed text-on-surface-variant">
+            {SUPPORT_CENTER_COPY.knowledgeBaseFutureNotice}
+          </p>
 
           {visibleCategories.length === 0 ? (
             <p className="rounded-xl border border-dashed border-outline-variant bg-surface-container-lowest px-4 py-8 text-center text-sm text-on-surface-variant">

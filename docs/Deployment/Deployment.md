@@ -108,6 +108,7 @@ Comprobar que existen (y commitear en `main`):
 - `models/preprocessor.pkl`
 - `models/model_manifest.json`
 - `models/shap_background.npy` *(requerido por `ml_registry` para SHAP en runtime)*
+- `models/demo_golden_predictions.json` *(scores fijos T-902 para tests demo y CI)*
 
 ### 3.2 Imagen Docker (`backend/Dockerfile`)
 
@@ -381,7 +382,7 @@ Detalle de cada variable: [Environment.md](../Environment/Environment.md).
 
 | Síntoma | Causa probable | Solución |
 |---|---|---|
-| `ml_ready: false` en `/health` | Falta `shap_background.npy` u otro artefacto en imagen Docker | Commitear los 4 archivos en `models/` (§3.1), rebuild Render |
+| `ml_ready: false` en `/health` | Falta `shap_background.npy` u otro artefacto en imagen Docker | Commitear los 5 archivos en `models/` (§3.1), rebuild Render |
 | `Failed to load ML model at startup` | Mismo que anterior | Verificar logs Render; `models/shap_background.npy` en git |
 | Login OK en local, falla en prod | CORS o `VITE_API_BASE_URL` mal | `CORS_ORIGINS` = URL Vercel exacta; redeploy Render |
 | 404 al recargar `/dashboard` | Falta `vercel.json` | §3.3 |
@@ -419,7 +420,7 @@ Trade-offs: cold starts, posible pausa de Supabase, sin SLA.
 
 Marca cada paso al completarlo:
 
-- [x] **0.1** Generar `models/` y commitear `model.pkl`, `preprocessor.pkl`, `model_manifest.json`, `shap_background.npy`
+- [x] **0.1** Generar `models/` y commitear `model.pkl`, `preprocessor.pkl`, `model_manifest.json`, `shap_background.npy`, `demo_golden_predictions.json`
 - [x] **0.2** Verificar `backend/Dockerfile` incluye `COPY models` y valida 4 artefactos
 - [x] **0.3** Verificar `frontend/vercel.json` + `tsconfig` build sin tests
 - [x] **0.4** Push a `main` (vía PR; rama protegida)

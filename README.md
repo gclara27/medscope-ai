@@ -255,7 +255,7 @@ Stack: **Supabase** (PostgreSQL) + **Render** (FastAPI + ML, Docker) + **Vercel*
 
 Step-by-step guide, troubleshooting, and env vars: **[docs/Deployment/Deployment.md](docs/Deployment/Deployment.md)**.
 
-Before the first cloud deploy, run `.\scripts\prepare-docker-build.ps1` and commit the production files under `models/` (`model.pkl`, `preprocessor.pkl`, `model_manifest.json`, `shap_background.npy`).
+Before the first cloud deploy, run `.\scripts\prepare-docker-build.ps1` and commit the production files under `models/` (`model.pkl`, `preprocessor.pkl`, `model_manifest.json`, `shap_background.npy`, `demo_golden_predictions.json`).
 
 Environment variables reference: [docs/Environment/Environment.md](docs/Environment/Environment.md).
 

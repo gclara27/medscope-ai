@@ -41,6 +41,18 @@ def main() -> int:
     if not args.skip_validation:
         validate_production_artifacts()
 
+    from ml.demo_golden import write_demo_golden_predictions
+
+    golden = write_demo_golden_predictions()
+    logger.info(
+        "demo_golden_written",
+        extra={
+            "path": str(REPO_ROOT / "models" / "demo_golden_predictions.json"),
+            "model_version": golden.get("model_version"),
+            "scenarios": list(golden.get("scenarios", {}).keys()),
+        },
+    )
+
     logger.info(
         "serialize_complete",
         extra={

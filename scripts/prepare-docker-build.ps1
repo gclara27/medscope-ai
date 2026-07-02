@@ -11,7 +11,8 @@ $required = @(
     "models\model.pkl",
     "models\preprocessor.pkl",
     "models\model_manifest.json",
-    "models\shap_background.npy"
+    "models\shap_background.npy",
+    "models\demo_golden_predictions.json"
 )
 
 $missing = $required | Where-Object { -not (Test-Path (Join-Path $root $_)) }

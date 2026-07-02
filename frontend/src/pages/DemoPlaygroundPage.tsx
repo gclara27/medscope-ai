@@ -20,7 +20,6 @@ import { DemoStepProgress } from "@/components/demo/DemoStepProgress";
 import { DemoTourLayout } from "@/components/demo/DemoTourLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { buildPredictRequest } from "@/lib/clinicalFormDefaults";
 import {
   buildScenarioPredictRequest,
   getClinicalDemoScenario,

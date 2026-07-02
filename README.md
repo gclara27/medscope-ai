@@ -47,24 +47,40 @@ Full narrative: [docs/MedScope AI General Description.md](docs/MedScope%20AI%20G
 **Compliance checklist:** [docs/Thesis/Entrega-TFM-Fundae.md](docs/Thesis/Entrega-TFM-Fundae.md)  
 **Delivery deadline (syllabus):** 20 July 2026
 
-Fill these in the campus submission form:
+### Campus form — copy/paste
 
 | Field | Value |
 |-------|-------|
 | **GitHub repository** | https://github.com/gclara27/medscope-ai |
-| **Live app (deploy URL)** | https://medscope-ai-delta.vercel.app/login |
+| **Live app (deploy URL)** | https://medscope-ai-delta.vercel.app |
 | **Public demo (no login)** | https://medscope-ai-delta.vercel.app/demo |
 | **API health** | https://medscope-ai-q8tg.onrender.com/health |
-| **Slides URL** | `PENDING` — sube `docs/Thesis/slides/MedScope-AI-TFM.pptx` a Google Drive/Slides (acceso público) o usa el archivo en el repo |
-| **Video URL** | `PENDING` — add YouTube / Drive link after recording |
+| **Slides URL** | `REPLACE_ME` → e.g. `https://docs.google.com/presentation/d/.../edit` or raw GitHub link to `docs/Thesis/slides/MedScope-AI-TFM.pptx` |
+| **Video URL** | `REPLACE_ME` → e.g. `https://youtu.be/...` or `https://drive.google.com/file/d/.../view` |
 | **Demo user** | `clinician@medscope.ai` |
 | **Demo password** | `MedScope123!` |
+
+When slides and video are ready, replace `REPLACE_ME` in this table and in [Entrega-TFM-Fundae.md](docs/Thesis/Entrega-TFM-Fundae.md).
+
+### Pre-submission checklist
+
+| Step | Status | Action |
+|------|--------|--------|
+| Slides in repo | Done | [`docs/Thesis/slides/MedScope-AI-TFM.pptx`](docs/Thesis/slides/MedScope-AI-TFM.pptx) |
+| Upload slides + URL | Pending | Google Slides/Drive (public) → paste in table above |
+| Record defense video | Pending | Follow [Guion-Video-Defensa.md](docs/Thesis/Guion-Video-Defensa.md) (screen capture required) |
+| Upload video + URL | Pending | YouTube (unlisted OK) or Drive → paste in table above |
+| GitHub repo public | Verify | [github.com/gclara27/medscope-ai](https://github.com/gclara27/medscope-ai) — or grant `mouredev@gmail.com` if private |
+| Production stability | Done | `.\scripts\verify-demo-stability.ps1 -Production` (T-906) |
+| Demo backup (USB) | Pending | `.\scripts\backup-demo-media.ps1` then copy `.zip` to external drive |
+| Campus form | Pending | Submit before **20/07/2026** |
+| Incognito smoke test | Pending | Login + predict at live URL without cached session |
 
 **Slides content (ready to copy to PowerPoint):** [docs/Thesis/Slides-Presentacion-Video.md](docs/Thesis/Slides-Presentacion-Video.md)  
 **Video script (screen + voice + optional camera):** [docs/Thesis/Guion-Video-Defensa.md](docs/Thesis/Guion-Video-Defensa.md)  
 **Thesis memory draft:** [docs/Thesis/Memoria-TFM.md](docs/Thesis/Memoria-TFM.md)
 
-> **Before submission:** warm up the API (`/health` → `ml_ready: true`). If the repo is private, grant read access to `mouredev@gmail.com` per Fundae rules, or make the repository **public**.
+> **Before submission:** warm up the API 2–3 min before demo (`/health` → `ml_ready: true`). Render free tier may cold-start 30–90 s.
 
 ---
 
@@ -176,13 +192,13 @@ Edit `.env` if you need non-default ports or credentials. Defaults work for loca
 docker compose up --build
 ```
 
-Windows helper:
+Windows helper (prepares ML artifacts, starts detached, waits for health):
 
 ```powershell
 .\scripts\docker-up.ps1
 ```
 
-Detached mode:
+Detached mode (raw Compose):
 
 ```bash
 docker compose up --build -d
@@ -206,6 +222,12 @@ docker compose ps
 curl http://localhost:8000/health
 ```
 
+Verify full stack (health + nginx proxy + demo login):
+
+```powershell
+.\scripts\verify-docker-stack.ps1
+```
+
 The frontend container serves the built React app and proxies API routes (`/auth`, `/predict`, `/simulate`, etc.) to the backend service.
 
 ### 4. Stop
@@ -223,6 +245,7 @@ docker compose down -v       # stop and remove database volume
 
 | Component | URL |
 |-----------|-----|
+| **Frontend (app)** | https://medscope-ai-delta.vercel.app |
 | **App (login)** | https://medscope-ai-delta.vercel.app/login |
 | **API** | https://medscope-ai-q8tg.onrender.com |
 | **Health** | https://medscope-ai-q8tg.onrender.com/health |

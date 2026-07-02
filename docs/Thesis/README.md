@@ -16,9 +16,11 @@ Borradores y material académico para el Trabajo Fin de Máster (**RAC-001**, **
 ### Pendiente para cerrar entrega Fundae (20/07/2026)
 
 1. ~~Crear slides~~ → [`slides/MedScope-AI-TFM.pptx`](slides/MedScope-AI-TFM.pptx) (regenerar: `python scripts/generate_thesis_pptx.py`)
-2. Subir slides a Google Drive/Slides → URL en README
-3. Grabar vídeo con `Guion-Video-Defensa.md` → URL YouTube/Drive
+2. Subir slides a Google Drive/Slides → sustituir `REPLACE_ME` en README y Entrega-TFM-Fundae
+3. Grabar vídeo con `Guion-Video-Defensa.md` → sustituir `REPLACE_ME` en README y Entrega-TFM-Fundae
 4. Confirmar repo GitHub **público**
+5. Backup media defensa: `.\scripts\backup-demo-media.ps1` (copiar `.zip` a unidad externa)
+6. Formulario campus + ensayo manual ≤ 10 min en producción
 
 ---
 

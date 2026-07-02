@@ -165,7 +165,7 @@ Usuario cambia variable → Recalculate → spinner
 
 **Documento principal:** [Thesis/Argumentario-Defensa.md](../Thesis/Argumentario-Defensa.md) — guion completo, FAQ tribunal, checklist.
 
-**Estado:** guion listo para ensayo · T-907 y T-908 implementados (vitest verde) · pendiente ensayo manual Phase-10 en prod.
+**Estado:** guion listo · ensayo automatizado local OK (T-903) · pendiente ensayo manual cronometrado en **prod** (≤ 10 min)
 
 **Duración objetivo:** 8–10 minutos (+ 2 min buffer cold start Render).
 
@@ -213,7 +213,7 @@ Si `prefers-reduced-motion` está activo en el SO, el gauge salta al valor final
 
 Usar tarjeta **Intervention simulation** (mismos valores que high-risk). La *Demo tip* en la tarjeta dice: *After predict, open Simulation and reduce Previous admissions to 2 and Glucose to 140.*
 
-### Scores validados (LR v1.0.0, umbrales 0.6 / 0.35)
+### Scores validados (LR v1.0.0, umbrales 0.5 / 0.35)
 
 | Escenario | Riesgo esperado | Score aprox. |
 |---|---|---|
@@ -245,7 +245,7 @@ Usar tarjeta **Intervention simulation** (mismos valores que high-risk). La *Dem
 - [x] Animación visible en recálculo simulación (light + dark)
 - [x] `prefers-reduced-motion` respetado
 - [x] Vitest verde
-- [ ] Ensayo T-903 incluye momento animación sin glitches
+- [ ] Ensayo T-903 incluye momento animación sin glitches (manual prod; E2E local OK)
 
 ---
 

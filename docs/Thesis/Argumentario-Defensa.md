@@ -179,6 +179,7 @@ Ref: [Public-Demo-Playground](../Demo/Public-Demo-Playground.md).
 
 ## 10. Checklist día de la defensa
 
+- [x] Estabilidad demo prod (T-906) — `verify-demo-stability.ps1 -Production`
 - [ ] Ensayo completo MT-P10-DEMO-001 (≤ 10 min cronometrados)
 - [ ] `/health` con `ml_ready: true` antes de entrar al aula
 - [ ] Contraseña demo rotada si la URL es pública

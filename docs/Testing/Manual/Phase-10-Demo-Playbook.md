@@ -17,6 +17,7 @@ Checklist manual para **T-907** (escenarios clínicos) y **T-908** (animación g
 - [ ] Stack local (`.\scripts\start-dev.ps1`) **o** producción Vercel + Render calentado
 - [ ] Login `clinician@medscope.ai` / `MedScope123!`
 - [ ] En **prod**: abrir `https://medscope-ai-q8tg.onrender.com/health` y confirmar `ml_ready: true` antes del flujo predict
+- [ ] **Modelo fijado (T-902):** `python scripts/verify_demo_model.py` → scores golden OK (local + Render)
 
 **URLs producción**
 
@@ -151,17 +152,22 @@ Seguir [Argumentario-Defensa.md](../../Thesis/Argumentario-Defensa.md) (guion §
 | Paso | OK |
 |---|---|
 | Warm-up `/health` (prod) | [ ] |
-| Login → Dashboard | [ ] |
-| Escenario High → Generate AI Prediction → SHAP | [ ] |
-| Simulation (adm 2, glucose 140) | [ ] |
-| History → Analytics | [ ] |
-| (Opcional) Moderate/Low + Dark / Models | [ ] |
+| Login → Dashboard | [x] local (admin E2E) |
+| Escenario High → Generate AI Prediction → SHAP | [x] local |
+| Simulation (adm 2, glucose 140) | [x] local (Δ −20.5 pts) |
+| History → Analytics | [x] local |
+| (Opcional) Moderate/Low + Dark / Models | [x] local moderate+low |
+
+**Automatización:** `.\scripts\run-demo-rehearsal.ps1` (local) · prod: `$env:PLAYWRIGHT_BASE_URL = "https://medscope-ai-delta.vercel.app"; .\scripts\run-demo-rehearsal.ps1`
+
+**Estabilidad (T-906):** `.\scripts\verify-demo-stability.ps1` (local) · prod: `.\scripts\verify-demo-stability.ps1 -Production` · gate completo con E2E: `-WithE2e`
 
 **Notas de ensayo:**
 
 | Fecha | Entorno | Duración | Incidencias |
 |---|---|---|---|
-| | local / prod | min | |
+| 2026-07-02 | prod (Render+Vercel) | ~21 s (API) | T-906 verify OK — predict 392ms, golden scores, frontend smoke |
+| 2026-06-11 | local (`dev.bat`) | ~5 s (Playwright) + verificación modelo | Panel escenarios colapsado por defecto — expandir antes de clic; presentación en vivo usar `clinician` (Analytics requiere admin/analyst) |
 
 ---
 

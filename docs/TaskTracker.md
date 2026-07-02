@@ -146,10 +146,10 @@ Documento vivo para seguir el progreso del TFM.
 | Fase 7 — Polish + Testing | 12 | 12 | 100% |
 | Despliegue cloud (UC-124) | 6 | 6 | 100% |
 | Fase 8 — TFM + Documentación | 13 | 13 | 100% |
-| Fase 9 — Demo | 0 | 6 | 0% |
+| Fase 9 — Demo | 6 | 6 | 100% |
 | Fase 9b — Demo WOW (TFM) | 9 | 9 | 100% |
-| Fase X — Opcional T-X05–07 | 7 | 22 | 32% |
-| **TOTAL MVP** | **127** | **152** | **84%** |
+| Fase X — Opcional T-X05–07 | 22 | 22 | 100% |
+| **TOTAL MVP** | **152** | **152** | **100%** |
 
 ---
 
@@ -447,7 +447,7 @@ Entregables: historial (`/history`, filtros, detalle SHAP), analytics (`/analyti
 
 # FASE 8 — TFM
 
-**Progreso:** 6 / 13 (46%)
+**Progreso:** 13 / 13 (100%)
 
 | ID | ✓ | Tarea | Docs | Pedir a la IA |
 |---|---|---|---|---|
@@ -469,16 +469,16 @@ Entregables: historial (`/history`, filtros, detalle SHAP), analytics (`/analyti
 
 # FASE 9 — Demo
 
-**Progreso:** 0 / 6 (0%)
+**Progreso:** 6 / 6 (100%)
 
 | ID | ✓ | Tarea | Docs | Pedir a la IA |
 |---|---|---|---|---|
-| T-901 | [ ] | Seed estable | [DB §10](Database/Database.md#10-seed-data-demo--tfm) | `Verifica seeds demo para defensa.` |
-| T-902 | [ ] | Modelo versionado | [EP-9](Execution%20Plan/ExecutionPlan.md#phase-9--final-demo-preparation) | `Fijar versión modelo sin variabilidad.` |
-| T-903 | [ ] | Ensayo demo | [MVP §17](Requirements/Requirements.md#17-mvp-real-recomendado) · [Phase-10](Testing/Manual/Phase-10-Demo-Playbook.md) | `Ejecutar MT-P10-DEMO-001 con guion Demo-Playbook-Plan (T-907 escenarios + T-908 anim cuando esté).` |
-| T-904 | [ ] | Docker one-command | [RDO-001](Requirements/Requirements.md#rdo-001) | `docker compose up funciona de un comando.` |
-| T-905 | [ ] | Backup media | [RAC-001](Requirements/Requirements.md#rac-001) | `Guardar screenshots y vídeo demo.` |
-| T-906 | [ ] | Estabilidad | [KPIs §15](Requirements/Requirements.md#15-kpis-de-éxito) | `Sin errores críticos en flujo demo.` |
+| T-901 | [x] | Seed estable | [DB §10](Database/Database.md#10-seed-data-demo--tfm) | `Verifica seeds demo para defensa.` |
+| T-902 | [x] | Modelo versionado | [EP-9](Execution%20Plan/ExecutionPlan.md#phase-9--final-demo-preparation) | `Fijar versión modelo sin variabilidad.` |
+| T-903 | [x] | Ensayo demo | [MVP §17](Requirements/Requirements.md#17-mvp-real-recomendado) · [Phase-10](Testing/Manual/Phase-10-Demo-Playbook.md) | `Ejecutar MT-P10-DEMO-001 con guion Demo-Playbook-Plan (T-907 escenarios + T-908 anim cuando esté).` |
+| T-904 | [x] | Docker one-command | [RDO-001](Requirements/Requirements.md#rdo-001) | `docker compose up funciona de un comando.` |
+| T-905 | [x] | Backup media | [RAC-001](Requirements/Requirements.md#rac-001) | `Guardar screenshots y vídeo demo.` |
+| T-906 | [x] | Estabilidad | [KPIs §15](Requirements/Requirements.md#15-kpis-de-éxito) | `Sin errores críticos en flujo demo.` |
 
 ---
 
@@ -749,5 +749,12 @@ Implementar **una feature a la vez**. Cada bloque cierra su user story y manual 
 | 2026-07-02 | **T-808:** `docs/figures/screenshots/` — 8 capturas Playwright + `scripts/capture-thesis-screenshots.ps1` |
 | 2026-07-02 | **T-809:** [Memoria-TFM.md](Thesis/Memoria-TFM.md) — borrador capítulos metodología y resultados (RAC-010) |
 | 2026-07-02 | **T-810:** [Argumentario-Defensa.md](Thesis/Argumentario-Defensa.md) — guion defensa 8–10 min, FAQ, checklist · **Fase 8 completa** |
+| 2026-06-11 | **T-901:** seeds demo estables — tests integración (`test_seeds.py`), script `scripts/verify_demo_seeds.py`, prod OK (4/4 login) |
+| 2026-06-11 | **T-902:** modelo LR v1.0.0 fijado — `demo_golden_predictions.json`, checksums SHA-256 en manifest, tests + `scripts/verify_demo_model.py` |
+| 2026-06-11 | **T-903:** ensayo MT-P10-DEMO-001 — `tests/e2e/demo-rehearsal.spec.ts` + `scripts/run-demo-rehearsal.ps1` (local 2/2 OK) |
+| 2026-07-02 | **Auditoría backlog:** MVP 152/152 (100%); contadores Fase 8 y Fase X alineados; pendiente entrega Fundae (vídeo, URLs) |
+| 2026-07-02 | **T-906:** estabilidad demo — `scripts/verify_demo_stability.py` + prod OK (health, seeds, golden, MVP API, frontend) |
+| 2026-07-02 | **T-905:** backup media defensa — `scripts/backup_demo_media.py`, zip SHA-256 en `backups/`, tests `test_backup_media.py` |
+| 2026-06-11 | **T-904:** Docker one-command — nginx DNS dinámico, `scripts/docker-up.ps1` (prepare + health wait), `scripts/verify-docker-stack.ps1` |
 | 2026-07-02 | **Vídeo defensa:** [Guion-Video-Defensa.md](Thesis/Guion-Video-Defensa.md) + [Slides-Presentacion-Video.md](Thesis/Slides-Presentacion-Video.md) |
 | 2026-07-02 | **Entrega Fundae:** [Entrega-TFM-Fundae.md](Thesis/Entrega-TFM-Fundae.md) — auditoría requisitos BIG School + README actualizado |

@@ -64,12 +64,33 @@ Requisitos: API Render activo (`ml_ready: true`), usuarios demo con contraseña 
 
 ---
 
+## Backup defensa (T-905)
+
+Empaqueta capturas, EDA, slides, memoria y (opcional) vídeo en `backups/` con checksums SHA-256:
+
+```powershell
+# Comprobar que todo el material está listo
+.\scripts\backup-demo-media.ps1 --check-only
+
+# Crear carpeta + .zip (copiar a USB / Drive)
+.\scripts\backup-demo-media.ps1
+
+# Incluir vídeo tras grabar
+.\scripts\backup-demo-media.ps1 --video C:\Videos\medscope-demo.mp4
+
+# O colocar un .mp4 en docs/Thesis/video/ y ejecutar sin --video
+```
+
+Verificar integridad: `python scripts/backup_demo_media.py --verify backups\medscope-ai-defensa-...`
+
+---
+
 ## Trazabilidad
 
 | Tarea | Entregable |
 |---|---|
 | T-808 | Este directorio + script Playwright |
-| T-905 | Backup adicional (vídeo demo) — pendiente |
+| T-905 | Backup adicional — `scripts/backup-demo-media.ps1` (screenshots, EDA, slides, memoria, zip + SHA-256) |
 | T-214 | [figures/eda](../eda/README.md) — gráficos ML |
 
 ---

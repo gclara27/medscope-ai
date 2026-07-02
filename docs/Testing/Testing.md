@@ -97,6 +97,7 @@ Alineado con `AGENTS.md` y `skills/testing/SKILL.md`.
 | Archivo | Cubre |
 |---|---|
 | `tests/e2e/mvp-flow.spec.ts` | Flujo MVP completo (admin): predict → SHAP → simulate → history → analytics |
+| `tests/e2e/demo-rehearsal.spec.ts` | Ensayo defensa T-903 (MT-P10-DEMO-001): escenarios clínicos + simulación golden |
 | `tests/e2e/auth.spec.ts` | Login válido / inválido (UC-001) |
 | `tests/e2e/rbac.spec.ts` | Nurse / analyst RBAC navegación (UC-003) |
 | `tests/e2e/helpers/auth.ts` | Helpers login/logout demo |
@@ -362,6 +363,9 @@ npm run build
 ```powershell
 # Desde la raíz (Windows) — backend :8000 + frontend :5173 deben estar activos
 .\scripts\test-e2e.ps1
+.\scripts\run-demo-rehearsal.ps1   # T-903 ensayo MT-P10-DEMO-001 (+ verify modelo T-902)
+.\scripts\verify-demo-stability.ps1 -Production   # T-906 gate estabilidad demo (API + frontend smoke)
+.\scripts\verify-demo-stability.ps1 -WithE2e      # T-906 + Playwright MT-P10-DEMO-001
 
 # Instalar navegadores (primera vez)
 npm install

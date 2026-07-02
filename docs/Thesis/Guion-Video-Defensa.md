@@ -29,6 +29,7 @@ Discurso **palabra por palabra** para grabar un vídeo con:
 
 **URLs:**
 
+- App: https://medscope-ai-delta.vercel.app
 - Login: https://medscope-ai-delta.vercel.app/login  
 - Usuario demo: `clinician@medscope.ai`
 
@@ -300,7 +301,7 @@ Mostrar **Slide 9** con las cuatro capturas y narrar el mismo guion de §6:45–
 - [ ] Verificar que no aparece contraseña en ningún frame
 - [ ] Subtítulos opcionales (rev.com, Whisper, CapCut)
 - [ ] Exportar 1080p MP4 según normativa universidad
-- [ ] Backup en unidad externa (T-905)
+- [ ] Backup en unidad externa (T-905) — `.\scripts\backup-demo-media.ps1` (+ `--video` cuando esté grabado)
 
 ---
 

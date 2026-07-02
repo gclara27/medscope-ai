@@ -160,7 +160,7 @@ flowchart LR
 | Entorno | Frontend | API + ML | Base de datos |
 |---|---|---|---|
 | **Local** | `localhost:5173` (proxy Vite) | `localhost:8000` | Docker `postgres:5432` |
-| **Producción** | medscope-ai-delta.vercel.app | medscope-ai-q8tg.onrender.com | Supabase Session pooler |
+| **Producción** | https://medscope-ai-delta.vercel.app | https://medscope-ai-q8tg.onrender.com | Supabase Session pooler |
 
 ---
 

@@ -44,9 +44,9 @@ Copiar cuando tengas las URLs finales. **Sustituir** los campos `PENDIENTE`.
 | **Nombre completo** | `[TU NOMBRE COMPLETO]` |
 | **Email inscripción máster** | `[TU EMAIL BIG SCHOOL]` |
 | **URL repositorio GitHub** | https://github.com/gclara27/medscope-ai |
-| **URL despliegue** | https://medscope-ai-delta.vercel.app/login |
-| **URL slides** | `PENDIENTE` — Google Slides / Drive público o enlace raw al `.pptx` en GitHub |
-| **URL vídeo** | `PENDIENTE` — YouTube (no listado o público según normativa) / Google Drive |
+| **URL despliegue** | https://medscope-ai-delta.vercel.app |
+| **URL slides** | `REPLACE_ME` — Google Slides / Drive público o enlace raw al `.pptx` en GitHub |
+| **URL vídeo** | `REPLACE_ME` — YouTube (no listado o público según normativa) / Google Drive |
 | **Usuario prueba** | `clinician@medscope.ai` |
 | **Contraseña prueba** | `MedScope123!` |
 
@@ -106,11 +106,11 @@ Documentación ampliada: `docs/` (requisitos, casos de uso, BD, testing, arquite
 
 ✅ **Cumplido.** Aplicación accesible sin clonar el repo.
 
-| Componente | Proveedor |
-|---|---|
-| Frontend | Vercel |
-| Backend + ML | Render (Docker) |
-| PostgreSQL | Supabase |
+| Componente | Proveedor | URL |
+|---|---|---|
+| Frontend | Vercel | https://medscope-ai-delta.vercel.app |
+| Backend + ML | Render (Docker) | https://medscope-ai-q8tg.onrender.com |
+| PostgreSQL | Supabase | *(gestionado — ver Deployment.md)* |
 
 Guía: [Deployment.md](../Deployment/Deployment.md)  
 **Nota cold start:** abrir `/health` 2–3 min antes de que el evaluador pruebe la app.
@@ -172,11 +172,13 @@ Material que refuerza la entrega aunque no lo pida explícitamente el PDF:
 
 ## Checklist final antes del 20/07/2026
 
-- [ ] README.md actualizado con URLs de slides y vídeo
+- [ ] README.md — sustituir `REPLACE_ME` por URLs reales de slides y vídeo
 - [ ] Repositorio GitHub **público** (o acceso mouredev@gmail.com)
-- [ ] App en producción operativa (`/health` → `ml_ready: true`)
-- [ ] Slides publicadas (URL o `.pptx` en repo)
+- [x] App en producción operativa (`/health` → `ml_ready: true`) — verificado T-906
+- [x] Slides en repo (`docs/Thesis/slides/MedScope-AI-TFM.pptx`)
+- [ ] Slides publicadas en URL accesible (formulario campus)
 - [ ] Vídeo grabado con **captura de pantalla** y subido (URL)
+- [ ] Backup local en unidad externa (`.\scripts\backup-demo-media.ps1`)
 - [ ] Formulario campus cumplimentado
 - [ ] Contraseñas demo revisadas para entrega pública
 - [ ] Probar login + predict desde URL de producción en modo incógnito

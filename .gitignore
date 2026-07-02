@@ -130,6 +130,9 @@ desktop.ini
 # --- Docker ---
 docker-compose.override.yml
 
+# --- Local thesis backups (T-905) — copy to external drive ---
+backups/
+
 # --- Database ---
 *.db
 *.sqlite

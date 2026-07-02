@@ -1,54 +1,81 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { MemoryRouter } from "react-router-dom";
-import { describe, expect, it, vi } from "vitest";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { describe, expect, it } from "vitest";
 
 import { AuthProvider } from "@/context/AuthContext";
+import { LoginPage } from "@/pages/LoginPage";
 import { SplashPage } from "@/pages/SplashPage";
 
-const navigateMock = vi.fn();
-
-vi.mock("react-router-dom", async () => {
-  const actual = await vi.importActual<typeof import("react-router-dom")>(
-    "react-router-dom",
+function renderSplash(initialEntry = "/") {
+  return render(
+    <AuthProvider>
+      <MemoryRouter initialEntries={[initialEntry]}>
+        <Routes>
+          <Route path="/" element={<SplashPage />} />
+          <Route path="/login" element={<LoginPage />} />
+        </Routes>
+      </MemoryRouter>
+    </AuthProvider>,
   );
-  return {
-    ...actual,
-    useNavigate: () => navigateMock,
-  };
-});
+}
 
 describe("SplashPage", () => {
-  it("renders brand and get started action", () => {
-    render(
-      <AuthProvider>
-        <MemoryRouter>
-          <SplashPage />
-        </MemoryRouter>
-      </AuthProvider>,
-    );
+  it("renders value proposition, CTAs, and feature highlights", () => {
+    renderSplash();
 
-    expect(screen.getByRole("heading", { name: /medscope ai/i })).toBeInTheDocument();
+    expect(screen.getByText("MedScope AI")).toBeInTheDocument();
     expect(
-      screen.getByText(/clinical decision support/i),
+      screen.getByRole("heading", {
+        name: /predictive intelligence for critical decisions/i,
+      }),
     ).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /get started/i })).toBeInTheDocument();
+    expect(
+      screen.getByText(/explainable ai insights, and what-if simulations/i),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /sign in/i })).toHaveAttribute("href", "/login");
+    expect(screen.getByRole("link", { name: /explore demo/i })).toHaveAttribute("href", "/demo");
+    expect(screen.getByText(/real-time risk scoring/i)).toBeInTheDocument();
+    expect(screen.getByText(/explainable AI \(XAI\)/i)).toBeInTheDocument();
+    expect(screen.getByText(/clinical simulation/i)).toBeInTheDocument();
   });
 
-  it("navigates to login when get started is clicked", async () => {
+  it("opens the login page when sign in is clicked", async () => {
     const user = userEvent.setup();
-    navigateMock.mockClear();
+    renderSplash();
 
-    render(
-      <AuthProvider>
-        <MemoryRouter>
-          <SplashPage />
-        </MemoryRouter>
-      </AuthProvider>,
+    await user.click(screen.getByRole("link", { name: /sign in/i }));
+
+    expect(screen.getByText(/secure clinical login/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /authenticate/i })).toBeInTheDocument();
+  });
+
+  it("opens a detail dialog when a feature card is clicked", async () => {
+    const user = userEvent.setup();
+    renderSplash();
+
+    await user.click(
+      screen.getByRole("button", { name: /learn more about explainable AI \(XAI\)/i }),
     );
 
-    await user.click(screen.getByRole("button", { name: /get started/i }));
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+    expect(
+      screen.getByText(/SHAP-based explanations that show which variables push risk/i),
+    ).toBeInTheDocument();
+  });
 
-    expect(navigateMock).toHaveBeenCalledWith("/login", { replace: true });
+  it("closes the feature dialog when Escape is pressed", async () => {
+    const user = userEvent.setup();
+    renderSplash();
+
+    await user.click(
+      screen.getByRole("button", { name: /learn more about clinical simulation/i }),
+    );
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+
+    await user.keyboard("{Escape}");
+
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 });

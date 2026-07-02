@@ -5,11 +5,13 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-from PIL import Image
+from PIL import Image, ImageDraw
 import numpy as np
 
 PRIMARY_RGBA = (0, 88, 188, 255)
 WHITE_THRESHOLD = 220
+# Matches MedScopeAppIcon `rounded-[22%]` in the React brand mark.
+CORNER_RADIUS_RATIO = 0.22
 
 
 def ensure_glyph(source: Path, glyph: Path) -> None:
@@ -26,18 +28,43 @@ def ensure_glyph(source: Path, glyph: Path) -> None:
     Image.fromarray(output, mode="RGBA").save(glyph, format="PNG")
 
 
+def crop_center_square(image: Image.Image) -> Image.Image:
+    width, height = image.size
+    side = min(width, height)
+    left = (width - side) // 2
+    top = (height - side) // 2
+    return image.crop((left, top, left + side, top + side))
+
+
+def apply_rounded_corners(
+    image: Image.Image,
+    radius_ratio: float = CORNER_RADIUS_RATIO,
+) -> Image.Image:
+    rgba = image.convert("RGBA")
+    side = min(rgba.size)
+    radius = max(1, int(side * radius_ratio))
+    mask = Image.new("L", rgba.size, 0)
+    draw = ImageDraw.Draw(mask)
+    draw.rounded_rectangle((0, 0, rgba.size[0] - 1, rgba.size[1] - 1), radius=radius, fill=255)
+    output = Image.new("RGBA", rgba.size, (0, 0, 0, 0))
+    output.paste(rgba, (0, 0), mask)
+    return output
+
+
 def compose_favicon(source: Path, glyph: Path, target: Path) -> None:
     ensure_glyph(source, glyph)
     base = Image.open(source).convert("RGBA")
     glyph_image = Image.open(glyph).convert("RGBA")
     background = Image.new("RGBA", base.size, PRIMARY_RGBA)
     background.paste(glyph_image, (0, 0), glyph_image)
+    composed = crop_center_square(background)
+    rounded = apply_rounded_corners(composed)
     target.parent.mkdir(parents=True, exist_ok=True)
     try:
-        background.save(target, format="PNG")
+        rounded.save(target, format="PNG")
     except PermissionError:
         fallback = target.with_suffix(".synced.png")
-        background.save(fallback, format="PNG")
+        rounded.save(fallback, format="PNG")
         print(f"Target locked; wrote {fallback}", file=sys.stderr)
         return
     print(f"Composed {target}")

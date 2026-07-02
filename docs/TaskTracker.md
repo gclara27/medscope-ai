@@ -19,6 +19,8 @@ Documento vivo para seguir el progreso del TFM.
 | Execution Plan | [ExecutionPlan.md](Execution%20Plan/ExecutionPlan.md) | Fases y orden |
 | Base de datos | [Database.md](Database/Database.md) | Esquema, tablas |
 | Testing | [Testing.md](Testing/Testing.md) | Tests, RTS-* |
+| Despliegue | [Deployment.md](Deployment/Deployment.md) | Cloud prod UC-124 |
+| Demo / defensa | [Demo-Playbook-Plan.md](Demo/Demo-Playbook-Plan.md) | Escenarios clínicos + animación simulación |
 | Plan opcional | [Optional-Backlog-Plan.md](Optional%20Features/Optional-Backlog-Plan.md) | US, tareas, alcance (T-X03, T-X05–07) |
 | Design | [Design/README.md](Design/README.md) | UI, mockups |
 | AGENTS | [AGENTS.md](../AGENTS.md) | Convenciones IA |
@@ -137,11 +139,13 @@ Documento vivo para seguir el progreso del TFM.
 | Fase 4 — Frontend base | 14 | 14 | 100% |
 | Fase 5 — Features clínicas | 16 | 16 | 100% |
 | Fase 6 — Analytics + History | 10 | 10 | 100% |
-| Fase 7 — Polish + Testing | 1 | 12 | 8% |
+| Fase 7 — Polish + Testing | 12 | 12 | 100% |
+| Despliegue cloud (UC-124) | 6 | 6 | 100% |
 | Fase 8 — TFM + Documentación | 2 | 10 | 20% |
 | Fase 9 — Demo | 0 | 6 | 0% |
+| Fase 9b — Demo WOW (TFM) | 9 | 9 | 100% |
 | Fase X — Opcional T-X05–07 | 7 | 22 | 32% |
-| **TOTAL MVP** | **108** | **134** | **81%** |
+| **TOTAL MVP** | **123** | **149** | **83%** |
 
 ---
 
@@ -393,7 +397,7 @@ Entregables: historial (`/history`, filtros, detalle SHAP), analytics (`/analyti
 
 # FASE 7 — Polish + Testing
 
-**Progreso:** 3 / 12 (25%)
+**Progreso:** 12 / 12 (100%)
 
 [Testing.md](Testing/Testing.md) · [skill testing](../skills/testing/SKILL.md)
 
@@ -422,6 +426,21 @@ Entregables: historial (`/history`, filtros, detalle SHAP), analytics (`/analyti
 
 ---
 
+# DESPLIEGUE CLOUD — UC-124
+
+**Progreso:** 6 / 6 (100%) · [Deployment.md](Deployment/Deployment.md)
+
+| ID | ✓ | Tarea | Docs | Notas |
+|---|---|---|---|---|
+| T-713 | [x] | Prep repo Fase 0 | [Deployment §3](Deployment/Deployment.md#3-fase-0--preparar-el-repositorio) | Dockerfile, `vercel.json`, CI, artefactos ML |
+| T-714 | [x] | Supabase + migraciones | [Deployment §4](Deployment/Deployment.md#4-fase-1--supabase-base-de-datos) | Session pooler, `alembic upgrade head` |
+| T-715 | [x] | Render API + ML | [Deployment §5](Deployment/Deployment.md#5-fase-2--render-backend-api) | Docker, `/health` `ml_ready: true` |
+| T-716 | [x] | Vercel frontend | [Deployment §6](Deployment/Deployment.md#6-fase-3--vercel-frontend) | Root `frontend`, `VITE_API_BASE_URL` |
+| T-717 | [x] | CORS + E2E prod | [Deployment §6.4](Deployment/Deployment.md#64-verificación-end-to-end) | https://medscope-ai-delta.vercel.app |
+| T-718 | [x] | CI/CD `main` | [Deployment §7](Deployment/Deployment.md#7-cicd--deploy-automático-en-main) | GitHub Actions + webhooks |
+
+---
+
 # FASE 8 — TFM
 
 **Progreso:** 2 / 10 (20%)
@@ -437,7 +456,7 @@ Entregables: historial (`/history`, filtros, detalle SHAP), analytics (`/analyti
 | T-807 | [ ] | Flujo frontend | [RAC-001](Requirements/Requirements.md#rac-001) | `Diagrama navegación pantallas MVP.` |
 | T-808 | [ ] | Screenshots | [Design](Design/screens/README.md) | `Captura dashboard, SHAP, simulación, analytics.` |
 | T-809 | [ ] | Memoria TFM | [RAC-010](Requirements/Requirements.md#rac-010) | `Ayuda a redactar capítulo resultados y metodología.` |
-| T-810 | [ ] | Argumentario defensa | [EP-8](Execution%20Plan/ExecutionPlan.md#phase-8--thesis--defense-preparation) | `Prepara guion defensa: XAI + simulación.` |
+| T-810 | [ ] | Argumentario defensa | [EP-8](Execution%20Plan/ExecutionPlan.md#phase-8--thesis--defense-preparation) · [Guion T-907-05](Demo/Demo-Playbook-Plan.md#guion-de-defensa-t-810--t-903--t-907-05) | `Guion 8–10 min listo en Demo-Playbook-Plan; ensayar con Phase-10 MT-P10-DEMO-001.` |
 
 ---
 
@@ -449,10 +468,52 @@ Entregables: historial (`/history`, filtros, detalle SHAP), analytics (`/analyti
 |---|---|---|---|---|
 | T-901 | [ ] | Seed estable | [DB §10](Database/Database.md#10-seed-data-demo--tfm) | `Verifica seeds demo para defensa.` |
 | T-902 | [ ] | Modelo versionado | [EP-9](Execution%20Plan/ExecutionPlan.md#phase-9--final-demo-preparation) | `Fijar versión modelo sin variabilidad.` |
-| T-903 | [ ] | Ensayo demo | [MVP §17](Requirements/Requirements.md#17-mvp-real-recomendado) · [UC P0](Use%20Cases/Use%20Cases.md#17-mvp-use-cases-critical) | `Checklist demo: login → analytics sin fallos.` |
+| T-903 | [ ] | Ensayo demo | [MVP §17](Requirements/Requirements.md#17-mvp-real-recomendado) · [Phase-10](Testing/Manual/Phase-10-Demo-Playbook.md) | `Ejecutar MT-P10-DEMO-001 con guion Demo-Playbook-Plan (T-907 escenarios + T-908 anim cuando esté).` |
 | T-904 | [ ] | Docker one-command | [RDO-001](Requirements/Requirements.md#rdo-001) | `docker compose up funciona de un comando.` |
 | T-905 | [ ] | Backup media | [RAC-001](Requirements/Requirements.md#rac-001) | `Guardar screenshots y vídeo demo.` |
 | T-906 | [ ] | Estabilidad | [KPIs §15](Requirements/Requirements.md#15-kpis-de-éxito) | `Sin errores críticos en flujo demo.` |
+
+---
+
+# FASE 9b — Demo WOW (TFM)
+
+**Progreso:** 9 / 9 (100%) · **Plan:** [Demo-Playbook-Plan.md](Demo/Demo-Playbook-Plan.md) · **Manual:** [Phase-10-Demo-Playbook](Testing/Manual/Phase-10-Demo-Playbook.md)
+
+Mejoras visuales y narrativas para defensa (sin backend ni ML). Implementar **T-907 antes que T-908**.
+
+## US-044 — Clinical demo playbook (T-907)
+
+**Como** clínico en demo, **quiero** cargar casos sintéticos predefinidos, **para** seguir una narrativa clínica sin rellenar el formulario a mano.
+
+**Prompt:** `Implementa T-907 según docs/Demo/Demo-Playbook-Plan.md: clinicalDemoScenarios.ts, ClinicalDemoScenarioPanel, integración EvaluationPage. Skill: frontend + ui-ux.`
+
+| ID | ✓ | Tarea | Docs | Pedir a la IA |
+|---|---|---|---|---|
+| T-907-01 | [x] | Datos escenarios | [Plan § escenarios](Demo/Demo-Playbook-Plan.md#escenarios-propuestos-validar-scores-al-implementar) | `Crea clinicalDemoScenarios.ts con 4 casos tipados + tests unitarios payload.` |
+| T-907-02 | [x] | Panel UI tarjetas | [RF-020](Requirements/Requirements.md#rf-020--formulario-clínico) · [RUX-001](Requirements/Requirements.md#rux-001) | `ClinicalDemoScenarioPanel: cards, badges riesgo, vignette EN.` |
+| T-907-03 | [x] | Integración formulario | [UC-020](Use%20Cases/Use%20Cases.md#uc-020--enter-clinical-variables) | `EvaluationPage + ClinicalEvaluationForm: prefill on scenario select.` |
+| T-907-04 | [x] | Tests vitest | [RTS-020](Requirements/Requirements.md#rts-020) | `EvaluationPage + scenario panel tests; sin regresión formulario.` |
+| T-907-05 | [x] | Guion defensa | [T-810](#fase-8--tfm) · [T-903](#fase-9--demo) | `Actualizar guion en Demo-Playbook-Plan; cerrar manual Phase-10 escenarios.` |
+
+## US-045 — Simulation risk animation (T-908)
+
+**Como** clínico, **quiero** ver el gauge animarse al recalcular simulación, **para** percibir el impacto del cambio al instante.
+
+**Prompt:** `Implementa T-908 según Demo-Playbook-Plan.md: animación RiskGaugeChart, wiring SimulationPage, prefers-reduced-motion. Skill: frontend + ui-ux.`
+
+| ID | ✓ | Tarea | Docs | Pedir a la IA |
+|---|---|---|---|---|
+| T-908-01 | [x] | Animación RiskGaugeChart | [RF-043](Requirements/Requirements.md#rf-043--visualización-impacto) | `Arc + count-up; props animateFromPercent; duration ~800ms ease-out.` |
+| T-908-02 | [x] | Wiring simulación | [UC-043](Use%20Cases/Use%20Cases.md#uc-043--compare-original-vs-simulation) | `SimulationPage + SimulationComparisonPanel pasan from/to al recálculo.` |
+| T-908-03 | [x] | Accesibilidad motion | [RUX-020](Requirements/Requirements.md#rux-020) | `prefers-reduced-motion: sin animación; valor final directo.` |
+| T-908-04 | [x] | Tests vitest | [RTS-020](Requirements/Requirements.md#rts-020) | `RiskGaugeChart + SimulationPage; dark mode sin regresión.` |
+
+### US-044 · US-045 (resumen)
+
+| US | ✓ | Título | UC | RF |
+|---|---|---|---|---|
+| [US-044](#us-044--clinical-demo-playbook-t-907) | [x] | Demo playbook clínico | UC-020 | RF-020, RF-040, RUX-001 |
+| [US-045](#us-045--simulation-risk-animation-t-908) | [x] | Animación riesgo simulación | UC-043 | RF-041–043, RUX-001 |
 
 ---
 
@@ -469,7 +530,7 @@ Entregables: historial (`/history`, filtros, detalle SHAP), analytics (`/analyti
 | T-X05 | [x] | Support UI | [US-040](#us-040) · [RF-072–073](Requirements/Requirements.md#59-soporte-opcional--18) · [UC-064–065](Use%20Cases/Use%20Cases.md#uc-064--access-support-center) |
 | T-X06 | [x] | Audit avanzado | [US-041](#us-041) · [RF-074–075](Requirements/Requirements.md#510-auditoría-opcional--18) · [UC-081](Use%20Cases/Use%20Cases.md#uc-081--persist-audit-logs) |
 | T-X07 | [x] | Multi-model | [US-042](#us-042) · [RF-076–077](Requirements/Requirements.md#511-comparación-de-modelos-ml-opcional--18) · [UC-084](Use%20Cases/Use%20Cases.md#uc-084--view-ml-model-comparison-optional) |
-| T-X08 | [ ] | FHIR / cloud | [UC-120–124](Use%20Cases/Use%20Cases.md#16-future-expansion-use-cases) |
+| T-X08 | [x] | Cloud deploy (UC-124) | [Deployment](Deployment/Deployment.md) · [UC-124](Use%20Cases/Use%20Cases.md#uc-124--cloud-deployment) | Supabase + Render + Vercel live |
 
 ---
 
@@ -560,6 +621,8 @@ Implementar **una feature a la vez**. Cada bloque cierra su user story y manual 
 | [US-040](#us-040) | [x] | Support center | UC-064–065 | RF-072–073 |
 | [US-041](#us-041) | [x] | Audit trail | UC-081, UC-085 | RF-074–075 |
 | [US-042](#us-042) | [x] | ML model comparison | UC-084 | RF-076–077, RIA-040–041 |
+| [US-044](#us-044--clinical-demo-playbook-t-907) | [ ] | Demo playbook clínico | UC-020 | RF-020, RF-040 |
+| [US-045](#us-045--simulation-risk-animation-t-908) | [ ] | Animación simulación | UC-043 | RF-041–043 |
 
 ---
 
@@ -580,6 +643,7 @@ Implementar **una feature a la vez**. Cada bloque cierra su user story y manual 
 | ML | T-201–210 | [RIA](Requirements/Requirements.md#7-requerimientos-ia--machine-learning) |
 | Tests | T-704–708 | [Testing](Testing/Testing.md) |
 | Docker | T-012–013, T-709 | [DevOps §11](Requirements/Requirements.md#11-requerimientos-devops) |
+| Demo WOW | T-907–908 | [Demo-Playbook-Plan](Demo/Demo-Playbook-Plan.md) |
 
 ---
 
@@ -655,3 +719,8 @@ Implementar **una feature a la vez**. Cada bloque cierra su user story y manual 
 | 2026-06-11 | **T-X03-02** CSS variables dual theme: `index.css` `:root` + `.dark`, `riskColors.js` dark palette |
 | 2026-06-11 | **T-X03-01** auditoría tokens dark mode: `dark-mode-token-audit.md` (matriz light/dark, inventario hex) |
 | 2026-06-11 | **Plan T-X03** dark mode: US-043, T-X03-01…08, RTS-043, Phase-08 manual, Optional-Backlog-Plan |
+| 2026-06-30 | **Despliegue cloud UC-124** completado: Supabase + Render (`medscope-ai-q8tg`) + Vercel (`medscope-ai-delta`). PRs #16–#19. T-713–718 |
+| 2026-06-30 | Docs Deployment/Environment/README/TaskTracker actualizados con URLs y troubleshooting de prod |
+| 2026-07-01 | **T-908 cerrado (US-045):** animación gauge simulación, prefers-reduced-motion, wiring SimulationPage, vitest |
+| 2026-07-01 | **T-907 cerrado (US-044):** escenarios clínicos, panel, formulario, vitest, guion defensa + manual Phase-10 SCEN |
+| 2026-07-01 | **Fase 9b planificada:** US-044/US-045, T-907 (5) + T-908 (4), [Demo-Playbook-Plan.md](Demo/Demo-Playbook-Plan.md), manual Phase-10 |

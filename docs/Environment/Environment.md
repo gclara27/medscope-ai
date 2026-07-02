@@ -136,28 +136,33 @@ Leídas en **build time** por Vite (`import.meta.env`).
 3. `CORS_ORIGINS` solo con el dominio real del frontend (sin `localhost`).
 4. Rotar secretos si se filtran; no versionar `.env` en git.
 5. `docker-compose.yml` del repo **no** es el manifiesto de prod — usar orquestación del hosting con las mismas variables lógicas.
-6. Modelos ML en `models/` (gitignored si son grandes); montar volumen o artefacto en el despliegue.
-7. Ejecutar migraciones antes de arrancar el API: `alembic upgrade head` (el entrypoint Docker de dev ya lo hace).
+6. Modelos ML en `models/` — en producción los **cuatro** artefactos (`model.pkl`, `preprocessor.pkl`, `model_manifest.json`, `shap_background.npy`) van en la imagen Docker (ver [Deployment.md](../Deployment/Deployment.md)).
+7. Ejecutar migraciones antes de arrancar el API: `alembic upgrade head` (el entrypoint Docker lo hace en Render).
 
 Guía completa de despliegue cloud: [Deployment.md](../Deployment/Deployment.md).
 
-### Ejemplo mínimo prod (referencia)
+### Ejemplo producción desplegada (MedScope AI TFM, jul 2026)
+
+**Render (backend):**
 
 ```env
-DATABASE_URL=postgresql://app_user:STRONG_PASSWORD@db.internal:5432/medscope_ai
-JWT_SECRET=<generar-con-openssl-rand-hex-32>
+DATABASE_URL=postgresql://postgres.[REF]:***@aws-0-eu-west-1.pooler.supabase.com:5432/postgres?sslmode=require
+JWT_SECRET=<generado>
 JWT_ALGORITHM=HS256
 JWT_EXPIRE_MINUTES=60
-CORS_ORIGINS=https://medscope.hospital.example
+CORS_ORIGINS=https://medscope-ai-delta.vercel.app
+LOG_LEVEL=INFO
+LOG_FORMAT=json
+PYTHONPATH=/workspace
 ```
 
-Frontend build:
+**Vercel (frontend build):**
 
 ```env
-VITE_API_BASE_URL=https://api.medscope.hospital.example
+VITE_API_BASE_URL=https://medscope-ai-q8tg.onrender.com
 ```
 
-(o mismo dominio con reverse proxy y `VITE_API_BASE_URL` vacío).
+URLs públicas: [Deployment.md §1](../Deployment/Deployment.md#1-arquitectura-recomendada).
 
 ---
 
@@ -184,8 +189,8 @@ Scripts ML (`serialize_model.py`, etc.) usan `service=medscope-ml`.
 
 - `.env` está en `.gitignore`.
 - No subir credenciales a issues, capturas ni memoria del TFM con datos reales.
-- Usuarios demo (`clinician@medscope.ai` / `MedScope123!`) solo para **dev** local.
-- En prod: contraseñas bcrypt fuertes, JWT secreto ≥ 32 bytes aleatorios.
+- Usuarios demo (`clinician@medscope.ai` / `MedScope123!`) válidos en **dev** y en **prod** (seed Supabase).
+- En prod público: **rotar** contraseñas demo antes de la defensa del TFM.
 
 ---
 

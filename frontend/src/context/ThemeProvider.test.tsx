@@ -33,19 +33,20 @@ describe("ThemeProvider (T-X03-04)", () => {
     document.documentElement.classList.remove("dark");
   });
 
-  it("defaults to system preference when nothing is stored", () => {
+  it("defaults to light when nothing is stored", () => {
     render(
       <ThemeProvider>
         <ThemeProbe />
       </ThemeProvider>,
     );
 
-    expect(screen.getByTestId("preference")).toHaveTextContent("system");
+    expect(screen.getByTestId("preference")).toHaveTextContent("light");
     expect(screen.getByTestId("resolved")).toHaveTextContent("light");
     expect(document.documentElement.classList.contains("dark")).toBe(false);
   });
 
-  it("applies system dark on mount when OS prefers dark", () => {
+  it("applies system dark only when system preference is stored", () => {
+    localStorage.setItem(THEME_STORAGE_KEY, "system");
     const matchMedia = vi.spyOn(window, "matchMedia").mockImplementation((query: string) => ({
       matches: query === "(prefers-color-scheme: dark)",
       media: query,

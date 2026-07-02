@@ -2,6 +2,8 @@
 
 Documento paso a paso para desplegar el MVP en la nube **sin coste** (plan free tier), pensado para el TFM y la defensa (UC-124).
 
+> **Estado (julio 2026):** despliegue **completado y operativo**. Stack: **Supabase** (PostgreSQL) + **Render** (API + ML) + **Vercel** (React). Flujo login → predicción → SHAP → simulación → historial → analytics verificado en producción.
+
 | Requisito | Descripción |
 |---|---|
 | [RDO-010](../Requirements/Requirements.md#rdo-010) | Mismo código, distinta configuración dev / prod |
@@ -49,24 +51,37 @@ flowchart LR
   API --> PG
 ```
 
-### URLs de producción (rellenar al desplegar)
+### URLs de producción (MedScope AI — TFM)
 
 | Componente | URL |
 |---|---|
-| Frontend (Vercel) | `https://________________.vercel.app` |
-| Backend (Render) | `https://________________.onrender.com` |
-| Base de datos (Supabase) | Panel: `https://supabase.com/dashboard/project/________` |
+| **Frontend (Vercel)** | https://medscope-ai-delta.vercel.app |
+| **Login** | https://medscope-ai-delta.vercel.app/login |
+| **Backend API (Render)** | https://medscope-ai-q8tg.onrender.com |
+| **Health check** | https://medscope-ai-q8tg.onrender.com/health |
+| **API docs (Swagger)** | https://medscope-ai-q8tg.onrender.com/docs |
+| **Base de datos (Supabase)** | Panel del proyecto en [supabase.com/dashboard](https://supabase.com/dashboard) *(credenciales solo en Render)* |
+
+**Nota:** la raíz del API (`/`) devuelve `404` — es normal; el UI vive en Vercel. Usar `/health` o `/docs` para comprobar el backend.
+
+### Variables de entorno en producción (resumen)
+
+| Servicio | Variables clave |
+|---|---|
+| **Render** | `DATABASE_URL`, `JWT_SECRET`, `CORS_ORIGINS=https://medscope-ai-delta.vercel.app`, `PYTHONPATH=/workspace` |
+| **Vercel** | `VITE_API_BASE_URL=https://medscope-ai-q8tg.onrender.com` (build time) |
+| **Supabase** | Origen de `DATABASE_URL` (Session pooler, puerto 5432, `?sslmode=require`) |
 
 ---
 
 ## 2. Prerrequisitos
 
-- [ ] Cuenta en [GitHub](https://github.com) con el código en la rama `main`
-- [ ] Cuenta en [Supabase](https://supabase.com)
-- [ ] Cuenta en [Render](https://render.com)
-- [ ] Cuenta en [Vercel](https://vercel.com)
-- [ ] Repo clonado en local con Python 3.12+ y `.venv` configurado
-- [ ] Modelos ML generados localmente (ver §3)
+- [x] Cuenta en [GitHub](https://github.com) con el código en la rama `main`
+- [x] Cuenta en [Supabase](https://supabase.com)
+- [x] Cuenta en [Render](https://render.com)
+- [x] Cuenta en [Vercel](https://vercel.com)
+- [x] Repo clonado en local con Python 3.12+ y `.venv` configurado
+- [x] Modelos ML generados localmente (ver §3)
 
 ---
 
@@ -76,7 +91,7 @@ Los cambios de código de esta fase **ya están en el repo** (Dockerfile, `verce
 
 ### 3.1 Generar y versionar artefactos ML
 
-Los modelos de entrenamiento grandes siguen gitignored; los **tres artefactos de producción** sí deben estar en git para que Render pueda construir la imagen desde GitHub.
+Los modelos de entrenamiento grandes siguen gitignored; los **cuatro artefactos de producción** sí deben estar en git para que Render pueda construir la imagen desde GitHub.
 
 ```powershell
 # Desde la raíz del repo, con .venv activo
@@ -90,18 +105,21 @@ Comprobar que existen (y commitear en `main`):
 - `models/model.pkl`
 - `models/preprocessor.pkl`
 - `models/model_manifest.json`
+- `models/shap_background.npy` *(requerido por `ml_registry` para SHAP en runtime)*
 
 ### 3.2 Imagen Docker (`backend/Dockerfile`)
 
-El Dockerfile copia `models/` y falla el build si faltan los tres archivos anteriores. Contexto de build en Render: **raíz del repositorio**.
+El Dockerfile copia `models/` y falla el build si faltan los **cuatro** archivos anteriores. Contexto de build en Render: **raíz del repositorio**.
 
 ### 3.3 Vercel + React Router
 
 [`frontend/vercel.json`](../../frontend/vercel.json) reescribe rutas SPA a `index.html`.
 
+**Build frontend en Vercel:** Root Directory = `frontend`. Si el preset no detecta Vite automáticamente, configurar manualmente: `npm run build`, output `dist`. Excluir tests del `tsc` de producción: ver `frontend/tsconfig.json` (`exclude` de `*.test.tsx`).
+
 ### 3.4 CI en GitHub
 
-[`.github/workflows/ci.yml`](../../.github/workflows/ci.yml) ejecuta pytest + vitest en push/PR a `main`. No despliega.
+[`.github/workflows/ci.yml`](../../.github/workflows/ci.yml) ejecuta pytest + vitest en push/PR a `main`. Incluye `pytest-asyncio` para tests async del backend. No despliega.
 
 ### 3.5 Commit y push
 
@@ -126,25 +144,25 @@ git push origin main
 
 **Project Settings → Database → Connection string**
 
-Para el backend en Render (proceso persistente), usa la conexión **Direct** o **Session** (puerto **5432**), no Transaction mode (6543) salvo que configures pooler explícitamente.
+Para el backend en Render (proceso persistente), usa el **Session pooler** (puerto **5432**), no Transaction mode (6543).
 
-Ejemplo de formato:
+> **Importante (Windows / algunos hosts):** la conexión **directa** `db.[PROJECT_REF].supabase.co` puede ser solo IPv6 y fallar con `Name or service not known`. En ese caso usar siempre el **pooler**.
 
-```text
-postgresql://postgres.[PROJECT_REF]:[PASSWORD]@aws-0-eu-west-1.pooler.supabase.com:5432/postgres
-```
+Si la contraseña contiene caracteres especiales (`@`, `#`, `*`, `%`), **URL-encode** en `DATABASE_URL` (`%40`, `%23`, `%2A`, `%25`).
 
-O URI directa:
+Ejemplo de formato (pooler):
 
 ```text
-postgresql://postgres:[PASSWORD]@db.[PROJECT_REF].supabase.co:5432/postgres
+postgresql://postgres.[PROJECT_REF]:[PASSWORD_ENCODED]@aws-0-eu-west-1.pooler.supabase.com:5432/postgres?sslmode=require
 ```
 
-Si psycopg2 falla por SSL, añade al final:
+O URI directa (si tu red soporta IPv6):
 
 ```text
-?sslmode=require
+postgresql://postgres:[PASSWORD]@db.[PROJECT_REF].supabase.co:5432/postgres?sslmode=require
 ```
+
+**Alembic:** `backend/alembic/env.py` escapa `%` como `%%` en la URL para ConfigParser (contraseñas codificadas).
 
 ### 4.3 Primera migración (manual, una vez)
 
@@ -247,7 +265,7 @@ GET https://TU-SERVICIO.onrender.com/ml/status
 
 | Campo | Valor |
 |---|---|
-| **Framework Preset** | Vite |
+| **Framework Preset** | Vite *(si queda vacío, configurar comandos manualmente — §3.3)* |
 | **Root Directory** | `frontend` |
 | **Build Command** | `npm run build` |
 | **Output Directory** | `dist` |
@@ -258,7 +276,7 @@ GET https://TU-SERVICIO.onrender.com/ml/status
 
 | Variable | Valor |
 |---|---|
-| `VITE_API_BASE_URL` | `https://TU-SERVICIO.onrender.com` |
+| `VITE_API_BASE_URL` | `https://medscope-ai-q8tg.onrender.com` |
 
 Sin barra final. Vite la embebe en el build; si cambias la URL del API hay que **redeploy** en Vercel.
 
@@ -266,13 +284,13 @@ Referencia: [`frontend/src/services/api.ts`](../../frontend/src/services/api.ts)
 
 ### 6.3 Deploy y CORS
 
-1. Deploy → anota la URL: `https://tu-proyecto.vercel.app`
-2. Vuelve a **Render → Environment** y pon en `CORS_ORIGINS` exactamente esa URL (sin `/` final)
+1. Deploy → URL de producción: `https://medscope-ai-delta.vercel.app`
+2. En **Render → Environment**, `CORS_ORIGINS` = `https://medscope-ai-delta.vercel.app` (sin `/` final)
 3. Si cambiaste CORS, **Manual Deploy** en Render o espera al siguiente push
 
 ### 6.4 Verificación end-to-end
 
-1. Abrir `https://tu-proyecto.vercel.app/login`
+1. Abrir https://medscope-ai-delta.vercel.app/login
 2. Login con usuario demo o admin creado
 3. Recorrer: Dashboard → Evaluation → Generate prediction → SHAP → Simulation → History → Analytics (según rol)
 
@@ -348,11 +366,11 @@ Detalle de cada variable: [Environment.md](../Environment/Environment.md).
 
 ## 9. Checklist de seguridad (estudio / demo)
 
-- [ ] `JWT_SECRET` generado con `secrets.token_hex(32)` o equivalente
-- [ ] `CORS_ORIGINS` solo con tu dominio Vercel (sin `localhost` en prod)
-- [ ] Contraseñas demo rotadas si la URL es pública
-- [ ] `.env` local nunca commiteado
-- [ ] Credenciales de Supabase solo en Render / gestor de contraseñas
+- [x] `JWT_SECRET` generado con `secrets.token_hex(32)` o equivalente *(Render)*
+- [x] `CORS_ORIGINS` solo con dominio Vercel de producción (sin `localhost`)
+- [ ] Contraseñas demo rotadas si la URL es pública *(recomendado antes de defensa)*
+- [x] `.env` local nunca commiteado
+- [x] Credenciales de Supabase solo en Render / gestor de contraseñas
 - [ ] No incluir capturas con passwords en la memoria del TFM
 
 ---
@@ -361,13 +379,19 @@ Detalle de cada variable: [Environment.md](../Environment/Environment.md).
 
 | Síntoma | Causa probable | Solución |
 |---|---|---|
-| `ml_ready: false` en `/health` | `models/` no en imagen Docker | §3.1–3.2, rebuild Render |
-| Login OK en local, falla en prod | CORS o `VITE_API_BASE_URL` mal | Revisar §6.2–6.3 |
+| `ml_ready: false` en `/health` | Falta `shap_background.npy` u otro artefacto en imagen Docker | Commitear los 4 archivos en `models/` (§3.1), rebuild Render |
+| `Failed to load ML model at startup` | Mismo que anterior | Verificar logs Render; `models/shap_background.npy` en git |
+| Login OK en local, falla en prod | CORS o `VITE_API_BASE_URL` mal | `CORS_ORIGINS` = URL Vercel exacta; redeploy Render |
 | 404 al recargar `/dashboard` | Falta `vercel.json` | §3.3 |
-| `connection refused` a BD | Supabase pausado o URL incorrecta | Reactivar proyecto; verificar `?sslmode=require` |
+| `connection refused` a BD | Supabase pausado o URL incorrecta | Reactivar proyecto; pooler 5432 + `?sslmode=require` |
+| `invalid interpolation syntax` (Alembic) | `%` en contraseña URL-encoded | Fix en `alembic/env.py` (escape `%%`) |
+| `can't adapt type 'dict'` (migración) | JSON permissions en seed | `json.dumps()` en migración Alembic |
+| Build Vercel falla en `tsc -b` | Tests con imports `node:fs` incluidos en build | `exclude` en `frontend/tsconfig.json` |
+| CI falla test async | Falta `pytest-asyncio` | Instalar en workflow CI + `asyncio_mode = auto` |
 | Primera petición muy lenta | Cold start Render free | Normal; calentar con `/health` |
-| Alembic falla en Render | URL pooler incorrecta | Usar conexión directa 5432 |
-| Build Docker falla | `models/` vacío en contexto | Generar modelos antes del build |
+| Alembic falla en Render | URL pooler incorrecta | Session pooler 5432, password encoded |
+| Build Docker falla paso `RUN test` | `models/` incompleto en contexto | `prepare-docker-build.ps1` + commit 4 artefactos |
+| `404` en raíz del API Render | No hay ruta `/` | Usar `/health` o `/docs`; UI en Vercel |
 
 ---
 
@@ -393,30 +417,42 @@ Trade-offs: cold starts, posible pausa de Supabase, sin SLA.
 
 Marca cada paso al completarlo:
 
-- [ ] **0.1** Generar `models/` y commitear `model.pkl`, `preprocessor.pkl`, `model_manifest.json`
-- [ ] **0.2** Verificar `backend/Dockerfile` incluye `COPY models` *(ya en repo)*
-- [ ] **0.3** Verificar `frontend/vercel.json` *(ya en repo)*
-- [ ] **0.4** Push a `main`
-- [ ] **1.1** Crear proyecto Supabase
-- [ ] **1.2** Copiar `DATABASE_URL`
-- [ ] **1.3** `alembic upgrade head` desde local
-- [ ] **2.1** Crear Web Service Render (Docker)
-- [ ] **2.2** Configurar variables de entorno
-- [ ] **2.3** Verificar `/health` y `ml_ready`
-- [ ] **3.1** Importar `frontend/` en Vercel
-- [ ] **3.2** Configurar `VITE_API_BASE_URL`
-- [ ] **3.3** Actualizar `CORS_ORIGINS` en Render
-- [ ] **3.4** Probar login y flujo MVP completo
-- [ ] **4** Confirmar auto-deploy en push a `main`
-- [ ] **5** Rellenar tabla de URLs (§1) en este documento o en notas privadas
+- [x] **0.1** Generar `models/` y commitear `model.pkl`, `preprocessor.pkl`, `model_manifest.json`, `shap_background.npy`
+- [x] **0.2** Verificar `backend/Dockerfile` incluye `COPY models` y valida 4 artefactos
+- [x] **0.3** Verificar `frontend/vercel.json` + `tsconfig` build sin tests
+- [x] **0.4** Push a `main` (vía PR; rama protegida)
+- [x] **1.1** Crear proyecto Supabase
+- [x] **1.2** Copiar `DATABASE_URL` (Session pooler)
+- [x] **1.3** `alembic upgrade head` desde local
+- [x] **2.1** Crear Web Service Render (Docker)
+- [x] **2.2** Configurar variables de entorno
+- [x] **2.3** Verificar `/health` y `ml_ready: true`
+- [x] **3.1** Importar `frontend/` en Vercel
+- [x] **3.2** Configurar `VITE_API_BASE_URL`
+- [x] **3.3** Actualizar `CORS_ORIGINS` en Render
+- [x] **3.4** Probar login y flujo MVP completo en producción
+- [x] **4** Confirmar auto-deploy en push a `main` (Render + Vercel)
+- [x] **5** Rellenar tabla de URLs (§1)
 
 ---
 
-## 14. Próximos pasos en el repo (cuando retomes)
+## 14. Historial del despliegue (referencia TFM)
 
-1. Aplicar cambios de §3 (Dockerfile, `vercel.json`) si aún no están en `main`
-2. Seguir §4 → §6 en los dashboards
-3. Opcional: diagrama de despliegue en memoria TFM (T-806)
-4. Opcional: GitHub Action CI (§3.4)
+| Fecha | Hito | PR / notas |
+|---|---|---|
+| 2026-06 | Fase 0: Dockerfile, `vercel.json`, CI, artefactos ML base | #16 |
+| 2026-06-30 | Fix Alembic Supabase (`%%` URL, JSON permissions) | #17 |
+| 2026-06-30 | `shap_background.npy` en imagen Docker (`ml_ready`) | #18 |
+| 2026-06-30 | Fix build Vercel (`tsconfig`) + CI `pytest-asyncio` | #19 |
+| 2026-06-30 | Frontend live en Vercel; API en Render; BD Supabase | URLs §1 |
 
-Cuando quieras implementar los cambios de código del §3 o desplegar con guía en vivo, continúa desde este documento o pide ayuda en Cursor con: *"Implementar Fase 0 de Deployment.md"*.
+---
+
+## 15. Mantenimiento post-despliegue
+
+1. **Demo / defensa:** abrir `/health` 2–3 min antes para evitar cold start de Render.
+2. **Nueva migración:** push a `main` → Render aplica `alembic upgrade head` al arrancar.
+3. **Regenerar modelos ML:** `serialize_model.py` → commit 4 artefactos → rebuild Render.
+4. **Cambiar URL del API:** actualizar `VITE_API_BASE_URL` en Vercel + redeploy frontend.
+5. **Supabase inactivo ~1 semana:** reactivar desde el dashboard antes de demo.
+6. **Diagrama para memoria TFM:** reutilizar diagramas §1 y §7; tarea [T-806](TaskTracker.md#fase-8--tfm) (diagrama despliegue).

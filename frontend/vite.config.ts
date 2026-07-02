@@ -21,6 +21,7 @@ export default defineConfig({
       "/admin": apiProxy,
       "/health": apiProxy,
       "/predict": apiProxy,
+      "/demo": apiProxy,
       "/simulate": apiProxy,
       "/history": apiProxy,
       "/dashboard": apiProxy,
@@ -30,7 +31,7 @@ export default defineConfig({
     },
   },
   test: {
-    environment: "jsdom",
+    environment: "happy-dom",
     setupFiles: "./src/test/setup.ts",
     globals: true,
   },

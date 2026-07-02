@@ -96,7 +96,7 @@ export function SupportTicketForm({
                   <span
                     className={cn(
                       "flex items-center justify-center rounded-md border px-2 py-2 text-center text-xs font-medium transition-colors",
-                      isSelected && !isUrgent && "border-primary-container bg-primary-container text-on-primary-container",
+                      isSelected && !isUrgent && "border-primary bg-primary text-on-primary",
                       isSelected && isUrgent && "border-error-container bg-error-container text-on-error-container",
                       !isSelected && "border-outline-variant text-on-surface-variant",
                     )}

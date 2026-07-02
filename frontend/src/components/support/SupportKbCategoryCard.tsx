@@ -13,12 +13,17 @@ export function SupportKbCategoryCard({ category, className }: SupportKbCategory
   return (
     <article
       className={cn(
-        "group cursor-pointer rounded-xl border border-outline-variant bg-surface-container-lowest p-6 shadow-level-1 transition-colors hover:border-primary",
+        "rounded-xl border border-outline-variant bg-surface-container-lowest p-6 shadow-level-1",
         className,
       )}
     >
-      <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-surface-container-low text-primary transition-colors group-hover:bg-primary-fixed">
-        <Icon className="h-6 w-6" aria-hidden />
+      <div className="mb-4 flex items-start justify-between gap-3">
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-surface-container-low text-primary">
+          <Icon className="h-6 w-6" aria-hidden />
+        </div>
+        <span className="rounded-full border border-outline-variant bg-surface px-2.5 py-0.5 text-xs font-medium text-on-surface-variant">
+          Coming soon
+        </span>
       </div>
       <h3 className="text-lg font-semibold text-on-surface">{category.title}</h3>
       <p className="mt-1 text-sm text-on-surface-variant">{category.description}</p>

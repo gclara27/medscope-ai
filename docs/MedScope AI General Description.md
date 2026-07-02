@@ -380,6 +380,22 @@ The vision of MedScope AI is to become a next-generation intelligent healthcare 
 
 ---
 
+# ☁️ Production Deployment (TFM)
+
+The MVP is **live** on free-tier cloud infrastructure:
+
+| Layer | Platform | Public URL |
+|---|---|---|
+| Clinical UI | Vercel | https://medscope-ai-delta.vercel.app |
+| API + ML | Render | https://medscope-ai-q8tg.onrender.com |
+| Database | Supabase | PostgreSQL (credentials in Render only) |
+
+Demo access: `clinician@medscope.ai` / `MedScope123!` *(rotate before public defense)*.
+
+Full deployment guide: [docs/Deployment/Deployment.md](Deployment/Deployment.md)
+
+---
+
 # 🧭 Positioning Statement
 
 **MedScope AI empowers healthcare professionals with explainable artificial intelligence to predict patient risk, simulate clinical scenarios, and support smarter healthcare decisions through modern data-driven clinical intelligence.**

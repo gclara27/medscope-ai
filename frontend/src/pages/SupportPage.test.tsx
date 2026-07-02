@@ -35,6 +35,9 @@ describe("SupportPage (RTS-040)", () => {
       screen.getByText(/access documentation, troubleshoot ai model behaviors/i),
     ).toBeInTheDocument();
     expect(screen.getByRole("heading", { level: 2, name: /knowledge base topics/i })).toBeInTheDocument();
+    expect(
+      screen.getByText(/these four knowledge base guides are planned for a future release/i),
+    ).toBeInTheDocument();
 
     await waitFor(() => {
       expect(screen.getByRole("link", { name: /bioinformatics@institution\.edu/i })).toBeInTheDocument();

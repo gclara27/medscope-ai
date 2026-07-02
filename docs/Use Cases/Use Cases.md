@@ -926,6 +926,37 @@ Versionar modelos.
 
 # UC-124 — Cloud Deployment
 
+**Actor:** DevOps / desarrollador  
+**Prioridad:** MVP (TFM)  
+**Estado:** ✅ Completado (julio 2026)
+
+## Descripción
+
+Desplegar el MVP en la nube con arquitectura desacoplada: frontend estático, API con ML en contenedor, PostgreSQL gestionado.
+
+## Stack desplegado
+
+| Capa | Servicio | URL |
+|---|---|---|
+| UI | Vercel | https://medscope-ai-delta.vercel.app |
+| API + ML | Render (Docker) | https://medscope-ai-q8tg.onrender.com |
+| BD | Supabase | Panel Supabase *(credenciales en Render)* |
+
+## Criterios de aceptación
+
+- [x] `GET /health` → `ml_ready: true`
+- [x] Login desde URL pública de Vercel
+- [x] Predicción + SHAP persistida en Supabase
+- [x] Simulación, historial y analytics operativos
+- [x] CORS restringido al dominio Vercel
+- [x] Secretos solo en dashboards (RDO-020)
+- [x] CI en GitHub en push/PR a `main`
+- [x] Auto-deploy Render + Vercel en `main`
+
+## Documentación
+
+Guía completa: [Deployment.md](../Deployment/Deployment.md)
+
 ---
 
 # 17. MVP Use Cases (CRITICAL)

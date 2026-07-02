@@ -1,9 +1,33 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { useState } from "react";
 import { describe, expect, it, vi } from "vitest";
 
 import { ClinicalEvaluationForm } from "@/components/clinical/ClinicalEvaluationForm";
 import { buildPredictRequest } from "@/lib/clinicalFormDefaults";
+import type { ClinicalFormValues } from "@/types/prediction";
+
+const highRiskValues: ClinicalFormValues = {
+  age: 72,
+  gender: "Female",
+  bmi: "31.2",
+  blood_pressure: 142,
+  glucose: 198,
+  hospital_stay_days: 6,
+  medications_count: 12,
+  previous_admissions: 5,
+  number_outpatient: 0,
+  number_emergency: 0,
+};
+
+function ControlledFormHarness({
+  initialValues,
+}: {
+  initialValues: ClinicalFormValues;
+}) {
+  const [values, setValues] = useState(initialValues);
+  return <ClinicalEvaluationForm values={values} onValuesChange={setValues} />;
+}
 
 describe("ClinicalEvaluationForm", () => {
   it("renders clinical sections and submit button", () => {
@@ -23,6 +47,21 @@ describe("ClinicalEvaluationForm", () => {
 
     expect(screen.getByLabelText(/age/i)).toHaveValue(65);
     expect(screen.getByLabelText(/blood glucose/i)).toHaveValue(140);
+    expect(screen.getByLabelText(/biological sex/i)).toHaveValue("Female");
+  });
+
+  it("supports controlled values from a parent", async () => {
+    const user = userEvent.setup();
+
+    render(<ControlledFormHarness initialValues={highRiskValues} />);
+
+    expect(screen.getByLabelText(/age/i)).toHaveValue(72);
+    expect(screen.getByLabelText(/blood glucose/i)).toHaveValue(198);
+
+    await user.clear(screen.getByLabelText(/age/i));
+    await user.type(screen.getByLabelText(/age/i), "58");
+
+    expect(screen.getByLabelText(/age/i)).toHaveValue(58);
     expect(screen.getByLabelText(/biological sex/i)).toHaveValue("Female");
   });
 

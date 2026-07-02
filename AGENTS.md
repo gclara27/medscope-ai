@@ -134,6 +134,7 @@ The AI agent must treat it as mandatory context — not optional reference.
 | `docs/Testing/Testing.md` | Testing stack, structure, RTS/UC traceability, E2E flows |
 | `docs/Database/Database.md` | PostgreSQL schema, MVP tables, migrations, persistence flows |
 | `docs/Deployment/Deployment.md` | Production deploy: Supabase + Render + Vercel (UC-124) |
+| `docs/Demo/Demo-Playbook-Plan.md` | Demo playbook + simulation animation (Fase 9b, T-907–908) |
 | `docs/TaskTracker.md` | Master backlog with checkboxes, US/UC/RF traceability |
 | `docs/Optional Features/Optional-Backlog-Plan.md` | Work plan T-X05–T-X07 (support, audit, multi-model) |
 
@@ -195,6 +196,16 @@ See `docs/Requirements/Requirements.md` §17 for full MVP and optional features.
 | POST | `/simulate` | What-if simulation |
 | GET | `/history` | Prediction history |
 | GET | `/analytics` | Aggregated metrics |
+
+## Production (TFM, jul 2026)
+
+| Layer | URL |
+|---|---|
+| Frontend | https://medscope-ai-delta.vercel.app |
+| API | https://medscope-ai-q8tg.onrender.com |
+| Health | https://medscope-ai-q8tg.onrender.com/health |
+
+Deploy guide: `docs/Deployment/Deployment.md` (Supabase + Render + Vercel).
 
 ## Performance targets
 

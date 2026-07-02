@@ -36,7 +36,7 @@ Separación obligatoria **dev / prod** (RDO-010). El motor es siempre **PostgreS
 | **dev** | PostgreSQL 16 | `docker compose` → servicio `postgres` | Desarrollo diario, migraciones Alembic, datos de prueba locales |
 | **test** | SQLite en memoria | `backend/tests/conftest.py` | Tests unitarios rápidos (pytest) sin levantar Postgres |
 | **test** (integración) | PostgreSQL en Docker | Mismo compose o BD dedicada `medscope_ai_test` | Validar SQL real, migraciones y flujos API + BD (opcional) |
-| **prod** | PostgreSQL gestionado | Cloud / VPS (fuera del repo) | Despliegue MVP; credenciales y URL solo en `.env` del servidor |
+| **prod** | PostgreSQL gestionado (Supabase) | [Deployment.md](../Deployment/Deployment.md) | MVP en cloud; `DATABASE_URL` en Render (Session pooler 5432) |
 
 ### Conexión según contexto
 

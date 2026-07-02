@@ -28,7 +28,7 @@ describe("AppearancePanel (T-X03-05, RTS-043)", () => {
   it("renders light, dark, and system options", () => {
     renderPanel();
 
-    expect(screen.getByRole("radio", { name: /system/i })).toHaveAttribute("aria-checked", "true");
+    expect(screen.getByRole("radio", { name: /light/i })).toHaveAttribute("aria-checked", "true");
     expect(screen.getByRole("radio", { name: /light/i })).toBeInTheDocument();
     expect(screen.getByRole("radio", { name: /dark/i })).toBeInTheDocument();
   });

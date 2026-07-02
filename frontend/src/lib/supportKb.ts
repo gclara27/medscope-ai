@@ -22,6 +22,8 @@ export const SUPPORT_CENTER_COPY = {
   description:
     "Access documentation, troubleshoot AI model behaviors, or contact the bioinformatics team for specialized technical assistance.",
   knowledgeBaseHeading: "Knowledge Base Topics",
+  knowledgeBaseFutureNotice:
+    "These four knowledge base guides are planned for a future release. Use the support ticket form on the right for immediate assistance in the meantime.",
   searchPlaceholder: "Search clinical knowledge base…",
   noResultsMessage: "No knowledge base topics match your search.",
   contactHeading: "Institutional IT Team",

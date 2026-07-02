@@ -60,7 +60,7 @@ describe("AppLayout role navigation", () => {
     renderLayout("/support");
 
     const supportLink = screen.getByRole("link", { name: /support/i });
-    expect(supportLink.className).toMatch(/bg-secondary-container/);
+    expect(supportLink.className).toMatch(/bg-primary/);
     expect(screen.getByText("Support content")).toBeInTheDocument();
   });
 

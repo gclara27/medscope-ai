@@ -255,7 +255,7 @@ describe("SimulationPage", () => {
     expect(screen.getByText(/risk decreased after lowering glucose/i)).toBeInTheDocument();
   });
 
-  it("hides recalculating spinner after simulation completes", async () => {
+  it("keeps the simulated gauge visible while recalculating (no overlay spinner)", async () => {
     vi.useFakeTimers();
     saveSimulationSession(simulationState);
 
@@ -277,6 +277,7 @@ describe("SimulationPage", () => {
     });
 
     expect(createSimulation).toHaveBeenCalledTimes(1);
+    expect(screen.getAllByRole("img", { name: /readmission risk/i }).length).toBeGreaterThanOrEqual(2);
     expect(screen.queryByLabelText(/recalculating risk/i)).not.toBeInTheDocument();
     expect(screen.getByText(/risk decreased after lowering glucose/i)).toBeInTheDocument();
   });

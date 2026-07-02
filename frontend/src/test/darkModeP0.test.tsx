@@ -51,14 +51,19 @@ describe("dark mode P0 screens (T-X03-07/08, RTS-043)", () => {
     expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
   });
 
-  it("splash hero remains readable in dark", () => {
+  it("splash hero remains readable on cinematic overlay", () => {
     renderWithRouter(<SplashPage />);
 
-    expect(screen.getByRole("heading", { name: /medscope ai/i })).toHaveClass("text-primary");
-    expect(screen.getByRole("button", { name: /get started/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        name: /predictive intelligence for critical decisions/i,
+      }),
+    ).toHaveClass("text-white");
+    expect(screen.getByRole("link", { name: /sign in/i })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /explore demo/i })).toBeInTheDocument();
   });
 
-  it("bootstraps dark from system preference when no theme is stored", () => {
+  it("defaults to light when no theme is stored, even if OS prefers dark", () => {
     localStorage.clear();
     document.documentElement.classList.remove("dark");
 
@@ -75,8 +80,12 @@ describe("dark mode P0 screens (T-X03-07/08, RTS-043)", () => {
 
     renderWithRouter(<SplashPage />);
 
-    expect(document.documentElement.classList.contains("dark")).toBe(true);
-    expect(screen.getByRole("heading", { name: /medscope ai/i })).toHaveClass("text-primary");
+    expect(document.documentElement.classList.contains("dark")).toBe(false);
+    expect(
+      screen.getByRole("heading", {
+        name: /predictive intelligence for critical decisions/i,
+      }),
+    ).toBeInTheDocument();
 
     matchMedia.mockRestore();
   });
@@ -90,6 +99,8 @@ describe("dark mode P0 screens (T-X03-07/08, RTS-043)", () => {
   });
 
   it("risk gauge resolves dark palette colors", () => {
+    localStorage.setItem(THEME_STORAGE_KEY, "dark");
+
     render(
       <ThemeProvider>
         <RiskGaugeChart riskPercent={62} riskLevel="high" />

@@ -1,7 +1,8 @@
-import { Menu, X } from "lucide-react";
+import { LogOut, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { MedScopeAppIcon } from "@/components/brand/MedScopeAppIcon";
+import { UserAvatar } from "@/components/layout/UserAvatar";
 import { getNavItemsForUser, SUPPORT_NAV_ITEM } from "@/config/navigation";
 import { useAuth } from "@/context/useAuth";
 import { cn } from "@/lib/utils";
@@ -68,7 +69,7 @@ export function AppLayout() {
             className={cn(
               "flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium",
               isNavItemActive(location.pathname, SUPPORT_NAV_ITEM.to)
-                ? "bg-secondary-container text-on-secondary-container"
+                ? "bg-primary text-on-primary"
                 : "text-on-surface-variant hover:bg-surface-container-low",
             )}
           >
@@ -80,18 +81,26 @@ export function AppLayout() {
             type="button"
             onClick={handleLogout}
             disabled={isLoading}
-            className="rounded-lg px-3 py-2 text-left text-sm font-medium text-error transition hover:bg-error-container disabled:cursor-not-allowed disabled:opacity-70"
+            className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm font-medium text-error transition hover:bg-error-container disabled:cursor-not-allowed disabled:opacity-70"
           >
+            <LogOut className="h-4 w-4 shrink-0" aria-hidden />
             {isLoading ? "Signing out…" : "Log out"}
           </button>
         </div>
       </nav>
 
       <div className="shrink-0 border-t border-surface-container-highest p-4">
-        <p className="text-sm font-medium text-on-surface">
-          {user?.first_name} {user?.last_name}
-        </p>
-        <p className="text-xs capitalize text-on-surface-variant">{user?.role}</p>
+        <div className="flex items-center gap-3">
+          <UserAvatar
+            displayName={[user?.first_name, user?.last_name].filter(Boolean).join(" ")}
+          />
+          <div className="min-w-0">
+            <p className="truncate text-sm font-medium text-on-surface">
+              {user?.first_name} {user?.last_name}
+            </p>
+            <p className="text-xs capitalize text-on-surface-variant">{user?.role}</p>
+          </div>
+        </div>
       </div>
     </>
   );

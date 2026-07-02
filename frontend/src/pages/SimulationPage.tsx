@@ -144,12 +144,17 @@ export function SimulationPage() {
   });
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [simulatedAnimateFromPercent, setSimulatedAnimateFromPercent] = useState<
+    number | undefined
+  >();
+  const displayedSimulatedPercentRef = useRef(context?.originalRisk.risk_percent ?? 0);
 
   const recalcSeq = useRef(0);
   const inFlightRequests = useRef(0);
   const skipInitialRecalc = useRef(
     restoreDraft && sessionState?.lastSimResult != null,
   );
+  const skipNextSimulationAnimation = useRef(skipInitialRecalc.current);
   const debouncedValues = useDebouncedValue(values, SIMULATION_DEBOUNCE_MS);
 
   useEffect(() => {
@@ -158,6 +163,33 @@ export function SimulationPage() {
     }
     saveSimulationSession(buildSessionSnapshot(context, values, simResult));
   }, [context, values, simResult]);
+
+  useEffect(() => {
+    if (!simResult) {
+      setSimulatedAnimateFromPercent(undefined);
+      if (context) {
+        displayedSimulatedPercentRef.current = context.originalRisk.risk_percent;
+      }
+      return;
+    }
+
+    if (skipNextSimulationAnimation.current) {
+      skipNextSimulationAnimation.current = false;
+      displayedSimulatedPercentRef.current = simResult.simulated_risk_percent;
+      setSimulatedAnimateFromPercent(undefined);
+      return;
+    }
+
+    const fromPercent = displayedSimulatedPercentRef.current;
+    const toPercent = simResult.simulated_risk_percent;
+    displayedSimulatedPercentRef.current = toPercent;
+
+    if (Math.abs(fromPercent - toPercent) >= 0.05) {
+      setSimulatedAnimateFromPercent(fromPercent);
+    } else {
+      setSimulatedAnimateFromPercent(undefined);
+    }
+  }, [simResult, context?.originalRisk.risk_percent]);
 
   const runSimulation = useCallback(
     async (modifications: SimulateModifications, predictionIdValue: string) => {
@@ -248,6 +280,8 @@ export function SimulationPage() {
     setSimResult(null);
     setSubmitError(null);
     setIsSubmitting(false);
+    setSimulatedAnimateFromPercent(undefined);
+    displayedSimulatedPercentRef.current = activeOriginalRisk.risk_percent;
   }
 
   function handleRecalculate() {
@@ -324,6 +358,8 @@ export function SimulationPage() {
             delta={delta}
             isRecalculating={isSubmitting}
             hasSimulationResult={simResult !== null}
+            simulatedAnimateFromPercent={simulatedAnimateFromPercent}
+            simulationAnimationKey={simResult?.id}
           />
 
           {simResult ? <SimulationImpactChart rows={impactRows} /> : null}

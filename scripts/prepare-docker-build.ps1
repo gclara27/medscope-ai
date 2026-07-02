@@ -10,7 +10,8 @@ if (-not (Test-Path $python)) {
 $required = @(
     "models\model.pkl",
     "models\preprocessor.pkl",
-    "models\model_manifest.json"
+    "models\model_manifest.json",
+    "models\shap_background.npy"
 )
 
 $missing = $required | Where-Object { -not (Test-Path (Join-Path $root $_)) }

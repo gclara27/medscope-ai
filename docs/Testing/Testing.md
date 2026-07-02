@@ -87,7 +87,9 @@ Alineado con `AGENTS.md` y `skills/testing/SKILL.md`.
 | `frontend/src/config/navigation.test.ts` | `getNavItemsForRole`, `canAccessRoute` |
 | `frontend/src/layouts/AppLayout.test.tsx` | sidebar por rol, logout, nav activa |
 | `frontend/src/components/RoleRoute.test.tsx` | redirect login / unauthorized |
-| `frontend/src/pages/SplashPage.test.tsx` | splash → `/login` |
+| `frontend/src/pages/SplashPage.test.tsx` | splash → `/login` · Explore demo → `/demo` |
+| `frontend/src/pages/DemoPlaygroundPage.test.tsx` | public guided demo tour (UC-066) |
+| `backend/tests/test_demo.py` | `POST /demo/predict` · `/demo/simulate` sin auth |
 | RTS-030 | Flujo E2E MVP | Playwright — flujo completo §10 |
 
 ### RTS-030 — archivos E2E (T-708)
@@ -374,6 +376,16 @@ login → dashboard → prediction → SHAP → simulation → history → analy
 
 Recomendación TFM: **3–5 tests E2E** cubriendo el flujo completo.
 
+### Capturas para memoria (T-808)
+
+```powershell
+.\scripts\capture-thesis-screenshots.ps1
+# Salida: docs/figures/screenshots/*.png (8 pantallas MVP)
+# Producción: $env:PLAYWRIGHT_BASE_URL = "https://medscope-ai-delta.vercel.app"
+```
+
+Ver inventario: [`figures/screenshots/README.md`](../figures/screenshots/README.md).
+
 ---
 
 # 11. Cobertura
@@ -512,6 +524,8 @@ Checklists ejecutables por una persona **sin experiencia previa** en la aplicaci
 | Fase 7 — Support (T-X05) | [`Manual/Phase-07-Support-UI.md`](Manual/Phase-07-Support-UI.md) |
 | Fase 7 — Audit (T-X06) | [`Manual/Phase-07-Audit-Logs.md`](Manual/Phase-07-Audit-Logs.md) |
 | Fase 7 — ML models (T-X07) | [`Manual/Phase-07-ML-Model-Comparison.md`](Manual/Phase-07-ML-Model-Comparison.md) |
+| Fase 8 — Arquitectura (T-803) | [`Architecture/System-Architecture.md`](../Architecture/System-Architecture.md) | Componentes y capas |
+| Fase 8 — Secuencias (T-811) | [`Architecture/Sequence-Diagrams.md`](../Architecture/Sequence-Diagrams.md) | Flujos UC |
 | Fase 8 — Dark mode (T-X03) | [`Manual/Phase-08-Dark-Mode.md`](Manual/Phase-08-Dark-Mode.md) |
 | Fase 9 — Producción (UC-124) | [`Manual/Phase-09-Production-Smoke.md`](Manual/Phase-09-Production-Smoke.md) |
 | Fase 9b — Demo WOW | [`Manual/Phase-10-Demo-Playbook.md`](Manual/Phase-10-Demo-Playbook.md) · [`Demo/Demo-Playbook-Plan.md`](../Demo/Demo-Playbook-Plan.md) |

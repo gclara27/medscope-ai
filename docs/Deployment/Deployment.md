@@ -16,6 +16,8 @@ Documento paso a paso para desplegar el MVP en la nube **sin coste** (plan free 
 |---|---|
 | [Environment.md](../Environment/Environment.md) | Variables de entorno dev / prod |
 | [Database.md](../Database/Database.md) | Esquema PostgreSQL y migraciones Alembic |
+| [System-Architecture.md](../Architecture/System-Architecture.md) | Diagrama lógico frontend → backend → ML → PostgreSQL (T-803) |
+| [Deployment-Diagram.md](../Architecture/Deployment-Diagram.md) | Diagramas Docker compose + cloud + CI/CD (T-806) |
 | [README.md](../../README.md) | Desarrollo local |
 
 ---
@@ -455,4 +457,4 @@ Marca cada paso al completarlo:
 3. **Regenerar modelos ML:** `serialize_model.py` → commit 4 artefactos → rebuild Render.
 4. **Cambiar URL del API:** actualizar `VITE_API_BASE_URL` en Vercel + redeploy frontend.
 5. **Supabase inactivo ~1 semana:** reactivar desde el dashboard antes de demo.
-6. **Diagrama para memoria TFM:** reutilizar diagramas §1 y §7; tarea [T-806](TaskTracker.md#fase-8--tfm) (diagrama despliegue).
+6. **Diagrama para memoria TFM:** [Deployment-Diagram.md](../Architecture/Deployment-Diagram.md) (T-806); guía operativa en este documento §1 y §7.

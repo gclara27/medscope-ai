@@ -597,7 +597,7 @@ Frontend moderno web-based.
 
 ## RFW-010
 
-Splash screen.
+Splash screen — brand entry, value proposition, **Sign in** + **Explore demo** CTAs, feature highlight cards with detail dialog.
 
 ## RFW-011
 
@@ -630,6 +630,10 @@ Analytics.
 ## RFW-018
 
 History.
+
+## RFW-027
+
+Public explore demo (`/demo`) — guided tour without authentication; ephemeral ML via `POST /demo/predict` and `POST /demo/simulate` (RFW-splash, UC-066).
 
 ## RFW-024
 
@@ -716,6 +720,14 @@ GET /ml/models/comparison — métricas comparativas offline (RF-077, T-X07).
 ## RBE-018
 
 GET /support/contact — email de soporte para usuarios autenticados (RF-073, T-X05).
+
+## RBE-019
+
+POST /demo/predict — predicción efímera sin auth ni persistencia (RFW-027, UC-066).
+
+## RBE-021
+
+POST /demo/simulate — simulación efímera sin auth ni persistencia (RFW-027, UC-066).
 
 ---
 

@@ -2,8 +2,9 @@ import axios from "axios";
 
 import type { PredictRequest, PredictResponse } from "@/types/prediction";
 import type { SimulateModifications, SimulateResponse } from "@/types/simulation";
+import { resolveApiBaseUrl } from "@/utils/apiBaseUrl";
 
-const baseURL = import.meta.env.VITE_API_BASE_URL ?? "";
+const baseURL = resolveApiBaseUrl();
 
 /** Anonymous HTTP client for public demo routes (no inherited JWT). */
 const demoApi = axios.create({

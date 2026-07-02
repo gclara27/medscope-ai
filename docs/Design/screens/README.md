@@ -29,3 +29,4 @@ Each folder maps to a frontend page in `frontend/src/pages/`.
 - Port layouts to React components; map colors to `design-system.light.md` tokens.
 - Gauge charts (RFW-021) appear in `prediction-result/`.
 - SHAP bars (RFW-023) appear in `prediction-result/`.
+- **Production screenshots (T-808):** [`docs/figures/screenshots/`](../../figures/screenshots/README.md) — captured from running app via Playwright.

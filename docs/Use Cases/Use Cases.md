@@ -546,6 +546,58 @@ Exportar datos.
 
 ---
 
+# 10b. Public Explore Demo
+
+> Requirements RFW-027 · Technical: [Public-Demo-Playground.md](../Demo/Public-Demo-Playground.md) · Sequence: [Architecture/Sequence-Diagrams.md §6](../Architecture/Sequence-Diagrams.md#6-public-explore-demo-uc-066)
+
+---
+
+# UC-066 — Explore Public Demo (Guided Tour)
+
+## Goal
+
+Permitir a visitantes probar el flujo CDSS principal **sin credenciales** ni persistencia.
+
+## Actor
+
+Visitante anónimo (evaluador, inversor, usuario en portfolio).
+
+## Preconditions
+
+- Backend con ML cargado (`/health` → `ml_ready: true`).
+- Frontend accesible (local o Vercel con `VITE_API_BASE_URL`).
+
+## Flow
+
+1. Visitante abre `/` (splash) y pulsa **Explore demo**, o navega directamente a `/demo`.
+2. Sistema muestra pantalla de bienvenida y tour guiado por pasos.
+3. Visitante avanza: **case** → **predict** → **explain** → **simulate** → **complete**.
+4. En **predict**, sistema llama `POST /demo/predict` con caso sintético; muestra riesgo + SHAP.
+5. En **simulate**, sistema llama `POST /demo/simulate` con intervenciones pre-rellenadas; muestra comparación de riesgo.
+6. URL sincronizada (`/demo/case`, `/demo/predict`, …) — navegador atrás/adelante cambia paso.
+7. En **complete**, visitante puede ir a **Sign in** para la plataforma completa.
+
+## Postconditions
+
+- Ningún registro en PostgreSQL.
+- Estado de sesión demo solo en memoria del navegador.
+
+## Acceptance criteria
+
+- Funciona sin JWT.
+- Latencia de inferencia típica &lt; 1 s.
+- Datos 100 % sintéticos; aviso “no data persisted”.
+- Tests: `backend/tests/test_demo.py`, `DemoPlaygroundPage.test.tsx`.
+
+## Distinction
+
+| Flow | Auth | Persistence | Entry |
+|---|---|---|---|
+| UC-066 Public demo | No | No | `/demo` |
+| UC-020 Evaluation | Yes | Yes | `/evaluation` + T-907 scenarios |
+
+---
+
 # 11. Support (optional)
 
 > Requirements §18 — T-X05. Mockup: `docs/Design/screens/support/reference.html`.
@@ -974,6 +1026,7 @@ Guía completa: [Deployment.md](../Deployment/Deployment.md)
 | P0       | Prediction History |
 | P0       | Analytics          |
 | P0       | Persistence        |
+| P1       | Public Explore Demo (`/demo`) |
 
 
 ---
@@ -1011,6 +1064,19 @@ Porque:
 Porque:
 
 - transmite madurez profesional.  
+
+
+---
+
+### ⭐ Public Explore Demo (`/demo`)
+
+Porque:
+
+- accesible sin credenciales,  
+
+- demuestra ML + SHAP + simulación en un tour guiado,  
+
+- ideal para enlaces en portfolio y defensa TFM.  
 
 
 ---

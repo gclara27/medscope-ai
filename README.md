@@ -8,6 +8,66 @@ Product and architecture docs live in [`docs/`](docs/) and [`AGENTS.md`](AGENTS.
 
 ---
 
+## About MedScope AI
+
+**MedScope AI** is a web-based **Clinical Decision Support System (CDSS)** for predicting **30-day hospital readmission risk** in diabetes patients. It is not a diagnostic tool — it supports clinicians with:
+
+- AI risk prediction (&lt; 1 s inference)
+- **SHAP** explainability (why the risk is high or low)
+- **What-if clinical simulation** (change glucose, prior admissions, etc.)
+- Prediction **history** and population **analytics**
+- Role-based access (admin, clinician, analyst, nurse)
+- Public **guided demo** at `/demo` (no login)
+
+Trained on the public UCI *Diabetes 130-US hospitals* dataset; deployed to production for the TFM demo.
+
+Full narrative: [docs/MedScope AI General Description.md](docs/MedScope%20AI%20General%20Description.md)
+
+---
+
+## Main features
+
+| Feature | Description |
+|---------|-------------|
+| Authentication | Email + password, JWT, four roles |
+| Dashboard | KPIs, high-risk alerts, recent activity |
+| Clinical evaluation | Patient form + demo clinical scenarios |
+| AI prediction | Readmission risk score, low/medium/high band |
+| SHAP explanations | Feature contributions + clinical summary |
+| Simulation | Compare original vs simulated risk (what-if) |
+| History | Searchable prediction log with detail view |
+| Analytics | Aggregated metrics and trends |
+| Public demo | Guided tour at `/demo` without credentials |
+| Cloud deploy | Vercel + Render + Supabase (live MVP) |
+
+---
+
+## TFM delivery (Fundae / BIG School)
+
+**Compliance checklist:** [docs/Thesis/Entrega-TFM-Fundae.md](docs/Thesis/Entrega-TFM-Fundae.md)  
+**Delivery deadline (syllabus):** 20 July 2026
+
+Fill these in the campus submission form:
+
+| Field | Value |
+|-------|-------|
+| **GitHub repository** | https://github.com/gclara27/medscope-ai |
+| **Live app (deploy URL)** | https://medscope-ai-delta.vercel.app/login |
+| **Public demo (no login)** | https://medscope-ai-delta.vercel.app/demo |
+| **API health** | https://medscope-ai-q8tg.onrender.com/health |
+| **Slides URL** | `PENDING` — sube `docs/Thesis/slides/MedScope-AI-TFM.pptx` a Google Drive/Slides (acceso público) o usa el archivo en el repo |
+| **Video URL** | `PENDING` — add YouTube / Drive link after recording |
+| **Demo user** | `clinician@medscope.ai` |
+| **Demo password** | `MedScope123!` |
+
+**Slides content (ready to copy to PowerPoint):** [docs/Thesis/Slides-Presentacion-Video.md](docs/Thesis/Slides-Presentacion-Video.md)  
+**Video script (screen + voice + optional camera):** [docs/Thesis/Guion-Video-Defensa.md](docs/Thesis/Guion-Video-Defensa.md)  
+**Thesis memory draft:** [docs/Thesis/Memoria-TFM.md](docs/Thesis/Memoria-TFM.md)
+
+> **Before submission:** warm up the API (`/health` → `ml_ready: true`). If the repo is private, grant read access to `mouredev@gmail.com` per Fundae rules, or make the repository **public**.
+
+---
+
 ## Prerequisites
 
 | Tool | Version | Used for |
@@ -365,6 +425,8 @@ medscope-ai/
 | [Deployment](docs/Deployment/Deployment.md) | Production cloud deploy (Supabase + Render + Vercel) |
 | [Demo Playbook](docs/Demo/Demo-Playbook-Plan.md) | Clinical scenarios + simulation animation (defense) |
 | [Task Tracker](docs/TaskTracker.md) | MVP task checklist |
+| [TFM delivery (Fundae)](docs/Thesis/Entrega-TFM-Fundae.md) | Submission checklist, form fields, gaps |
+| [Thesis / video script](docs/Thesis/Guion-Video-Defensa.md) | Defense video narration |
 
 ---
 

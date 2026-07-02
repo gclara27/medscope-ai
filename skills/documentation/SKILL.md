@@ -37,11 +37,20 @@ Do not contradict `docs/` on product scope. Extend `docs/` only when the user re
 
 # Required diagrams
 
-- system architecture (frontend → backend → ML → PostgreSQL)
-- ML pipeline
-- ER diagram
-- deployment (Docker)
-- frontend navigation flow
+- system architecture (frontend → backend → ML → PostgreSQL) — T-803, `docs/Architecture/System-Architecture.md`
+- ML pipeline — T-804, `docs/Architecture/ML-Pipeline-Diagram.md` (narrative: `docs/ML/ML-Pipeline.md`)
+- ER diagram — T-805, `docs/Architecture/ER-Diagram.md` (schema narrative: `docs/Database/Database.md`)
+- deployment (Docker / cloud) — T-806, `docs/Architecture/Deployment-Diagram.md` (operational guide: `docs/Deployment/Deployment.md`)
+- frontend navigation flow — T-807, `docs/Architecture/Frontend-Navigation.md`
+- **UML sequence diagrams (critical flows)** — T-811, `docs/Architecture/Sequence-Diagrams.md`
+
+Sequence flows to include in thesis: login, predict+SHAP, simulation, history, public `/demo`, support ticket (mailto).
+
+**Thesis screenshots (T-808):** `docs/figures/screenshots/` — regenerate with `.\scripts\capture-thesis-screenshots.ps1`.
+
+**Thesis memory draft (T-809):** `docs/Thesis/Memoria-TFM.md` — methodology and results chapters (RAC-010).
+
+**Defense script (T-810):** `docs/Thesis/Argumentario-Defensa.md` — 8–10 min oral script, FAQ, checklist (RAC-001).
 
 ---
 

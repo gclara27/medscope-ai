@@ -43,6 +43,8 @@ Se sigue un flujo reproducible inspirado en CRISP-DM, acotado al MVP del TFM:
 
 ### 2.3 Diagrama del ciclo de vida
 
+Diagrama completo **train → serialize → infer** (T-804): [Architecture/ML-Pipeline-Diagram.md](../Architecture/ML-Pipeline-Diagram.md).
+
 ```mermaid
 flowchart LR
     A[UCI Diabetes 130-US] --> B[EDA notebook]
@@ -284,6 +286,8 @@ python ml/scripts/serialize_model.py
 
 ### 8.2 Diagrama de inferencia (integración backend)
 
+Diagrama end-to-end offline + runtime: [Architecture/ML-Pipeline-Diagram.md §4](../Architecture/ML-Pipeline-Diagram.md#4-fase-infer--runtime-backend).
+
 ```mermaid
 sequenceDiagram
     participant API as FastAPI POST /predict
@@ -382,7 +386,8 @@ El valor del TFM no reside solo en el porcentaje de accuracy, sino en:
 | [Execution Plan Fase 2](../Execution%20Plan/ExecutionPlan.md#phase-2--machine-learning-pipeline) | Roadmap de implementación |
 | [skills/ml/SKILL.md](../../skills/ml/SKILL.md) | Convenciones de código ML |
 | [skills/shap/SKILL.md](../../skills/shap/SKILL.md) | Convenciones SHAP |
+| [Architecture/ML-Pipeline-Diagram.md](../Architecture/ML-Pipeline-Diagram.md) | Diagramas train → serialize → infer (T-804) |
 
 ---
 
-*Última actualización: T-212 — documentación pipeline ML para memoria TFM (RAC-010).*
+*Última actualización: T-212 + T-804 — pipeline ML y diagramas para memoria TFM (RAC-010, RAC-001).*

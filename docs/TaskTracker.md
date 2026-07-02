@@ -21,6 +21,9 @@ Documento vivo para seguir el progreso del TFM.
 | Testing | [Testing.md](Testing/Testing.md) | Tests, RTS-* |
 | Despliegue | [Deployment.md](Deployment/Deployment.md) | Cloud prod UC-124 |
 | Demo / defensa | [Demo-Playbook-Plan.md](Demo/Demo-Playbook-Plan.md) | Escenarios clínicos + animación simulación |
+| Demo público | [Public-Demo-Playground.md](Demo/Public-Demo-Playground.md) | Tour `/demo` sin login |
+| Arquitectura / secuencias | [Architecture/](Architecture/README.md) | Diagramas T-803–807, T-811 |
+| Memoria TFM | [Thesis/](Thesis/README.md) | Memoria + argumentario defensa (T-809, T-810) |
 | Plan opcional | [Optional-Backlog-Plan.md](Optional%20Features/Optional-Backlog-Plan.md) | US, tareas, alcance (T-X03, T-X05–07) |
 | Design | [Design/README.md](Design/README.md) | UI, mockups |
 | AGENTS | [AGENTS.md](../AGENTS.md) | Convenciones IA |
@@ -116,6 +119,7 @@ Documento vivo para seguir el progreso del TFM.
 | UC-040–044 | [Simulación](Use%20Cases/Use%20Cases.md#8-clinical-simulation) | Sandbox what-if |
 | UC-050–052 | [Historial](Use%20Cases/Use%20Cases.md#9-prediction-history) | Historial |
 | UC-060–062 | [Analytics](Use%20Cases/Use%20Cases.md#10-analytics) | Métricas población |
+| UC-066 | [Public demo](Use%20Cases/Use%20Cases.md#uc-066--explore-public-demo-guided-tour) | Tour `/demo` sin login |
 | UC-064–065 | [Support](Use%20Cases/Use%20Cases.md#11-support-optional) | Centro ayuda (T-X05) |
 | UC-081, UC-085 | [Audit](Use%20Cases/Use%20Cases.md#uc-081--persist-audit-logs) | Logs sistema (T-X06) |
 | UC-084 | [ML compare](Use%20Cases/Use%20Cases.md#uc-084--view-ml-model-comparison-optional) | Comparación modelos (T-X07) |
@@ -141,11 +145,11 @@ Documento vivo para seguir el progreso del TFM.
 | Fase 6 — Analytics + History | 10 | 10 | 100% |
 | Fase 7 — Polish + Testing | 12 | 12 | 100% |
 | Despliegue cloud (UC-124) | 6 | 6 | 100% |
-| Fase 8 — TFM + Documentación | 2 | 10 | 20% |
+| Fase 8 — TFM + Documentación | 13 | 13 | 100% |
 | Fase 9 — Demo | 0 | 6 | 0% |
 | Fase 9b — Demo WOW (TFM) | 9 | 9 | 100% |
 | Fase X — Opcional T-X05–07 | 7 | 22 | 32% |
-| **TOTAL MVP** | **123** | **149** | **83%** |
+| **TOTAL MVP** | **127** | **152** | **84%** |
 
 ---
 
@@ -443,20 +447,23 @@ Entregables: historial (`/history`, filtros, detalle SHAP), analytics (`/analyti
 
 # FASE 8 — TFM
 
-**Progreso:** 2 / 10 (20%)
+**Progreso:** 6 / 13 (46%)
 
 | ID | ✓ | Tarea | Docs | Pedir a la IA |
 |---|---|---|---|---|
-| T-801 | [x] | Docs producto | [RAC-010](Requirements/Requirements.md#rac-010) | — |
-| T-802 | [x] | Docs técnica | [RAC-001](Requirements/Requirements.md#rac-001) | — |
-| T-803 | [ ] | Diagrama arquitectura | [RAC-001](Requirements/Requirements.md#rac-001) | `Genera diagrama Mermaid: frontend → backend → ML → PostgreSQL.` |
-| T-804 | [ ] | Diagrama ML pipeline | [RAC-001](Requirements/Requirements.md#rac-001) | `Diagrama pipeline ML train → serialize → infer.` |
-| T-805 | [ ] | Diagrama ER | [Database](Database/Database.md#3-modelo-de-entidades) | `Diagrama ER desde Database.md.` |
-| T-806 | [ ] | Diagrama Docker | [RDO](Requirements/Requirements.md#11-requerimientos-devops) | `Diagrama despliegue docker-compose.` |
-| T-807 | [ ] | Flujo frontend | [RAC-001](Requirements/Requirements.md#rac-001) | `Diagrama navegación pantallas MVP.` |
-| T-808 | [ ] | Screenshots | [Design](Design/screens/README.md) | `Captura dashboard, SHAP, simulación, analytics.` |
-| T-809 | [ ] | Memoria TFM | [RAC-010](Requirements/Requirements.md#rac-010) | `Ayuda a redactar capítulo resultados y metodología.` |
-| T-810 | [ ] | Argumentario defensa | [EP-8](Execution%20Plan/ExecutionPlan.md#phase-8--thesis--defense-preparation) · [Guion T-907-05](Demo/Demo-Playbook-Plan.md#guion-de-defensa-t-810--t-903--t-907-05) | `Guion 8–10 min listo en Demo-Playbook-Plan; ensayar con Phase-10 MT-P10-DEMO-001.` |
+| T-801 | [x] | Docs producto (base) | [RAC-010](Requirements/Requirements.md#rac-010) | Requirements, Use Cases, General Description, ML-Pipeline (T-212) |
+| T-801a | [x] | Actualización producto post-MVP | [RAC-010](Requirements/Requirements.md#rac-010) | UC-066, RFW-027, splash, opcionales, General Description jul 2026 |
+| T-802 | [x] | Docs técnica (base) | [RAC-001](Requirements/Requirements.md#rac-001) | AGENTS, Database, ML-Pipeline, Deployment |
+| T-802a | [x] | Actualización técnica post-MVP | [RAC-001](Requirements/Requirements.md#rac-001) | [Public-Demo-Playground.md](Demo/Public-Demo-Playground.md), endpoints `/demo`, AGENTS |
+| T-811 | [x] | Diagramas secuencia UC | [Sequence-Diagrams.md](Architecture/Sequence-Diagrams.md) | Login, predict, simulate, history, support, demo público |
+| T-803 | [x] | Diagrama arquitectura | [System-Architecture.md](Architecture/System-Architecture.md) | Monorepo, capas backend, ML runtime, PostgreSQL, cloud resumen |
+| T-804 | [x] | Diagrama ML pipeline | [ML-Pipeline-Diagram.md](Architecture/ML-Pipeline-Diagram.md) | Train → serialize → infer: offline, artefactos, runtime, endpoints |
+| T-805 | [x] | Diagrama ER | [ER-Diagram.md](Architecture/ER-Diagram.md) | Mermaid ER: tablas MVP, cardinalidades, flujos persistencia, opcionales |
+| T-806 | [x] | Diagrama Docker | [Deployment-Diagram.md](Architecture/Deployment-Diagram.md) | docker-compose dev, Dockerfile, cloud Supabase+Render+Vercel, CI/CD |
+| T-807 | [x] | Flujo frontend | [Frontend-Navigation.md](Architecture/Frontend-Navigation.md) | Rutas React Router, sidebar, RBAC, flujo clínico, demo /demo |
+| T-808 | [x] | Screenshots | [figures/screenshots](figures/screenshots/README.md) | 8 capturas Playwright: dashboard, SHAP, simulación, analytics + splash/demo |
+| T-809 | [x] | Memoria TFM | [Memoria-TFM.md](Thesis/Memoria-TFM.md) | Capítulos metodología, resultados, discusión, conclusiones (RAC-010) |
+| T-810 | [x] | Argumentario defensa | [Argumentario-Defensa.md](Thesis/Argumentario-Defensa.md) | Guion 8–10 min, FAQ tribunal, plan B, checklist; ensayo Phase-10 |
 
 ---
 
@@ -621,8 +628,8 @@ Implementar **una feature a la vez**. Cada bloque cierra su user story y manual 
 | [US-040](#us-040) | [x] | Support center | UC-064–065 | RF-072–073 |
 | [US-041](#us-041) | [x] | Audit trail | UC-081, UC-085 | RF-074–075 |
 | [US-042](#us-042) | [x] | ML model comparison | UC-084 | RF-076–077, RIA-040–041 |
-| [US-044](#us-044--clinical-demo-playbook-t-907) | [ ] | Demo playbook clínico | UC-020 | RF-020, RF-040 |
-| [US-045](#us-045--simulation-risk-animation-t-908) | [ ] | Animación simulación | UC-043 | RF-041–043 |
+| [US-044](#us-044--clinical-demo-playbook-t-907) | [x] | Demo playbook clínico | UC-020 | RF-020, RF-040, RUX-001 |
+| [US-045](#us-045--simulation-risk-animation-t-908) | [x] | Animación riesgo simulación | UC-043 | RF-041–043, RUX-001 |
 
 ---
 
@@ -644,6 +651,16 @@ Implementar **una feature a la vez**. Cada bloque cierra su user story y manual 
 | Tests | T-704–708 | [Testing](Testing/Testing.md) |
 | Docker | T-012–013, T-709 | [DevOps §11](Requirements/Requirements.md#11-requerimientos-devops) |
 | Demo WOW | T-907–908 | [Demo-Playbook-Plan](Demo/Demo-Playbook-Plan.md) |
+| Public demo | UC-066 | [Public-Demo-Playground](Demo/Public-Demo-Playground.md) · [Sequence §6](Architecture/Sequence-Diagrams.md#6-public-explore-demo-uc-066) |
+| Fase 8 secuencias | T-811 | [Sequence-Diagrams](Architecture/Sequence-Diagrams.md) |
+| Fase 8 arquitectura | T-803 | [System-Architecture](Architecture/System-Architecture.md) |
+| Fase 8 ML pipeline | T-804 | [ML-Pipeline-Diagram](Architecture/ML-Pipeline-Diagram.md) |
+| Fase 8 ER | T-805 | [ER-Diagram](Architecture/ER-Diagram.md) |
+| Fase 8 despliegue | T-806 | [Deployment-Diagram](Architecture/Deployment-Diagram.md) |
+| Fase 8 frontend nav | T-807 | [Frontend-Navigation](Architecture/Frontend-Navigation.md) |
+| Fase 8 screenshots | T-808 | [figures/screenshots](figures/screenshots/README.md) |
+| Fase 8 memoria | T-809 | [Memoria-TFM](Thesis/Memoria-TFM.md) |
+| Fase 8 defensa | T-810 | [Argumentario-Defensa](Thesis/Argumentario-Defensa.md) |
 
 ---
 
@@ -723,4 +740,14 @@ Implementar **una feature a la vez**. Cada bloque cierra su user story y manual 
 | 2026-06-30 | Docs Deployment/Environment/README/TaskTracker actualizados con URLs y troubleshooting de prod |
 | 2026-07-01 | **T-908 cerrado (US-045):** animación gauge simulación, prefers-reduced-motion, wiring SimulationPage, vitest |
 | 2026-07-01 | **T-907 cerrado (US-044):** escenarios clínicos, panel, formulario, vitest, guion defensa + manual Phase-10 SCEN |
-| 2026-07-01 | **Fase 9b planificada:** US-044/US-045, T-907 (5) + T-908 (4), [Demo-Playbook-Plan.md](Demo/Demo-Playbook-Plan.md), manual Phase-10 |
+| 2026-07-02 | **T-803:** [System-Architecture.md](Architecture/System-Architecture.md) — diagramas Mermaid monorepo, capas backend, flujos ML/BD |
+| 2026-07-02 | **Fase 8 docs:** T-801a/T-802a/T-811 — UC-066, RFW-027, Public-Demo-Playground, Sequence-Diagrams, General Description, AGENTS actualizados |
+| 2026-07-02 | **T-804:** [ML-Pipeline-Diagram.md](Architecture/ML-Pipeline-Diagram.md) — diagramas Mermaid train → serialize → infer (offline, artefactos, runtime) |
+| 2026-07-02 | **T-805:** [ER-Diagram.md](Architecture/ER-Diagram.md) — diagrama ER PostgreSQL MVP + flujos persistencia |
+| 2026-07-02 | **T-806:** [Deployment-Diagram.md](Architecture/Deployment-Diagram.md) — docker-compose, cloud, CI/CD |
+| 2026-07-02 | **T-807:** [Frontend-Navigation.md](Architecture/Frontend-Navigation.md) — rutas, sidebar, RBAC, flujos clínico y demo |
+| 2026-07-02 | **T-808:** `docs/figures/screenshots/` — 8 capturas Playwright + `scripts/capture-thesis-screenshots.ps1` |
+| 2026-07-02 | **T-809:** [Memoria-TFM.md](Thesis/Memoria-TFM.md) — borrador capítulos metodología y resultados (RAC-010) |
+| 2026-07-02 | **T-810:** [Argumentario-Defensa.md](Thesis/Argumentario-Defensa.md) — guion defensa 8–10 min, FAQ, checklist · **Fase 8 completa** |
+| 2026-07-02 | **Vídeo defensa:** [Guion-Video-Defensa.md](Thesis/Guion-Video-Defensa.md) + [Slides-Presentacion-Video.md](Thesis/Slides-Presentacion-Video.md) |
+| 2026-07-02 | **Entrega Fundae:** [Entrega-TFM-Fundae.md](Thesis/Entrega-TFM-Fundae.md) — auditoría requisitos BIG School + README actualizado |

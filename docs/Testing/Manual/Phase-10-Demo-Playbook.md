@@ -146,7 +146,7 @@ Checklist manual para **T-907** (escenarios clínicos) y **T-908** (animación g
 
 ## MT-P10-DEMO-001 — Guion completo (ensayo T-903)
 
-Seguir [Guion de defensa](../../Demo/Demo-Playbook-Plan.md#guion-de-defensa-t-810--t-903--t-907-05) en **≤ 10 min**.
+Seguir [Argumentario-Defensa.md](../../Thesis/Argumentario-Defensa.md) (guion §5) o [Demo-Playbook-Plan § guion](../../Demo/Demo-Playbook-Plan.md#guion-de-defensa-t-810--t-903--t-907-05) en **≤ 10 min**.
 
 | Paso | OK |
 |---|---|

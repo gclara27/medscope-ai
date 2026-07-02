@@ -6,6 +6,7 @@ Plan maestro para dos mejoras orientadas a **defensa TFM** y demo memorable.
 | Documento | Rol |
 |---|---|
 | [TaskTracker.md](../TaskTracker.md) | T-907-* · T-908-* · US-044 · US-045 |
+| [Public-Demo-Playground.md](Public-Demo-Playground.md) | Tour anónimo `/demo` (UC-066) — distinto de T-907 |
 | [ExecutionPlan.md](../Execution%20Plan/ExecutionPlan.md) | Phase 9 — demo preparation |
 | [Phase-10-Demo-Playbook.md](../Testing/Manual/Phase-10-Demo-Playbook.md) | Checklist manual post-implementación |
 | [Phase-09-Production-Smoke.md](../Testing/Manual/Phase-09-Production-Smoke.md) | Smoke test cloud |
@@ -161,6 +162,8 @@ Usuario cambia variable → Recalculate → spinner
 ---
 
 ## Guion de defensa (T-810 / T-903 / T-907-05)
+
+**Documento principal:** [Thesis/Argumentario-Defensa.md](../Thesis/Argumentario-Defensa.md) — guion completo, FAQ tribunal, checklist.
 
 **Estado:** guion listo para ensayo · T-907 y T-908 implementados (vitest verde) · pendiente ensayo manual Phase-10 en prod.
 

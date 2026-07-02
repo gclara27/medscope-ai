@@ -11,6 +11,7 @@
 | `docs/Execution Plan/ExecutionPlan.md` | Fase 1 — modelos iniciales |
 | `docs/Testing/Testing.md` | SQLite test DB vs PostgreSQL integración |
 | `skills/database/SKILL.md` | Reglas ORM y repositorios para la IA |
+| `docs/Architecture/ER-Diagram.md` | Diagrama ER Mermaid (T-805, RAC-001) |
 | `AGENTS.md` | Estructura `backend/` y capas |
 
 ---
@@ -100,6 +101,8 @@ Detalle de testing: §13 y `docs/Testing/Testing.md`.
 ---
 
 # 3. Modelo de entidades
+
+Diagrama ER visual (T-805): [Architecture/ER-Diagram.md](../Architecture/ER-Diagram.md).
 
 ```text
 roles

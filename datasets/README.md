@@ -192,7 +192,8 @@ Outputs en `models/` (gitignored):
 |---|---|
 | `model.pkl` | Clasificador final para inferencia backend |
 | `preprocessor.pkl` | Pipeline de preprocessing ajustado |
-| `model_manifest.json` | `model_id`, versión, threshold, features, SHAP explainer |
+| `model_manifest.json` | `model_id`, versión, threshold, features, SHAP explainer, checksums SHA-256 |
+| `demo_golden_predictions.json` | Scores fijos T-902 para escenarios demo (defensa) |
 
 Requisito previo: `python ml/scripts/select_final_model.py`
 

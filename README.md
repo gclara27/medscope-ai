@@ -8,6 +8,82 @@ Product and architecture docs live in [`docs/`](docs/) and [`AGENTS.md`](AGENTS.
 
 ---
 
+## About MedScope AI
+
+**MedScope AI** is a web-based **Clinical Decision Support System (CDSS)** for predicting **30-day hospital readmission risk** in diabetes patients. It is not a diagnostic tool — it supports clinicians with:
+
+- AI risk prediction (&lt; 1 s inference)
+- **SHAP** explainability (why the risk is high or low)
+- **What-if clinical simulation** (change glucose, prior admissions, etc.)
+- Prediction **history** and population **analytics**
+- Role-based access (admin, clinician, analyst, nurse)
+- Public **guided demo** at `/demo` (no login)
+
+Trained on the public UCI *Diabetes 130-US hospitals* dataset; deployed to production for the TFM demo.
+
+Full narrative: [docs/MedScope AI General Description.md](docs/MedScope%20AI%20General%20Description.md)
+
+---
+
+## Main features
+
+| Feature | Description |
+|---------|-------------|
+| Authentication | Email + password, JWT, four roles |
+| Dashboard | KPIs, high-risk alerts, recent activity |
+| Clinical evaluation | Patient form + demo clinical scenarios |
+| AI prediction | Readmission risk score, low/medium/high band |
+| SHAP explanations | Feature contributions + clinical summary |
+| Simulation | Compare original vs simulated risk (what-if) |
+| History | Searchable prediction log with detail view |
+| Analytics | Aggregated metrics and trends |
+| Public demo | Guided tour at `/demo` without credentials |
+| Cloud deploy | Vercel + Render + Supabase (live MVP) |
+
+---
+
+## TFM delivery (Fundae / BIG School)
+
+**Compliance checklist:** [docs/Thesis/Entrega-TFM-Fundae.md](docs/Thesis/Entrega-TFM-Fundae.md)  
+**Delivery deadline (syllabus):** 20 July 2026
+
+### Campus form — copy/paste
+
+| Field | Value |
+|-------|-------|
+| **GitHub repository** | https://github.com/gclara27/medscope-ai |
+| **Live app (deploy URL)** | https://medscope-ai-delta.vercel.app |
+| **Public demo (no login)** | https://medscope-ai-delta.vercel.app/demo |
+| **API health** | https://medscope-ai-q8tg.onrender.com/health |
+| **Slides URL** | `REPLACE_ME` → e.g. `https://docs.google.com/presentation/d/.../edit` or raw GitHub link to `docs/Thesis/slides/MedScope-AI-TFM.pptx` |
+| **Video URL** | `REPLACE_ME` → e.g. `https://youtu.be/...` or `https://drive.google.com/file/d/.../view` |
+| **Demo user** | `clinician@medscope.ai` |
+| **Demo password** | `MedScope123!` |
+
+When slides and video are ready, replace `REPLACE_ME` in this table and in [Entrega-TFM-Fundae.md](docs/Thesis/Entrega-TFM-Fundae.md).
+
+### Pre-submission checklist
+
+| Step | Status | Action |
+|------|--------|--------|
+| Slides in repo | Done | [`docs/Thesis/slides/MedScope-AI-TFM.pptx`](docs/Thesis/slides/MedScope-AI-TFM.pptx) |
+| Upload slides + URL | Pending | Google Slides/Drive (public) → paste in table above |
+| Record defense video | Pending | Follow [Guion-Video-Defensa.md](docs/Thesis/Guion-Video-Defensa.md) (screen capture required) |
+| Upload video + URL | Pending | YouTube (unlisted OK) or Drive → paste in table above |
+| GitHub repo public | Verify | [github.com/gclara27/medscope-ai](https://github.com/gclara27/medscope-ai) — or grant `mouredev@gmail.com` if private |
+| Production stability | Done | `.\scripts\verify-demo-stability.ps1 -Production` (T-906) |
+| Demo backup (USB) | Pending | `.\scripts\backup-demo-media.ps1` then copy `.zip` to external drive |
+| Campus form | Pending | Submit before **20/07/2026** |
+| Incognito smoke test | Pending | Login + predict at live URL without cached session |
+
+**Slides content (ready to copy to PowerPoint):** [docs/Thesis/Slides-Presentacion-Video.md](docs/Thesis/Slides-Presentacion-Video.md)  
+**Video script (screen + voice + optional camera):** [docs/Thesis/Guion-Video-Defensa.md](docs/Thesis/Guion-Video-Defensa.md)  
+**Thesis memory draft:** [docs/Thesis/Memoria-TFM.md](docs/Thesis/Memoria-TFM.md)
+
+> **Before submission:** warm up the API 2–3 min before demo (`/health` → `ml_ready: true`). Render free tier may cold-start 30–90 s.
+
+---
+
 ## Prerequisites
 
 | Tool | Version | Used for |
@@ -116,13 +192,13 @@ Edit `.env` if you need non-default ports or credentials. Defaults work for loca
 docker compose up --build
 ```
 
-Windows helper:
+Windows helper (prepares ML artifacts, starts detached, waits for health):
 
 ```powershell
 .\scripts\docker-up.ps1
 ```
 
-Detached mode:
+Detached mode (raw Compose):
 
 ```bash
 docker compose up --build -d
@@ -146,6 +222,12 @@ docker compose ps
 curl http://localhost:8000/health
 ```
 
+Verify full stack (health + nginx proxy + demo login):
+
+```powershell
+.\scripts\verify-docker-stack.ps1
+```
+
 The frontend container serves the built React app and proxies API routes (`/auth`, `/predict`, `/simulate`, etc.) to the backend service.
 
 ### 4. Stop
@@ -163,6 +245,7 @@ docker compose down -v       # stop and remove database volume
 
 | Component | URL |
 |-----------|-----|
+| **Frontend (app)** | https://medscope-ai-delta.vercel.app |
 | **App (login)** | https://medscope-ai-delta.vercel.app/login |
 | **API** | https://medscope-ai-q8tg.onrender.com |
 | **Health** | https://medscope-ai-q8tg.onrender.com/health |
@@ -172,7 +255,7 @@ Stack: **Supabase** (PostgreSQL) + **Render** (FastAPI + ML, Docker) + **Vercel*
 
 Step-by-step guide, troubleshooting, and env vars: **[docs/Deployment/Deployment.md](docs/Deployment/Deployment.md)**.
 
-Before the first cloud deploy, run `.\scripts\prepare-docker-build.ps1` and commit the production files under `models/` (`model.pkl`, `preprocessor.pkl`, `model_manifest.json`, `shap_background.npy`).
+Before the first cloud deploy, run `.\scripts\prepare-docker-build.ps1` and commit the production files under `models/` (`model.pkl`, `preprocessor.pkl`, `model_manifest.json`, `shap_background.npy`, `demo_golden_predictions.json`).
 
 Environment variables reference: [docs/Environment/Environment.md](docs/Environment/Environment.md).
 
@@ -365,6 +448,8 @@ medscope-ai/
 | [Deployment](docs/Deployment/Deployment.md) | Production cloud deploy (Supabase + Render + Vercel) |
 | [Demo Playbook](docs/Demo/Demo-Playbook-Plan.md) | Clinical scenarios + simulation animation (defense) |
 | [Task Tracker](docs/TaskTracker.md) | MVP task checklist |
+| [TFM delivery (Fundae)](docs/Thesis/Entrega-TFM-Fundae.md) | Submission checklist, form fields, gaps |
+| [Thesis / video script](docs/Thesis/Guion-Video-Defensa.md) | Defense video narration |
 
 ---
 

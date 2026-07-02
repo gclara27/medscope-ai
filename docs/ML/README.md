@@ -3,6 +3,7 @@
 | Documento | Propósito |
 |---|---|
 | [ML-Pipeline.md](ML-Pipeline.md) | Pipeline completo para memoria TFM (RAC-010): metodología, dataset, modelos, resultados, conclusiones |
+| [Architecture/ML-Pipeline-Diagram.md](../Architecture/ML-Pipeline-Diagram.md) | Diagramas train → serialize → infer (T-804, RAC-001) |
 | [datasets/README.md](../../datasets/README.md) | Dataset Diabetes 130-US: descarga, features, scripts |
 | [notebooks/diabetes130_eda.ipynb](../../notebooks/diabetes130_eda.ipynb) | EDA notebook (T-202) |
 | [docs/figures/eda/](../figures/eda/README.md) | Gráficos exportados para defensa (T-214) |

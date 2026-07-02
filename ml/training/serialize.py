@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass
 from datetime import UTC, datetime
+from hashlib import sha256
 from pathlib import Path
 from typing import Any
 
@@ -36,9 +37,11 @@ class ProductionModelManifest:
     preprocessor_path: str
     source_directory: str
     serialized_at: str
+    artifact_sha256: dict[str, str] | None = None
+    demo_golden_file: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        payload = {
             "model_id": self.model_id,
             "model_version": self.model_version,
             "production_threshold": self.production_threshold,
@@ -49,6 +52,11 @@ class ProductionModelManifest:
             "source_directory": self.source_directory,
             "serialized_at": self.serialized_at,
         }
+        if self.artifact_sha256 is not None:
+            payload["artifact_sha256"] = self.artifact_sha256
+        if self.demo_golden_file is not None:
+            payload["demo_golden_file"] = self.demo_golden_file
+        return payload
 
 
 def load_final_model_selection(path: Path = FINAL_MODEL_SELECTION_PATH) -> dict[str, Any]:
@@ -59,7 +67,28 @@ def load_final_model_selection(path: Path = FINAL_MODEL_SELECTION_PATH) -> dict[
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def build_production_manifest(selection: dict[str, Any]) -> ProductionModelManifest:
+def compute_file_sha256(path: Path) -> str:
+    return sha256(path.read_bytes()).hexdigest()
+
+
+def build_artifact_sha256(
+    *,
+    model_path: Path,
+    preprocessor_path: Path,
+    shap_background_path: Path,
+) -> dict[str, str]:
+    return {
+        model_path.name: compute_file_sha256(model_path),
+        preprocessor_path.name: compute_file_sha256(preprocessor_path),
+        shap_background_path.name: compute_file_sha256(shap_background_path),
+    }
+
+
+def build_production_manifest(
+    selection: dict[str, Any],
+    *,
+    artifact_sha256: dict[str, str] | None = None,
+) -> ProductionModelManifest:
     return ProductionModelManifest(
         model_id=selection["model_id"],
         model_version=selection["model_version"],
@@ -70,6 +99,8 @@ def build_production_manifest(selection: dict[str, Any]) -> ProductionModelManif
         preprocessor_path=PREPROCESSOR_FILENAME,
         source_directory=str(FINAL_MODEL_DIR),
         serialized_at=datetime.now(UTC).isoformat(),
+        artifact_sha256=artifact_sha256,
+        demo_golden_file="demo_golden_predictions.json",
     )
 
 
@@ -83,7 +114,6 @@ def serialize_production_model(
 ) -> ProductionModelManifest:
     """Copy final model artifacts to models/model.pkl and models/preprocessor.pkl."""
     selection = load_final_model_selection(selection_path)
-    manifest = build_production_manifest(selection)
 
     source_model = source_dir / MODEL_FILENAME
     source_preprocessor = source_dir / PREPROCESSOR_FILENAME
@@ -98,6 +128,13 @@ def serialize_production_model(
     from ml.explainability.explainer import save_production_shap_background
 
     save_production_shap_background(preprocessor, PRODUCTION_SHAP_BACKGROUND_PATH)
+
+    artifact_sha256 = build_artifact_sha256(
+        model_path=model_path,
+        preprocessor_path=preprocessor_path,
+        shap_background_path=PRODUCTION_SHAP_BACKGROUND_PATH,
+    )
+    manifest = build_production_manifest(selection, artifact_sha256=artifact_sha256)
 
     manifest_path.write_text(json.dumps(manifest.to_dict(), indent=2), encoding="utf-8")
     return manifest
@@ -177,3 +214,17 @@ def validate_production_artifacts(
     expected_features = tuple(manifest["feature_columns"])
     if expected_features != FEATURE_COLUMNS:
         raise ValueError("Manifest feature columns do not match preprocessing constants.")
+
+    expected_hashes = manifest.get("artifact_sha256")
+    if isinstance(expected_hashes, dict):
+        actual_hashes = build_artifact_sha256(
+            model_path=model_path,
+            preprocessor_path=preprocessor_path,
+            shap_background_path=PRODUCTION_SHAP_BACKGROUND_PATH,
+        )
+        for filename, expected_digest in expected_hashes.items():
+            if actual_hashes.get(filename) != expected_digest:
+                raise ValueError(
+                    f"Artifact checksum mismatch for {filename}. "
+                    "Re-run serialize_model.py or restore pinned production artifacts.",
+                )

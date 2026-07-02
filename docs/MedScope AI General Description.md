@@ -162,6 +162,38 @@ The system recalculates:
 
 This enables proactive decision support and scenario exploration.
 
+**Authenticated simulation** uses persisted predictions (`/simulation`). **Clinical demo scenarios** (T-907) pre-fill the evaluation form for defense narratives. **Simulation gauge animation** (T-908) visualizes risk changes in real time.
+
+---
+
+## 🌐 Public Explore Demo (no sign-in)
+
+Before authentication, visitors can open **`/demo`** from the splash screen and walk through a **guided tour**:
+
+- synthetic high-risk patient case,
+- live ML readmission prediction,
+- SHAP explainability,
+- clinical what-if simulation with pre-filled interventions.
+
+Data is **ephemeral** (no login, no database persistence). Ideal for first impressions, portfolio links, and thesis demos when evaluators should not use credentials.
+
+Technical reference: [docs/Demo/Public-Demo-Playground.md](Demo/Public-Demo-Playground.md)
+
+---
+
+## 🎨 Platform polish (post-MVP)
+
+Delivered optional capabilities that strengthen the TFM product story:
+
+| Feature | Value |
+|---|---|
+| **Dark mode** | Theme selector (light / dark / system) in Settings |
+| **Support center** | Knowledge base, search, mailto IT ticket |
+| **Audit logs** | Admin-filterable system audit trail |
+| **ML model comparison** | Offline metrics chart (LR vs RF vs XGBoost) |
+| **Cloud deployment** | Vercel + Render + Supabase (UC-124) |
+| **Clinical demo playbook** | Four synthetic scenarios on Evaluation (T-907) |
+
 ---
 
 ## 📊 Advanced Healthcare Analytics Dashboard
@@ -391,6 +423,8 @@ The MVP is **live** on free-tier cloud infrastructure:
 | Database | Supabase | PostgreSQL (credentials in Render only) |
 
 Demo access: `clinician@medscope.ai` / `MedScope123!` *(rotate before public defense)*.
+
+**Public demo (no login):** https://medscope-ai-delta.vercel.app/demo
 
 Full deployment guide: [docs/Deployment/Deployment.md](Deployment/Deployment.md)
 

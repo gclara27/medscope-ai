@@ -1,0 +1,109 @@
+{
+  "schema_version": "1.0.0",
+  "model_id": "logistic_regression",
+  "model_version": "1.0.0",
+  "risk_threshold_high": 0.5,
+  "risk_threshold_medium": 0.35,
+  "score_tolerance": 0.0001,
+  "percent_tolerance": 0.01,
+  "scenarios": {
+    "high-readmission": {
+      "payload": {
+        "age": 72,
+        "gender": "Female",
+        "hospital_stay_days": 6,
+        "medications_count": 12,
+        "previous_admissions": 5,
+        "glucose": 198,
+        "blood_pressure": 142,
+        "bmi": 31.2,
+        "number_outpatient": 0,
+        "number_emergency": 0,
+        "num_lab_procedures": 25,
+        "num_procedures": 1,
+        "number_diagnoses": 4,
+        "active_diabetes_meds_count": 2,
+        "has_insulin": false,
+        "race": "Caucasian",
+        "a1c_result": "None",
+        "medication_change": "No",
+        "diabetes_medication": "Yes"
+      },
+      "expected": {
+        "risk_score": 0.824772,
+        "risk_percent": 82.48,
+        "risk_level": "high"
+      }
+    },
+    "moderate-risk": {
+      "payload": {
+        "age": 58,
+        "gender": "Male",
+        "hospital_stay_days": 4,
+        "medications_count": 6,
+        "previous_admissions": 1,
+        "glucose": 165,
+        "blood_pressure": 128,
+        "bmi": 29.0,
+        "number_outpatient": 0,
+        "number_emergency": 0,
+        "num_lab_procedures": 25,
+        "num_procedures": 1,
+        "number_diagnoses": 4,
+        "active_diabetes_meds_count": 2,
+        "has_insulin": false,
+        "race": "Caucasian",
+        "a1c_result": "None",
+        "medication_change": "No",
+        "diabetes_medication": "Yes"
+      },
+      "expected": {
+        "risk_score": 0.499123,
+        "risk_percent": 49.91,
+        "risk_level": "medium"
+      }
+    },
+    "low-risk-stable": {
+      "payload": {
+        "age": 42,
+        "gender": "Female",
+        "hospital_stay_days": 2,
+        "medications_count": 3,
+        "previous_admissions": 0,
+        "glucose": 108,
+        "blood_pressure": 118,
+        "bmi": 24.5,
+        "number_outpatient": 0,
+        "number_emergency": 0,
+        "num_lab_procedures": 25,
+        "num_procedures": 1,
+        "number_diagnoses": 4,
+        "active_diabetes_meds_count": 2,
+        "has_insulin": false,
+        "race": "Caucasian",
+        "a1c_result": "None",
+        "medication_change": "No",
+        "diabetes_medication": "Yes"
+      },
+      "expected": {
+        "risk_score": 0.348571,
+        "risk_percent": 34.86,
+        "risk_level": "low"
+      }
+    }
+  },
+  "simulation": {
+    "baseline_scenario": "high-readmission",
+    "modifications": {
+      "previous_admissions": 2,
+      "glucose": 140
+    },
+    "expected": {
+      "original_risk_percent": 82.48,
+      "simulated_risk_percent": 61.98,
+      "delta_risk_percent": -20.5,
+      "original_risk_level": "high",
+      "simulated_risk_level": "high"
+    }
+  }
+}

@@ -24,10 +24,14 @@ Guía completa: [Deployment.md](../../Deployment/Deployment.md)
 - [ ] Abrir `/health` en Render **2–3 minutos antes** (cold start free tier).
 - [ ] Confirmar Supabase **activo** (no pausado).
 - [ ] Usar credenciales demo o usuario propio.
+- [ ] **Seeds (T-901):** `python scripts/verify_demo_seeds.py` → 4/4 login OK en Render.
 
-| Email | Password (seed) |
-|---|---|
-| `clinician@medscope.ai` | `MedScope123!` |
+| Email | Password (seed) | Rol |
+|---|---|---|
+| `admin@medscope.ai` | `MedScope123!` | admin |
+| `clinician@medscope.ai` | `MedScope123!` | clinician |
+| `analyst@medscope.ai` | `MedScope123!` | analyst |
+| `nurse@medscope.ai` | `MedScope123!` | nurse |
 
 ---
 
@@ -36,11 +40,13 @@ Guía completa: [Deployment.md](../../Deployment/Deployment.md)
 ### Infraestructura
 
 - [ ] `GET /health` → `{"status":"ok","ml_ready":true}`
+- [ ] **Estabilidad (T-906):** `.\scripts\verify-demo-stability.ps1 -Production` — sin errores críticos en flujo demo
 - [ ] `/docs` carga Swagger en Render
 - [ ] Recargar `/dashboard` en Vercel no da 404 (SPA `vercel.json`)
 
 ### Autenticación (UC-001)
 
+- [ ] `python scripts/verify_demo_seeds.py` — los 4 usuarios demo autentican en Render
 - [ ] Login desde Vercel → redirige a dashboard
 - [ ] Logout cierra sesión
 - [ ] Usuario sin permiso no accede a rutas admin
@@ -78,6 +84,7 @@ Guía completa: [Deployment.md](../../Deployment/Deployment.md)
 
 | Fecha | Ejecutor | Resultado | Notas |
 |---|---|---|---|
+| 2026-07-02 | — | ✅ OK | T-906 verify-demo-stability prod: health, seeds, golden, predict 392ms, frontend |
 | 2026-06-30 | — | ✅ OK | Deploy inicial verificado |
 
 ---

@@ -87,7 +87,9 @@ Alineado con `AGENTS.md` y `skills/testing/SKILL.md`.
 | `frontend/src/config/navigation.test.ts` | `getNavItemsForRole`, `canAccessRoute` |
 | `frontend/src/layouts/AppLayout.test.tsx` | sidebar por rol, logout, nav activa |
 | `frontend/src/components/RoleRoute.test.tsx` | redirect login / unauthorized |
-| `frontend/src/pages/SplashPage.test.tsx` | splash → `/login` |
+| `frontend/src/pages/SplashPage.test.tsx` | splash → `/login` · Explore demo → `/demo` |
+| `frontend/src/pages/DemoPlaygroundPage.test.tsx` | public guided demo tour (UC-066) |
+| `backend/tests/test_demo.py` | `POST /demo/predict` · `/demo/simulate` sin auth |
 | RTS-030 | Flujo E2E MVP | Playwright — flujo completo §10 |
 
 ### RTS-030 — archivos E2E (T-708)
@@ -95,6 +97,7 @@ Alineado con `AGENTS.md` y `skills/testing/SKILL.md`.
 | Archivo | Cubre |
 |---|---|
 | `tests/e2e/mvp-flow.spec.ts` | Flujo MVP completo (admin): predict → SHAP → simulate → history → analytics |
+| `tests/e2e/demo-rehearsal.spec.ts` | Ensayo defensa T-903 (MT-P10-DEMO-001): escenarios clínicos + simulación golden |
 | `tests/e2e/auth.spec.ts` | Login válido / inválido (UC-001) |
 | `tests/e2e/rbac.spec.ts` | Nurse / analyst RBAC navegación (UC-003) |
 | `tests/e2e/helpers/auth.ts` | Helpers login/logout demo |
@@ -360,6 +363,9 @@ npm run build
 ```powershell
 # Desde la raíz (Windows) — backend :8000 + frontend :5173 deben estar activos
 .\scripts\test-e2e.ps1
+.\scripts\run-demo-rehearsal.ps1   # T-903 ensayo MT-P10-DEMO-001 (+ verify modelo T-902)
+.\scripts\verify-demo-stability.ps1 -Production   # T-906 gate estabilidad demo (API + frontend smoke)
+.\scripts\verify-demo-stability.ps1 -WithE2e      # T-906 + Playwright MT-P10-DEMO-001
 
 # Instalar navegadores (primera vez)
 npm install
@@ -373,6 +379,16 @@ login → dashboard → prediction → SHAP → simulation → history → analy
 ```
 
 Recomendación TFM: **3–5 tests E2E** cubriendo el flujo completo.
+
+### Capturas para memoria (T-808)
+
+```powershell
+.\scripts\capture-thesis-screenshots.ps1
+# Salida: docs/figures/screenshots/*.png (8 pantallas MVP)
+# Producción: $env:PLAYWRIGHT_BASE_URL = "https://medscope-ai-delta.vercel.app"
+```
+
+Ver inventario: [`figures/screenshots/README.md`](../figures/screenshots/README.md).
 
 ---
 
@@ -512,6 +528,8 @@ Checklists ejecutables por una persona **sin experiencia previa** en la aplicaci
 | Fase 7 — Support (T-X05) | [`Manual/Phase-07-Support-UI.md`](Manual/Phase-07-Support-UI.md) |
 | Fase 7 — Audit (T-X06) | [`Manual/Phase-07-Audit-Logs.md`](Manual/Phase-07-Audit-Logs.md) |
 | Fase 7 — ML models (T-X07) | [`Manual/Phase-07-ML-Model-Comparison.md`](Manual/Phase-07-ML-Model-Comparison.md) |
+| Fase 8 — Arquitectura (T-803) | [`Architecture/System-Architecture.md`](../Architecture/System-Architecture.md) | Componentes y capas |
+| Fase 8 — Secuencias (T-811) | [`Architecture/Sequence-Diagrams.md`](../Architecture/Sequence-Diagrams.md) | Flujos UC |
 | Fase 8 — Dark mode (T-X03) | [`Manual/Phase-08-Dark-Mode.md`](Manual/Phase-08-Dark-Mode.md) |
 | Fase 9 — Producción (UC-124) | [`Manual/Phase-09-Production-Smoke.md`](Manual/Phase-09-Production-Smoke.md) |
 | Fase 9b — Demo WOW | [`Manual/Phase-10-Demo-Playbook.md`](Manual/Phase-10-Demo-Playbook.md) · [`Demo/Demo-Playbook-Plan.md`](../Demo/Demo-Playbook-Plan.md) |

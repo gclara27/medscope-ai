@@ -1,0 +1,49 @@
+{
+  "task": "T-808",
+  "generated_at": "2026-07-02",
+  "viewport": "1440x900",
+  "source": "tests/e2e/thesis-screenshots.spec.ts",
+  "role": "admin@medscope.ai",
+  "figures": [
+  {
+    "file": "01_splash.png",
+    "screen": "splash",
+    "route": "/"
+  },
+  {
+    "file": "02_demo_case.png",
+    "screen": "demo-case",
+    "route": "/demo/case"
+  },
+  {
+    "file": "03_dashboard.png",
+    "screen": "dashboard",
+    "route": "/dashboard"
+  },
+  {
+    "file": "04_evaluation_form.png",
+    "screen": "evaluation-form",
+    "route": "/evaluation"
+  },
+  {
+    "file": "05_prediction_result_shap.png",
+    "screen": "prediction-result-shap",
+    "route": "/evaluation/result"
+  },
+  {
+    "file": "06_simulation.png",
+    "screen": "simulation",
+    "route": "/simulation"
+  },
+  {
+    "file": "07_history.png",
+    "screen": "history",
+    "route": "/history"
+  },
+  {
+    "file": "08_analytics.png",
+    "screen": "analytics",
+    "route": "/analytics"
+  }
+  ]
+}

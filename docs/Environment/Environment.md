@@ -202,4 +202,4 @@ Scripts ML (`serialize_model.py`, etc.) usan `service=medscope-ml`.
 | T-709 | Compose postgres + backend + frontend |
 | T-710 | Este documento |
 | T-711 | `ml/logging_config.py` — logging estructurado |
-| T-904 | `docker compose up` one-command (script `scripts/docker-up.ps1`) |
+| T-904 | `docker compose up` one-command (`scripts/docker-up.ps1`, `scripts/verify-docker-stack.ps1`) |

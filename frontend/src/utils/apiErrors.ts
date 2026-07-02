@@ -1,7 +1,20 @@
 import axios from "axios";
 
-export const API_UNREACHABLE_MESSAGE =
-  "Cannot reach the API. Make sure the backend is running on port 8000.";
+import { resolveApiBaseUrl } from "@/utils/apiBaseUrl";
+
+export function getApiUnreachableMessage(): string {
+  if (import.meta.env.DEV) {
+    return "Cannot reach the API. Make sure the backend is running on port 8000.";
+  }
+
+  if (!resolveApiBaseUrl()) {
+    return "Cannot reach the API. Check VITE_API_BASE_URL in the production build.";
+  }
+
+  return "Cannot reach the API. The server may be starting up — wait a moment and try again.";
+}
+
+export const API_UNREACHABLE_MESSAGE = getApiUnreachableMessage();
 
 export const SESSION_EXPIRED_MESSAGE =
   "Your session has expired. Please sign in again.";
@@ -76,7 +89,7 @@ export function resolveApiErrorMessage(error: unknown, messages: ApiErrorMessage
   }
 
   if (!error.response) {
-    return API_UNREACHABLE_MESSAGE;
+    return getApiUnreachableMessage();
   }
 
   const { status, data } = error.response;

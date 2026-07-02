@@ -27,5 +27,11 @@
   "model_path": "model.pkl",
   "preprocessor_path": "preprocessor.pkl",
   "source_directory": "C:\\Pojects\\medscope-ai\\models\\final",
-  "serialized_at": "2026-06-25T19:11:47.584536+00:00"
+  "serialized_at": "2026-07-02T14:26:51.761468+00:00",
+  "artifact_sha256": {
+    "model.pkl": "5117596ad49ea0c46f9e877aa510adbc03691e47ad4a5ba970f65ac7baf4cc7f",
+    "preprocessor.pkl": "7efb9db47ace9ec8fc0b8f4ca8f0358f7531a6f03561d68e385f5cf76f240869",
+    "shap_background.npy": "63924a8519c1958e1383e09645627d915a139063fdd1b3cdc0f8c102c5485bf0"
+  },
+  "demo_golden_file": "demo_golden_predictions.json"
 }

@@ -58,7 +58,6 @@ function SimulationFieldShell({
     <div
       className={cn(
         "relative rounded-lg p-3",
-        highImpact && "ring-2 ring-primary/70 ring-offset-2 ring-offset-surface",
         className,
       )}
     >
@@ -114,13 +113,14 @@ export function SimulationControlPanel({
   return (
     <div className="flex flex-col gap-6">
       <ClinicalSection title="Clinical variables" icon={<SlidersHorizontal className="h-5 w-5" />}>
-        {impactHighlightFields.length > 0 ? (
-          <p className="text-xs text-on-surface-variant">
-            Fields marked <span className="font-semibold text-primary">Top driver</span> contribute
-            most to the simulated risk change.
-          </p>
-        ) : null}
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-4">
+          {impactHighlightFields.length > 0 ? (
+            <p className="text-xs leading-relaxed text-on-surface-variant">
+              Fields marked <span className="font-semibold text-primary">Top driver</span> contribute
+              most to the simulated risk change.
+            </p>
+          ) : null}
+          <div className="flex flex-col gap-5">
           <SimulationFieldShell {...fieldShellProps("age", "Age (years)")}>
             <RangeField
               id="sim-age"
@@ -247,6 +247,7 @@ export function SimulationControlPanel({
               onChange={(event) => updateField("bmi", event.target.value)}
             />
           </SimulationFieldShell>
+          </div>
         </div>
       </ClinicalSection>
 

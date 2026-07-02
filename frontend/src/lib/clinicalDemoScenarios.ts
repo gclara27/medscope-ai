@@ -1,6 +1,6 @@
 /**
  * De-identified synthetic demo scenarios for Evaluation (T-907, US-044).
- * Payloads validated offline against production LR v1.0.0 (thresholds 0.6 / 0.35).
+ * Payloads validated offline against production LR v1.0.0 (thresholds 0.5 / 0.35).
  */
 
 import { buildPredictRequest } from "@/lib/clinicalFormDefaults";

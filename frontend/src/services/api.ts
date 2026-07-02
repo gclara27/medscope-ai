@@ -1,8 +1,9 @@
 import axios from "axios";
 
+import { resolveApiBaseUrl } from "@/utils/apiBaseUrl";
 import { clearStoredSession } from "@/utils/session";
 
-const baseURL = import.meta.env.VITE_API_BASE_URL ?? "";
+const baseURL = resolveApiBaseUrl();
 
 export const api = axios.create({
   baseURL,

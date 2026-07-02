@@ -111,6 +111,8 @@ The AI agent must treat it as mandatory context — not optional reference.
 | User flows, screens, actors | `docs/Use Cases/Use Cases.md` |
 | Product vision, problem, value | `docs/MedScope AI General Description.md` |
 | Thesis, diagrams, demo prep | `skills/documentation` + all `docs/` files |
+| Architecture & sequences | `docs/Architecture/` |
+| Public demo `/demo` | `docs/Demo/Public-Demo-Playground.md` |
 | Implementation order & phases | `docs/Execution Plan/ExecutionPlan.md` |
 | UI design, tokens, screen mockups | `docs/Design/README.md` |
 | Design scope & screen inventory | `docs/Design/project-brief.md` |
@@ -134,7 +136,13 @@ The AI agent must treat it as mandatory context — not optional reference.
 | `docs/Testing/Testing.md` | Testing stack, structure, RTS/UC traceability, E2E flows |
 | `docs/Database/Database.md` | PostgreSQL schema, MVP tables, migrations, persistence flows |
 | `docs/Deployment/Deployment.md` | Production deploy: Supabase + Render + Vercel (UC-124) |
+| `docs/Architecture/README.md` | Architecture index; sequence diagrams (T-811) |
+| `docs/Architecture/System-Architecture.md` | Component architecture: frontend → backend → ML → PostgreSQL (T-803) |
+| `docs/Architecture/Sequence-Diagrams.md` | Mermaid UC flows: login, predict, simulate, history, demo |
 | `docs/Demo/Demo-Playbook-Plan.md` | Demo playbook + simulation animation (Fase 9b, T-907–908) |
+| `docs/Demo/Public-Demo-Playground.md` | Anonymous guided tour `/demo` (UC-066, RFW-027) |
+| `docs/Thesis/Memoria-TFM.md` | Thesis memory draft: methodology + results (T-809, RAC-010) |
+| `docs/Thesis/Argumentario-Defensa.md` | Defense oral script 8–10 min (T-810, RAC-001) |
 | `docs/TaskTracker.md` | Master backlog with checkboxes, US/UC/RF traceability |
 | `docs/Optional Features/Optional-Backlog-Plan.md` | Work plan T-X05–T-X07 (support, audit, multi-model) |
 
@@ -192,10 +200,16 @@ See `docs/Requirements/Requirements.md` §17 for full MVP and optional features.
 | Method | Endpoint | Purpose |
 |---|---|---|
 | POST | `/auth/login` | Authentication |
-| POST | `/predict` | Risk prediction + SHAP |
-| POST | `/simulate` | What-if simulation |
+| POST | `/predict` | Risk prediction + SHAP (authenticated, persisted) |
+| POST | `/simulate` | What-if simulation (authenticated, persisted) |
+| POST | `/demo/predict` | Ephemeral demo prediction (no auth, no DB) |
+| POST | `/demo/simulate` | Ephemeral demo simulation (no auth, no DB) |
 | GET | `/history` | Prediction history |
 | GET | `/analytics` | Aggregated metrics |
+| GET | `/dashboard` | Dashboard KPIs |
+| GET | `/health` | Liveness + `ml_ready` |
+
+Public demo architecture: `docs/Demo/Public-Demo-Playground.md`. Sequence diagrams: `docs/Architecture/Sequence-Diagrams.md`.
 
 ## Production (TFM, jul 2026)
 

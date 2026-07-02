@@ -16,6 +16,8 @@ Documento paso a paso para desplegar el MVP en la nube **sin coste** (plan free 
 |---|---|
 | [Environment.md](../Environment/Environment.md) | Variables de entorno dev / prod |
 | [Database.md](../Database/Database.md) | Esquema PostgreSQL y migraciones Alembic |
+| [System-Architecture.md](../Architecture/System-Architecture.md) | Diagrama lógico frontend → backend → ML → PostgreSQL (T-803) |
+| [Deployment-Diagram.md](../Architecture/Deployment-Diagram.md) | Diagramas Docker compose + cloud + CI/CD (T-806) |
 | [README.md](../../README.md) | Desarrollo local |
 
 ---
@@ -106,6 +108,7 @@ Comprobar que existen (y commitear en `main`):
 - `models/preprocessor.pkl`
 - `models/model_manifest.json`
 - `models/shap_background.npy` *(requerido por `ml_registry` para SHAP en runtime)*
+- `models/demo_golden_predictions.json` *(scores fijos T-902 para tests demo y CI)*
 
 ### 3.2 Imagen Docker (`backend/Dockerfile`)
 
@@ -379,7 +382,7 @@ Detalle de cada variable: [Environment.md](../Environment/Environment.md).
 
 | Síntoma | Causa probable | Solución |
 |---|---|---|
-| `ml_ready: false` en `/health` | Falta `shap_background.npy` u otro artefacto en imagen Docker | Commitear los 4 archivos en `models/` (§3.1), rebuild Render |
+| `ml_ready: false` en `/health` | Falta `shap_background.npy` u otro artefacto en imagen Docker | Commitear los 5 archivos en `models/` (§3.1), rebuild Render |
 | `Failed to load ML model at startup` | Mismo que anterior | Verificar logs Render; `models/shap_background.npy` en git |
 | Login OK en local, falla en prod | CORS o `VITE_API_BASE_URL` mal | `CORS_ORIGINS` = URL Vercel exacta; redeploy Render |
 | 404 al recargar `/dashboard` | Falta `vercel.json` | §3.3 |
@@ -417,7 +420,7 @@ Trade-offs: cold starts, posible pausa de Supabase, sin SLA.
 
 Marca cada paso al completarlo:
 
-- [x] **0.1** Generar `models/` y commitear `model.pkl`, `preprocessor.pkl`, `model_manifest.json`, `shap_background.npy`
+- [x] **0.1** Generar `models/` y commitear `model.pkl`, `preprocessor.pkl`, `model_manifest.json`, `shap_background.npy`, `demo_golden_predictions.json`
 - [x] **0.2** Verificar `backend/Dockerfile` incluye `COPY models` y valida 4 artefactos
 - [x] **0.3** Verificar `frontend/vercel.json` + `tsconfig` build sin tests
 - [x] **0.4** Push a `main` (vía PR; rama protegida)
@@ -455,4 +458,4 @@ Marca cada paso al completarlo:
 3. **Regenerar modelos ML:** `serialize_model.py` → commit 4 artefactos → rebuild Render.
 4. **Cambiar URL del API:** actualizar `VITE_API_BASE_URL` en Vercel + redeploy frontend.
 5. **Supabase inactivo ~1 semana:** reactivar desde el dashboard antes de demo.
-6. **Diagrama para memoria TFM:** reutilizar diagramas §1 y §7; tarea [T-806](TaskTracker.md#fase-8--tfm) (diagrama despliegue).
+6. **Diagrama para memoria TFM:** [Deployment-Diagram.md](../Architecture/Deployment-Diagram.md) (T-806); guía operativa en este documento §1 y §7.

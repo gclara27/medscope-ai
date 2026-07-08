@@ -2,7 +2,8 @@
 
 Checklist de cumplimiento según **Documentacion-TFM-Fundae-1.pdf** (fecha entrega temario: **20/07/2026**).
 
-**Formulario:** cumplimentar en la lección del Proyecto Final del campus.
+**Alumno:** Gastón Clara  
+**Formulario:** cumplimentar en la lección del Proyecto Final del campus (añadir tu **email de inscripción BIG School**).
 
 ---
 
@@ -10,9 +11,8 @@ Checklist de cumplimiento según **Documentacion-TFM-Fundae-1.pdf** (fecha entre
 
 | Estado | Significado |
 |---|---|
-| ✅ | Cumplido en el repositorio |
-| 🟡 | Preparado pero falta acción tuya (URL, archivo, grabación) |
-| ⚠️ | Verificar manualmente |
+| ✅ | Cumplido |
+| 🟡 | Acción manual pendiente (formulario, backup, ensayo) |
 
 | # | Requisito Fundae | Estado | Dónde está |
 |---|---|---|---|
@@ -22,33 +22,42 @@ Checklist de cumplimiento según **Documentacion-TFM-Fundae-1.pdf** (fecha entre
 | 1d | Estructura del proyecto | ✅ | [README.md](../../README.md) § Repository layout |
 | 1e | Funcionalidades principales | ✅ | [README.md](../../README.md) § Main features |
 | 1f | Usuario/contraseña prueba | ✅ | Ver § Credenciales |
-| 2a | Repositorio GitHub público | ⚠️ | `https://github.com/gclara27/medscope-ai` — confirmar visibilidad |
-| 2b | Repo privado + mouredev@gmail.com | — | Solo si privado justificado |
+| 2a | Repositorio GitHub público | ✅ | https://github.com/gclara27/medscope-ai |
+| 2b | Repo privado + mouredev@gmail.com | — | No aplica (repo público) |
 | 3 | Despliegue en funcionamiento | ✅ | [Deployment.md](../Deployment/Deployment.md) |
-| 4 | Slides presentación | 🟡 | `docs/Thesis/slides/MedScope-AI-TFM.pptx` generado — falta **URL pública** (Google Slides/Drive) para formulario |
-| 5a | Vídeo explicación + URL | 🟡 | Guion listo; falta grabar y subir |
-| 5b | Captura pantalla en vídeo | 🟡 | Obligatorio al grabar (ver guion) |
-| 5c | Rostro en cámara | ✅ | Opcional — recomendado en nuestro guion |
+| 4 | Slides presentación + URL | ✅ | [Google Drive](https://drive.google.com/drive/folders/1LsHgjSsfbFv8gPR6sSTxAiHCUAMWvCng?usp=drive_link) · repo `slides/MedScope-AI-TFM.pptx` |
+| 5a | Vídeo explicación + URL | ✅ | [Google Drive](https://drive.google.com/drive/folders/1LsHgjSsfbFv8gPR6sSTxAiHCUAMWvCng?usp=drive_link) (`PresentacionMedScopeAi2.mp4`) |
+| 5b | Captura de pantalla en vídeo | ✅ | Confirmado en grabación |
+| 5c | Rostro en cámara | ✅ | Opcional Fundae — incluido si aplica en el vídeo |
 | — | Docs en el repo | ✅ | `docs/` |
 | — | Info despliegue en repo | ✅ | `docs/Deployment/` |
-| — | Slides en repo o enlace | 🟡 | Añadir `slides/MedScope-AI-TFM.pptx` o URL en README |
+| — | Slides en repo o enlace | ✅ | Repo + Drive |
 
 ---
 
 ## Datos para el formulario de entrega
 
-Copiar cuando tengas las URLs finales. **Sustituir** los campos `PENDIENTE`.
+Copiar y pegar en el campus (completar **email** con el de tu matrícula).
 
 | Campo formulario | Valor |
 |---|---|
-| **Nombre completo** | `[TU NOMBRE COMPLETO]` |
-| **Email inscripción máster** | `[TU EMAIL BIG SCHOOL]` |
+| **Nombre completo** | Gastón Clara |
+| **Email inscripción máster** | *(tu email BIG School — no almacenado en el repo)* |
 | **URL repositorio GitHub** | https://github.com/gclara27/medscope-ai |
 | **URL despliegue** | https://medscope-ai-delta.vercel.app |
-| **URL slides** | `REPLACE_ME` — Google Slides / Drive público o enlace raw al `.pptx` en GitHub |
-| **URL vídeo** | `REPLACE_ME` — YouTube (no listado o público según normativa) / Google Drive |
+| **URL slides** | https://drive.google.com/drive/folders/1LsHgjSsfbFv8gPR6sSTxAiHCUAMWvCng?usp=drive_link |
+| **URL vídeo** | https://drive.google.com/drive/folders/1LsHgjSsfbFv8gPR6sSTxAiHCUAMWvCng?usp=drive_link |
 | **Usuario prueba** | `clinician@medscope.ai` |
 | **Contraseña prueba** | `MedScope123!` |
+
+**Carpeta Drive (slides + vídeo):** [MedScopeAi](https://drive.google.com/drive/folders/1LsHgjSsfbFv8gPR6sSTxAiHCUAMWvCng?usp=drive_link)
+
+| Archivo en Drive | Nombre |
+|---|---|
+| Presentación | `MedScope-AI-TFM.pptx` |
+| Vídeo defensa | `PresentacionMedScopeAi2.mp4` |
+
+> Verifica que la carpeta Drive tenga permiso **“Cualquier persona con el enlace” → Lector** antes de enviar el formulario.
 
 ### URLs adicionales (útiles para evaluadores)
 
@@ -62,7 +71,7 @@ Copiar cuando tengas las URLs finales. **Sustituir** los campos `PENDIENTE`.
 
 ## Credenciales de prueba
 
-Usuarios seed (contraseña común **`MedScope123!`**):
+Usuarios seed (contraseña común **`MedScope123!`**). Se mantienen como credenciales de **demostración académica** para la evaluación Fundae.
 
 | Email | Rol | Uso recomendado en demo |
 |---|---|---|
@@ -71,13 +80,11 @@ Usuarios seed (contraseña común **`MedScope123!`**):
 | `analyst@medscope.ai` | Analyst | Solo analytics |
 | `nurse@medscope.ai` | Nurse | Dashboard + historial |
 
-**Antes de entregar:** si la URL es pública, **cambiar contraseñas** en producción o indicar en el formulario que son credenciales de demostración académica.
-
 ---
 
 ## 1. Documentación README.md — detalle
 
-Fundae exige un **README.md completo**. El repositorio cumple con una sección dedicada **TFM delivery** en la raíz.
+Fundae exige un **README.md completo**. El repositorio cumple con la sección **TFM delivery** en la raíz.
 
 | Sub-requisito | Ubicación |
 |---|---|
@@ -86,25 +93,20 @@ Fundae exige un **README.md completo**. El repositorio cumple con una sección d
 | Instalación | README § Quick start, § One-command dev |
 | Estructura | README § Repository layout |
 | Funcionalidades | README § Main features |
-| Login demo | README § Demo credentials |
+| Login demo | README § TFM delivery |
 
-Documentación ampliada: `docs/` (requisitos, casos de uso, BD, testing, arquitectura, memoria TFM).
+Documentación ampliada: `docs/` (requisitos, casos de uso, BD, testing, arquitectura). No se exige memoria Word aparte para Fundae; [Memoria-TFM.md](Memoria-TFM.md) es borrador técnico de apoyo.
 
 ---
 
 ## 2. Código fuente — GitHub
 
-- **Repositorio:** https://github.com/gclara27/medscope-ai
-- **Requisito:** repositorio **público** salvo justificación documentada.
-- **Si es privado:** conceder acceso de lectura a **mouredev@gmail.com** y justificar en el formulario.
-
-**Acción:** en GitHub → Settings → General → Danger zone / Change visibility → **Public** (recomendado para TFM).
+- **Repositorio:** https://github.com/gclara27/medscope-ai (público)
+- **Ramas:** `main` y `develop` alineadas con el estado de entrega
 
 ---
 
 ## 3. Despliegue
-
-✅ **Cumplido.** Aplicación accesible sin clonar el repo.
 
 | Componente | Proveedor | URL |
 |---|---|---|
@@ -112,76 +114,42 @@ Documentación ampliada: `docs/` (requisitos, casos de uso, BD, testing, arquite
 | Backend + ML | Render (Docker) | https://medscope-ai-q8tg.onrender.com |
 | PostgreSQL | Supabase | *(gestionado — ver Deployment.md)* |
 
-Guía: [Deployment.md](../Deployment/Deployment.md)  
 **Nota cold start:** abrir `/health` 2–3 min antes de que el evaluador pruebe la app.
 
 ---
 
-## 4. Slides — qué falta
+## 4. Slides — estado
 
-**Contenido:** ✅ preparado en [Slides-Presentacion-Video.md](Slides-Presentacion-Video.md) (12 diapositivas).
-
-**Acciones pendientes:**
-
-1. Crear PowerPoint o Google Slides copiando el contenido del documento.
-2. Exportar diagramas Mermaid a PNG ([System-Architecture](../Architecture/System-Architecture.md), [ML-Pipeline-Diagram](../Architecture/ML-Pipeline-Diagram.md)).
-3. Insertar capturas de `docs/figures/screenshots/`.
-4. **Opción A:** subir `MedScope-AI-TFM.pptx` a [`slides/`](slides/) en el repo.
-5. **Opción B:** publicar en Google Slides → *Anyone with the link* → copiar URL.
-6. Actualizar URL en [README.md](../../README.md) § TFM delivery y en este documento.
+| Ítem | Estado |
+|---|---|
+| Contenido 12 diapositivas | ✅ [Slides-Presentacion-Video.md](Slides-Presentacion-Video.md) |
+| Archivo en repo | ✅ [slides/MedScope-AI-TFM.pptx](slides/MedScope-AI-TFM.pptx) |
+| URL pública Drive | ✅ [carpeta MedScopeAi](https://drive.google.com/drive/folders/1LsHgjSsfbFv8gPR6sSTxAiHCUAMWvCng?usp=drive_link) |
 
 ---
 
-## 5. Vídeo — qué falta
+## 5. Vídeo — estado
 
-**Guion:** ✅ [Guion-Video-Defensa.md](Guion-Video-Defensa.md) (~12 min, cámara + slides + pantalla).
-
-**Requisitos Fundae del vídeo:**
-
-| Requisito | Cómo cumplir |
+| Ítem | Estado |
 |---|---|
-| Tu explicación en voz | Grabar leyendo el guion (adaptar a tu estilo) |
-| Captura de pantalla | **Obligatorio** — compartir app durante § demo (OBS, Zoom, etc.) |
-| Rostro | Opcional — **recomendado** (ya previsto en guion PiP) |
-| URL pública | Subir a YouTube / Google Drive / Vimeo y enlazar en README + formulario |
-
-**Acciones pendientes:**
-
-1. Ensayar 2 veces con cronómetro.
-2. Calentar `https://medscope-ai-q8tg.onrender.com/health`.
-3. Grabar (1080p MP4).
-4. Subir y obtener URL.
-5. Actualizar README § TFM delivery.
-
----
-
-## Contenido extra del proyecto (más allá del mínimo Fundae)
-
-Material que refuerza la entrega aunque no lo pida explícitamente el PDF:
-
-| Material | Documento |
-|---|---|
-| Memoria borrador | [Memoria-TFM.md](Memoria-TFM.md) |
-| Diagramas arquitectura | [Architecture/](../Architecture/README.md) |
-| Capturas app | [figures/screenshots/](../figures/screenshots/README.md) |
-| Gráficos EDA | [figures/eda/](../figures/eda/README.md) |
-| Guion defensa presencial | [Argumentario-Defensa.md](Argumentario-Defensa.md) |
-| Tests 215+ backend | [Testing.md](../Testing/Testing.md) |
+| Guion | ✅ [Guion-Video-Defensa.md](Guion-Video-Defensa.md) |
+| Grabación con captura de pantalla | ✅ `PresentacionMedScopeAi2.mp4` |
+| URL pública | ✅ [Google Drive](https://drive.google.com/drive/folders/1LsHgjSsfbFv8gPR6sSTxAiHCUAMWvCng?usp=drive_link) |
 
 ---
 
 ## Checklist final antes del 20/07/2026
 
-- [ ] README.md — sustituir `REPLACE_ME` por URLs reales de slides y vídeo
-- [ ] Repositorio GitHub **público** (o acceso mouredev@gmail.com)
-- [x] App en producción operativa (`/health` → `ml_ready: true`) — verificado T-906
-- [x] Slides en repo (`docs/Thesis/slides/MedScope-AI-TFM.pptx`)
-- [ ] Slides publicadas en URL accesible (formulario campus)
-- [ ] Vídeo grabado con **captura de pantalla** y subido (URL)
-- [ ] Backup local en unidad externa (`.\scripts\backup-demo-media.ps1`)
-- [ ] Formulario campus cumplimentado
-- [ ] Contraseñas demo revisadas para entrega pública
-- [ ] Probar login + predict desde URL de producción en modo incógnito
+- [x] README.md — URLs de slides y vídeo
+- [x] Repositorio GitHub público
+- [x] App en producción operativa (`/health` → `ml_ready: true`)
+- [x] Slides en repo y en Drive
+- [x] Vídeo grabado (captura de pantalla) y subido a Drive
+- [x] Credenciales demo documentadas (sin rotación)
+- [ ] Permiso Drive “cualquiera con el enlace” verificado
+- [ ] Backup local (`.\scripts\backup-demo-media.ps1 --video <ruta-mp4>`)
+- [ ] Formulario campus cumplimentado (nombre + email + URLs)
+- [ ] Ensayo incógnito: login + predict en producción
 
 ---
 
@@ -191,8 +159,8 @@ Material que refuerza la entrega aunque no lo pida explícitamente el PDF:
 |---|---|
 | Fundae BIG School | `Documentacion-TFM-Fundae-1.pdf` |
 | Fecha entrega temario | 20/07/2026 |
-| Proyecto | MedScope AI TFM |
+| Proyecto | MedScope AI TFM — Gastón Clara |
 
 ---
 
-*Última revisión: julio 2026 — auditoría requisitos Fundae.*
+*Última revisión: julio 2026 — entrega Fundae cerrada salvo formulario y backup.*

@@ -235,7 +235,7 @@ def build_presentation() -> Presentation:
     tf = meta.text_frame
     for i, line in enumerate(
         [
-            "[Tu nombre completo]",
+            "Gastón Clara",
             "Máster Desarrollo con IA — BIG School",
             "Julio 2026",
         ]
@@ -425,7 +425,7 @@ def build_presentation() -> Presentation:
 
     contact = slide.shapes.add_textbox(Inches(0.8), Inches(5.8), Inches(11.8), Inches(0.5))
     p = contact.text_frame.paragraphs[0]
-    p.text = "[Tu email / LinkedIn]"
+    p.text = "github.com/gclara27 · MedScope AI TFM"
     p.alignment = PP_ALIGN.CENTER
     p.font.size = Pt(16)
     p.font.color.rgb = MUTED

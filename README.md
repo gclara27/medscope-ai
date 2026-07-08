@@ -44,6 +44,7 @@ Full narrative: [docs/MedScope AI General Description.md](docs/MedScope%20AI%20G
 
 ## TFM delivery (Fundae / BIG School)
 
+**Author (TFM):** Gastón Clara  
 **Compliance checklist:** [docs/Thesis/Entrega-TFM-Fundae.md](docs/Thesis/Entrega-TFM-Fundae.md)  
 **Delivery deadline (syllabus):** 20 July 2026
 
@@ -51,29 +52,30 @@ Full narrative: [docs/MedScope AI General Description.md](docs/MedScope%20AI%20G
 
 | Field | Value |
 |-------|-------|
+| **Student name** | Gastón Clara |
 | **GitHub repository** | https://github.com/gclara27/medscope-ai |
 | **Live app (deploy URL)** | https://medscope-ai-delta.vercel.app |
 | **Public demo (no login)** | https://medscope-ai-delta.vercel.app/demo |
 | **API health** | https://medscope-ai-q8tg.onrender.com/health |
-| **Slides URL** | `REPLACE_ME` → e.g. `https://docs.google.com/presentation/d/.../edit` or raw GitHub link to `docs/Thesis/slides/MedScope-AI-TFM.pptx` |
-| **Video URL** | `REPLACE_ME` → e.g. `https://youtu.be/...` or `https://drive.google.com/file/d/.../view` |
+| **Slides URL** | https://drive.google.com/drive/folders/1LsHgjSsfbFv8gPR6sSTxAiHCUAMWvCng?usp=drive_link (`MedScope-AI-TFM.pptx`) |
+| **Video URL** | https://drive.google.com/drive/folders/1LsHgjSsfbFv8gPR6sSTxAiHCUAMWvCng?usp=drive_link (`PresentacionMedScopeAi2.mp4`) |
 | **Demo user** | `clinician@medscope.ai` |
 | **Demo password** | `MedScope123!` |
 
-When slides and video are ready, replace `REPLACE_ME` in this table and in [Entrega-TFM-Fundae.md](docs/Thesis/Entrega-TFM-Fundae.md).
+Media folder (slides + vídeo): [MedScopeAi — Google Drive](https://drive.google.com/drive/folders/1LsHgjSsfbFv8gPR6sSTxAiHCUAMWvCng?usp=drive_link).
 
 ### Pre-submission checklist
 
 | Step | Status | Action |
 |------|--------|--------|
 | Slides in repo | Done | [`docs/Thesis/slides/MedScope-AI-TFM.pptx`](docs/Thesis/slides/MedScope-AI-TFM.pptx) |
-| Upload slides + URL | Pending | Google Slides/Drive (public) → paste in table above |
-| Record defense video | Pending | Follow [Guion-Video-Defensa.md](docs/Thesis/Guion-Video-Defensa.md) (screen capture required) |
-| Upload video + URL | Pending | YouTube (unlisted OK) or Drive → paste in table above |
-| GitHub repo public | Verify | [github.com/gclara27/medscope-ai](https://github.com/gclara27/medscope-ai) — or grant `mouredev@gmail.com` if private |
+| Upload slides + URL | Done | [Google Drive](https://drive.google.com/drive/folders/1LsHgjSsfbFv8gPR6sSTxAiHCUAMWvCng?usp=drive_link) |
+| Record defense video | Done | `PresentacionMedScopeAi2.mp4` (screen capture + voice) |
+| Upload video + URL | Done | Same [Drive folder](https://drive.google.com/drive/folders/1LsHgjSsfbFv8gPR6sSTxAiHCUAMWvCng?usp=drive_link) |
+| GitHub repo public | Done | [github.com/gclara27/medscope-ai](https://github.com/gclara27/medscope-ai) |
 | Production stability | Done | `.\scripts\verify-demo-stability.ps1 -Production` (T-906) |
-| Demo backup (USB) | Pending | `.\scripts\backup-demo-media.ps1` then copy `.zip` to external drive |
-| Campus form | Pending | Submit before **20/07/2026** |
+| Demo backup (USB) | Pending | `.\scripts\backup-demo-media.ps1 --video <path-to-mp4>` then copy `.zip` to external drive |
+| Campus form | Pending | Submit before **20/07/2026** (add your BIG School enrolment email) |
 | Incognito smoke test | Pending | Login + predict at live URL without cached session |
 
 **Slides content (ready to copy to PowerPoint):** [docs/Thesis/Slides-Presentacion-Video.md](docs/Thesis/Slides-Presentacion-Video.md)  
@@ -267,7 +269,7 @@ Stack: **Supabase** (PostgreSQL) + **Render** (FastAPI + ML, Docker) + **Vercel*
 
 Step-by-step guide, troubleshooting, and env vars: **[docs/Deployment/Deployment.md](docs/Deployment/Deployment.md)**.
 
-Before the first cloud deploy, run `.\scripts\prepare-docker-build.ps1` and commit the production files under `models/` (`model.pkl`, `preprocessor.pkl`, `model_manifest.json`, `shap_background.npy`, `demo_golden_predictions.json`).
+Before the first cloud deploy, run `.\scripts\prepare-docker-build.ps1` and commit the production files under `models/` (`model.pkl`, `preprocessor.pkl`, `model_manifest.json`, `shap_background.npy`, `demo_golden_predictions.json`, `baseline_comparison.json`, `xgboost_evaluation.json`).
 
 Environment variables reference: [docs/Environment/Environment.md](docs/Environment/Environment.md).
 

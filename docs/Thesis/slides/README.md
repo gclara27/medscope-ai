@@ -1,36 +1,32 @@
 # Slides TFM — carpeta de entrega
 
-Coloca aquí la presentación final para el tribunal / Fundae.
+**Alumno:** Gastón Clara
 
-## Archivos esperados
+## Archivos
 
 | Archivo | Descripción | Estado |
 |---|---|---|
-| `MedScope-AI-TFM.pptx` | PowerPoint 12 slides (generado) | ✅ En esta carpeta |
-| `MedScope-AI-TFM.pdf` | PDF opcional como backup | Opcional |
+| `MedScope-AI-TFM.pptx` | PowerPoint 12 slides | ✅ En repo |
+| `MedScope-AI-TFM.pdf` | PDF opcional backup | Opcional |
 
-## Regenerar el PPTX
+## URL pública (formulario Fundae)
+
+Carpeta Google Drive (slides + vídeo):  
+https://drive.google.com/drive/folders/1LsHgjSsfbFv8gPR6sSTxAiHCUAMWvCng?usp=drive_link
+
+Archivo slides en Drive: **`MedScope-AI-TFM.pptx`**
+
+Comprueba permiso **“Cualquier persona con el enlace” → Lector** antes de la entrega.
+
+## Regenerar el PPTX desde el repo
 
 ```powershell
 .\.venv\Scripts\pip.exe install python-pptx   # primera vez
 .\.venv\Scripts\python.exe scripts\generate_thesis_pptx.py
 ```
 
-Edita `[Tu nombre completo]` y `[Tu email / LinkedIn]` en la slide 1 y 12 (PowerPoint) o en `scripts/generate_thesis_pptx.py` antes de regenerar.
-
-## Cómo crearlas (manual alternativa)
-
-1. Sigue el contenido de [Slides-Presentacion-Video.md](../Slides-Presentacion-Video.md) (12 slides).
-2. Imágenes: `docs/figures/screenshots/` + diagramas PNG de `docs/Architecture/`.
-3. Guarda el `.pptx` en esta carpeta **o** publícalo en Google Slides y pon solo la URL en [README.md](../../README.md).
-
-## URL pública (formulario Fundae)
-
-Si usas Google Slides / Drive:
-
-1. *Share* → *Anyone with the link* → *Viewer*
-2. Copia la URL en `README.md` § TFM delivery y en [Entrega-TFM-Fundae.md](../Entrega-TFM-Fundae.md)
+El script usa **Gastón Clara** en la portada. Edita contacto en slide 12 en `scripts/generate_thesis_pptx.py` si lo necesitas.
 
 ---
 
-*Pendiente hasta que generes el archivo o la URL.*
+*Actualizado julio 2026.*

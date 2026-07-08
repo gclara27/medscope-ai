@@ -90,7 +90,7 @@ When slides and video are ready, replace `REPLACE_ME` in this table and in [Entr
 |------|---------|----------|
 | [Python](https://www.python.org/downloads/) | 3.12+ | Backend, ML, notebooks |
 | [Node.js](https://nodejs.org/) | 20 LTS+ | Frontend (React) |
-| [Docker Desktop](https://www.docker.com/products/docker-desktop/) | latest | PostgreSQL + backend in containers |
+| [Docker Desktop](https://www.docker.com/products/docker-desktop/) **or** [Podman Desktop](https://podman-desktop.io/) | latest | PostgreSQL in containers (dev) |
 | Git | latest | Version control |
 
 **Windows (winget):**
@@ -102,6 +102,8 @@ winget install Docker.DockerDesktop
 ```
 
 After installing Docker Desktop, start it and wait until the engine is running (whale icon in the system tray).
+
+**Podman (alternative to Docker Desktop):** install Podman Desktop, run `podman machine start`, then `pip install podman-compose`. Use `.\dev-podman.bat` instead of `.\dev.bat`. See [docs/Environment/Environment.md](docs/Environment/Environment.md).
 
 **Verify:**
 
@@ -131,22 +133,29 @@ Creates `.env`, Python `.venv`, and installs backend + frontend dependencies.
 
 From the repo root in Cursor (or any PowerShell terminal):
 
+**Docker Desktop:**
+
 ```powershell
-.\scripts\start-dev.ps1
+.\dev.bat
 ```
 
-Or:
+**Podman:**
 
 ```powershell
-.\dev.ps1
-# or
-dev.bat
+.\dev-podman.bat
+```
+
+Or directly:
+
+```powershell
+.\scripts\start-dev.ps1 -Runtime docker   # Docker
+.\scripts\start-dev.ps1 -Runtime podman   # Podman
 ```
 
 This script:
 
-1. Starts PostgreSQL in Docker (detached)
-2. Stops the Docker **backend** container if running (frees port 8000 for local uvicorn)
+1. Starts PostgreSQL in a container (detached)
+2. Stops the container **backend** if running (frees port 8000 for local uvicorn)
 3. Runs `alembic upgrade head`
 4. Opens a **new terminal** for the backend (`uvicorn` on port 8000, with full ML stack)
 5. Opens a **new terminal** for the frontend (`npm run dev` on port 5173)
@@ -156,19 +165,20 @@ Then open http://localhost:5173/login
 ### Stop everything
 
 ```powershell
-.\stop.bat
+.\stop.bat          # Docker
+.\stop-podman.bat   # Podman
 ```
 
 Or:
 
 ```powershell
-.\stop.ps1
-# same as .\scripts\stop-dev.ps1
+.\scripts\stop-dev.ps1 -Runtime docker
+.\scripts\stop-dev.ps1 -Runtime podman
 ```
 
-Stops processes on ports **8000** (backend) and **5173** (frontend), closes **MedScope AI** dev terminal windows if still open, and runs `docker compose down` (PostgreSQL data is kept in the Docker volume).
+Stops processes on ports **8000** (backend) and **5173** (frontend), closes **MedScope AI** dev terminal windows if still open, and runs compose down (PostgreSQL data is kept in the volume).
 
-**Requires Docker Desktop running** before `start-dev.ps1`.
+**Requires the container engine running** before start (`Docker Desktop` or `podman machine start`).
 
 ---
 
@@ -195,7 +205,8 @@ docker compose up --build
 Windows helper (prepares ML artifacts, starts detached, waits for health):
 
 ```powershell
-.\scripts\docker-up.ps1
+.\scripts\docker-up.ps1    # Docker
+.\scripts\podman-up.ps1    # Podman
 ```
 
 Detached mode (raw Compose):
@@ -226,6 +237,7 @@ Verify full stack (health + nginx proxy + demo login):
 
 ```powershell
 .\scripts\verify-docker-stack.ps1
+.\scripts\verify-podman-stack.ps1
 ```
 
 The frontend container serves the built React app and proxies API routes (`/auth`, `/predict`, `/simulate`, etc.) to the backend service.

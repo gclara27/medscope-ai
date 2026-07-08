@@ -1,9 +1,18 @@
 # MedScope AI - stop dev stack
-# Usage: .\stop.bat  |  .\stop.ps1  |  .\scripts\stop-dev.ps1
+# Usage: .\stop.bat | .\stop-podman.bat | .\scripts\stop-dev.ps1 [-Runtime docker|podman]
 #
-# Stops local backend/frontend (ports 8000, 5173) and Docker Compose services.
+# Stops local backend/frontend (ports 8000, 5173) and Compose services.
+
+param(
+    [ValidateSet("docker", "podman")]
+    [string]$Runtime = "docker"
+)
 
 $ErrorActionPreference = "Stop"
+. (Join-Path $PSScriptRoot "lib\container-runtime.ps1")
+
+$Runtime = Resolve-ContainerRuntime -Runtime $Runtime
+$RuntimeLabel = Get-ContainerRuntimeLabel -Runtime $Runtime
 $Root = Resolve-Path (Join-Path $PSScriptRoot "..")
 
 function Write-Step([string]$Message) {
@@ -44,7 +53,7 @@ function Stop-MedScopeDevWindows {
 }
 
 Set-Location $Root
-Write-Host "MedScope AI - stopping dev stack" -ForegroundColor Yellow
+Write-Host "MedScope AI - stopping dev stack ($RuntimeLabel)" -ForegroundColor Yellow
 Write-Host "Project: $Root"
 
 Write-Step "Stopping backend (8000) and frontend (5173)"
@@ -54,22 +63,23 @@ Stop-ProcessOnPort -Port 5173
 Write-Step "Closing MedScope dev terminal windows (if open)"
 Stop-MedScopeDevWindows
 
-Write-Step "Stopping Docker Compose services"
+Write-Step "Stopping $RuntimeLabel Compose services"
 $prevErrorAction = $ErrorActionPreference
 $ErrorActionPreference = "Continue"
-docker compose down 2>&1 | Out-Null
+Invoke-ContainerCompose -Runtime $Runtime -Root $Root -ComposeArgs @("down") 2>&1 | Out-Null
 $ErrorActionPreference = $prevErrorAction
 if ($LASTEXITCODE -eq 0) {
-    Write-Host "  Docker containers stopped (PostgreSQL data kept in volume)."
+    Write-Host "  Containers stopped (PostgreSQL data kept in volume)."
 } else {
-    Write-Host "  Docker compose down skipped or failed (Docker may not be running)." -ForegroundColor DarkYellow
+    Write-Host "  Compose down skipped or failed ($RuntimeLabel engine may not be running)." -ForegroundColor DarkYellow
 }
 
+$startHint = Get-DevStartScriptHint -Runtime $Runtime
 Write-Host ""
 Write-Host "========================================" -ForegroundColor Green
 Write-Host "  MedScope AI dev stack stopped" -ForegroundColor Green
 Write-Host "========================================" -ForegroundColor Green
 Write-Host ""
 Write-Host "  Ports 8000 and 5173 should be free."
-Write-Host "  To start again: .\dev.bat"
+Write-Host "  To start again: $startHint"
 Write-Host ""

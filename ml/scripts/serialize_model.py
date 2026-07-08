@@ -53,6 +53,11 @@ def main() -> int:
         },
     )
 
+    from ml.evaluation.compare import ensure_baseline_comparison_artifact
+
+    baseline_path = ensure_baseline_comparison_artifact()
+    logger.info("baseline_comparison_written", extra={"path": str(baseline_path)})
+
     logger.info(
         "serialize_complete",
         extra={

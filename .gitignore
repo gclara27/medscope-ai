@@ -82,6 +82,7 @@ models/*
 !models/shap_background.npy
 !models/demo_golden_predictions.json
 !models/baseline_comparison.json
+!models/xgboost_evaluation.json
 *.pkl
 !models/model.pkl
 !models/preprocessor.pkl

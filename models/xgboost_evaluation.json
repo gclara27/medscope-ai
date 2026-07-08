@@ -1,0 +1,35 @@
+{
+  "primary_metric": "recall",
+  "recall_winner": "logistic_regression",
+  "production_model": "logistic_regression",
+  "changes_production_model": false,
+  "summary": "Logistic Regression leads on recall among LR/RF/XGBoost (LR=0.5425, RF=0.2010, XGB=0.4392).",
+  "rationale": [
+    "XGBoost evaluated on the same stratified hold-out split as T-205/T-206 baselines.",
+    "Recall winner: logistic_regression. Current LR vs RF winner remains logistic_regression.",
+    "Production model (logistic_regression) remains the recall leader at threshold 0.5; no change to models/final/ or model.pkl."
+  ],
+  "models": {
+    "logistic_regression": {
+      "accuracy": 0.6066834451901566,
+      "recall": 0.5424940428911835,
+      "precision": 0.1191348334205477,
+      "f1": 0.19536613272311212,
+      "roc_auc": 0.6099241003296769
+    },
+    "random_forest": {
+      "accuracy": 0.8224272930648769,
+      "recall": 0.20095313741064336,
+      "precision": 0.14157806379406826,
+      "f1": 0.16611950098489822,
+      "roc_auc": 0.5929164975762095
+    },
+    "xgboost": {
+      "accuracy": 0.665268456375839,
+      "recall": 0.4392374900714853,
+      "precision": 0.11930960086299892,
+      "f1": 0.1876484560570071,
+      "roc_auc": 0.5881908137987555
+    }
+  }
+}

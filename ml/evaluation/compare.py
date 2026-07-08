@@ -9,7 +9,9 @@ from pathlib import Path
 from ml.evaluation.metrics import ClassificationMetrics
 from ml.training.constants import (
     BASELINE_COMPARISON_PATH,
+    LOGISTIC_REGRESSION_METRICS_PATH,
     LOGISTIC_REGRESSION_MODEL_ID,
+    RANDOM_FOREST_METRICS_PATH,
     RANDOM_FOREST_MODEL_ID,
 )
 
@@ -92,3 +94,30 @@ def save_baseline_comparison(
 ) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(comparison.to_dict(), indent=2), encoding="utf-8")
+
+
+def ensure_baseline_comparison_artifact(
+    path: Path = BASELINE_COMPARISON_PATH,
+) -> Path:
+    """Write baseline_comparison.json from saved LR/RF metrics when missing."""
+    if path.exists():
+        return path
+
+    if not LOGISTIC_REGRESSION_METRICS_PATH.exists() or not RANDOM_FOREST_METRICS_PATH.exists():
+        raise FileNotFoundError(
+            "Cannot build baseline_comparison.json. Run: python ml/scripts/train_random_forest.py"
+        )
+
+    from ml.training.artifacts import load_metrics_from_file
+
+    logistic_metrics = ClassificationMetrics(
+        **load_metrics_from_file(LOGISTIC_REGRESSION_METRICS_PATH)["metrics"],
+    )
+    random_forest_metrics = ClassificationMetrics(
+        **load_metrics_from_file(RANDOM_FOREST_METRICS_PATH)["metrics"],
+    )
+    save_baseline_comparison(
+        compare_baselines(logistic_metrics, random_forest_metrics),
+        path,
+    )
+    return path

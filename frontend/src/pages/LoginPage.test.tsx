@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import axios from "axios";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
@@ -110,15 +110,12 @@ describe("LoginPage", () => {
 
   it("auto-dismisses login error after a few seconds", async () => {
     vi.useFakeTimers({ shouldAdvanceTime: true });
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     renderLoginPage();
 
-    fireEvent.change(screen.getByLabelText(/email/i), {
-      target: { value: "wrong@example.com" },
-    });
-    fireEvent.change(screen.getByLabelText(/password/i), {
-      target: { value: "bad-password" },
-    });
-    fireEvent.click(screen.getByRole("button", { name: /authenticate/i }));
+    await user.type(screen.getByLabelText(/email/i), "wrong@example.com");
+    await user.type(screen.getByLabelText(/password/i), "bad-password");
+    await user.click(screen.getByRole("button", { name: /authenticate/i }));
 
     await waitFor(() => {
       expect(screen.getByText(/invalid email or password/i)).toBeInTheDocument();
@@ -128,8 +125,6 @@ describe("LoginPage", () => {
       vi.advanceTimersByTime(5000);
     });
 
-    await waitFor(() => {
-      expect(screen.queryByText(/invalid email or password/i)).not.toBeInTheDocument();
-    });
+    expect(screen.queryByText(/invalid email or password/i)).not.toBeInTheDocument();
   });
 });

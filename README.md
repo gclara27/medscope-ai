@@ -44,6 +44,7 @@ Full narrative: [docs/MedScope AI General Description.md](docs/MedScope%20AI%20G
 
 ## TFM delivery (Fundae / BIG School)
 
+**Author (TFM):** Gastón Clara  
 **Compliance checklist:** [docs/Thesis/Entrega-TFM-Fundae.md](docs/Thesis/Entrega-TFM-Fundae.md)  
 **Delivery deadline (syllabus):** 20 July 2026
 
@@ -51,36 +52,36 @@ Full narrative: [docs/MedScope AI General Description.md](docs/MedScope%20AI%20G
 
 | Field | Value |
 |-------|-------|
+| **Student name** | Gastón Clara |
 | **GitHub repository** | https://github.com/gclara27/medscope-ai |
 | **Live app (deploy URL)** | https://medscope-ai-delta.vercel.app |
 | **Public demo (no login)** | https://medscope-ai-delta.vercel.app/demo |
 | **API health** | https://medscope-ai-q8tg.onrender.com/health |
-| **Slides URL** | `REPLACE_ME` → e.g. `https://docs.google.com/presentation/d/.../edit` or raw GitHub link to `docs/Thesis/slides/MedScope-AI-TFM.pptx` |
-| **Video URL** | `REPLACE_ME` → e.g. `https://youtu.be/...` or `https://drive.google.com/file/d/.../view` |
-| **Demo user** | `clinician@medscope.ai` |
-| **Demo password** | `MedScope123!` |
+| **Slides URL** | https://drive.google.com/drive/folders/1LsHgjSsfbFv8gPR6sSTxAiHCUAMWvCng?usp=drive_link (`MedScope-AI-TFM.pptx`) |
+| **Video URL** | https://drive.google.com/drive/folders/1LsHgjSsfbFv8gPR6sSTxAiHCUAMWvCng?usp=drive_link (`PresentacionMedScopeAi2.mp4`) |
+| **Demo accounts** | See [Demo accounts](#demo-accounts) — shared password `MedScope123!` |
 
-When slides and video are ready, replace `REPLACE_ME` in this table and in [Entrega-TFM-Fundae.md](docs/Thesis/Entrega-TFM-Fundae.md).
+Media folder (slides + vídeo): [MedScopeAi — Google Drive](https://drive.google.com/drive/folders/1LsHgjSsfbFv8gPR6sSTxAiHCUAMWvCng?usp=drive_link).
 
 ### Pre-submission checklist
 
 | Step | Status | Action |
 |------|--------|--------|
 | Slides in repo | Done | [`docs/Thesis/slides/MedScope-AI-TFM.pptx`](docs/Thesis/slides/MedScope-AI-TFM.pptx) |
-| Upload slides + URL | Pending | Google Slides/Drive (public) → paste in table above |
-| Record defense video | Pending | Follow [Guion-Video-Defensa.md](docs/Thesis/Guion-Video-Defensa.md) (screen capture required) |
-| Upload video + URL | Pending | YouTube (unlisted OK) or Drive → paste in table above |
-| GitHub repo public | Verify | [github.com/gclara27/medscope-ai](https://github.com/gclara27/medscope-ai) — or grant `mouredev@gmail.com` if private |
+| Upload slides + URL | Done | [Google Drive](https://drive.google.com/drive/folders/1LsHgjSsfbFv8gPR6sSTxAiHCUAMWvCng?usp=drive_link) |
+| Record defense video | Done | `PresentacionMedScopeAi2.mp4` (screen capture + voice) |
+| Upload video + URL | Done | Same [Drive folder](https://drive.google.com/drive/folders/1LsHgjSsfbFv8gPR6sSTxAiHCUAMWvCng?usp=drive_link) |
+| GitHub repo public | Done | [github.com/gclara27/medscope-ai](https://github.com/gclara27/medscope-ai) |
 | Production stability | Done | `.\scripts\verify-demo-stability.ps1 -Production` (T-906) |
-| Demo backup (USB) | Pending | `.\scripts\backup-demo-media.ps1` then copy `.zip` to external drive |
-| Campus form | Pending | Submit before **20/07/2026** |
+| Demo backup (USB) | Pending | `.\scripts\backup-demo-media.ps1 --video <path-to-mp4>` then copy `.zip` to external drive |
+| Campus form | Pending | Submit before **20/07/2026** (add your BIG School enrolment email) |
 | Incognito smoke test | Pending | Login + predict at live URL without cached session |
 
 **Slides content (ready to copy to PowerPoint):** [docs/Thesis/Slides-Presentacion-Video.md](docs/Thesis/Slides-Presentacion-Video.md)  
 **Video script (screen + voice + optional camera):** [docs/Thesis/Guion-Video-Defensa.md](docs/Thesis/Guion-Video-Defensa.md)  
 **Thesis memory draft:** [docs/Thesis/Memoria-TFM.md](docs/Thesis/Memoria-TFM.md)
 
-> **Before submission:** warm up the API 2–3 min before demo (`/health` → `ml_ready: true`). Render free tier may cold-start 30–90 s.
+> **Reviewer note:** The live deployment runs on free-tier cloud services. See [Important note — free-tier hosting](#important-note--free-tier-hosting) for cold-start and database-pause behaviour.
 
 ---
 
@@ -226,7 +227,7 @@ docker compose up --build -d
 | Predict (JWT) | `POST /auth/login` then `POST /predict` — see [Manual Phase 03](docs/Testing/Manual/Phase-03-ML-Backend-Integration.md) |
 | PostgreSQL | `localhost:5432` — DB `medscope_ai`, user `medscope` |
 
-Demo login (seed data): `clinician@medscope.ai` / `MedScope123!`
+Demo login (seed data): see [Demo accounts](#demo-accounts).
 
 ```bash
 docker compose ps
@@ -265,9 +266,36 @@ docker compose down -v       # stop and remove database volume
 
 Stack: **Supabase** (PostgreSQL) + **Render** (FastAPI + ML, Docker) + **Vercel** (React).
 
+### Demo accounts
+
+All seed users share the same password: **`MedScope123!`**
+
+| Email | Role | Recommended for |
+|-------|------|-----------------|
+| `clinician@medscope.ai` | Clinician | Full clinical workflow — evaluation, SHAP, simulation |
+| `admin@medscope.ai` | Admin | Above + analytics, settings, user administration |
+| `analyst@medscope.ai` | Analyst | Analytics and reporting |
+| `nurse@medscope.ai` | Nurse | Dashboard and prediction history |
+
+These credentials are for **academic demonstration** (TFM / Fundae evaluation). The same accounts are seeded in local Docker and in production (Supabase). For a guided tour without login, use the [public demo](https://medscope-ai-delta.vercel.app/demo).
+
+### Important note — free-tier hosting
+
+MedScope AI is deployed on **free or hobby-tier cloud services** for the TFM demonstration. The platform is fully functional, but reviewers should be aware of typical behaviour after periods of inactivity:
+
+| Provider | Service | What may happen |
+|----------|---------|-----------------|
+| **Render** | FastAPI API | The service spins down when idle. The first request after a pause may take **30–90 seconds** while the container and ML stack start (`ml_ready` becomes `true` in `/health`). |
+| **Supabase** | PostgreSQL | The database may **pause** after sustained inactivity. Waking it can add a short delay before login and queries succeed. |
+| **Vercel** | React frontend | Static assets are served from the edge; the first visit after idle may feel slower until the deployment is fully warm. |
+
+**If something looks stuck:** wait 1–2 minutes, confirm [API health](https://medscope-ai-q8tg.onrender.com/health) returns `"status":"ok"` and `"ml_ready":true`, then retry. A brief loading state on the first action is expected on this stack.
+
+I will warm up the live environment before the evaluation window (health check + smoke login). If you access the app outside that window, you may still encounter a cold start — this is a limitation of the hosting tier, not a defect in the application.
+
 Step-by-step guide, troubleshooting, and env vars: **[docs/Deployment/Deployment.md](docs/Deployment/Deployment.md)**.
 
-Before the first cloud deploy, run `.\scripts\prepare-docker-build.ps1` and commit the production files under `models/` (`model.pkl`, `preprocessor.pkl`, `model_manifest.json`, `shap_background.npy`, `demo_golden_predictions.json`).
+Before the first cloud deploy, run `.\scripts\prepare-docker-build.ps1` and commit the production files under `models/` (`model.pkl`, `preprocessor.pkl`, `model_manifest.json`, `shap_background.npy`, `demo_golden_predictions.json`, `baseline_comparison.json`, `xgboost_evaluation.json`).
 
 Environment variables reference: [docs/Environment/Environment.md](docs/Environment/Environment.md).
 

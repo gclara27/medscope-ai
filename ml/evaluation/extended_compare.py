@@ -131,3 +131,45 @@ def save_xgboost_evaluation_report(
 ) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(report.to_dict(), indent=2), encoding="utf-8")
+
+
+def ensure_xgboost_evaluation_artifact(
+    path: Path = XGBOOST_EVALUATION_PATH,
+) -> Path | None:
+    """Write xgboost_evaluation.json from saved LR/RF/XGB metrics when missing."""
+    if path.exists():
+        return path
+
+    from ml.training.artifacts import load_metrics_from_file
+    from ml.training.constants import (
+        LOGISTIC_REGRESSION_METRICS_PATH,
+        RANDOM_FOREST_METRICS_PATH,
+        XGBOOST_METRICS_PATH,
+    )
+
+    metric_paths = (
+        LOGISTIC_REGRESSION_METRICS_PATH,
+        RANDOM_FOREST_METRICS_PATH,
+        XGBOOST_METRICS_PATH,
+    )
+    if not all(metric_path.exists() for metric_path in metric_paths):
+        return None
+
+    logistic_metrics = ClassificationMetrics(
+        **load_metrics_from_file(LOGISTIC_REGRESSION_METRICS_PATH)["metrics"],
+    )
+    random_forest_metrics = ClassificationMetrics(
+        **load_metrics_from_file(RANDOM_FOREST_METRICS_PATH)["metrics"],
+    )
+    xgboost_metrics = ClassificationMetrics(
+        **load_metrics_from_file(XGBOOST_METRICS_PATH)["metrics"],
+    )
+    save_xgboost_evaluation_report(
+        build_xgboost_evaluation_report(
+            logistic_metrics,
+            random_forest_metrics,
+            xgboost_metrics,
+        ),
+        path,
+    )
+    return path

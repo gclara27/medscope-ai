@@ -58,6 +58,12 @@ def main() -> int:
     baseline_path = ensure_baseline_comparison_artifact()
     logger.info("baseline_comparison_written", extra={"path": str(baseline_path)})
 
+    from ml.evaluation.extended_compare import ensure_xgboost_evaluation_artifact
+
+    xgboost_path = ensure_xgboost_evaluation_artifact()
+    if xgboost_path is not None:
+        logger.info("xgboost_evaluation_written", extra={"path": str(xgboost_path)})
+
     logger.info(
         "serialize_complete",
         extra={

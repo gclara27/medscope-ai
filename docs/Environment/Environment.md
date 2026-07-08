@@ -20,8 +20,9 @@ Archivos de plantilla:
 
 | Entorno | Base de datos | Backend | Frontend | Configuración |
 |---|---|---|---|---|
-| **dev (local)** | PostgreSQL Docker `localhost:5432` | `uvicorn` en host `:8000` | Vite `:5173` | `.env` raíz + proxy Vite |
+| **dev (local)** | PostgreSQL en contenedor `localhost:5432` | `uvicorn` en host `:8000` | Vite `:5173` | `.env` raíz + proxy Vite |
 | **dev (Docker)** | Servicio `postgres` | Contenedor `backend` | Contenedor `frontend` nginx `:3000` | `.env` raíz + `docker compose` |
+| **dev (Podman)** | Servicio `postgres` | Contenedor `backend` | Contenedor `frontend` nginx `:3000` | `.env` raíz + `podman-compose` |
 | **test** | SQLite en memoria (pytest) | Tests sin `.env` obligatorio | vitest / Playwright | Fixtures; ver §5 |
 | **prod** | PostgreSQL gestionado | Contenedor o PaaS | Static + reverse proxy | `.env` solo en servidor |
 
@@ -43,9 +44,23 @@ copy frontend\.env.example frontend\.env   # opcional en dev (proxy Vite por def
 
 | Flujo | Comando | URLs |
 |---|---|---|
-| Stack Docker completo | `docker compose up --build` o `.\scripts\docker-up.ps1` | UI http://localhost:3000 · API http://localhost:8000 |
-| Dev híbrido (recomendado día a día) | `.\scripts\start-dev.ps1` | UI http://localhost:5173 · API http://localhost:8000 |
-| Solo PostgreSQL | `docker compose up postgres -d` | BD `localhost:5432` |
+| Dev híbrido con Docker (recomendado día a día) | `.\dev.bat` | UI http://localhost:5173 · API http://localhost:8000 |
+| Dev híbrido con Podman | `.\dev-podman.bat` | UI http://localhost:5173 · API http://localhost:8000 |
+| Stack Docker completo | `.\scripts\docker-up.ps1` | UI http://localhost:3000 · API http://localhost:8000 |
+| Stack Podman completo | `.\scripts\podman-up.ps1` | UI http://localhost:3000 · API http://localhost:8000 |
+| Solo PostgreSQL (Docker) | `docker compose up postgres -d` | BD `localhost:5432` |
+| Solo PostgreSQL (Podman) | `podman-compose up postgres -d` | BD `localhost:5432` |
+
+### Contenedores: Docker Desktop vs Podman
+
+| Runtime | Arranque dev híbrido | Parada | Stack completo | Verificación |
+|---|---|---|---|---|
+| **Docker** | `.\dev.bat` | `.\stop.bat` | `.\scripts\docker-up.ps1` | `.\scripts\verify-docker-stack.ps1` |
+| **Podman** | `.\dev-podman.bat` | `.\stop-podman.bat` | `.\scripts\podman-up.ps1` | `.\scripts\verify-podman-stack.ps1` |
+
+**Podman en Windows:** requiere Podman Machine en ejecución (`podman machine start`) y `podman-compose` (`pip install podman-compose`). El setup lo instala si usas `.\scripts\setup-dev.ps1 -Runtime podman`.
+
+Ambos runtimes usan el mismo `docker-compose.yml` en la raíz del repo.
 
 ---
 
